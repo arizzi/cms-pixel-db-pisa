@@ -97,6 +97,9 @@ class PixelDBInterface(object) :
 	    if (self.isTbmInserted(tbm_id) == False):
                   print "ERROR: tbm not existing",tbm_id 
 		  return
+	    if (self.isHdiInserted(hdi_id) == False):
+                  print "ERROR: hdi not existing",hdi_id
+                  return
             #
             if (transfer_id ==0):
                   # creo un transfer
@@ -130,7 +133,8 @@ class PixelDBInterface(object) :
             return aa is not None
 
       def isHdiInserted(self, hdi_id):
-            aa = self.store.find(Hdi, Hdi.HDI_ID==hdi_id).one()
+            temp=unicode(hdi_id)
+            aa = self.store.find(Hdi, Hdi.HDI_ID==temp).one()
             return aa is not None
 
       def isBareModuleInserted(self, BareModule_id):
