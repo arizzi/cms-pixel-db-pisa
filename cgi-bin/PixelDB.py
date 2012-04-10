@@ -57,10 +57,11 @@ class PixelDBInterface(object) :
             #
             if (self.isSensorInserted(sensor_id) == False):
                   print "ERROR: sensor not existing", sensor_id
+		  return 
             for i in roc_ids:
                   if (self.isRocInserted(i) == False):
                         print "ERROR: roc not existing", i
-            print " CHECK DONE"
+			return
             #
             
             if (transfer_id ==0):
@@ -92,9 +93,10 @@ class PixelDBInterface(object) :
             #
             if (self.isBareModuleInserted(baremodule_id) == False):
                   print "ERROR: baremodule not existing", baremodule_id
+		  return
 	    if (self.isTbmInserted(tbm_id) == False):
                   print "ERROR: tbm not existing",tbm_id 
-            print " CHECK DONE"
+		  return
             #
             if (transfer_id ==0):
                   # creo un transfer
