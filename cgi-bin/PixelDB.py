@@ -38,17 +38,16 @@ class PixelDBInterface(object) :
             self.store.commit()
             # log in history
             self.insertHistory(type="NULL", id=0, target_type="TBM", target_id=tbm.TBM_ID, operation="INSERT", datee=date.today(), comment="SPERIAMO BENE")
-            return roc
+            return tbm
 
       def insertHdi (self, hdi):
             self.store.add(hdi)
             self.store.commit()
             # log in history
             self.insertHistory(type="NULL", id=0, target_type="HDI", target_id=hdi.HDI_ID, operation="INSERT", datee=date.today(), comment="SPERIAMO BENE")
-            return roc      
+            return hdi      
       
       def joinRocs(self, arrayofrocids):
-            print"ECCO ", arrayofrocids
             return string.join(arrayofrocids,",")
       
       def assembleBareModule(self, baremodule_id, roc_ids,  sensor_id, builtby, transfer_id=0):
@@ -57,11 +56,11 @@ class PixelDBInterface(object) :
             #
             if (self.isSensorInserted(sensor_id) == False):
                   print "ERROR: sensor not existing", sensor_id
-		  return 
+                  return None
             for i in roc_ids:
                   if (self.isRocInserted(i) == False):
                         print "ERROR: roc not existing", i
-			return
+                        return None
             #
             
             if (transfer_id ==0):
@@ -93,13 +92,10 @@ class PixelDBInterface(object) :
             #
             if (self.isBareModuleInserted(baremodule_id) == False):
                   print "ERROR: baremodule not existing", baremodule_id
-		  return
+                  return None
 	    if (self.isTbmInserted(tbm_id) == False):
-                  print "ERROR: tbm not existing",tbm_id 
-		  return
-	    if (self.isHdiInserted(hdi_id) == False):
-                  print "ERROR: hdi not existing",hdi_id
-                  return
+                  print "ERROR: tbm not existing",tbm_id
+                  return None
             #
             if (transfer_id ==0):
                   # creo un transfer
@@ -119,7 +115,8 @@ class PixelDBInterface(object) :
 # check methods 
 #
       def isSensorInserted(self, sensor_id):
-            aa = self.store.find(Sensor, Sensor.SENSOR_ID==sensor_id).one()
+            temp=unicode(sensor_id)
+            aa = self.store.find(Sensor, Sensor.SENSOR_ID==temp).one()
             return aa is not None
 
       def isRocInserted(self, roc_id):
@@ -133,8 +130,7 @@ class PixelDBInterface(object) :
             return aa is not None
 
       def isHdiInserted(self, hdi_id):
-            temp=unicode(hdi_id)
-            aa = self.store.find(Hdi, Hdi.HDI_ID==temp).one()
+            aa = self.store.find(Hdi, Hdi.HDI_ID==hdi_id).one()
             return aa is not None
 
       def isBareModuleInserted(self, BareModule_id):

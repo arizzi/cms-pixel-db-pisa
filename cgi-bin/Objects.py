@@ -68,13 +68,13 @@ class Roc(object):
 
 class Sensor(object):
   __storm_table__ = "inventory_sensor"
-  SENSOR_ID = Int(primary=True)
+  SENSOR_ID = Unicode(primary=True)
   TRANSFER_ID = Int()
   transfer = Reference(TRANSFER_ID, Transfer.TRANSFER_ID)
   COMMENT = Unicode()
   LASTTEST_SENSOR =Int()
   def __init__(self,SENSOR_ID,TRANSFER_ID, COMMENT="", LASTTEST_SENSOR=0):
-      self.SENSOR_ID=SENSOR_ID
+      self.SENSOR_ID=unicode(SENSOR_ID)
       self.TRANSFER_ID=(TRANSFER_ID)
       self.COMMENT=unicode(COMMENT)
       self.LASTTEST_SENSOR = LASTTEST_SENSOR
@@ -122,7 +122,7 @@ class Hdi(object):
   transfer = Reference(TRANSFER_ID, Transfer.TRANSFER_ID)
   COMMENT = Unicode()
   LASTTEST_HDI=Int()
-def __init__(self,HDI_ID, TRANSFER_ID, COMMENT="", LASTTEST_HDI=0):
+  def __init__(self,HDI_ID, TRANSFER_ID, COMMENT="", LASTTEST_HDI=0):
     self.HDI_ID=unicode(HDI_ID)
     self.TRANSFER_ID=TRANSFER_ID
     self.COMMENT=unicode(COMMENT)
