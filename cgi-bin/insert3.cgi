@@ -46,4 +46,8 @@ newfm = pdb.assembleFullModule(fmid, bmid, tbmid, hdiid, "ttttttt")
 if (newfm is None):
     print "FAILED INSERTION"
 #
+print "INSERTED!!!"
+print "now I insert a baremodule whose sensor in not in inventory"
+newbm = pdb.assembleBareModule(bmid+1, rocids,sensorid+1,"tommasino")
+
 print "FINISHED!!!"
