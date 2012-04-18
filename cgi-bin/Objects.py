@@ -22,7 +22,7 @@ class Transfer (object):
     RECEIVED_DATE=date.today()
     STATUS=Unicode()
     COMMENT=Unicode()
-    def __init__(self, SENDER,RECEIVER, ISSUED_DATE=datetime(1970,1,1), RECEIVED_DATE=date.today(), STATUS="", COMMENT=""):
+    def __init__(self, SENDER,RECEIVER, ISSUED_DATE=datetime(1970,1,1), RECEIVED_DATE=date.today(), STATUS="ARRIVED", COMMENT=""):
         self.SENDER=unicode(SENDER)
         self.RECEIVER=unicode(RECEIVER)
         self.ISSUED_DATE=ISSUED_DATE

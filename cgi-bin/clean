@@ -1,0 +1,15 @@
+delete from inventory_sensor;
+delete  from inventory_roc;
+delete  from inventory_tbm;
+delete  from inventory_hdi;
+delete  from inventory_fullmodule;
+delete  from inventory_baremodule;
+delete from history;
+delete from logbook;
+delete from sessions;
+delete from test_baremodule;
+delete from test_fullmodule;
+delete from test_roc;
+delete from test_tbm;
+delete from test_hdi;
+delete from transfers;

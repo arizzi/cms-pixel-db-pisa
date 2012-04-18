@@ -19,6 +19,7 @@ class PixelDBInterface(object) :
             self.store.commit()
             return transfer
 
+
       def insertSession(self,session):
             self.store.add(session)
             self.store.commit()
@@ -85,7 +86,7 @@ class PixelDBInterface(object) :
             
             if (transfer_id ==0):
                   # creo un transfer
-                  tr = self.insertTransfer(Transfer(SENDER="",RECEIVER=self.operator, ISSUED_DATE= datetime(1970,1,1), RECEIVED_DATE=self.date))
+                  tr = self.insertTransfer(Transfer(SENDER="",RECEIVER=self.operator, ISSUED_DATE= datetime(1970,1,1), RECEIVED_DATE=self.date, STATUS="ARRIVED"))
                   self.insertTransfer(tr)
                   transfer_id=tr.TRANSFER_ID
             newbm = BareModule(BAREMODULE_ID=baremodule_id, ROC_ID=self.joinRocs(roc_ids), SENSOR_ID=sensor_id, TRANSFER_ID=transfer_id,BUILTBY=builtby)
@@ -126,7 +127,7 @@ class PixelDBInterface(object) :
             #
             if (transfer_id ==0):
                   # creo un transfer
-                  tr = self.insertTransfer(Transfer(SENDER="",RECEIVER=self.operator, ISSUED_DATE= datetime(1970,1,1), RECEIVED_DATE=self.date))
+                  tr = self.insertTransfer(Transfer(SENDER="",RECEIVER=self.operator, ISSUED_DATE= datetime(1970,1,1), RECEIVED_DATE=self.date, STATUS="ARRIVED"))
                   self.insertTransfer(tr)
                   transfer_id=tr.TRANSFER_ID
             newfm = FullModule(FULLMODULE_ID=fullmodule_id, BAREMODULE_ID=baremodule_id, HDI_ID=hdi_id, TBM_ID=tbm_id,TRANSFER_ID=transfer_id, BUILTBY=builtby, BUILTON=builton, COMMENT=comment)
@@ -175,17 +176,61 @@ class PixelDBInterface(object) :
 # check if already used
 #
       def canSensorBeUsed(self, sensor_id):
-           return (self.isSensorInserted(sensor_id) and ((self.getSensor(sensor_id)).STATUS != "USED"))
+            if (self.isSensorInserted(sensor_id) == False):
+                  return False
+            if ((self.getSensor(sensor_id)).STATUS == "USED" ):
+                  return False
+            if (((self.getSensor(sensor_id)).transfer).STATUS != "ARRIVED"):
+                  return False
+            return True
+            
       def canRocBeUsed(self, roc_id):
-           return (self.isRocInserted(roc_id) and ((self.getRoc(roc_id)).STATUS != "USED"))
-      def canTbmBeUsed(self, tbm_id):
-           return (self.isTbmInserted(tbm_id) and ((self.getTbm(tbm_id)).STATUS != "USED"))
+            if (self.isRocInserted(roc_id) == False):
+                  return False
+            if ((self.getRoc(roc_id)).STATUS == "USED" ):
+                  return False
+            if (((self.getRoc(roc_id)).transfer).STATUS != "ARRIVED"):
+                  return False
+            return True
+
+      def canBareModuleBeUsed(self, baremodule_id):
+            if (self.isBareModuleInserted(baremodule_id) == False):
+                  return False
+            if ((self.getBareModule(baremodule_id)).STATUS == "USED" ):
+                  return False
+            if (((self.getBareModule(baremodule_id)).transfer).STATUS != "ARRIVED"):
+                  return False
+            return True
+
+      def canFullModuleBeUsed(self, fullmodule_id):
+            if (self.isFullModuleInserted(fullmodule_id) == False):
+                  return False
+            if ((self.getFullModule(fullmodule_id)).STATUS == "USED" ):
+                  return False
+            if (((self.getFullModule(fullmodule_id)).transfer).STATUS != "ARRIVED"):
+                  return False
+            return True
+
       def canHdiBeUsed(self, hdi_id):
-           return (self.isHdiInserted(hdi_id) and ((self.getHdi(hdi_id)).STATUS != "USED"))
-      def canFullModuleBeUsed(self, fullModule_id):
-           return (self.isFullModuleInserted(fullModule_id) and ((self.getFullModule(fullModule_id)).STATUS != "USED"))
-      def canBareModuleBeUsed(self, bareModule_id):
-           return (self.isBareModuleInserted(bareModule_id) and ((self.getBareModule(bareModule_id)).STATUS != "USED"))
+            if (self.isHdiInserted(hdi_id) == False):
+                  return False
+            if ((self.getHdi(hdi_id)).STATUS == "USED" ):
+                  return False
+            if (((self.getHdi(hdi_id)).transfer).STATUS != "ARRIVED"):
+                  return False
+            return True
+
+      def canTbmBeUsed(self, tbm_id):
+            if (self.isTbmInserted(tbm_id) == False):
+                  return False
+            if ((self.getTbm(tbm_id)).STATUS == "USED" ):
+                  return False
+            if (((self.getTbm(tbm_id)).transfer).STATUS != "ARRIVED"):
+                  return False
+            return True
+      
+
+           
 #
 # set used
 #
@@ -260,6 +305,11 @@ class PixelDBInterface(object) :
             aa = self.store.find(FullModule, FullModule.FULLMODULE_ID==FullModule_id).one()
             return aa
 
+      def getTransfer(self, id):
+            aa = self.store.find(Transfer, Transfer.TRANSFER_ID==id).one()
+            return aa
+
+
 #
 # transfer
 #
@@ -273,12 +323,24 @@ class PixelDBInterface(object) :
             if (aa is None):
                   print "Trying to transfer a non existing sensor ", sensor_id
                   return None
-            t = self.insertTransfer(Transfer(SENDER=SENDER, RECEIVER=RECEIVER, ISSUED_DATE=ISSUED_DATE, RECEIVED_DATE=RECEIVED_DATE, STATUS=STATUS, COMMENT=COMMENT))
+            t = self.insertTransfer(Transfer(SENDER=SENDER, RECEIVER=RECEIVER, ISSUED_DATE=ISSUED_DATE, RECEIVED_DATE=RECEIVED_DATE, STATUS="SHIPPED", COMMENT=COMMENT))
             aa.TRANSFER_ID=t.TRANSFER_ID
             # log in history
             self.insertHistory(type="TRANSFER", id=t.TRANSFER_ID, target_type="SENSOR", target_id=aa.SENSOR_ID, operation="TRASFER", datee=date.today(), comment="NO COMMENT")
             self.store.commit()
             return aa
+
+      def receiveTransfer(self,transferid):
+            aa = self.getTransfer(transferid)
+            if (aa is None):
+                  return None
+            if (aa.STATUS != unicode("SHIPPED")):
+                  return None
+            aa.STATUS = unicode("ARRIVED")
+            return transferid
+            
+
+            
 
       def transferTbm(self, tbm_id, SENDER, RECEIVER, ISSUED_DATE=datetime(1970,1,1), RECEIVED_DATE=date.today(), STATUS="", COMMENT=""):
             #
