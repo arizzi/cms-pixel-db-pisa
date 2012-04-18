@@ -13,3 +13,4 @@ delete from test_roc;
 delete from test_tbm;
 delete from test_hdi;
 delete from transfers;
+delete from test_data;
