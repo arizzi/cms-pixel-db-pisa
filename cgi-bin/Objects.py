@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 
 # enable debugging
 import cgitb
@@ -208,6 +207,10 @@ class Data(object):
       URLs = Unicode()
       PFNs=Unicode()
       COMMENT=Unicode()
+      def __init__(self,URLs="", PFNs="", COMMENT=""):
+            self.URLs=unicode(URLs)
+            self.PFNs=unicode(PFNs)
+            self.COMMENT=unicode(COMMENT)
 
 #
 # tests
@@ -247,7 +250,7 @@ class Test_FullModule(object):
       TCYCLVALUE = Float()
       TCYCLERROR = Float()
       COMMENT= Unicode()
-      def __init__(self,FULLMODULE_ID,SESSION_ID,RESULT,DATA_ID,ROCSWORSEPERCENT,NOISE,TRIMMING,PHCAL,CURRENT1UA,CURRENT2UA,CURRENT1501UA,CURRENT1502UA,IVSLOPE,TEMPVALUE,TEMPERROR,TCYCLVALUE,TCYCLERROR,COMMENT):
+      def __init__(self,FULLMODULE_ID,SESSION_ID,RESULT,ROCSWORSEPERCENT,NOISE,TRIMMING,PHCAL,CURRENT1UA,CURRENT2UA,CURRENT1501UA,CURRENT1502UA,IVSLOPE,TEMPVALUE,TEMPERROR,TCYCLVALUE,TCYCLERROR,COMMENT,DATA_ID=0):
             self.DATA_ID=DATA_ID
             self.SESSION_ID=SESSION_ID
             self.FULLMODULE_ID=unicode(FULLMODULE_ID)

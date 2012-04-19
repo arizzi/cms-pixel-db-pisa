@@ -101,14 +101,21 @@ else:
 #
 #
 #
+print "<br>INSERT DATA - MUST BE OK<br>"
+data = Data(URLs="http://cern.ch,http://repubblica.it")
+pp = pdb.insertData(data)
+if (pp is None):
+    print"<br>Error inserting data"
+print "<br>ACCESS DATA - MUST BE OK<br>"
+for i in pdb.splitObjects(pp.URLs):
+    print " Object ",i,"<br>"
 print "<br>INSERT TEST FULL MODULE - MUST BE OK<br>"
-print "<br>TEST inserimento TEST_FM"
 s = Session("Pisa", "Tommaso")
 pdb.insertSession(s)
 t = Test_FullModule(SESSION_ID=s.SESSION_ID,
                     FULLMODULE_ID=fmid,
                     RESULT=33,
-                    DATA_ID=0, # no data id
+                    DATA_ID=pp.DATA_ID,
                     ROCSWORSEPERCENT=44,
                     NOISE=33,
                     TRIMMING =66,

@@ -19,6 +19,11 @@ class PixelDBInterface(object) :
             self.store.commit()
             return transfer
 
+      def insertData(self,transfer):
+            self.store.add(transfer)
+            self.store.commit()
+            return transfer
+
 
       def insertSession(self,session):
             self.store.add(session)
@@ -65,8 +70,10 @@ class PixelDBInterface(object) :
             self.insertHistory(type="NULL", id=0, target_type="HDI", target_id=hdi.HDI_ID, operation="INSERT", datee=date.today(), comment="NO COMMENT")
             return hdi      
       
-      def joinRocs(self, arrayofrocids):
+      def joinObjects(self, arrayofrocids):
             return string.join(arrayofrocids,",")
+      def splitObjects(self, pp):
+            return string.split(pp,",")
 #
 #
 #
@@ -89,7 +96,7 @@ class PixelDBInterface(object) :
                   tr = self.insertTransfer(Transfer(SENDER="",RECEIVER=self.operator, ISSUED_DATE= datetime(1970,1,1), RECEIVED_DATE=self.date, STATUS="ARRIVED"))
                   self.insertTransfer(tr)
                   transfer_id=tr.TRANSFER_ID
-            newbm = BareModule(BAREMODULE_ID=baremodule_id, ROC_ID=self.joinRocs(roc_ids), SENSOR_ID=sensor_id, TRANSFER_ID=transfer_id,BUILTBY=builtby)
+            newbm = BareModule(BAREMODULE_ID=baremodule_id, ROC_ID=self.joinObjects(roc_ids), SENSOR_ID=sensor_id, TRANSFER_ID=transfer_id,BUILTBY=builtby)
             self.setSensorStatus(sensor_id,"USED")
             for i in roc_ids:
                   self.setRocStatus(i,"USED")
@@ -307,6 +314,10 @@ class PixelDBInterface(object) :
 
       def getTransfer(self, id):
             aa = self.store.find(Transfer, Transfer.TRANSFER_ID==id).one()
+            return aa
+
+      def getData(self, id):
+            aa = self.store.find(Data, Data.DATA_ID==id).one()
             return aa
 
 
