@@ -445,3 +445,107 @@ class PixelDBInterface(object) :
 #
 #
 #
+
+#
+# parses files (see '/afs/cern.ch/user/s/starodum/public/moduleDB/M1215-080320.09:34/T-10a/summaryTest.txt'
+#
+      def insertTestFullModuleDir(self,dir,sessionid):
+            #
+            # tries to open a standard dir, as in the previous above
+            # searches for summaryTest.txt inside + tars the dir in add_data
+            #
+            fileName = dir+'/summaryTest.txt'
+            f = open(fileName,'r')
+            fileContent = []
+            for line in f:
+                  fileContent.append( line )
+            f.close()
+            #
+            # parse it
+            #
+            for line in fileContent:
+                fields = (line.strip()).split(" ")
+                #
+                # real parsing
+                #
+                if (fields[0] == 'ModuleNr'):
+                    ModuleNumber = fields[2]
+                    TestNumber = fields[3]
+                if (fields[0] == 'Defects'):
+                    Defects=string.join(fields[1:]," ")
+                if (fields[0] == 'PerfDefects'):
+                    PerfDefects=string.join(fields[1:]," ")
+                if (fields[0] == 'FINAL'):
+                    FinalGrade = fields[2]
+                if (fields[0] == 'fullTest'):
+                    FulltestGrade = fields[2]
+                if (fields[0] == 'Grade'):
+                    Grade = fields[1]
+                if (fields[0] == 'shortTest'):
+                    ShorttestGrade = fields[2]
+                if (fields[0] == 'ROCS'):
+                    RocDefects = string.join(fields[5:]," ")
+                if (fields[0] == 'Tested'):
+                    isTested = fields[1]
+                    Date = string.join(fields[3:]," ")
+                if (fields[0] == 'Trimming'):
+                    isTrimming = fields[1]
+                if (fields[0] == 'phCalibration'):
+                    isphCal = fields[1]
+                if (fields[0] == 'NOISE'):
+                    NOISE ='ok'
+                if (fields[0] == 'Current' ):
+                    Current = fields[1]
+                if (fields[0] == 'I' and fields[1] == '150'):
+                    I150 = fields[2]
+                if (fields[0] == 'I150/I100'):
+                    I150I100 = fields[1]
+                if (fields[0] == 'I150/I100'):
+                    I150I100 = fields[1]
+                if (fields[0] == 'Temp'):
+                    Temp = fields[1]
+                    eTemp = fields[2]
+                if (fields[0]=='Thermal'):
+                    isThermalCyclying=fields[2]
+                    vThermalCycling = fields[3]
+                    eThermalCycling = fields[4]
+                if (fields[0] == 'position'):
+                    position=fields[1]
+
+            #
+            # create a data_id
+            #
+            #
+            #
+            # create a Test_FullModule
+            #
+            #
+            data = Data(PFNs="file:"+dir)
+            pp = self.insertData(data)
+            if (pp is None):
+                print"<br>Error inserting data"
+                return None
+            #
+            # here I need to invent FM_ID otherwise the test cannot be inserted
+            #
+            ppp='85826'
+            t = Test_FullModule(FULLMODULE_ID=ppp,SESSION_ID=sessionid
+                                ,RESULT=1,ROCSWORSEPERCENT=RocDefects,NOISE=NOISE,
+                                TRIMMING=isTrimming,PHCAL=isphCal,CURRENT1UA=Current
+                                ,CURRENT2UA=0
+                                ,CURRENT1501UA=float(I150),
+                                CURRENT1502UA=0
+                                ,IVSLOPE=float(I150I100)
+                                ,TEMPVALUE=Temp,TEMPERROR=eTemp,
+                                TCYCLVALUE=vThermalCycling,
+                                TCYCLERROR=eThermalCycling,COMMENT="",
+                                FINALGRADE=FinalGrade,GRADE=Grade,
+                                FULLTESTGRADE=FulltestGrade,SHORTTESTGRADE=ShorttestGrade
+                                ,DATA_ID=data.DATA_ID)
+            rr = self.insertFullModuleTest(t)
+            if (rr is None):
+                  print"<br>Error inserting test FM"
+                  return None
+            return rr
+                  
+                  

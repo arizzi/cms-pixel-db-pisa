@@ -125,6 +125,10 @@ t = Test_FullModule(SESSION_ID=s.SESSION_ID,
                     CURRENT1501UA = 9,
                     CURRENT1502UA = 2,
                     IVSLOPE  = 23,
+                    GRADE='A',
+                    FINALGRADE='A',
+                    SHORTTESTGRADE='A',
+                    FULLTESTGRADE='A',
                     TEMPVALUE = 54,
                     TEMPERROR = 76,
                     TCYCLVALUE = 89,
@@ -133,3 +137,16 @@ t = Test_FullModule(SESSION_ID=s.SESSION_ID,
 rr = pdb.insertFullModuleTest(t)
 if (rr is None):
     print"<br>Error inserting test FM"
+
+
+#
+# now Insert a FM from file
+#
+print "<br>INSERT TEST FULL MODULE FROM FILE - MUST BE OK<br>"
+
+s = Session("Pisa", "Tommaso")
+pdb.insertSession(s)
+dir = '/afs/cern.ch/user/s/starodum/public/moduleDB/M1215-080320.09:34/T+17a/'
+rr = pdb.insertTestFullModuleDir(dir,s.SESSION_ID)
+if rr is None:
+        print"<br>Error inserting test FM"
