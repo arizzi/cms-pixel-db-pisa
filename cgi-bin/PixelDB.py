@@ -2,6 +2,7 @@ from Objects import *
 from MySQLdb import *
 from storm.locals import *
 import string
+import subprocess
 
 class PixelDBInterface(object) :
 
@@ -454,63 +455,133 @@ class PixelDBInterface(object) :
             # tries to open a standard dir, as in the previous above
             # searches for summaryTest.txt inside + tars the dir in add_data
             #
-            fileName = dir+'/summaryTest.txt'
-            f = open(fileName,'r')
+            fileName = dir
+            #
+            # run php on it
+            #
+            p = subprocess.Popen("php prodTable.php "+fileName, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            retval = p.wait()
+            if (retval!=0):
+                  return None
             fileContent = []
-            for line in f:
+            for line in p.stdout.readlines():
                   fileContent.append( line )
-            f.close()
-            #
-            # parse it
-            #
-            for line in fileContent:
-                fields = (line.strip()).split(" ")
-                #
-                # real parsing
-                #
-                if (fields[0] == 'ModuleNr'):
-                    ModuleNumber = fields[2]
-                    TestNumber = fields[3]
-                if (fields[0] == 'Defects'):
-                    Defects=string.join(fields[1:]," ")
-                if (fields[0] == 'PerfDefects'):
-                    PerfDefects=string.join(fields[1:]," ")
-                if (fields[0] == 'FINAL'):
-                    FinalGrade = fields[2]
-                if (fields[0] == 'fullTest'):
-                    FulltestGrade = fields[2]
-                if (fields[0] == 'Grade'):
-                    Grade = fields[1]
-                if (fields[0] == 'shortTest'):
-                    ShorttestGrade = fields[2]
-                if (fields[0] == 'ROCS'):
-                    RocDefects = string.join(fields[5:]," ")
-                if (fields[0] == 'Tested'):
-                    isTested = fields[1]
-                    Date = string.join(fields[3:]," ")
-                if (fields[0] == 'Trimming'):
-                    isTrimming = fields[1]
-                if (fields[0] == 'phCalibration'):
-                    isphCal = fields[1]
-                if (fields[0] == 'NOISE'):
-                    NOISE ='ok'
-                if (fields[0] == 'Current' ):
-                    Current = fields[1]
-                if (fields[0] == 'I' and fields[1] == '150'):
-                    I150 = fields[2]
-                if (fields[0] == 'I150/I100'):
-                    I150I100 = fields[1]
-                if (fields[0] == 'I150/I100'):
-                    I150I100 = fields[1]
-                if (fields[0] == 'Temp'):
-                    Temp = fields[1]
-                    eTemp = fields[2]
-                if (fields[0]=='Thermal'):
-                    isThermalCyclying=fields[2]
-                    vThermalCycling = fields[3]
-                    eThermalCycling = fields[4]
-                if (fields[0] == 'position'):
-                    position=fields[1]
+                  #
+                  # parse it
+                  #
+                  for line in fileContent:
+                     fields = (line.strip()).split(" ")
+                     #
+                     # real parsing
+                     #
+                     if (fields[0] == 'module'):
+                         ModuleNumber = fields[1]
+                     if (fields[0] == 'deadpi'):
+                           DeadPixels=string.join(fields[1:]," ")
+
+                     if (fields[0] == 'mask'):
+                           MaskPixels=string.join(fields[1:]," ")
+                    
+
+
+                     if (fields[0] == 'bump'):
+                        BumpPixels=string.join(fields[1:]," ")
+
+
+                     if (fields[0] == 'trim'):
+                        TrimPixels=string.join(fields[1:]," ")
+
+
+                     if (fields[0] == 'add'):
+                        AddressPixels=string.join(fields[1:]," ")
+
+                     if (fields[0] == 'noisy'):
+                       NoisyPixels=string.join(fields[1:]," ")
+
+                     if (fields[0] == 'thres'):
+                        TreshPixels=string.join(fields[1:]," ")
+
+                     if (fields[0] == 'gain'):
+                       GainPixels=string.join(fields[1:]," ")
+                    
+                     if (fields[0] == 'pedestal'):
+                       PedPixels=string.join(fields[1:]," ")
+
+                     if (fields[0] == 'parameter1'):
+                       ParPixels=string.join(fields[1:]," ")
+
+                     if (fields[0] == 'finalGrade'):
+                       FinalGrade = fields[1]
+                     if (fields[0] == 'fullGrade'):
+                      FulltestGrade = fields[1]
+                     if (fields[0] == 'grade'):
+                        Grade = fields[1]
+                     if (fields[0] == 'shortGrade'):
+                        ShorttestGrade = fields[1]
+
+                     if (fields[0] == 'rocs'):
+                        RocDefects = string.join(fields[1:]," ")
+
+
+                     if (fields[0] == 'date'):
+                        Date = string.join(fields[1:]," ")
+                     if (fields[0] == 'trimming'):
+                        isTrimming = fields[1]
+                     if (fields[0] == 'phcal'):
+                        isphCal = string.join(fields[1:]," ")
+
+                     if (fields[0] == 'noise'):
+                       NOISE = fields[1]
+                     if (fields[0] == 'iv150'):
+                      if (len(fields) >1):
+                              I150 = fields[1]
+                      else:
+                            I150=0
+                     if (fields[0] == 'iv150n2'):
+                      if (len(fields) >1):
+                        I1502 = fields[1]
+                      else:
+                         I1502=0   
+                     if (fields[0] == 'current' ):
+                       if (len(fields) >1):
+                            Current = fields[1]
+                       else:
+                            Current=0
+                     if (fields[0] == 'currentn2' ):
+                      if (len(fields) >1):
+                            Current2 = fields[1]
+                      else:
+                            Current2=0
+
+                     if (fields[0] == 'com'):
+                        if (len(fields) >1):
+                           Comment=  fields[1]
+                        else:
+                              Comment=""
+                
+                     if (fields[0] == 'slope'):
+                      if (len(fields) >1):
+                            I150I100 = fields[1]
+                      else:
+                             I150I100 = 0
+                     if (fields[0] == 'temp'):
+                      Temp = fields[1]
+                     if (fields[0] == 'etemp'):
+                      eTemp = fields[1]
+ 
+                     if (fields[0]=='tcy'):
+                      isThermalCycling=fields[1]
+                     if (fields[0]=='tcycl'):
+                      TThermalCycling=fields[1]
+
+                     if (fields[0]=='etcycl'):
+                      eTThermalCycling=fields[1]
+
+                     if (fields[0] == 'mount'):
+                      position=fields[1]
+                     if (fields[0] == 'testN'):
+                      TestNumber=fields[1]
+
 
             #
             # create a data_id
@@ -529,19 +600,39 @@ class PixelDBInterface(object) :
             # here I need to invent FM_ID otherwise the test cannot be inserted
             #
             ppp='85826'
-            t = Test_FullModule(FULLMODULE_ID=ppp,SESSION_ID=sessionid
-                                ,RESULT=1,ROCSWORSEPERCENT=RocDefects,NOISE=NOISE,
-                                TRIMMING=isTrimming,PHCAL=isphCal,CURRENT1UA=Current
-                                ,CURRENT2UA=0
-                                ,CURRENT1501UA=float(I150),
-                                CURRENT1502UA=0
-                                ,IVSLOPE=float(I150I100)
-                                ,TEMPVALUE=Temp,TEMPERROR=eTemp,
-                                TCYCLVALUE=vThermalCycling,
-                                TCYCLERROR=eThermalCycling,COMMENT="",
-                                FINALGRADE=FinalGrade,GRADE=Grade,
-                                FULLTESTGRADE=FulltestGrade,SHORTTESTGRADE=ShorttestGrade
-                                ,DATA_ID=data.DATA_ID)
+            t = Test_FullModule(SESSION_ID=sessionid,
+                                FULLMODULE_ID=ppp,
+                                RESULT=33,
+                                DATA_ID=pp.DATA_ID,
+                                ROCSWORSEPERCENT=RocDefects,
+                                NOISE=NOISE,
+                                TRIMMING =isTrimming,
+                                PHCAL = isphCal,
+                                IVSLOPE  = float(I150I100),
+                                GRADE=Grade,
+                                FINALGRADE=FinalGrade,
+                                SHORTTESTGRADE=ShorttestGrade,
+                                FULLTESTGRADE=FulltestGrade,
+                                TESTNAME=TestNumber,
+                                DEADPIXELS=DeadPixels,
+                                MASKEDPIXELS=MaskPixels,
+                                BUMPDEFPIXELS=BumpPixels,
+                                TRIMDEFPIXELS=TrimPixels,
+                                ADDRESSDEFPIXELS=AddressPixels,
+                                NOISYPIXELS=NoisyPixels,
+                                THRESHDEFPIXELS=TreshPixels,
+                                GAINDEFPIXELS=GainPixels,
+                                PEDESTALDEFPIXELS=PedPixels,
+                                PAR1DEFPIXELS=ParPixels,
+                                I150=I150,
+                                I150_2=I1502,
+                                CURRENT=Current,CURRENT_2=Current2,
+                                CYCLING=isThermalCycling,
+                                COMMENT= Comment,
+                                TEMPVALUE=Temp,
+                                TEMPERROR=eTemp,
+                                TCYCLVALUE=TThermalCycling,
+                                TCYCLERROR=eTThermalCycling)
             rr = self.insertFullModuleTest(t)
             if (rr is None):
                   print"<br>Error inserting test FM"
