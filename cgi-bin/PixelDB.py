@@ -450,7 +450,7 @@ class PixelDBInterface(object) :
 #
 # parses files (see '/afs/cern.ch/user/s/starodum/public/moduleDB/M1215-080320.09:34/T-10a/summaryTest.txt'
 #
-      def insertTestFullModuleDir(self,dir,sessionid):
+      def insertTestFullModuleDir(self,dir,sessionid,overwritemodid=0):
             #
             # tries to open a standard dir, as in the previous above
             # searches for summaryTest.txt inside + tars the dir in add_data
@@ -599,7 +599,10 @@ class PixelDBInterface(object) :
             #
             # here I need to invent FM_ID otherwise the test cannot be inserted
             #
-            ppp='85826'
+            if (overwritemodid ==0):
+                  ppp=ModuleNumber
+            else:
+                  ppp=overwritemodid
             t = Test_FullModule(SESSION_ID=sessionid,
                                 FULLMODULE_ID=ppp,
                                 RESULT=33,

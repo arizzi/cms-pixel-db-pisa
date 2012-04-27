@@ -157,7 +157,18 @@ print "<br>INSERT TEST FULL MODULE FROM FILE - MUST BE OK<br>"
 
 s = Session("Pisa", "Tommaso")
 pdb.insertSession(s)
-dir = '/afs/cern.ch/user/s/starodum/public/moduleDB/M1215-080320.09:34/T+17a/'
-rr = pdb.insertTestFullModuleDir(dir,s.SESSION_ID)
+dir = '/afs/cern.ch/user/s/starodum/public/moduleDB/M1215-080320.09:34/T-10a/'
+rr = pdb.insertTestFullModuleDir(dir,s.SESSION_ID,fmid)
 if rr is None:
         print"<br>Error inserting test FM"
+
+dir = '/afs/cern.ch/user/s/starodum/public/moduleDB/M1215-080320.09:34/T+17a/'
+rr = pdb.insertTestFullModuleDir(dir,s.SESSION_ID,fmid)
+if rr is None:
+        print"<br>Error inserting test FM"
+
+dir = '/afs/cern.ch/user/s/starodum/public/moduleDB/M1215-080320.09:34/T-10b/'
+rr = pdb.insertTestFullModuleDir(dir,s.SESSION_ID,fmid)
+if rr is None:
+        print"<br>Error inserting test FM"
+
