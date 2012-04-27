@@ -572,7 +572,7 @@ CREATE TABLE `history` (
   `DATE` timestamp NOT NULL default CURRENT_TIMESTAMP,
   `COMMENT` text,
   PRIMARY KEY  (`HISTORY_ID`)
-) ENGINE=MyISAM AUTO_INCREMENT=2678 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3551 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -795,7 +795,7 @@ CREATE TABLE `sessions` (
   `COMMENT` text,
   `TYPE` varchar(32) NOT NULL default '',
   PRIMARY KEY  (`SESSION_ID`)
-) ENGINE=MyISAM AUTO_INCREMENT=65 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=147 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -846,7 +846,7 @@ CREATE TABLE `test_data` (
   `PFNs` text,
   `COMMENT` text,
   PRIMARY KEY  (`DATA_ID`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=76 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -870,14 +870,10 @@ CREATE TABLE `test_fullmodule` (
   `SESSION_ID` int(11) default NULL,
   `FULLMODULE_ID` varchar(14) NOT NULL default '',
   `RESULT` decimal(4,2) NOT NULL,
-  `ROCSWORSEPERCENT` decimal(4,2) default NULL,
+  `ROCSWORSEPERCENT` varchar(14) default NULL,
   `NOISE` varchar(14) default NULL,
   `TRIMMING` varchar(14) default NULL,
   `PHCAL` varchar(14) default NULL,
-  `CURRENT1UA` decimal(10,2) default NULL,
-  `CURRENT2UA` decimal(10,2) default NULL,
-  `CURRENT1501UA` decimal(10,2) default NULL,
-  `CURRENT1502UA` decimal(10,2) default NULL,
   `IVSLOPE` decimal(5,2) default NULL,
   `TEMPVALUE` decimal(5,2) default NULL,
   `TEMPERROR` decimal(5,2) default NULL,
@@ -885,8 +881,28 @@ CREATE TABLE `test_fullmodule` (
   `TCYCLERROR` decimal(5,2) default NULL,
   `COMMENT` text,
   `DATA_ID` int(11) default NULL,
+  `GRADE` varchar(14) default NULL,
+  `FINALGRADE` varchar(14) default NULL,
+  `FULLTESTGRADE` varchar(14) default NULL,
+  `SHORTTESTGRADE` varchar(14) default NULL,
+  `deadpixels` decimal(2,0) default NULL,
+  `maskedpixels` decimal(2,0) default NULL,
+  `bumpdefpixels` decimal(2,0) default NULL,
+  `trimdefpixels` decimal(2,0) default NULL,
+  `addressdefpixels` decimal(2,0) default NULL,
+  `noisypixels` decimal(2,0) default NULL,
+  `threshdefpixels` decimal(2,0) default NULL,
+  `gaindefpixels` decimal(2,0) default NULL,
+  `pedestaldefpixels` decimal(2,0) default NULL,
+  `par1defpixels` decimal(2,0) default NULL,
+  `cycling` varchar(14) default NULL,
+  `testname` varchar(14) default NULL,
+  `current` decimal(10,2) default NULL,
+  `current_2` decimal(10,2) default NULL,
+  `i150_2` decimal(10,2) default NULL,
+  `i150` decimal(10,2) default NULL,
   PRIMARY KEY  (`TEST_ID`)
-) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=86 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1019,7 +1035,7 @@ CREATE TABLE `transfers` (
   `COMMENT` text,
   `RECEIVED_DATE` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   PRIMARY KEY  (`TRANSFER_ID`)
-) ENGINE=MyISAM AUTO_INCREMENT=1857 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2379 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1040,4 +1056,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-04-18 14:36:40
+-- Dump completed on 2012-04-27  9:30:50
