@@ -53,17 +53,31 @@ class Session (object):
 class Roc(object):
   __storm_table__ = "inventory_roc"
   ROC_ID = Unicode(primary=True)
+  WAFER_ID = Unicode()
+  ROC_POSITION = Unicode()
+  GRADING_CLASS = Unicode()
+  CURRENT_D = Unicode()
+  CURRENT_A = Unicode()
+  VANA  = Unicode()
+  DEFECTS =  Unicode()
   TRANSFER_ID = Int()
   transfer = Reference(TRANSFER_ID, Transfer.TRANSFER_ID)
   COMMENT = Unicode()
   STATUS=Unicode()
   LASTTEST_ROC=Int()
-  def __init__(self,ROC_ID, TRANSFER_ID, COMMENT="",LASTTEST_ROC=0, STATUS=""):
+  def __init__(self,ROC_ID, TRANSFER_ID, COMMENT="",LASTTEST_ROC=0, STATUS="",WAFER_ID="",ROC_POSITION="",GRADING_CLASS="",CURRENT_D="",CURRENT_A="",VANA="",DEFECTS=""):
       self.ROC_ID=unicode(ROC_ID)
       self.TRANSFER_ID=(TRANSFER_ID)
       self.COMMENT=unicode(COMMENT)
       self.LASTTEST_ROC = LASTTEST_ROC
       self.STATUS=unicode(STATUS)
+      self.WAFER_ID=unicode(WAFER_ID)
+      self.ROC_POSITION=unicode(ROC_POSITION)
+      self.GRADING_CLASS=unicode(GRADING_CLASS)
+      self.CURRENT_D=unicode(CURRENT_D)
+      self.CURRENT_A=unicode(CURRENT_A)
+      self.VANA=unicode(VANA)
+      self.DEFECTS=unicode(DEFECTS)
 
 
 class Sensor(object):
