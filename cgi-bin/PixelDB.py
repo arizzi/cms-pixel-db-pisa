@@ -12,7 +12,7 @@ class PixelDBInterface(object) :
             self.date = datee
             
       def connectToDB(self) :
-            self.database = create_database("mysql://tester:pixels@cmspisa001/test_pixel")
+            self.database = create_database("mysql://tester:pixels@cmspixelsvc/test_pixel")
             self.store = Store(self.database)
             
       def insertTransfer(self,transfer):
