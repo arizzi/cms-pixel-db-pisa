@@ -443,6 +443,99 @@ class PixelDBInterface(object) :
             # log in history
             self.insertHistory(type="TEST_FM", id=test_fm.TEST_ID, target_type="FULLMODULE", target_id=test_fm.FULLMODULE_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
             return test_fm
+
+      def insertBareModuleTest(self, test_bm):
+            #
+            # first check that the module exists
+            #
+            if (self.isBareModuleInserted(test_bm.BAREMODULE_ID) == False):
+                  print " Cannot insert a test on a not existing BM "
+                  return None
+            self.store.add(test_bm)
+            self.store.commit()
+            (self.getBareModule(test_bm.BAREMODULE_ID)).LASTTEST_BAREMODULE =  test_bm.TEST_ID
+            self.store.commit()
+            # log in history
+            self.insertHistory(type="TEST_BM", id=test_bm.TEST_ID, target_type="BAREMODULE", target_id=test_bm.BAREMODULE_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
+            return test_bm
+
+      def insertSensorTest(self, test):
+            #
+            # first check that the module exists
+            #
+            if (self.isInserted(test.SENSOR_ID) == False):
+                  print " Cannot insert a test on a not existing S "
+                  return None
+            self.store.add(test)
+            self.store.commit()
+            (self.getSensor(test.SENSOR_ID)).LASTTEST_SENSOR =  test.TEST_ID
+            self.store.commit()
+            # log in history
+            self.insertHistory(type="TEST_S", id=test.TEST_ID, target_type="SENSOR", target_id=test.SENSOR_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
+            return test
+
+      def insertHdiTest(self, test):
+            #
+            # first check that the module exists
+            #
+            if (self.isInserted(test.HDI_ID) == False):
+                  print " Cannot insert a test on a not existing HDI "
+                  return None
+            self.store.add(test)
+            self.store.commit()
+            (self.getHdi(test.HDI_ID)).LASTTEST_HDI =  test.TEST_ID
+            self.store.commit()
+            # log in history
+            self.insertHistory(type="TEST_HDI", id=test.TEST_ID, target_type="HDI", target_id=test.HDI_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
+            return test
+
+      def insertHdiTest(self, test):
+            #
+            # first check that the module exists
+            #
+            if (self.isInserted(test.HDI_ID) == False):
+                  print " Cannot insert a test on a not existing HDI "
+                  return None
+            self.store.add(test)
+            self.store.commit()
+            (self.getHdi(test.HDI_ID)).LASTTEST_HDI =  test.TEST_ID
+            self.store.commit()
+            # log in history
+            self.insertHistory(type="TEST_HDI", id=test.TEST_ID, target_type="HDI", target_id=test.HDI_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
+            return test
+
+
+      def insertTbmTest(self, test):
+            #
+            # first check that the module exists
+            #
+            if (self.isInserted(test.TBM_ID) == False):
+                  print " Cannot insert a test on a not existing TBM "
+                  return None
+            self.store.add(test)
+            self.store.commit()
+            (self.getTbm(test.TBM_ID)).LASTTEST_TBM =  test.TEST_ID
+            self.store.commit()
+            # log in history
+            self.insertHistory(type="TEST_TBM", id=test.TEST_ID, target_type="TBM", target_id=test.TBM_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
+            return test
+
+      def insertRocTest(self, test):
+            #
+            # first check that the module exists
+            #
+            if (self.isInserted(test.ROC_ID) == False):
+                  print " Cannot insert a test on a not existing ROC "
+                  return None
+            self.store.add(test)
+            self.store.commit()
+            (self.getRoc(test.ROC_ID)).LASTTEST_ROC =  test.TEST_ID
+            self.store.commit()
+            # log in history
+            self.insertHistory(type="TEST_ROC", id=test.TEST_ID, target_type="ROC", target_id=test.ROC_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
+            return test
+
+      
 #
 #
 #
@@ -643,3 +736,6 @@ class PixelDBInterface(object) :
             return rr
                   
                   
+      #
+      # cosa manca?
+      #
