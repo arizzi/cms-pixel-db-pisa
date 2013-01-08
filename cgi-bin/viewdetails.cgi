@@ -91,7 +91,7 @@ columns = []
 refs = []
 i =0 
 for attr, value in objType.__dict__.iteritems():
-    print attr,type(eval(objName+"."+attr)).__name__," || " 
+#    print attr,type(eval(objName+"."+attr)).__name__," || " 
     if  type(eval(objName+"."+attr)) is properties.PropertyColumn or  type(eval(objName+"."+attr)).__name__ == "date"  or  type(eval(objName+"."+attr)).__name__ == "datetime":
         columns.append(attr) 
 
