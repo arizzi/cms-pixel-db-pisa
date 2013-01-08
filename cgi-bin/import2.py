@@ -32,7 +32,6 @@ print sessionid
 a=c.fetchone()
 while (a):
     print a
-    a=c.fetchone()
     #get hdi_id
     hdi_id = a[0]
     comment = a[1]
@@ -47,6 +46,7 @@ while (a):
         result = -1
         
     if (hdi_id ==''):
+        a=c.fetchone()
         continue
     pnf = a[3]
     #creata a data
@@ -85,3 +85,5 @@ while (a):
 
     print "INSERTED HDI ", hdi.HDI_ID
 
+    a=c.fetchone()
+        
