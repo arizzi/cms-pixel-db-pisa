@@ -91,8 +91,9 @@ columns = []
 refs = []
 i =0 
 for attr, value in objType.__dict__.iteritems():
-    if  type(eval(objName+"."+attr)) is properties.PropertyColumn :
-         columns.append(attr) 
+    print attr,type(eval(objName+"."+attr)).__name__," || " 
+    if  type(eval(objName+"."+attr)) is properties.PropertyColumn or  type(eval(objName+"."+attr)).__name__ == "date"  or  type(eval(objName+"."+attr)).__name__ == "datetime":
+        columns.append(attr) 
 
 
     if  type(eval(objName+"."+attr)) is references.Reference :
@@ -110,7 +111,7 @@ summary=""
 for o in objects : 
    for c in columns:
     print "<tr><td>",c.lower().capitalize(),"</td><td>",getattr(o,c)
-    res=re.match("file:/afs/cern.ch/user/s/starodum/public/(moduleDB/(M.*)-.*/(T.*)/)",str(getattr(o,c)))
+    res=re.match("file:(.*/(M.*)/(T.*)/)",str(getattr(o,c)))
     if res : 
      print "(<a href=\"../data/"+res.group(1)+"\">view</a>)"
 #     print res.group(1)," ",res.group(2),res.group(3) 
