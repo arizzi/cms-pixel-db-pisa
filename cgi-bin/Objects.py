@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
 # enable debugging
-import cgitb
+#import cgitb
 from datetime import *
-cgitb.enable()
+#cgitb.enable()
 
 from MySQLdb import *
 from storm.locals import *
@@ -226,7 +226,7 @@ class Data(object):
             self.PFNs=unicode(PFNs)
             self.COMMENT=unicode(COMMENT)
 
-#
+#"Bulk Import"||
 # tests
 #
 class Test_BareModule(object):
@@ -344,6 +344,12 @@ class Test_Hdi(object):
       RESULT=Float()
       DATA_ID=Int()
       data=Reference(DATA_ID,Data.DATA_ID)
+      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID):
+          self.SESSION_ID=SESSION_ID
+          self.HDI_ID=unicode(HDI_ID)
+          self.RESULT=float(RESULT)
+          self.DATA_ID=DATA_ID
+
 
 class Test_Roc(object):
       __storm_table__ = "test_roc"

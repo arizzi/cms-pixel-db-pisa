@@ -12,7 +12,7 @@ class PixelDBInterface(object) :
             self.date = datee
             
       def connectToDB(self) :
-            self.database = create_database("mysql://tester:pixels@cmspixelsvc/test_pixel")
+            self.database = create_database("mysql://tester:pixels@cmspixel.pi.infn.it/test_pixel")
             self.store = Store(self.database)
             
       def insertTransfer(self,transfer):
@@ -321,11 +321,9 @@ class PixelDBInterface(object) :
             aa = self.store.find(Data, Data.DATA_ID==id).one()
             return aa
 
-
 #
 # transfer
 #
-
 
       def transferSensor(self, sensor_id, SENDER, RECEIVER, ISSUED_DATE=datetime(1970,1,1), RECEIVED_DATE=date.today(), STATUS="", COMMENT=""):
             #
@@ -429,17 +427,18 @@ class PixelDBInterface(object) :
 #
 # TESTS
 #
-      def insertFullModuleTest(self, test_fm):
+      def insertFullModuleTest(self, test_fm,fakemodule=0):
             #
             # first check that the module exists
             #
-            if (self.isFullModuleInserted(test_fm.FULLMODULE_ID) == False):
+            if (fakemodule ==0 and self.isFullModuleInserted(test_fm.FULLMODULE_ID) == False):
                   print " Cannot insert a test on a not existing FM "
                   return None
             self.store.add(test_fm)
             self.store.commit()
-            (self.getFullModule(test_fm.FULLMODULE_ID)).LASTTEST_FULLMODULE =  test_fm.TEST_ID
-            self.store.commit()
+            if (fakemodule == 0):
+                  (self.getFullModule(test_fm.FULLMODULE_ID)).LASTTEST_FULLMODULE =  test_fm.TEST_ID
+                  self.store.commit()
             # log in history
             self.insertHistory(type="TEST_FM", id=test_fm.TEST_ID, target_type="FULLMODULE", target_id=test_fm.FULLMODULE_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
             return test_fm
@@ -478,22 +477,8 @@ class PixelDBInterface(object) :
             #
             # first check that the module exists
             #
-            if (self.isInserted(test.HDI_ID) == False):
-                  print " Cannot insert a test on a not existing HDI "
-                  return None
-            self.store.add(test)
-            self.store.commit()
-            (self.getHdi(test.HDI_ID)).LASTTEST_HDI =  test.TEST_ID
-            self.store.commit()
-            # log in history
-            self.insertHistory(type="TEST_HDI", id=test.TEST_ID, target_type="HDI", target_id=test.HDI_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
-            return test
 
-      def insertHdiTest(self, test):
-            #
-            # first check that the module exists
-            #
-            if (self.isInserted(test.HDI_ID) == False):
+            if (self.isHdiInserted(test.HDI_ID) == False):
                   print " Cannot insert a test on a not existing HDI "
                   return None
             self.store.add(test)
@@ -543,7 +528,7 @@ class PixelDBInterface(object) :
 #
 # parses files (see '/afs/cern.ch/user/s/starodum/public/moduleDB/M1215-080320.09:34/T-10a/summaryTest.txt'
 #
-      def insertTestFullModuleDir(self,dir,sessionid,overwritemodid=0):
+      def insertTestFullModuleDir(self,dir,sessionid,overwritemodid=0, fakemodule=0):
             #
             # tries to open a standard dir, as in the previous above
             # searches for summaryTest.txt inside + tars the dir in add_data
@@ -553,126 +538,123 @@ class PixelDBInterface(object) :
             # run php on it
             #
             p = subprocess.Popen("php prodTable.php "+fileName, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            print "FILE IS  "+fileName
             retval = p.wait()
             if (retval!=0):
                   return None
             fileContent = []
             for line in p.stdout.readlines():
-                  fileContent.append( line )
+                  fields = (line.strip()).split(" ")
+                  print "DEBUG ",fields
                   #
-                  # parse it
+                  # real parsing
                   #
-                  for line in fileContent:
-                     fields = (line.strip()).split(" ")
-                     #
-                     # real parsing
-                     #
-                     if (fields[0] == 'module'):
-                         ModuleNumber = fields[1]
-                     if (fields[0] == 'deadpi'):
-                           DeadPixels=string.join(fields[1:]," ")
-
-                     if (fields[0] == 'mask'):
-                           MaskPixels=string.join(fields[1:]," ")
+                  if (fields[0] == 'module'):
+                        ModuleNumber = fields[1]
+                  if (fields[0] == 'deadpi'):
+                        DeadPixels=string.join(fields[1:]," ")
+                              
+                  if (fields[0] == 'mask'):
+                        MaskPixels=string.join(fields[1:]," ")
                     
 
 
-                     if (fields[0] == 'bump'):
+                  if (fields[0] == 'bump'):
                         BumpPixels=string.join(fields[1:]," ")
 
 
-                     if (fields[0] == 'trim'):
+                  if (fields[0] == 'trim'):
                         TrimPixels=string.join(fields[1:]," ")
 
 
-                     if (fields[0] == 'add'):
+                  if (fields[0] == 'add'):
                         AddressPixels=string.join(fields[1:]," ")
 
-                     if (fields[0] == 'noisy'):
+                  if (fields[0] == 'noisy'):
                        NoisyPixels=string.join(fields[1:]," ")
 
-                     if (fields[0] == 'thres'):
+                  if (fields[0] == 'thres'):
                         TreshPixels=string.join(fields[1:]," ")
 
-                     if (fields[0] == 'gain'):
+                  if (fields[0] == 'gain'):
                        GainPixels=string.join(fields[1:]," ")
                     
-                     if (fields[0] == 'pedestal'):
+                  if (fields[0] == 'pedestal'):
                        PedPixels=string.join(fields[1:]," ")
 
-                     if (fields[0] == 'parameter1'):
+                  if (fields[0] == 'parameter1'):
                        ParPixels=string.join(fields[1:]," ")
 
-                     if (fields[0] == 'finalGrade'):
+                  if (fields[0] == 'finalGrade'):
                        FinalGrade = fields[1]
-                     if (fields[0] == 'fullGrade'):
+                  if (fields[0] == 'fullGrade'):
                       FulltestGrade = fields[1]
-                     if (fields[0] == 'grade'):
+                  if (fields[0] == 'grade'):
                         Grade = fields[1]
-                     if (fields[0] == 'shortGrade'):
+                  if (fields[0] == 'shortGrade'):
                         ShorttestGrade = fields[1]
 
-                     if (fields[0] == 'rocs'):
+                  if (fields[0] == 'rocs'):
                         RocDefects = string.join(fields[1:]," ")
 
 
-                     if (fields[0] == 'date'):
+                  if (fields[0] == 'date'):
                         Date = string.join(fields[1:]," ")
-                     if (fields[0] == 'trimming'):
+                  if (fields[0] == 'trimming'):
                         isTrimming = fields[1]
-                     if (fields[0] == 'phcal'):
+                  if (fields[0] == 'phcal'):
                         isphCal = string.join(fields[1:]," ")
 
-                     if (fields[0] == 'noise'):
+                  if (fields[0] == 'noise'):
                        NOISE = fields[1]
-                     if (fields[0] == 'iv150'):
+                  if (fields[0] == 'iv150'):
                       if (len(fields) >1):
-                              I150 = fields[1]
+                        I150 = fields[1]
                       else:
-                            I150=0
-                     if (fields[0] == 'iv150n2'):
+                        I150=0
+                  if (fields[0] == 'iv150n2'):
                       if (len(fields) >1):
                         I1502 = fields[1]
                       else:
                          I1502=0   
-                     if (fields[0] == 'current' ):
+                  if (fields[0] == 'current' ):
                        if (len(fields) >1):
                             Current = fields[1]
                        else:
                             Current=0
-                     if (fields[0] == 'currentn2' ):
+                  if (fields[0] == 'currentn2' ):
                       if (len(fields) >1):
                             Current2 = fields[1]
                       else:
                             Current2=0
 
-                     if (fields[0] == 'com'):
+                  if (fields[0] == 'com'):
                         if (len(fields) >1):
                            Comment=  fields[1]
                         else:
                               Comment=""
                 
-                     if (fields[0] == 'slope'):
+                  if (fields[0] == 'slope'):
                       if (len(fields) >1):
                             I150I100 = fields[1]
                       else:
                              I150I100 = 0
-                     if (fields[0] == 'temp'):
+                  if (fields[0] == 'temp'):
                       Temp = fields[1]
-                     if (fields[0] == 'etemp'):
+                  if (fields[0] == 'etemp'):
                       eTemp = fields[1]
  
-                     if (fields[0]=='tcy'):
+                  if (fields[0]=='tcy'):
                       isThermalCycling=fields[1]
-                     if (fields[0]=='tcycl'):
+                  if (fields[0]=='tcycl'):
                       TThermalCycling=fields[1]
 
-                     if (fields[0]=='etcycl'):
+                  if (fields[0]=='etcycl'):
                       eTThermalCycling=fields[1]
 
-                     if (fields[0] == 'mount'):
+                  if (fields[0] == 'mount'):
                       position=fields[1]
-                     if (fields[0] == 'testN'):
+                  if (fields[0] == 'testN'):
                       TestNumber=fields[1]
 
 
@@ -696,7 +678,13 @@ class PixelDBInterface(object) :
                   ppp=ModuleNumber
             else:
                   ppp=overwritemodid
-            t = Test_FullModule(SESSION_ID=sessionid,
+
+            #
+            # try and refuse inserting 
+            #
+            if (DeadPixels != '-' and Current != '-'):
+                  print "HERE"
+                  t = Test_FullModule(SESSION_ID=sessionid,
                                 FULLMODULE_ID=ppp,
                                 RESULT=33,
                                 DATA_ID=pp.DATA_ID,
@@ -729,13 +717,11 @@ class PixelDBInterface(object) :
                                 TEMPERROR=eTemp,
                                 TCYCLVALUE=TThermalCycling,
                                 TCYCLERROR=eTThermalCycling)
-            rr = self.insertFullModuleTest(t)
-            if (rr is None):
-                  print"<br>Error inserting test FM"
+                  rr = self.insertFullModuleTest(t, fakemodule=fakemodule)
+                  if (rr is None):
+                        print"<br>Error inserting test FM"
+                        return None
+                  return rr                  
+            else:
+                  print " Discarding bad result"
                   return None
-            return rr
-                  
-                  
-      #
-      # cosa manca?
-      #

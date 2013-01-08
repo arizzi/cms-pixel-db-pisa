@@ -77,7 +77,7 @@ while ($userinfo = fscanf($handle, "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t
     $ma=$userinfo[2];
     if ( $ma > 0 ) { 
       $star = 1;
-      $ma='<FONT COLOR=#cc0000>'.$ma.'</FONT>'; 
+      $ma=''.$ma.''; 
     }
     $bu=$userinfo[3];
     $tr=$userinfo[4];
@@ -103,7 +103,7 @@ while ($userinfo = fscanf($handle, "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t
 	    $defC = $userinfo[7];
 
 	    if ( $defC > 0 ) { 
-	      $rocs   = $rocs.'<FONT COLOR=#cc0000> ('.$defC.'C)</FONT>'; 
+	      $rocs   = $rocs.' ('.$defC.'C)>'; 
 	    }
 	    
 	  }
@@ -124,6 +124,7 @@ while ($userinfo = fscanf($handle, "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t
           if( !strcmp($userinfo[0],"phCalibration") ) {
 
            $c=$userinfo[1];
+#	   echo "ooooooooooooooooo ".$c;
 	  }
 
 	  // if($li==9){  ------------------------------------------------------------------
@@ -139,8 +140,8 @@ while ($userinfo = fscanf($handle, "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t
 	      $sollTemp=$userinfo[4];
 	    }
 	    if ( abs($temp - $sollTemp) > 1 ) {
-	      $temp = '<FONT COLOR=#cc0000><B>'.$temp.'</B></FONT>';
-	      $tempWarning='<FONT COLOR=#cc0000><B>T not '.$sollTemp.'!</B></FONT>';
+#	      $temp = '<FONT COLOR=#cc0000><B>'.$temp.'</B></FONT>';
+	      $tempWarning='T not '.$sollTemp.'!';
 	    }
 	  }
 
@@ -306,10 +307,10 @@ href="http://cmspixel.phys.ethz.ch/moduleTests/moduleDB/tbmDefects.html"> Err '.
 	      $n = $noiB.'B';
 	    }
 	    else if ( $noiB > 0 && $noiC > 0) {
-	      $n = $noiB.'B/<FONT COLOR=#cc0000>'.$noiC.'C</FONT>';
+	      $n = $noiB.'B/'.$noiC.'C';
 	    }
 	    else if ( $noiC > 0 && $noiB == 0 ) {
-	      $n = '<FONT COLOR=#cc0000>'.$noiC.'C</FONT>';
+	      $n = ''.$noiC.'C';
 	    } else {
 	      $n = '-';
 	    }
@@ -330,10 +331,10 @@ href="http://cmspixel.phys.ethz.ch/moduleTests/moduleDB/tbmDefects.html"> Err '.
 	      $t = $trmB.'B';
 	    }
 	    else if ( $trmB > 0 && $trmC > 0 ) {
-	      $t = $trmB.'B/<FONT COLOR=#cc0000>'.$trmC.'C</FONT>';
+	      $t = $trmB.'B/'.$trmC.'C';
 	    }
 	    else if ( $trmC > 0 && $trmB == 0 ) {
-	      $t = '<FONT COLOR=#cc0000>'.$trmC.'C</FONT>';
+	      $t = ''.$trmC.'C';
 	    }
 	  }
 
@@ -353,10 +354,10 @@ href="http://cmspixel.phys.ethz.ch/moduleTests/moduleDB/tbmDefects.html"> Err '.
 	      $c = $gainB.'B Gain';
 	    }
 	    else if ( $gainB > 0 && $gainC > 0 ) {
-	      $c = $gainB.'B/<FONT COLOR=#cc0000>'.$gainC.'C</FONT> Gain';
+	      $c = $gainB.'B/'.$gainC.'C Gain';
 	    }
 	    else if ( $gainC > 0 && $gainB == 0 ) {
-	      $c = '<FONT COLOR=#cc0000>'.$gainC.'C</FONT> Gain';
+	      $c = ''.$gainC.'C Gain';
 	    }
 	  }
 
@@ -377,10 +378,10 @@ href="http://cmspixel.phys.ethz.ch/moduleTests/moduleDB/tbmDefects.html"> Err '.
 	      $c = $c.'  '.$pedB.'B Ped';
 	    }
 	    else if ( $pedB > 0 && $pedC > 0 ) {
-	      $c = $c.'  '.$pedB.'B/<FONT COLOR=#cc0000>'.$pedC.'C</FONT>  Ped';
+	      $c = $c.'  '.$pedB.'B/'.$pedC.'C  Ped';
 	    }
 	    else if ( $pedC > 0 && $pedB == 0 ) {
-	      $c = $c.'  <FONT COLOR=#cc0000>'.$pedC.'C</FONT> Ped';
+	      $c = $c.'  '.$pedC.'C Ped';
 	    }
 	  }
 
@@ -403,10 +404,10 @@ href="http://cmspixel.phys.ethz.ch/moduleTests/moduleDB/tbmDefects.html"> Err '.
 	      $c = $c.'  '.$par1B.'B Par1';
 	    }
 	    else if ( $par1B > 0 && $par1C > 0 ) {
-	      $c = $c.'  '.$par1B.'B/<FONT COLOR=#cc0000>'.$par1C.'C</FONT>  Par1';
+	      $c = $c.'  '.$par1B.'B/'.$par1C.'C  Par1';
 	    }
 	    else if ( $par1C > 0 && $par1B == 0 ) {
-	      $c = $c.'  <FONT COLOR=#cc0000>'.$par1C.'C</FONT> Ped';
+	      $c = $c.'  >'.$par1C.'C Ped';
 	    }
 	  }
 
@@ -456,7 +457,7 @@ href="http://cmspixel.phys.ethz.ch/moduleTests/moduleDB/tbmDefects.html"> Err '.
 	    $ar = count($userinfo);
 	    if($ar>1) {
 	      
-	      for($en=0; $en<$ar+10; $en++) {
+	      for($en=0; $en<$ar; $en++) {
 		
 		$com=$com.' '.$userinfo[$en];
 	      }
@@ -470,12 +471,12 @@ href="http://cmspixel.phys.ethz.ch/moduleTests/moduleDB/tbmDefects.html"> Err '.
 	    $ar = count($userinfo);
 	    
 	    
-	    for($en=1; $en<$ar+10; $en++) {
+	    for($en=1; $en<$ar; $en++) {
 	      
 	      $reGrade=$reGrade.' '.$userinfo[$en];
 	    }
 
-	    $reGrade=$reGrade.'</FONT>';
+	    $reGrade=$reGrade.'';
 	  }
 
 
@@ -486,7 +487,7 @@ href="http://cmspixel.phys.ethz.ch/moduleTests/moduleDB/tbmDefects.html"> Err '.
 	    $mis=$mis.' MISSING: ';
 	    $ar = count($userinfo);
 	    
-	    for($en=1; $en<$ar+10; $en++) {
+	    for($en=1; $en<$ar; $en++) {
 
 	      if ( $files_mis == 1 ) { $mis= $mis.''.$tmp_mis; $files_mis = 0; }
 
@@ -500,7 +501,7 @@ href="http://cmspixel.phys.ethz.ch/moduleTests/moduleDB/tbmDefects.html"> Err '.
 	      $mis=$mis.' '.$userinfo[$en];
 	    }
 
-	    $mis=$mis.'</I></small></FONT>';
+	    $mis=$mis.'';
 	  }
 
 	  if( !strcmp($userinfo[0],"Comment:") ) {
@@ -508,7 +509,7 @@ href="http://cmspixel.phys.ethz.ch/moduleTests/moduleDB/tbmDefects.html"> Err '.
 	    $com=$com.' ';
 	    $ar = count($userinfo);
 	    
-	    for($en=1; $en<$ar+10; $en++) {
+	    for($en=1; $en<$ar; $en++) {
 	      
 	      $com=$com.' '.$userinfo[$en];
 	    }
@@ -530,7 +531,7 @@ href="http://cmspixel.phys.ethz.ch/moduleTests/moduleDB/tbmDefects.html"> Err '.
 
 	if ( $regraded ) {
 	  $com = $reGrade.'<br>'.$com;
-	  $finalGrade = $finalGrade.'<FONT COLOR=#cc0000>*</FONT>';
+	  $finalGrade = $finalGrade.'*';
 	}
 
 	if ( $half ) {
