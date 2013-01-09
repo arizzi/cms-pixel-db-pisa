@@ -86,11 +86,13 @@ class Sensor(object):
   TRANSFER_ID = Int()
   transfer = Reference(TRANSFER_ID, Transfer.TRANSFER_ID)
   COMMENT = Unicode()
+  TYPE= Unicode()
   STATUS=Unicode()
   LASTTEST_SENSOR =Int()
-  def __init__(self,SENSOR_ID,TRANSFER_ID, COMMENT="", LASTTEST_SENSOR=0, STATUS=""):
+  def __init__(self,SENSOR_ID,TRANSFER_ID, TYPE, COMMENT="", LASTTEST_SENSOR=0,STATUS=""):
       self.SENSOR_ID=unicode(SENSOR_ID)
       self.TRANSFER_ID=(TRANSFER_ID)
+      self.TYPE=unicode(TYPE)
       self.COMMENT=unicode(COMMENT)
       self.LASTTEST_SENSOR = LASTTEST_SENSOR
       self.STATUS=unicode(STATUS)
@@ -323,7 +325,7 @@ class Test_FullModule(object):
 
 
 class Test_Tbm(object):
-      __storm_table__ = "test_tmb"
+      __storm_table__ = "test_tbm"
       TEST_ID = Int(primary=True)
       SESSION_ID=Int()
       session = Reference (SESSION_ID,Session.SESSION_ID)
@@ -331,7 +333,19 @@ class Test_Tbm(object):
       tbm=Reference(TBM_ID, Tbm.TBM_ID)
       RESULT=Float()
       DATA_ID=Int()
+      GAIN = Float()
+      BL_A = Float()
+      BL_B = Float()
       data=Reference(DATA_ID,Data.DATA_ID)
+      def __init__(self,SESSION_ID,TBM_ID,RESULT,DATA_ID, GAIN, BL_A, BL_B):
+          self.SESSION_ID=SESSION_ID
+          self.TBM_ID=unicode(TBM_ID)
+          self.RESULT=float(RESULT)
+          self.DATA_ID=DATA_ID
+          self.GAIN=GAIN
+          self.BL_A=BL_A
+          self.BL_B=BL_B
+
 
 
 class Test_Hdi(object):
@@ -370,9 +384,21 @@ class Test_Sensor(object):
       session = Reference (SESSION_ID,Session.SESSION_ID)
       SENSOR_ID =  Unicode()
       sensor=Reference(SENSOR_ID, Sensor.SENSOR_ID)
+      PRERESULT=Float()
       RESULT=Float()
       DATA_ID=Int()
+      I_150V = Float()
+      I_150_100 = Float()
       data=Reference(DATA_ID,Data.DATA_ID)
+      def __init__(self,SESSION_ID,SENSOR_ID,PRERESULT,RESULT,DATA_ID,I_150V,I_150_100):
+          self.SESSION_ID=SESSION_ID
+          self.SENSOR_ID=unicode(SENSOR_ID)
+          self.PRERESULT=float(PRERESULT)
+          self.RESULT=float(RESULT)
+          self.DATA_ID=DATA_ID
+          self.I_150V=I_150V
+          self.I_150_100=I_150_100
+          
 
 #history
  

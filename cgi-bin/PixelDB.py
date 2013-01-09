@@ -462,7 +462,7 @@ class PixelDBInterface(object) :
             #
             # first check that the module exists
             #
-            if (self.isInserted(test.SENSOR_ID) == False):
+            if (self.isSensorInserted(test.SENSOR_ID) == False):
                   print " Cannot insert a test on a not existing S "
                   return None
             self.store.add(test)
@@ -494,7 +494,7 @@ class PixelDBInterface(object) :
             #
             # first check that the module exists
             #
-            if (self.isInserted(test.TBM_ID) == False):
+            if (self.isTbmInserted(test.TBM_ID) == False):
                   print " Cannot insert a test on a not existing TBM "
                   return None
             self.store.add(test)
