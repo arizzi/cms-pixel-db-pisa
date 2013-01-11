@@ -107,7 +107,6 @@ class BareModule(object):
   TRANSFER_ID = Int()
   def roc(self,i):
       internal=self.getRoc(i)
-      print "III",internal
       rocc=Reference(internal, Roc.ROC_ID)
       return rocc
   sensor = Reference(SENSOR_ID, Sensor.SENSOR_ID)
@@ -115,6 +114,10 @@ class BareModule(object):
   BUILTON = date.today()
   BUILTBY = Unicode()
   COMMENT = Unicode()
+  LABEL2D = Unicode()
+  POWERCABLE=Unicode()
+  SIGNALCABLE=Unicode()
+  TYPE=Unicode()
   LASTTEST_BAREMODULE =Int()
   def getRoc(self,i):
       #
@@ -122,7 +125,7 @@ class BareModule(object):
       #
       result =(self.ROC_ID.split(","))[i]
       return result
-  def __init__(self,BAREMODULE_ID,ROC_ID,SENSOR_ID,TRANSFER_ID,  BUILTBY, BUILTON=date.today(),COMMENT="", LASTTEST_BAREMODULE=0, STATUS=""):
+  def __init__(self,BAREMODULE_ID,ROC_ID,SENSOR_ID,TRANSFER_ID,  BUILTBY, BUILTON=date.today(),COMMENT="", LASTTEST_BAREMODULE=0, STATUS="",LABEL2D="",POWERCABLE="", SIGNALCABLE="", TYPE="" ):
       self.BAREMODULE_ID=unicode(BAREMODULE_ID)
       self.ROC_ID=unicode(ROC_ID)
       self.SENSOR_ID=unicode(SENSOR_ID)
@@ -132,6 +135,10 @@ class BareModule(object):
       self.COMMENT=unicode(COMMENT)
       self.LASTTEST_BAREMODULE=LASTTEST_BAREMODULE
       self.STATUS=unicode(STATUS)
+      self.LABEL2D=unicode(LABEL2D)
+      self.POWERCABLE=unicode(POWERCABLE)
+      self.SIGNALCABLE=unicode(SIGNALCABLE)
+      self.TYPE=unicode(TYPE)
 
       
   

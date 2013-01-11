@@ -78,38 +78,42 @@ class PixelDBInterface(object) :
 #
 #
 #
-      def assembleBareModule(self, baremodule_id, roc_ids,  sensor_id, builtby, transfer_id=0):
+      def insertBareModule(self, bm):
+            #
+            # to be used directly
+            #
             #
             # check if all the objects are already in DB
             #
-            if (self.canSensorBeUsed(sensor_id) == False):
-                  print "ERROR: sensor not available", sensor_id
+            if (self.canSensorBeUsed(bm.SENSOR_ID) == False):
+                  print "ERROR: sensor not available", bm.SENSOR_ID
                   return None
             
-            for i in roc_ids:
+            for i in self.splitObjects(bm.ROC_ID):
                   if (self.canRocBeUsed(i) == False):
                         print "ERROR: roc not available", i
                         return None
-            #
-            
-            if (transfer_id ==0):
-                  # creo un transfer
-                  tr = self.insertTransfer(Transfer(SENDER="",RECEIVER=self.operator, ISSUED_DATE= datetime(1970,1,1), RECEIVED_DATE=self.date, STATUS="ARRIVED"))
-                  self.insertTransfer(tr)
-                  transfer_id=tr.TRANSFER_ID
-            newbm = BareModule(BAREMODULE_ID=baremodule_id, ROC_ID=self.joinObjects(roc_ids), SENSOR_ID=sensor_id, TRANSFER_ID=transfer_id,BUILTBY=builtby)
-            self.setSensorStatus(sensor_id,"USED")
-            for i in roc_ids:
+            #            
+            self.setSensorStatus(bm.SENSOR_ID,"USED")
+            for i in self.splitObjects(bm.ROC_ID):
                   self.setRocStatus(i,"USED")
-            self.store.add(newbm)
+            self.store.add(bm)
             self.store.commit()
             # log in history sensor
-            self.insertHistory(type="SENSOR", id=sensor_id, target_type="BAREMODULE", target_id=baremodule_id, operation="ASSEMBLE", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="SENSOR", id=bm.SENSOR_ID, target_type="BAREMODULE", target_id=bm.BAREMODULE_ID, operation="ASSEMBLE", datee=date.today(), comment="NO COMMENT")
             # log in history rocs
-            for i in roc_ids:
-                  self.insertHistory(type="ROC", id=i, target_type="BAREMODULE", target_id=baremodule_id, operation="ASSEMBLE", datee=date.today(), comment="NO COMMENT")
+            for i in self.splitObjects(bm.ROC_ID):
+                  self.insertHistory(type="ROC", id=i, target_type="BAREMODULE", target_id=bm.BAREMODULE_ID, operation="ASSEMBLE", datee=date.today(), comment="NO COMMENT")
             
-            return newbm
+            return bm
+
+            
+      def assembleBareModule(self, baremodule_id, roc_ids,  sensor_id, builtby, transfer_id,COMMENT="", LASTTEST_BAREMODULE=0, STATUS="",LABEL2D="",POWERCABLE="", SIGNALCABLE="", TYPE=""):
+            newbm = BareModule(BAREMODULE_ID=baremodule_id, ROC_ID=self.joinObjects(roc_ids), SENSOR_ID=sensor_id, TRANSFER_ID=transfer_id,BUILTBY=builtby, COMMENT=COMMENT, LASTTEST_BAREMODULE=LASTTEST_BAREMODULE, STATUS=STATUS,LABEL2D=LABEL2D,POWERCABLE=POWERCABLE, SIGNALCABLE=SIGNALCABLE, TYPE=TYPE)
+            bm = self.insertBareModule(newbm)
+            if (bm is None):
+                 print"<br>Error inserting BAREMODULE"
+            return bm
             
             
       def insertHistory(self, type, id, target_type, target_id, operation, datee=date.today(), comment=""):
@@ -118,36 +122,39 @@ class PixelDBInterface(object) :
             self.store.commit()            
             return newHist
 
-      def assembleFullModule(self, fullmodule_id, baremodule_id, tbm_id, hdi_id,  builtby, builton=date.today(),comment="",transfer_id=0):
+
+      def insertFullModule(self,fm):
             #
             # check if all the objects are already in DB
             #
-            if (self.canBareModuleBeUsed(baremodule_id) == False):
-                  print "ERROR: baremodule not available", baremodule_id
+            if (self.canBareModuleBeUsed(fm.BAREMODULE_ID) == False):
+                  print "ERROR: baremodule not available", fm.BAREMODULE_ID
                   return None
-	    if (self.canTbmBeUsed(tbm_id) == False):
-                  print "ERROR: tbm not available",tbm_id
+	    if (self.canTbmBeUsed(fm.TBM_ID) == False):
+                  print "ERROR: tbm not available",fm.TBM_ID
                   return None
-	    if (self.canHdiBeUsed(unicode(hdi_id)) == False):
-                  print "ERROR: hdi not available",hdi_id
+	    if (self.canHdiBeUsed(unicode(fm.HDI_ID)) == False):
+                  print "ERROR: hdi not available",fm.HDI_ID
                   return None
 
             #
-            if (transfer_id ==0):
-                  # creo un transfer
-                  tr = self.insertTransfer(Transfer(SENDER="",RECEIVER=self.operator, ISSUED_DATE= datetime(1970,1,1), RECEIVED_DATE=self.date, STATUS="ARRIVED"))
-                  self.insertTransfer(tr)
-                  transfer_id=tr.TRANSFER_ID
-            newfm = FullModule(FULLMODULE_ID=fullmodule_id, BAREMODULE_ID=baremodule_id, HDI_ID=hdi_id, TBM_ID=tbm_id,TRANSFER_ID=transfer_id, BUILTBY=builtby, BUILTON=builton, COMMENT=comment)
-            self.setBareModuleStatus(baremodule_id,"USED")
-            self.setHdiStatus(hdi_id,"USED")
-            self.setTbmStatus(tbm_id,"USED")
-            self.store.add(newfm)
+            self.setBareModuleStatus(fm.BAREMODULE_ID,"USED")
+            self.setHdiStatus(fm.TBM_ID,"USED")
+            self.setTbmStatus(fm.HDI_ID,"USED")
+            self.store.add(fm)
             self.store.commit()
             # log in history 
-            self.insertHistory(type="BAREMODULE", id=baremodule_id, target_type="FULLMODULE", target_id=fullmodule_id, operation="ASSEMBLE", datee=date.today(), comment="NO COMMENT")
-            self.insertHistory(type="HDI", id=hdi_id, target_type="FULLMODULE", target_id=fullmodule_id, operation="ASSEMBLE", datee=date.today(), comment="NO COMMENT")
-            self.insertHistory(type="TBM", id=tbm_id, target_type="FULLMODULE", target_id=fullmodule_id, operation="ASSEMBLE", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="BAREMODULE", id=fm.BAREMODULE_ID, target_type="FULLMODULE", target_id=fm.FULLMODULE_ID, operation="ASSEMBLE", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="HDI", id=fm.HDI_ID, target_type="FULLMODULE", target_id=fm.FULLMODULE_ID, operation="ASSEMBLE", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="TBM", id=fm.TBM_ID, target_type="FULLMODULE", target_id=fm.FULLMODULE_ID, operation="ASSEMBLE", datee=date.today(), comment="NO COMMENT")
+            return fm
+
+            
+
+
+      def assembleFullModule(self, fullmodule_id, baremodule_id, tbm_id, hdi_id,  builtby, transfer_id,builton=date.today(),comment=""):
+            newfm = FullModule(FULLMODULE_ID=fullmodule_id, BAREMODULE_ID=baremodule_id, HDI_ID=hdi_id, TBM_ID=tbm_id,TRANSFER_ID=transfer_id, BUILTBY=builtby, BUILTON=builton, COMMENT=comment)
+            self.insertFullModule(newfm)
             return newfm
             
 #
