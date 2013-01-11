@@ -67,8 +67,7 @@ ID=ID.upper()
 
   
 for attr, value in objType.__dict__.iteritems():
-    if  type(eval(objName+"."+attr)) is properties.PropertyColumn or  type(eval(objName+"."+attr)).__name__ == "date"  or  type(eval(objName+"."+attr)).__name__ == "datetime":
-#    if  type(eval(objName+"."+attr)) is properties.PropertyColumn :
+    if  type(eval(objName+"."+attr)) is properties.PropertyColumn :
          columns.append(attr) 
 
 
