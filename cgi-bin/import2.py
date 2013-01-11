@@ -29,7 +29,6 @@ c=db.cursor()
 # start from HDI
 #
 
-'''
 
 c.execute("""select barcode,comment,testresult,storage from hdis""")
 
@@ -223,7 +222,6 @@ while (a):
 
     a=c.fetchone()
 
-'''
 #
 #    create fullmodules  - only inventory for the moment
 #

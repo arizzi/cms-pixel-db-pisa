@@ -15,3 +15,6 @@ delete from test_sensor;
 delete from test_hdi;
 delete from transfers;
 delete from test_data;
+delete from test_fullmoduleanalysis;
+delete from test_fullmodulesession;
+delete from test_fullmodulesummary;
