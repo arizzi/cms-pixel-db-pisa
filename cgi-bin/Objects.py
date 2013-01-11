@@ -189,15 +189,14 @@ class FullModule(object):
   BUILTON = date.today()
   BUILTBY = Unicode()
   COMMENT = Unicode()
-  LASTTEST_FULLMODULE=Int()
-  def __init__(self,FULLMODULE_ID, BAREMODULE_ID, HDI_ID, TBM_ID, TRANSFER_ID, BUILTBY, BUILTON=date.today(), COMMENT="", LASTTEST_FULLMODULE=0, STATUS=""):
+  #  LASTTEST_FULLMODULE=Int()
+  def __init__(self,FULLMODULE_ID, BAREMODULE_ID, HDI_ID, TBM_ID, TRANSFER_ID, BUILTBY, BUILTON=date.today(), COMMENT="", STATUS=""):
       self.TBM_ID=unicode(TBM_ID)
       self.HDI_ID=unicode(HDI_ID)
       self.BAREMODULE_ID=unicode(BAREMODULE_ID)
       self.FULLMODULE_ID=unicode(FULLMODULE_ID)
       self.TRANSFER_ID=TRANSFER_ID
       self.COMMENT=unicode(COMMENT)
-      self.LASTTEST_FULLMODULE=LASTTEST_FULLMODULE
       self.BUILTON=BUILTON
       self.BUILTBY=unicode(BUILTBY)
       self.STATUS=unicode(STATUS)
@@ -249,20 +248,70 @@ class Test_BareModule(object):
       DATA_ID=Int()
       data=Reference(DATA_ID,Data.DATA_ID)
 
+class Test_FullModuleSession(object):
+      __storm_table__ = "test_fullmodulesession"
+      TEST_ID = Int(primary=True)
+      DATA_ID=Int()
+      data=Reference(DATA_ID,Data.DATA_ID)
+      SESSION_ID=Int()
+      session = Reference (SESSION_ID,Session.SESSION_ID)
+      FULLMODULE_ID =  Unicode()
+      fullmodule=Reference(FULLMODULE_ID, FullModule.FULLMODULE_ID)
+      def __init__(self,DATA_ID,SESSION_ID,FULLMODULE_ID):
+          self.DATA_ID=DATA_ID
+          self.SESSION_ID=SESSION_ID
+          self.FULLMODULE_ID=FULLMODULE_ID
+
+
+class Test_FullModuleSummary(object):
+      __storm_table__ = "test_fullmodulesummary"
+      TEST_ID=Int(primary=True)
+      FULLMODULE_ID = Unicode()
+      fullmodule=Reference(FULLMODULE_ID, FullModule.FULLMODULE_ID)
+      FULLMODULETEST_T1 =  Int()
+      FULLMODULETEST_T2 =  Int()
+      FULLMODULETEST_T3 =  Int()
+      FULLTESTGRADE=Unicode()
+      SHORTTESTGRADE=Unicode()
+      def __init__(self, FULLMODULE_ID, FULLMODULETEST_T1, FULLMODULETEST_T2, FULLMODULETEST_T3, FULLTESTGRADE="", SHORTTESTGRADE=""):
+          self.FULLMODULE_ID=    unicode(      FULLMODULE_ID)
+          self.FULLMODULETEST_T1=FULLMODULETEST_T1
+          self.FULLMODULETEST_T2=FULLMODULETEST_T2
+          self.FULLMODULETEST_T3=FULLMODULETEST_T3
+          self.FULLTESTGRADE=unicode(FULLTESTGRADE)
+          self.SHORTTESTGRADE =unicode(SHORTTESTGRADE )
+
 class Test_FullModule(object):
       __storm_table__ = "test_fullmodule"
       TEST_ID = Int(primary=True)
       SESSION_ID=Int()
-      TESTNAME=Unicode()
       session = Reference (SESSION_ID,Session.SESSION_ID)
       FULLMODULE_ID =  Unicode()
       fullmodule=Reference(FULLMODULE_ID, FullModule.FULLMODULE_ID)
-      RESULT=Float()
-      FINALGRADE=Unicode()
-      GRADE=Unicode()
-      FULLTESTGRADE=Unicode()
-      SHORTTESTGRADE=Unicode()
+      RESULT=Unicode()
+      TEMPNOMINAL = Float()
       DATA_ID=Int()
+      data=Reference(DATA_ID,Data.DATA_ID)
+      COLDBOX=Unicode()
+      COLDBOX_SLOT=Unicode()
+      def __init__(self,SESSION_ID,FULLMODULE_ID,RESULT,TEMPNOMINAL,DATA_ID,COLDBOX,COLDBOX_SLOT):
+       self.SESSION_ID=SESSION_ID
+       self.FULLMODULE_ID=unicode(FULLMODULE_ID)
+       self.RESULT=unicode(RESULT)
+       self.TEMPNOMINAL=float(TEMPNOMINAL)
+       self.DATA_ID=DATA_ID
+       self.COLDBOX=unicode(COLDBOX)
+       self.COLDBOX_SLOT=unicode(COLDBOX_SLOT)
+
+class Test_FullModuleAnalysis(object):
+      __storm_table__ = "test_fullmoduleanalysis"
+      TEST_ID=Int(primary=True)
+      FULLMODULETEST_ID= Int()
+      fullmoduletest=Reference(FULLMODULETEST_ID, Test_FullModule.TEST_ID)
+      DATA_ID=Int()
+      HOSTNAME=Unicode()
+      GRADE=Unicode()
+      MACRO_VERION=Unicode()
       data=Reference(DATA_ID,Data.DATA_ID)
       DEADPIXELS      =Int()
       MASKEDPIXELS      =Int()
@@ -279,7 +328,6 @@ class Test_FullModule(object):
       I150_2 = Float()
       CURRENT = Float()
       CURRENT_2 = Float()
-      NOISE=Unicode()
       TRIMMING =Unicode()
       PHCAL = Unicode()
       IVSLOPE  = Float()
@@ -288,21 +336,17 @@ class Test_FullModule(object):
       CYCLING= Unicode()
       TCYCLVALUE = Float()
       TCYCLERROR = Float()
-      COMMENT= Unicode()
-      def __init__(self,SESSION_ID,TESTNAME,FULLMODULE_ID,RESULT,FINALGRADE,GRADE,FULLTESTGRADE,SHORTTESTGRADE,
-                   DATA_ID,DEADPIXELS,MASKEDPIXELS,BUMPDEFPIXELS,TRIMDEFPIXELS,ADDRESSDEFPIXELS,NOISYPIXELS,THRESHDEFPIXELS,
-                   GAINDEFPIXELS,PEDESTALDEFPIXELS,PAR1DEFPIXELS,ROCSWORSEPERCENT,
-                   I150,I150_2,CURRENT,CURRENT_2,NOISE,TRIMMING,PHCAL,IVSLOPE,TEMPVALUE,TEMPERROR,CYCLING,TCYCLVALUE,TCYCLERROR,COMMENT):
+      def __init__(self,FULLMODULE_ID, DATA_ID,FULLMODULETEST_ID,
+                   GRADE="",HOSTNAME="",
+                   DEADPIXELS=-1,MASKEDPIXELS=-1,BUMPDEFPIXELS=-1,TRIMDEFPIXELS=-1,ADDRESSDEFPIXELS=-1,NOISYPIXELS=-1,THRESHDEFPIXELS=-1,
+                   GAINDEFPIXELS=-1,PEDESTALDEFPIXELS=-1,PAR1DEFPIXELS=-1,ROCSWORSEPERCENT="",MACRO_VERSION="",
+                   I150=0,I150_2=0,CURRENT=0,CURRENT_2=0,TRIMMING="",PHCAL="",IVSLOPE=0,TEMPVALUE=0,TEMPERROR=0,CYCLING=0,TCYCLVALUE=0,TCYCLERROR=0):
+
           self.DATA_ID=DATA_ID
-          self.SESSION_ID=SESSION_ID
+          self.FULLMODULETEST_ID=(FULLMODULETEST_ID)
           self.FULLMODULE_ID=unicode(FULLMODULE_ID)
-          self.RESULT=float(RESULT)
           self.GRADE=unicode(GRADE)
-          self.FINALGRADE=unicode(FINALGRADE)
-          self.SHORTTESTGRADE=unicode(SHORTTESTGRADE)
-          self.FULLTESTGRADE=unicode(FULLTESTGRADE)
           self.ROCSWORSEPERCENT=unicode(ROCSWORSEPERCENT)
-          self.NOISE=unicode(NOISE)
           self.TRIMMING=unicode(TRIMMING)
           self.PHCAL=unicode(PHCAL)
           self.IVSLOPE=float(IVSLOPE)
@@ -310,8 +354,6 @@ class Test_FullModule(object):
           self.TEMPERROR=float(TEMPERROR)
           self.TCYCLVALUE=float(TCYCLVALUE)
           self.TCYCLERROR=float(TCYCLERROR)
-          self.COMMENT=unicode(COMMENT)
-          self.TESTNAME=unicode(TESTNAME)
           self.DEADPIXELS = float(DEADPIXELS)
           self.MASKEDPIXELS=float(MASKEDPIXELS)
           self.BUMPDEFPIXELS=float(BUMPDEFPIXELS)
@@ -327,7 +369,13 @@ class Test_FullModule(object):
           self.CURRENT=float(CURRENT)
           self.CURRENT_2=float(CURRENT_2)
           self.CYCLING=unicode(CYCLING)
-          
+          self.HOSTNAME=unicode(HOSTNAME)
+          self.MACRO_VERSION=unicode(MACRO_VERSION)
+
+
+
+
+
 
 
 
@@ -434,15 +482,15 @@ Sensor.lasttest_sensor = Reference(  Sensor.LASTTEST_SENSOR, Test_Sensor.TEST_ID
 BareModule.lasttest_baremodule = Reference(  BareModule.LASTTEST_BAREMODULE, Test_BareModule.TEST_ID)
 Hdi.lasttest_hdi = Reference(  Hdi.LASTTEST_HDI, Test_Hdi.TEST_ID)
 Tbm.lasttest_tbm = Reference(  Tbm.LASTTEST_TBM, Test_Tbm.TEST_ID)
-FullModule.lasttest_fullmodule = Reference(  FullModule.LASTTEST_FULLMODULE, Test_FullModule.TEST_ID)
+#FullModule.lasttest_fullmodule = Reference(  FullModule.LASTTEST_FULLMODULE, Test_FullModule.TEST_ID)
 Logbook.adddata = Reference(Logbook.ADDDATA_ID,Data.DATA_ID)
 
 
 
+#
+# ne mancano ...
+#
+Test_FullModuleSummary.fullmoduletest_t1 = Reference(Test_FullModuleSummary.FULLMODULETEST_T1,Test_FullModule.TEST_ID)
+Test_FullModuleSummary.fullmoduletest_t2 = Reference(Test_FullModuleSummary.FULLMODULETEST_T2,Test_FullModule.TEST_ID)
+Test_FullModuleSummary.fullmoduletest_t3 = Reference(Test_FullModuleSummary.FULLMODULETEST_T3,Test_FullModule.TEST_ID)
 
-
-
-
- 
-
- 

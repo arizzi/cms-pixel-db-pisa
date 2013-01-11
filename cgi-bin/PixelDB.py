@@ -434,6 +434,40 @@ class PixelDBInterface(object) :
 #
 # TESTS
 #
+      def insertFullModuleTestSession(self,fms):
+            if (self.isFullModuleInserted(fms.FULLMODULE_ID) == False):
+                  print " Cannot insert a test on a not existing FM "
+                  return None
+            self.store.add(fms)
+            self.store.commit()
+            # log in history
+            self.insertHistory(type="TEST_FMSession", id=fms.TEST_ID, target_type="FULLMODULE", target_id=fms.FULLMODULE_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
+            return fms
+
+      def insertFullModuleTestSummary(self,fms):
+            if (self.isFullModuleInserted(fms.FULLMODULE_ID) == False):
+                  print " Cannot insert a test on a not existing FM "
+                  return None
+            self.store.add(fms)
+            self.store.commit()
+            # log in history
+            self.insertHistory(type="TEST_FMSummary", id=fms.TEST_ID, target_type="FULLMODULE", target_id=fms.FULLMODULE_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
+            return fms
+
+      def insertFullModuleTestAnalysis(self,fms):
+            if (self.isFullModuleInserted(fms.FULLMODULE_ID) == False):
+                  print " Cannot insert a test on a not existing FM "
+                  return None
+            self.store.add(fms)
+            self.store.commit()
+            # log in history
+            self.insertHistory(type="TEST_FMAnalysis", id=fms.TEST_ID, target_type="FULLMODULE", target_id=fms.FULLMODULE_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
+            return fms
+
+            
+
+
+      
       def insertFullModuleTest(self, test_fm,fakemodule=0):
             #
             # first check that the module exists
@@ -447,7 +481,7 @@ class PixelDBInterface(object) :
                   (self.getFullModule(test_fm.FULLMODULE_ID)).LASTTEST_FULLMODULE =  test_fm.TEST_ID
                   self.store.commit()
             # log in history
-            self.insertHistory(type="TEST_FM", id=test_fm.TEST_ID, target_type="FULLMODULE", target_id=test_fm.FULLMODULE_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="TEST_FMSESION", id=test_fm.TEST_ID, target_type="FULLMODULESESSION", target_id=test_fm.TEST_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
             return test_fm
 
       def insertBareModuleTest(self, test_bm):
