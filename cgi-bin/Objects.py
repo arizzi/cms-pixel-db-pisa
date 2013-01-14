@@ -311,7 +311,7 @@ class Test_FullModuleAnalysis(object):
       DATA_ID=Int()
       HOSTNAME=Unicode()
       GRADE=Unicode()
-      MACRO_VERION=Unicode()
+      MACRO_VERSION=Unicode()
       data=Reference(DATA_ID,Data.DATA_ID)
       DEADPIXELS      =Int()
       MASKEDPIXELS      =Int()
