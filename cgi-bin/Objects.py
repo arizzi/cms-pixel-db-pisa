@@ -285,7 +285,7 @@ class Test_FullModule(object):
       __storm_table__ = "test_fullmodule"
       TEST_ID = Int(primary=True)
       SESSION_ID=Int()
-      session = Reference (SESSION_ID,Session.SESSION_ID)
+      session = Reference (SESSION_ID,Test_FullModuleSession.TEST_ID)
       FULLMODULE_ID =  Unicode()
       fullmodule=Reference(FULLMODULE_ID, FullModule.FULLMODULE_ID)
       RESULT=Unicode()
