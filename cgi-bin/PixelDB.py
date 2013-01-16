@@ -468,20 +468,17 @@ class PixelDBInterface(object) :
 
 
       
-      def insertFullModuleTest(self, test_fm,fakemodule=0):
+      def insertFullModuleTest(self, test_fm):
             #
             # first check that the module exists
             #
-            if (fakemodule ==0 and self.isFullModuleInserted(test_fm.FULLMODULE_ID) == False):
+            if (self.isFullModuleInserted(test_fm.FULLMODULE_ID) == False):
                   print " Cannot insert a test on a not existing FM "
                   return None
             self.store.add(test_fm)
             self.store.commit()
-            if (fakemodule == 0):
-                  (self.getFullModule(test_fm.FULLMODULE_ID)).LASTTEST_FULLMODULE =  test_fm.TEST_ID
-                  self.store.commit()
             # log in history
-            self.insertHistory(type="TEST_FMSESION", id=test_fm.TEST_ID, target_type="FULLMODULESESSION", target_id=test_fm.TEST_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="TEST_FM", id=test_fm.TEST_ID, target_type="FULLMODULES", target_id=test_fm.TEST_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
             return test_fm
 
       def insertBareModuleTest(self, test_bm):
@@ -569,7 +566,7 @@ class PixelDBInterface(object) :
 #
 # parses files (see '/afs/cern.ch/user/s/starodum/public/moduleDB/M1215-080320.09:34/T-10a/summaryTest.txt'
 #
-      def insertTestFullModuleDir(self,dir,sessionid,overwritemodid=0, fakemodule=0):
+      def insertTestFullModuleDir(self,dir,sessionid,overwritemodid=0):
             #
             # tries to open a standard dir, as in the previous above
             # searches for summaryTest.txt inside + tars the dir in add_data
@@ -725,40 +722,71 @@ class PixelDBInterface(object) :
             #
             if (DeadPixels != '-' and Current != '-'):
                   print "HERE"
-                  t = Test_FullModule(SESSION_ID=sessionid,
+                  #
+                  # new version, splitting in session, summary, test, analysis
+                  #
+
+                  # step #1 : create a fullmodulesession with an empty data
+                  data1 = Data()
+                  pp = self.insertData(data1)
+                  if (pp is None):
+                        print"<br>Error inserting data"
+                        return None
+
+                  fmsession = Test_FullModuleSession(DATA_ID=data1.DATA_ID,SESSION_ID=sessionid,FULLMODULE_ID=unicode(ppp))
+
+                  pp=self.insertFullModuleTestSession(fmsession)
+                  if pp is None:
+                        print "ERRORE FMSESSION", fmsession.TEST_ID
+
+                  # step #2 : create a test
+                  data2 = Data()
+                  pp = self.insertData(data2)
+                  if (pp is None):
+                        print"<br>Error inserting data"
+                        return None
+
+                  t = Test_FullModule(SESSION_ID=fmsession.TEST_ID,
                                 FULLMODULE_ID=ppp,
-                                RESULT=33,
-                                DATA_ID=pp.DATA_ID,
-                                ROCSWORSEPERCENT=RocDefects,
-                                NOISE=NOISE,
-                                TRIMMING =isTrimming,
-                                PHCAL = isphCal,
-                                IVSLOPE  = float(I150I100),
-                                GRADE=Grade,
-                                FINALGRADE=FinalGrade,
-                                SHORTTESTGRADE=ShorttestGrade,
-                                FULLTESTGRADE=FulltestGrade,
-                                TESTNAME=TestNumber,
-                                DEADPIXELS=DeadPixels,
-                                MASKEDPIXELS=MaskPixels,
-                                BUMPDEFPIXELS=BumpPixels,
-                                TRIMDEFPIXELS=TrimPixels,
-                                ADDRESSDEFPIXELS=AddressPixels,
-                                NOISYPIXELS=NoisyPixels,
-                                THRESHDEFPIXELS=TreshPixels,
-                                GAINDEFPIXELS=GainPixels,
-                                PEDESTALDEFPIXELS=PedPixels,
-                                PAR1DEFPIXELS=ParPixels,
-                                I150=I150,
-                                I150_2=I1502,
-                                CURRENT=Current,CURRENT_2=Current2,
-                                CYCLING=isThermalCycling,
-                                COMMENT= Comment,
-                                TEMPVALUE=Temp,
-                                TEMPERROR=eTemp,
-                                TCYCLVALUE=TThermalCycling,
-                                TCYCLERROR=eTThermalCycling)
-                  rr = self.insertFullModuleTest(t, fakemodule=fakemodule)
+                                DATA_ID = data2.DATA_ID,
+                                TEMPNOMINAL=Temp,
+                                COLDBOX="dummy",COLDBOX_SLOT="dummy",
+                                RESULT = "n/a")
+
+                  pp=self.insertFullModuleTest(t)
+                  if pp is None:
+                        print "ERRORE FMTEST"
+
+
+                  #
+                  # step # 3: all the rest gos into an analysis
+                        
+                  fmanalysis = Test_FullModuleAnalysis(FULLMODULE_ID=ppp, DATA_ID=data.DATA_ID,FULLMODULETEST_ID=t.TEST_ID,
+                   GRADE=Grade,
+                   HOSTNAME="dummy",
+                   DEADPIXELS=DeadPixels,
+                   MASKEDPIXELS=MaskPixels,
+                   BUMPDEFPIXELS=BumpPixels,
+                   TRIMDEFPIXELS=TrimPixels,
+                   ADDRESSDEFPIXELS=AddressPixels,
+                   NOISYPIXELS=NoisyPixels,
+                   THRESHDEFPIXELS=TreshPixels,
+                   GAINDEFPIXELS=GainPixels,
+                   PEDESTALDEFPIXELS=PedPixels,
+                   PAR1DEFPIXELS=ParPixels,
+                   I150=I150,
+                   I150_2=I1502,
+                   CURRENT=Current,CURRENT_2=Current2,
+                   CYCLING=isThermalCycling,
+                   TEMPVALUE=Temp,
+                   TEMPERROR=eTemp,
+                   TCYCLVALUE=TThermalCycling,
+                        TCYCLERROR=eTThermalCycling,
+                        MACRO_VERSION="dummyV0.0")
+                  
+                  
+                  
+                  rr = self.insertFullModuleTestAnalysis(t)
                   if (rr is None):
                         print"<br>Error inserting test FM"
                         return None

@@ -56,7 +56,7 @@ for line in f:
     #        print "Studying "+workdir
     print "Inserting "+workdir+" ....."
     num = num+1
-    rr = pdb.insertTestFullModuleDir(workdir,s.SESSION_ID, fakemodule=1)
+    rr = pdb.insertTestFullModuleDir(workdir,s.SESSION_ID)
     if rr is None:
         print"-->Error inserting test FM ..."
     else:
