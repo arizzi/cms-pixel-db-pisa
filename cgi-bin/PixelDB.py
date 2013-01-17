@@ -3,6 +3,7 @@ from MySQLdb import *
 from storm.locals import *
 import string
 import subprocess
+import os.path
 
 class PixelDBInterface(object) :
 
@@ -187,6 +188,22 @@ class PixelDBInterface(object) :
       def isFullModuleInserted(self, FullModule_id):
             aa = self.store.find(FullModule, FullModule.FULLMODULE_ID==FullModule_id).one()
             return aa is not None
+
+      def searchFullModuleTestSummaryByDirName(self, dirname):
+            temp=unicode('file:'+dirname)
+            result = self.store.find((Test_FullModuleSummary, Data),
+                                Test_FullModuleSummary.DATA_ID == Data.DATA_ID,
+                                Data.PFNs.like(temp))
+
+            aa=[(session) for session,data in result]
+
+#            print "AAAA ",aa[0].TEST_ID
+            if (len(aa) == 0):
+                      return None
+            else:
+                      return aa[0]
+
+
 #
 # check if already used
 #
@@ -451,7 +468,7 @@ class PixelDBInterface(object) :
             self.store.add(fms)
             self.store.commit()
             # log in history
-            self.insertHistory(type="TEST_FMSummary", id=fms.TEST_ID, target_type="FULLMODULE", target_id=fms.FULLMODULE_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="TEST_FMSummary", id=fms.TEST_ID,target_type="FULLMODULE", target_id=fms.FULLMODULE_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
             return fms
 
       def insertFullModuleTestAnalysis(self,fms):
@@ -558,10 +575,6 @@ class PixelDBInterface(object) :
             self.insertHistory(type="TEST_ROC", id=test.TEST_ID, target_type="ROC", target_id=test.ROC_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
             return test
 
-      
-#
-#
-#
 
 #
 # parses files (see '/afs/cern.ch/user/s/starodum/public/moduleDB/M1215-080320.09:34/T-10a/summaryTest.txt'
@@ -699,11 +712,6 @@ class PixelDBInterface(object) :
             #
             # create a data_id
             #
-            #
-            #
-            # create a Test_FullModule
-            #
-            #
             data = Data(PFNs="file:"+dir)
             pp = self.insertData(data)
             if (pp is None):
@@ -792,7 +800,51 @@ class PixelDBInterface(object) :
                   if (rr is None):
                         print"<br>Error inserting test FM"
                         return None
-                  return rr                  
+
+
+
+                  
+
+                  #
+                  #                create or search a session, based on dirname
+                  #
+
+                  path = os.path.abspath(os.path.join(os.path.dirname(dir),".."))
+
+                  summ = self.searchFullModuleTestSummaryByDirName(path)
+                  
+                  if (summ is None):
+                        print "create new FMSummary"
+                        dataS = Data(PFNs = 'file:'+path)
+                        pp = self.insertData(dataS)
+                        
+                        summary = Test_FullModuleSummary(FULLMODULE_ID=ppp,DATA_ID=dataS.DATA_ID)
+                        pp = self.insertFullModuleTestSummary(summary)
+                  else:
+                        summary = summ
+                  print " SUMM ", summ
+                  #
+                  # fill the correct one
+                  #
+                  if (TestNumber == 'T+17a'):
+                        summary.FULLMODULETEST_T1 = t.TEST_ID
+                  elif(TestNumber == 'T-10a'):
+                        summary.FULLMODULETEST_T2 = t.TEST_ID
+                  elif(TestNumber == 'T-10b'):
+                        print "RIEMPIO ",t.TEST_ID
+
+                        summary.FULLMODULETEST_T3 = t.TEST_ID
+                  else:
+                        print " CANNOT FILL SUMMARY, SINCE TEMP IS ",TestNumber
+                  self.store.commit()
+            
+                  return rr     
+            
+             
             else:
                   print " Discarding bad result"
+                  self.store.commit()
+                              
                   return None
+
+

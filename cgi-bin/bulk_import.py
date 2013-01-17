@@ -9,6 +9,10 @@ from PixelDB import *
 import random
 import re
 
+from storm.tracer import debug
+debug(True, stream=sys.stdout)
+
+
 pdb = PixelDBInterface(operator="tommaso",center="pisa")
 pdb.connectToDB()
 
