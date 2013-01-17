@@ -289,7 +289,7 @@ class Test_FullModule(object):
       FULLMODULE_ID =  Unicode()
       fullmodule=Reference(FULLMODULE_ID, FullModule.FULLMODULE_ID)
       RESULT=Unicode()
-      TEMPNOMINAL = Float()
+      TEMPNOMINAL = Unicode()
       DATA_ID=Int()
       data=Reference(DATA_ID,Data.DATA_ID)
       COLDBOX=Unicode()
@@ -298,7 +298,7 @@ class Test_FullModule(object):
        self.SESSION_ID=SESSION_ID
        self.FULLMODULE_ID=unicode(FULLMODULE_ID)
        self.RESULT=unicode(RESULT)
-       self.TEMPNOMINAL=float(TEMPNOMINAL)
+       self.TEMPNOMINAL=unicode(TEMPNOMINAL)
        self.DATA_ID=DATA_ID
        self.COLDBOX=unicode(COLDBOX)
        self.COLDBOX_SLOT=unicode(COLDBOX_SLOT)

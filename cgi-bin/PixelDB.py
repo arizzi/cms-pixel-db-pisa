@@ -746,10 +746,12 @@ class PixelDBInterface(object) :
                         print"<br>Error inserting data"
                         return None
 
+                  TempNominal = TestNumber
+
                   t = Test_FullModule(SESSION_ID=fmsession.TEST_ID,
                                 FULLMODULE_ID=ppp,
                                 DATA_ID = data2.DATA_ID,
-                                TEMPNOMINAL=Temp,
+                                TEMPNOMINAL=unicode(TestNumber),
                                 COLDBOX="dummy",COLDBOX_SLOT="dummy",
                                 RESULT = "n/a")
 
@@ -784,9 +786,9 @@ class PixelDBInterface(object) :
                         TCYCLERROR=eTThermalCycling,
                         MACRO_VERSION="dummyV0.0")
                   
+                  print "ECCOMI" 
                   
-                  
-                  rr = self.insertFullModuleTestAnalysis(t)
+                  rr = self.insertFullModuleTestAnalysis(fmanalysis)
                   if (rr is None):
                         print"<br>Error inserting test FM"
                         return None
