@@ -19,6 +19,7 @@ class PixelDBInterface(object) :
       def insertTransfer(self,transfer):
             self.store.add(transfer)
             self.store.commit()
+            print "INSERTING TRANSFER ", transfer.TRANSFER_ID
             return transfer
 
       def insertData(self,transfer):
