@@ -217,10 +217,11 @@ class PixelDBInterface(object) :
             return True
             
       def canRocBeUsed(self, roc_id):
-            if (roc_id = 'n/a'):
+            if (roc_id == 'n/a'):
                   return True
             if (self.isRocInserted(roc_id) == False):
                   return False
+            print "ROC IDDDDDDD",roc_id 
             if ((self.getRoc(roc_id)).STATUS == "USED" ):
                   return False
             if (((self.getRoc(roc_id)).transfer).STATUS != "ARRIVED"):
