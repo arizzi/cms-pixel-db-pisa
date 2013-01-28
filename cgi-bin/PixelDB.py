@@ -13,7 +13,7 @@ class PixelDBInterface(object) :
             self.date = datee
             
       def connectToDB(self) :
-            self.database = create_database("mysql://tester:pixels@cmspixel.pi.infn.it/test_pixel")
+            self.database = create_database("mysql://tester:pixels@cmspixel.pi.infn.it/prod_pixel")
             self.store = Store(self.database)
             
       def insertTransfer(self,transfer):
@@ -217,6 +217,8 @@ class PixelDBInterface(object) :
             return True
             
       def canRocBeUsed(self, roc_id):
+            if (roc_id = 'n/a'):
+                  return True
             if (self.isRocInserted(roc_id) == False):
                   return False
             if ((self.getRoc(roc_id)).STATUS == "USED" ):
