@@ -183,9 +183,10 @@ class FullModule(object):
   TBM_ID =  Unicode()
   STATUS=Unicode()    
   TRANSFER_ID = Int()
+  transfer = Reference(TRANSFER_ID, Transfer.TRANSFER_ID)
   tbm = Reference(TBM_ID, Tbm.TBM_ID)
   baremodule = Reference(BAREMODULE_ID, BareModule.BAREMODULE_ID)
-  hdi = Reference(HDI_ID, HDI_ID)
+  hdi = Reference(HDI_ID, Hdi.HDI_ID)
   BUILTON = date.today()
   BUILTBY = Unicode()
   COMMENT = Unicode()
@@ -497,3 +498,7 @@ Test_FullModuleSummary.fullmoduletest_t1 = Reference(Test_FullModuleSummary.FULL
 Test_FullModuleSummary.fullmoduletest_t2 = Reference(Test_FullModuleSummary.FULLMODULETEST_T2,Test_FullModule.TEST_ID)
 Test_FullModuleSummary.fullmoduletest_t3 = Reference(Test_FullModuleSummary.FULLMODULETEST_T3,Test_FullModule.TEST_ID)
 
+
+
+FullModule.tests = ReferenceSet(FullModule.FULLMODULE_ID, Test_FullModule.FULLMODULE_ID)
+Test_FullModule.tests = ReferenceSet(Test_FullModule.TEST_ID, Test_FullModuleAnalysis.TEST_ID)

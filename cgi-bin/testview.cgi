@@ -65,13 +65,12 @@ else:
   ID=objName+"_ID"
 ID=ID.upper()
 
-  
-for attr, value in objType.__dict__.iteritems():
+keys=objType.__dict__.keys()
+for attr in keys:
+    print attr #,type(eval(objName+"."+attr)).__name__,"<br>"
     if  type(eval(objName+"."+attr)) is properties.PropertyColumn or  type(eval(objName+"."+attr)).__name__ == "date"  or  type(eval(objName+"."+attr)).__name__ == "datetime":
 #    if  type(eval(objName+"."+attr)) is properties.PropertyColumn :
          columns.append(attr) 
-
-
     if  type(eval(objName+"."+attr)) is references.Reference :
          refs.append(attr)
  
@@ -92,7 +91,11 @@ for o in objects :
    print "<tr>"
    print "<td>", getattr(o,ID) ,"(<a href=viewdetails.cgi?objName="+objName+"&"+ID+"="+str(getattr(o,ID)),">details</a>)</td>"
    for c in columns:
-    print "<td>",getattr(o,c),"</td>"
+    v=getattr(o,c)
+    if type(v).__name__ == "unicode" : 
+      print "<td>",unicode(v),"</td>"
+    else :
+      print "<td>",v,"</td>"
    for r in refs:
     print "<td><a href=\"viewdetails.cgi?objName="+objName+"&"+ID+"="+str(getattr(o,ID))+"&ref="+r+"\"> details</a></td>"
 #    help(getattr(o,r))

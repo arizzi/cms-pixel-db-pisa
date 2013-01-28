@@ -6,7 +6,8 @@ $dir=$argv[1];
 $monthN = array("01","02","03","04","05","06","07","08","09","10","11","12");
 $monthS = array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
 
-
+$testNr = 'n/a';
+$finalGrade = 'n/a';
 $moduleTemp = '';
 $module = '';
 $pi=0; $ma=0; $bu=0; $tr=0; $ad=0;

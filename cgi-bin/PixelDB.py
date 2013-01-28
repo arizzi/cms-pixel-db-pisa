@@ -594,13 +594,23 @@ class PixelDBInterface(object) :
             if (retval!=0):
                   return None
             fileContent = []
+#
+# set initially
+#
+            ModuleNumber=0
+            Grade=0
+            isThermalCycling=0
+            TThermalCycling=0
+            eTThermalCycling=0
+
             for line in p.stdout.readlines():
                   fields = (line.strip()).split(" ")
                   print "DEBUG ",fields
                   #
                   # real parsing
                   #
-                  if (fields[0] == 'module'):
+                  
+                  if (fields[0] == 'module' and len (fields)>1):
                         ModuleNumber = fields[1]
                   if (fields[0] == 'deadpi'):
                         DeadPixels=string.join(fields[1:]," ")
@@ -636,13 +646,13 @@ class PixelDBInterface(object) :
                   if (fields[0] == 'parameter1'):
                        ParPixels=string.join(fields[1:]," ")
 
-                  if (fields[0] == 'finalGrade'):
+                  if (fields[0] == 'finalGrade' and len(fields) >1 ):
                        FinalGrade = fields[1]
-                  if (fields[0] == 'fullGrade'):
+                  if (fields[0] == 'fullGrade'  and len (fields)>1):
                       FulltestGrade = fields[1]
-                  if (fields[0] == 'grade'):
+                  if (fields[0] == 'grade'  and len (fields)>1):
                         Grade = fields[1]
-                  if (fields[0] == 'shortGrade'):
+                  if (fields[0] == 'shortGrade'  and len (fields)>1):
                         ShorttestGrade = fields[1]
 
                   if (fields[0] == 'rocs'):
@@ -651,12 +661,12 @@ class PixelDBInterface(object) :
 
                   if (fields[0] == 'date'):
                         Date = string.join(fields[1:]," ")
-                  if (fields[0] == 'trimming'):
+                  if (fields[0] == 'trimming' and len(fields)>1):
                         isTrimming = fields[1]
                   if (fields[0] == 'phcal'):
                         isphCal = string.join(fields[1:]," ")
 
-                  if (fields[0] == 'noise'):
+                  if (fields[0] == 'noise'  and len (fields)>1):
                        NOISE = fields[1]
                   if (fields[0] == 'iv150'):
                       if (len(fields) >1):
@@ -695,15 +705,15 @@ class PixelDBInterface(object) :
                   if (fields[0] == 'etemp'):
                       eTemp = fields[1]
  
-                  if (fields[0]=='tcy'):
+                  if (fields[0]=='tcy'  and len (fields)>1):
                       isThermalCycling=fields[1]
-                  if (fields[0]=='tcycl'):
+                  if (fields[0]=='tcycl'  and len (fields)>1):
                       TThermalCycling=fields[1]
 
-                  if (fields[0]=='etcycl'):
+                  if (fields[0]=='etcycl'  and len (fields)>1):
                       eTThermalCycling=fields[1]
 
-                  if (fields[0] == 'mount'):
+                  if (fields[0] == 'mount'  and len (fields)>1):
                       position=fields[1]
                   if (fields[0] == 'testN'):
                       TestNumber=fields[1]
@@ -800,6 +810,7 @@ class PixelDBInterface(object) :
                   if (rr is None):
                         print"<br>Error inserting test FM"
                         return None
+                  
 
 
 
