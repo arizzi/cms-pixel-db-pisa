@@ -217,7 +217,7 @@ class PixelDBInterface(object) :
             return True
             
       def canRocBeUsed(self, roc_id):
-            if (roc_id == 'n/a'):
+            if (roc_id == ''):
                   return True
             if (self.isRocInserted(roc_id) == False):
                   return False
@@ -291,6 +291,8 @@ class PixelDBInterface(object) :
            return False
 
       def setRocStatus(self, roc_id,status):
+           if (roc_id ==""):
+                  return True
            if (self.canRocBeUsed(roc_id)):
                  (self.getRoc(roc_id)).STATUS = unicode(status)
                  self.store.commit()                 
