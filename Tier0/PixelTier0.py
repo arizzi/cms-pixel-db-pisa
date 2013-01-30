@@ -71,7 +71,7 @@ class PixelTier0 (object):
 
       def insertNewTar(self, tar):
             if (tar.STATUS != 'new'):
-                  print 'failing: ca insert only a NEW tar, while this has status = ', tar.STATUS
+                  print 'failing: can insert only a NEW tar, while this has status = ', tar.STATUS
                   return None
             #
             # check if it can be inserted
@@ -129,12 +129,11 @@ class PixelTier0 (object):
                              UPLOAD_ID,
                              DATE = date.today()):
             if (run.STATUS != "done" and run.STATUS != "failed"):
-                  print "Cannot inserte a dir from a processing still in state=",run.STATUS
+                  print "Cannot insert a dir from a processing still in state=",run.STATUS
                   return None
             if (tar.STATUS != "processed"):
                   print "Cannot insert a dir from a inputtar still in state=",tar.STATUS
                   return None
-            print "KJJJJ ", type(NAME)
             pd = ProcessedDir (
                   NAME=NAME,
                   DATE = DATE,
@@ -150,10 +149,10 @@ class PixelTier0 (object):
             self.insertHistory(TYPE = 'insert', TAR_ID=0, DIR_ID=pd.DIR_ID, RUN_ID=0,  DATE=date.today(), COMMENT='inserted processeddir')
             return pd
 
-      def startProcessing(self,pr):
-            print "CE NE SONO ",self.RUNNING, self.MAXEXE
+      def startProcessing(self,pr, DEBUG=False):
             if (self.RUNNING >= self.MAXEXE):
-                  print" I refuse to start a new processing, already running=",self.RUNNING," and max allowed is ",self.MAXEXE
+                  if (DEBUG==True):
+                        print" I refuse to start a new processing, already running=",self.RUNNING," and max allowed is ",self.MAXEXE
                   return None
             self.setProcessingStatus(pr,'running')
             self.insertHistory(TYPE = 'changestatus', TAR_ID=0, DIR_ID=0, RUN_ID=pr.RUN_ID,  DATE=date.today(), COMMENT='status set to running')
@@ -213,18 +212,17 @@ class PixelTier0 (object):
                   for i in self.RUNNINGINSTANCES:
                         if (DEBUG == True):
                               print " Instance ", i[1]
-                        print "OOOOOO ",(i[0]), " ",  (i[0]).poll()
                         temp =  (i[0]).poll()
                         if ( temp is None):
                               if (DEBUG == True):
                                     print "Still running"
                               continue
                         else:
-                              print " Process Finished!"
+                              if (DEBUG == True):
+                                    print " Process Finished!"
                               #
                               # at this point I can declare [i] (RUN_ID) done
                               #
-                              print "AAAAAAA", temp
                               statuscode = temp
                               status='failed'
                               if (statuscode ==0):
@@ -304,3 +302,14 @@ class PixelTier0 (object):
 
 
 
+#
+# recheck what is runnable
+#
+
+      def startProcessingJobs  (self):
+            #
+            # search for jobs in status = "injected"
+            #
+            jobs = self.store.find(ProcessingJob, ProcessingJob.STATUS=='injected')
+            for job in jobs:
+                  self.startProcessing(job)

@@ -76,5 +76,6 @@ print "Starting check of who's running"
 
 while (True):
    pdb.checkAllRunning(DEBUG=True)
+   pdb.startProcessing()
    sleep (1)   
 
