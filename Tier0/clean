@@ -1,0 +1,4 @@
+delete from inputtar;
+delete  from processingrun;
+delete from history;
+delete from outputdir;
