@@ -1,11 +1,21 @@
 #!/usr/bin/env python
 
+
+
 # enable debugging
 import cgitb
 import os
 import datetime
 from time import sleep
+import signal
 #cgitb.enable()
+
+
+def handler (signum,frame):
+    print "Interjected Signal - exiting"
+    pdb.killAllInstances(DEBUG=True)
+    exit(2)
+
 
 print "Content-Type: text/html"
 print
@@ -13,6 +23,9 @@ print
 from PixelTier0 import *
 import random
 
+
+signal.signal(signal.SIGTERM, handler)
+signal.signal(signal.SIGINT,handler)
 
 pdb = PixelTier0()
 pdb.initProcessing(CONFIG="./test.ini", DEBUG=False)
@@ -77,6 +90,13 @@ print "Starting check of who's running"
 while (True):
    num = pdb.checkAllRunning(DEBUG=False)
    num2 = pdb.startProcessingJobs()
-   print " Running Instances = ",num, " Waiting Instances = ",num2
-   sleep (1)   
+   print str(datetime.now())," Running Instances = ",num, " Waiting Instances = ",num2
+   sleep (2)   
+   if (num==0 and num2==0):
+       print "---- FINISHED----"
+       break
+
+#
+
+
 

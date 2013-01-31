@@ -155,7 +155,6 @@ class PixelTier0 (object):
                         print" I refuse to start a new processing, already running=",self.RUNNING," and max allowed is ",self.MAXEXE
                   return None
             self.setProcessingStatus(pr,'running')
-            self.insertHistory(TYPE = 'changestatus', TAR_ID=0, DIR_ID=0, RUN_ID=pr.RUN_ID,  DATE=date.today(), COMMENT='status set to running')
             self.store.commit()
             #
             # execute the command
@@ -312,6 +311,22 @@ class PixelTier0 (object):
             # search for jobs in status = "injected"
             #
             jobs = self.store.find(ProcessingRun, ProcessingRun.STATUS==unicode('injected'))
+            if (jobs is None):
+                  return 0
+            n=0
             for job in jobs:
+                  n=n+1
                   self.startProcessing(job)
-            return len(jobs)
+            return n
+
+      def killAllInstances(self, DEBUG=False):
+            if (DEBUG == True):
+                  print " In Signal hadler - killing all ",len(self.RUNNINGINSTANCES)," instances"
+            # kill all the instances and sets back from running to injected the processingruns
+            for i in self.RUNNINGINSTANCES:
+                  prid = i[1]
+            if (DEBUG == True):
+                  print " Setting processing run ",prid," to injected"
+      
+                  self.setProcessingStatus(self.getProcessingRunById(prid),"injected")
+                  
