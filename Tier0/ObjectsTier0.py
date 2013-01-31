@@ -144,7 +144,7 @@ class History(object):
         self.TYPE=unicode(TYPE)
         self.TAR_ID = TAR_ID
         self.DIR_ID = DIR_ID
-        self.RUN_ID= DIR_ID
+        self.RUN_ID= RUN_ID
         self.DATE=DATE
         self.COMMENT=unicode(COMMENT)
 

@@ -209,6 +209,7 @@ class PixelTier0 (object):
                   print "Starting check of who's running ... Initially Instances = ", len(self.RUNNINGINSTANCES)
             done=False
             while (done==False):
+                  done=False
                   for i in self.RUNNINGINSTANCES:
                         if (DEBUG == True):
                               print " Instance ", i[1]
@@ -261,11 +262,11 @@ class PixelTier0 (object):
 
                               self.RUNNING = self.RUNNING-1
                               self.RUNNINGINSTANCES.remove(i)
-                              
                               break
-                  done = True
-            
-                        
+                  else:
+                        done = True
+            return (self.RUNNING)
+                              
                   
 #
 # 
@@ -297,7 +298,7 @@ class PixelTier0 (object):
 
 
       def createDirOut(self,tar):
-            namedir = (self.PROCESSEDPREFIX+'/'+re.sub('.tar','',tar.NAME)+re.sub("[\s/]"+"_"+  self.MACRO_VERSION))
+            namedir = (self.PROCESSEDPREFIX+'/'+re.sub('.tar','',tar.NAME)+"_"+re.sub("[\s/]","_",self.MACRO_VERSION))
             return namedir
 
 
@@ -310,6 +311,7 @@ class PixelTier0 (object):
             #
             # search for jobs in status = "injected"
             #
-            jobs = self.store.find(ProcessingJob, ProcessingJob.STATUS=='injected')
+            jobs = self.store.find(ProcessingRun, ProcessingRun.STATUS==unicode('injected'))
             for job in jobs:
                   self.startProcessing(job)
+            return len(jobs)

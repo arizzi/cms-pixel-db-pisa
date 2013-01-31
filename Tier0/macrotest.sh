@@ -14,7 +14,7 @@ tar xf $1
 cd /data/pixels/software/psi46expert/trunk/src/macros/
 for i in $2/T*; do
 
-/home/tom/CMSSW_6_1_0/src/UserCode/PixelDBPisa/Tier0/macrov1.pl  $i >& ${i}.LOG 
+/home/robot/Tier0/macrov1.pl  $i >& ${i}.LOG 
 done
 #execute sruff
 

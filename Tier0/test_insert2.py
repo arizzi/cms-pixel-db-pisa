@@ -15,7 +15,7 @@ import random
 
 
 pdb = PixelTier0()
-pdb.initProcessing(CONFIG="./test.ini", DEBUG=True)
+pdb.initProcessing(CONFIG="./test.ini", DEBUG=False)
 pdb.connectToDB()
 
 print " initialization done"
@@ -75,7 +75,8 @@ for line in f:
 print "Starting check of who's running"
 
 while (True):
-   pdb.checkAllRunning(DEBUG=True)
-   pdb.startProcessing()
+   num = pdb.checkAllRunning(DEBUG=False)
+   num2 = pdb.startProcessingJobs()
+   print " Running Instances = ",num, " Waiting Instances = ",num2
    sleep (1)   
 
