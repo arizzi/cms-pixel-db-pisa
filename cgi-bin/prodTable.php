@@ -36,6 +36,8 @@ $perfDef = 0;
 $half = 0;
 $regraded = 0;
 $star = 0;
+$current=-1;
+$current_2=-1;
 
 $handle = fopen($dir."/summaryTest.txt", "r");
 $li = 0;

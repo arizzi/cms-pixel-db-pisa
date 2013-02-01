@@ -1,6 +1,7 @@
 from Objects import *
 from MySQLdb import *
 from storm.locals import *
+import commands
 import string
 import subprocess
 import os.path
@@ -351,6 +352,15 @@ class PixelDBInterface(object) :
             aa = self.store.find(Data, Data.DATA_ID==id).one()
             return aa
 
+
+#
+# get test
+#
+
+      def getFullModuleTestWithCkSumAndTimestamp(self, FullModule_id, CKSUM, TEMPNOMINAL,TIMESTAMP):
+            aa = self.store.find(Test_FullModule, Test_FullModule.FULLMODULE_ID == unicode(FullModule_id), Test_FullModule.CKSUM == unicode(CKSUM), Test_FullModule.TEMPNOMINAL == unicode(TEMPNOMINAL),Test_FullModule.TIMESTAMP==unicode(TIMESTAMP)).one()
+            return aa
+
 #
 # transfer
 #
@@ -594,6 +604,47 @@ class PixelDBInterface(object) :
             #
             # run php on it
             #
+
+#
+# run fulltestinfo to check whether this is new or not
+#
+
+            fulltestinfo = '/home/robot/cgi-bin/fulltestinfo.sh'
+
+            command = str(fulltestinfo+" "+dir)
+
+#            out = subprocess.check_output(["ls", dir])
+
+
+            ppp = subprocess.Popen(fulltestinfo+" "+dir, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            
+            retval = ppp.wait()
+            if (retval != 0):
+                  print "cannot parse Dir",dir
+                  return None
+            fileContent = []
+
+            line = ppp.stdout.readlines()[0]
+
+            line = line.rstrip(os.linesep)
+
+
+
+            (timestamp,modulename, tempnominal2,ck) = line.split(" ")
+            
+            #
+            # check if this already exixts
+            #
+
+            print "asking for a module test with" ,modulename, ck, tempnominal2,timestamp
+
+            ttt = self.getFullModuleTestWithCkSumAndTimestamp(modulename, ck, tempnominal2,timestamp)
+
+            if (ttt is None) :
+                  print "NEW MODULE TEST"
+            else:
+                  print "OLD MODULE TEST"
+
             p = subprocess.Popen("php prodTable.php "+fileName, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             print "FILE IS  "+fileName
             retval = p.wait()
@@ -772,17 +823,23 @@ class PixelDBInterface(object) :
 
                   TempNominal = TestNumber
 
-                  t = Test_FullModule(SESSION_ID=fmsession.TEST_ID,
-                                FULLMODULE_ID=ppp,
-                                DATA_ID = data2.DATA_ID,
-                                TEMPNOMINAL=unicode(TestNumber),
-                                COLDBOX="dummy",COLDBOX_SLOT="dummy",
-                                RESULT = "n/a")
 
-                  pp=self.insertFullModuleTest(t)
-                  if pp is None:
-                        print "ERRORE FMTEST"
+                  if (ttt is None):
+                        t = Test_FullModule(SESSION_ID=fmsession.TEST_ID,
+                        FULLMODULE_ID=ppp,
+                                            DATA_ID = data2.DATA_ID,
+                                            TEMPNOMINAL=unicode(TestNumber),
+                                            COLDBOX="dummy",COLDBOX_SLOT="dummy",CKSUM=ck,TIMESTAMP=timestamp,
+                                            RESULT = "n/a")
 
+                        pp=self.insertFullModuleTest(t)
+                        if pp is None:
+                                                  print "ERRORE FMTEST"
+                  
+                  else:
+                        t=ttt
+
+                        
 
                   #
                   # step # 3: all the rest gos into an analysis

@@ -296,9 +296,12 @@ class Test_FullModule(object):
       TEMPNOMINAL = Unicode()
       DATA_ID=Int()
       data=Reference(DATA_ID,Data.DATA_ID)
+      CKSUM=Unicode()
+      TIMESTAMP=Unicode()
       COLDBOX=Unicode()
       COLDBOX_SLOT=Unicode()
-      def __init__(self,SESSION_ID,FULLMODULE_ID,RESULT,TEMPNOMINAL,DATA_ID,COLDBOX,COLDBOX_SLOT):
+      def __init__(self,SESSION_ID,FULLMODULE_ID,RESULT,TEMPNOMINAL,DATA_ID,COLDBOX,COLDBOX_SLOT, CKSUM,TIMESTAMP):
+
        self.SESSION_ID=SESSION_ID
        self.FULLMODULE_ID=unicode(FULLMODULE_ID)
        self.RESULT=unicode(RESULT)
@@ -306,6 +309,8 @@ class Test_FullModule(object):
        self.DATA_ID=DATA_ID
        self.COLDBOX=unicode(COLDBOX)
        self.COLDBOX_SLOT=unicode(COLDBOX_SLOT)
+       self.CKSUM=unicode(CKSUM)
+       self.TIMESTAMP=unicode(TIMESTAMP)
 
 class Test_FullModuleAnalysis(object):
       __storm_table__ = "test_fullmoduleanalysis"
