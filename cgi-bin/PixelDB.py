@@ -815,7 +815,7 @@ class PixelDBInterface(object) :
                         print "ERRORE FMSESSION", fmsession.TEST_ID
 
                   # step #2 : create a test
-                  data2 = Data()
+                  data2 = Data(PFNs = "file:"+dir)
                   pp = self.insertData(data2)
                   if (pp is None):
                         print"<br>Error inserting data"
