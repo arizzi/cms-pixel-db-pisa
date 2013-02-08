@@ -20,7 +20,6 @@ class PixelDBInterface(object) :
       def insertTransfer(self,transfer):
             self.store.add(transfer)
             self.store.commit()
-            print "INSERTING TRANSFER ", transfer.TRANSFER_ID
             return transfer
 
       def insertData(self,transfer):
@@ -885,6 +884,8 @@ class PixelDBInterface(object) :
 
                   path = os.path.abspath(os.path.join(os.path.dirname(dir),".."))
 
+                  print " ECCO CHE PROVO A TROVARE IL SUMMARY", path
+
                   summ = self.searchFullModuleTestSummaryByDirName(path)
                   
                   if (summ is None):
@@ -922,3 +923,52 @@ class PixelDBInterface(object) :
                   return None
 
 
+
+#
+# loads IV curves
+#
+
+#
+# fake one
+#
+      def extractorTestSensorDir(self,dir):
+            sensorid=unicode(444)
+            i150v=10
+            i1501500=11
+            rootpnfs=unicode('file:pippo.root')
+            return (sensorid, i150v, i150100, rootpnfs, preresult, result,  True)
+            
+
+      def insertTestSensorDir(self,dir,sessionid):
+            #
+            # what to do here :
+            #   you need directly I_150V, I_150_100, preresult
+            #   a root file containing the curves
+            # return None if error, otherwise the sensortest
+            #
+            (sensorid, i150v, i150100, rootpnfs, preresult,result,  ok) = self.extractorTestSensorDir(dir)
+            if (ok == False):
+                  print "InsertSensorTest Extractor returned False"
+                  return None
+            
+            sensor = self.getSensor(sensorid)
+            if (sensor is None):
+                  print "InsertSensorTest From Dir: trying to insert a test for a non existing sensor: ",sensorid
+                  return None
+            #
+            #
+            #
+            data_id = Data(PFNs = rootpnfs)
+            pp = self.insertData(data_id)
+            if (pp is None):
+                  print "Cannot insert data"
+                  return None
+            
+            st = Test_Sensor(SESSION_ID=sessionid,SENSOR_ID=sensorid,PRERESULT=preresult,RESULT=result,DATA_ID = data_id.DATA_ID,I_150V = i150v,I_150_100 = i150100)
+            
+
+            self.insertSensorTest(st)
+            if (st is None):
+                  print "Failed Sensor Test Insertion"
+                  return None
+            return st
