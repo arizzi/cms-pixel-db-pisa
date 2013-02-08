@@ -46,11 +46,10 @@ from storm.references import *
 from storm import *
 from PixelDB import *
 import random
-
+from SpecificView import *
 
 pdb = PixelDBInterface(operator="webfrontend",center="cern")
 pdb.connectToDB()
-
 
 
 form = cgi.FieldStorage() # instantiate only once!
@@ -59,6 +58,8 @@ objName = form.getfirst('objName', 'empty')
 objName = cgi.escape(objName)
 objType = eval(objName)
 refToShow = form.getfirst("ref", 'empty')
+
+specificView(objName,form,pdb)
 
 if re.match("test",objName,flags=re.IGNORECASE) : 
   ID="TEST_ID"
@@ -157,7 +158,7 @@ else :
 
            for rs in refsets:
             objRefSet =  getattr(o,rs)
-            print "IIIIIIIIII", objRefSet
+#            print "IIIIIIIIII", objRefSet
             for r in objRefSet:
            
              print "<tr><td>",r.__class__.__name__,"</td>"

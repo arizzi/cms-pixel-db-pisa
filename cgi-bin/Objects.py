@@ -505,5 +505,7 @@ Test_FullModuleSummary.fullmoduletest_t3 = Reference(Test_FullModuleSummary.FULL
 
 
 
+
+FullModule.summaries = ReferenceSet(FullModule.FULLMODULE_ID, Test_FullModuleSummary.FULLMODULE_ID)
 FullModule.tests = ReferenceSet(FullModule.FULLMODULE_ID, Test_FullModule.FULLMODULE_ID)
-Test_FullModule.tests = ReferenceSet(Test_FullModule.TEST_ID, Test_FullModuleAnalysis.TEST_ID)
+Test_FullModule.analyses = ReferenceSet(Test_FullModule.TEST_ID, Test_FullModuleAnalysis.FULLMODULETEST_ID)

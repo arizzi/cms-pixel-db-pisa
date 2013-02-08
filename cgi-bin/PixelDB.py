@@ -293,9 +293,9 @@ class PixelDBInterface(object) :
            return False
 
       def setRocStatus(self, roc_id,status):
-           if (roc_id ==""):
-                  return True
-           if (self.canRocBeUsed(roc_id)):
+           if roc_id == '' : 
+                 return True
+	   if (self.canRocBeUsed(roc_id)):
                  (self.getRoc(roc_id)).STATUS = unicode(status)
                  self.store.commit()                 
                  return True
