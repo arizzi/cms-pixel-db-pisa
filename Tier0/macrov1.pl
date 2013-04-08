@@ -4,9 +4,6 @@
 $dirMacros = shift;
 
 
-print "<MMMMMMMMMM", $dirMacros;
-
-
 open(ROOT, "|root -l -b ") || die "Cannot open ROOT\n";
 
 print ROOT ".L PHCalibration.C\n";

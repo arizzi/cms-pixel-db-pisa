@@ -76,7 +76,7 @@ class PixelTier0 (object):
             #
             # check if it can be inserted
             #
-            othertar = self.getInputTarByName(tar.NAME)
+            othertar = self.getInputTarByName(tar.NAME,tar.LOCATION)
             if (othertar is not None):
                   print " An Input Tar with same name: ",tar.NAME, " is already present - exiting"
                   return None
@@ -165,10 +165,10 @@ class PixelTier0 (object):
                   print " Cannot get tar with ID=",pr.TAR_ID
                   return None
                   
-            nameout = self.createDirOut(tar)
+            (nameout,fulldir) = self.createDirOut(tar)
 
 
-            procevd = subprocess.Popen(self.EXE+" "+tar.LOCATION+"/"+tar.NAME+" "+nameout, stdin=None, stdout=None, stderr=subprocess.STDOUT, shell=True) 
+            procevd = subprocess.Popen(self.EXE+" "+tar.LOCATION+"/"+tar.NAME+" "+fulldir, stdin=None, stdout=None, stderr=subprocess.STDOUT, shell=True) 
             self.RUNNING=self.RUNNING+1
             self.RUNNINGINSTANCES.append([procevd,pr.RUN_ID])
             return procevd
@@ -240,7 +240,7 @@ class PixelTier0 (object):
 
                               self.setInputStatus(tar,"processed")
 
-                              namedir = self.createDirOut(tar)
+                              (namedir,fulldir) = self.createDirOut(tar)
                               
 #
 # now I should also upload
@@ -248,7 +248,7 @@ class PixelTier0 (object):
 
                               #self.uploadTest()
 
-                              pd  = self.insertProcessedDir(pr,tar,NAME=namedir, STATUS=status, UPLOAD_TYPE = "test",
+                              pd  = self.insertProcessedDir(pr,tar,NAME=fulldir, STATUS=status, UPLOAD_TYPE = "test",
                                                             UPLOAD_STATUS="boh",
                                                             UPLOAD_ID=444)
                               
@@ -288,8 +288,10 @@ class PixelTier0 (object):
             return aa
 
 
-      def getInputTarByName(self, tar_name):
-            aa = self.store.find(InputTar, InputTar.NAME == tar_name).one()
+      def getInputTarByName(self, tar_name, loc_name):
+            n = unicode(tar_name)
+            l = unicode(loc_name)
+            aa = self.store.find(InputTar, InputTar.NAME == n,InputTar.LOCATION == l).one()
             return aa
 
       def testInoutTarEquality(self, tar1,tar2):
@@ -297,8 +299,15 @@ class PixelTier0 (object):
 
 
       def createDirOut(self,tar):
-            namedir = (self.PROCESSEDPREFIX+'/'+re.sub('.tar','',tar.NAME)+"_"+re.sub("[\s/]","_",self.MACRO_VERSION))
-            return namedir
+#            namedir = (self.PROCESSEDPREFIX+'/'+re.sub('.tar','',tar.NAME)+"_"+re.sub("[\s/]","_",self.MACRO_VERSION))
+            modname = re.split("_",tar.NAME)[0]
+            namedir = (self.PROCESSEDPREFIX+'/'+modname+"/"+re.sub("[\s/]","_",self.MACRO_VERSION))
+
+#            print " ECCCO ",tar.NAME,modname, namedir
+
+            fulldir = namedir+'/'+re.sub('.tar','',re.split("_",tar.NAME)[1])
+
+            return namedir,fulldir
 
 
 
@@ -319,14 +328,28 @@ class PixelTier0 (object):
                   self.startProcessing(job)
             return n
 
+
+      def injectsProcessingJobs(self):
+            tars = self.store.find(InputTar,InputTar.STATUS==unicode('new'))
+            n=0
+            for job in tars:
+                  n=n+1
+                  self.processInputTar(job)
+            return n
+
+
+
+
       def killAllInstances(self, DEBUG=False):
             if (DEBUG == True):
                   print " In Signal hadler - killing all ",len(self.RUNNINGINSTANCES)," instances"
             # kill all the instances and sets back from running to injected the processingruns
             for i in self.RUNNINGINSTANCES:
                   prid = i[1]
-            if (DEBUG == True):
-                  print " Setting processing run ",prid," to injected"
+                  if (DEBUG == True):
+                        print " Setting processing run ",prid," to injected"
       
                   self.setProcessingStatus(self.getProcessingRunById(prid),"injected")
+                  (i[0]).kill()
+
                   

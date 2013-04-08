@@ -4,6 +4,7 @@
 
 # enable debugging
 import cgitb
+import commands
 import os
 import datetime
 from time import sleep
@@ -27,6 +28,8 @@ import random
 signal.signal(signal.SIGTERM, handler)
 signal.signal(signal.SIGINT,handler)
 
+MAX=100000
+
 pdb = PixelTier0()
 pdb.initProcessing(CONFIG="./test.ini", DEBUG=False)
 pdb.connectToDB()
@@ -36,22 +39,36 @@ print " initialization done"
 #
 # loop over a dir to search for tars
 
-basedir="/data/tars"
+basedir="/data/in_tests"
 tmpfile = "./tmpfile"
-pattern = "*.tar"
+pattern = "*.tar.gz"
 os.system("rm -rf "+tmpfile)
 os.system("find "+basedir+" -name "+pattern+" > "+tmpfile)
 
+INSERTED=0
 f=open(tmpfile)
 for line in f:
+
+    if (INSERTED>MAX):
+        continue
+    
     line= line.rstrip(os.linesep)
     print " working on Tar file: ",line
     
 
+    if (pdb.getInputTarByName(os.path.basename(line),os.path.dirname(line)) is not None):
+        continue
     
+
+#
+# get cksum
+#
+
+    (ret, ck) = commands.getstatusoutput('cksum '+line+" | awk \'{print $1}\'")
+
     tar = InputTar (NAME=os.path.basename(line),
                 LOCATION=os.path.dirname(line),
-                CKSUMTYPE='cksum', CKSUM='4294967295',     
+                CKSUMTYPE='cksum', CKSUM=ck,     
                 STATUS='new', CENTER = "Pisa", DATE = date.today())
 
     pp = pdb.insertNewTar(tar)
@@ -62,6 +79,7 @@ for line in f:
 
 
     print "Inserted new tar = ", tar.TAR_ID
+    INSERTED=INSERTED+1
 
     #
     # process it
@@ -73,12 +91,16 @@ for line in f:
         print "ERROR inserting PR - skipping"
         continue
     print "Insert done! ID=",pr.RUN_ID
-
+    
     #
-    #process it
-    #
+     #process it
+     #
     procevd = pdb.startProcessing(pr)
+#
+# inject processing for all tars with status still new
+#
 
+numinjected = pdb.injectsProcessingJobs()
 
 
 
