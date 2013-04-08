@@ -452,9 +452,10 @@ class Test_Sensor(object):
       RESULT=Float()
       DATA_ID=Int()
       I_150V = Float()
+      temperature = Float()
       I_150_100 = Float()
       data=Reference(DATA_ID,Data.DATA_ID)
-      def __init__(self,SESSION_ID,SENSOR_ID,PRERESULT,RESULT,DATA_ID,I_150V,I_150_100):
+      def __init__(self,SESSION_ID,SENSOR_ID,PRERESULT,RESULT,DATA_ID,I_150V,I_150_100, temperature):
           self.SESSION_ID=SESSION_ID
           self.SENSOR_ID=unicode(SENSOR_ID)
           self.PRERESULT=float(PRERESULT)
@@ -462,6 +463,7 @@ class Test_Sensor(object):
           self.DATA_ID=DATA_ID
           self.I_150V=I_150V
           self.I_150_100=I_150_100
+          self.temperature = temperature
           
 
 #history

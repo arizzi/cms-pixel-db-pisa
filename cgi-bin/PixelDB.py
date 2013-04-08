@@ -820,7 +820,7 @@ class PixelDBInterface(object) :
                         print"<br>Error inserting data"
                         return None
 
-                  TempNominal = TestNumber
+                  TempNominal = tempnominal2
 
 
                   if (ttt is None):
@@ -932,29 +932,59 @@ class PixelDBInterface(object) :
 # fake one
 #
       def extractorTestSensorDir(self,dir):
-            sensorid=unicode(444)
-            i150v=10
-            i1501500=11
-            rootpnfs=unicode('file:pippo.root')
-            return (sensorid, i150v, i150100, rootpnfs, preresult, result,  True)
+#
+# just use IV.LOG in the dir
+#
+            ppp = subprocess.Popen("cat "+dir.rstrip()+"/IV.LOG", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            retval = ppp.wait()
+            if (retval != 0):
+                  print "cannot parse File",str(dir+'/IV.LOG')
+                  return (0,0,0,0,0,0,0,0,False)
+            line = ppp.stdout.readlines()[0]
+
+            line = line.rstrip(os.linesep)
+
+            (moduleid, i150v, i150100, rootpnfs, timestamp,temperature) = line.split(" ")
+            #
+            #for the moment
+            #
+            preresult = 0
+            result = 0
+            
+            return (moduleid, i150v, i150100, rootpnfs, preresult, result, timestamp,temperature,True)
             
 
-      def insertTestSensorDir(self,dir,sessionid):
+      def insertTestSensorDir(self,dir,center,operator):
             #
             # what to do here :
             #   you need directly I_150V, I_150_100, preresult
             #   a root file containing the curves
             # return None if error, otherwise the sensortest
             #
-            (sensorid, i150v, i150100, rootpnfs, preresult,result,  ok) = self.extractorTestSensorDir(dir)
+
+            (moduleid, i150v, i150100, rootpnfs,preresult, result, timestamp, temperature,ok) = self.extractorTestSensorDir(dir)
             if (ok == False):
                   print "InsertSensorTest Extractor returned False"
                   return None
             
-            sensor = self.getSensor(sensorid)
-            if (sensor is None):
-                  print "InsertSensorTest From Dir: trying to insert a test for a non existing sensor: ",sensorid
+            module = self.getFullModule(unicode(moduleid))
+            if (module is None):
+                  print "InsertSensorTest From Dir: trying to insert a test for a non existing Module: ",moduleid
                   return None
+
+#
+# from module to sensor
+#
+            sensorid = module.baremodule.sensor.SENSOR_ID
+#
+# create a session
+#
+            session = Session(CENTER=center, OPERATOR=operator, DATE=timestamp, TYPE='IV test', COMMENT="")
+            pp = self.insertSession(session)
+            if (pp is None):
+                  print "Cannot insert session"
+                  return None
+            
             #
             #
             #
@@ -964,7 +994,7 @@ class PixelDBInterface(object) :
                   print "Cannot insert data"
                   return None
             
-            st = Test_Sensor(SESSION_ID=sessionid,SENSOR_ID=sensorid,PRERESULT=preresult,RESULT=result,DATA_ID = data_id.DATA_ID,I_150V = i150v,I_150_100 = i150100)
+            st = Test_Sensor(SESSION_ID=session.SESSION_ID,SENSOR_ID=sensorid,PRERESULT=preresult,RESULT=result,DATA_ID = data_id.DATA_ID,I_150V = float(i150v),I_150_100 = float(i150100), temperature = float(temperature))
             
 
             self.insertSensorTest(st)
