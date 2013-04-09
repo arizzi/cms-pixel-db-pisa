@@ -28,7 +28,7 @@ CREATE TABLE `history` (
   `NAME` varchar(400) DEFAULT NULL,
   `UPLOAD_TYPE` varchar(100) DEFAULT NULL,
   `UPLOAD_STATUS` varchar(100) DEFAULT NULL,
-  `UPLOAD_ID` int(11)default NULL,
+  `UPLOAD_ID` varchar(1000) default NULL,
   `TAR_ID` int(11) NOT NULL,
   `PROCESSING_RUN_ID` int(11) NOT NULL,
   PRIMARY KEY (`DIR_ID`)
@@ -103,7 +103,7 @@ class ProcessedDir (object):
         self.NAME=unicode(NAME)
         self.STATUS = unicode(STATUS )
         self.UPLOAD_TYPE = unicode(UPLOAD_TYPE )
-        self.UPLOAD_ID = ( UPLOAD_ID)
+        self.UPLOAD_ID = UPLOAD_ID
         self.PROCESSING_RUN_ID = (PROCESSING_RUN_ID )
         self.TAR_ID = TAR_ID
         self.DATE = DATE

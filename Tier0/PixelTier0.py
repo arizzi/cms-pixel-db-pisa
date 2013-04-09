@@ -1,11 +1,13 @@
 from ObjectsTier0 import *
 from MySQLdb import *
+import tempfile
 from storm.locals import *
 import string
 import subprocess
 import os.path
 import ConfigParser
 import re
+from PixelDB import *
 
 class PixelTier0 (object):
       def __init__(self) :
@@ -33,6 +35,15 @@ class PixelTier0 (object):
                         dict1[option] = None
             return dict1
 
+
+      def initProcessingJustDB(self, DEBUG):
+#
+# also create a connection to Test DB
+#
+            self.PixelDB = PixelDBInterface(operator="tommaso",center="pisa")
+            self.PixelDB.connectToDB()
+
+
       def initProcessing(self, CONFIG, DEBUG):
             self.Config = ConfigParser.ConfigParser()
             self.Config.read(CONFIG)
@@ -55,8 +66,16 @@ class PixelTier0 (object):
                   print "EXECUTION.PROCESSEDPREFIX = ",self.PROCESSEDPREFIX
             if (self.MACRO_VERSION=='null' or self.MACRO_LOCATION=='null' or self.EXE=='null' or self.PROCESSEDPREFIX == 'null'):
                   print "Config file NOT ok"
-                  exit(1)
-                  
+                  exit(1)                  
+#
+# also create a connection to Test DB
+#
+            self.PixelDB =  PixelDBInterface(operator="tommaso",center="pisa")
+            self.PixelDB.connectToDB()
+
+
+      def pixelDB():
+            return self.PixelDB
 
 
       def connectToDB(self,string = "mysql://tester:pixels@cmspixel.pi.infn.it/test_tier0") :
@@ -231,7 +250,7 @@ class PixelTier0 (object):
                               pr=self.getProcessingRunById(i[1])
                               self.setProcessingStatus(pr,status)
 
-
+                              
                               tar = self.getInputTarById (pr.TAR_ID)
 
                               if (tar is None):
@@ -242,16 +261,16 @@ class PixelTier0 (object):
 
                               (namedir,fulldir) = self.createDirOut(tar)
                               
-#
-# now I should also upload
-#
-
-                              #self.uploadTest()
-
-                              pd  = self.insertProcessedDir(pr,tar,NAME=fulldir, STATUS=status, UPLOAD_TYPE = "test",
-                                                            UPLOAD_STATUS="boh",
-                                                            UPLOAD_ID=444)
+                              #
+                              # now I should also upload
+                              #
                               
+                              #self.uploadTest()
+                              
+                              pd  = self.insertProcessedDir(pr,tar,NAME=fulldir, STATUS=status, UPLOAD_TYPE = "test",
+                                                            UPLOAD_STATUS="",
+                                                            UPLOAD_ID=0)
+                                                            
                               if (pd is None):
                                     print " ERROR in PD"
                                     return None
@@ -272,7 +291,7 @@ class PixelTier0 (object):
 #
                    
             
-            # getmethods
+# getmethods
 #
       def getInputTarById (self, tar_id):
             aa = self.store.find(InputTar, InputTar.TAR_ID == tar_id).one()
@@ -305,9 +324,12 @@ class PixelTier0 (object):
 
 #            print " ECCCO ",tar.NAME,modname, namedir
 
-            fulldir = namedir+'/'+re.sub('.tar','',re.split("_",tar.NAME)[1])
+            archivename = re.sub('.tar','',re.sub('.tar.gz','',tar.NAME))
 
-            return namedir,fulldir
+            fulldir = namedir+'/'+re.sub('.tar','',re.split("_",tar.NAME)[1])
+#            print " ECCCO ",tar.NAME,modname, namedir, fulldir, archivename
+
+            return namedir,namedir+'/'+archivename
 
 
 
@@ -352,4 +374,101 @@ class PixelTier0 (object):
                   self.setProcessingStatus(self.getProcessingRunById(prid),"injected")
                   (i[0]).kill()
 
+#
+# Inventory/Test DB insertion
+#
+
                   
+
+#
+# automatic publishing of FULL MODULE tests (!)
+#
+# idea is to add a new processingrunoutdir.status = "inserted"
+# this method will take care of the transition done->inserted
+# it uses in the end PixelDB.insertTestFullModuleDir()
+
+      def  insertTestinDBAllTests(self,od):
+            #
+#please note we work at the level of OD. Each OD can produce more than one test
+            # currently I take care of
+            # FullmoduleTests, SensorTests                       
+            #
+            # first check the status is done, otherwise exit
+            if (od.STATUS != 'done'):
+                  print " Error: OutDir with ID",od.DIR_ID, "has status",od.STATUS
+                  return None
+# i save here the session ids of the tests, if any
+# first create a session:
+            session = Session(CENTER="Pisa", OPERATOR="Tommaso", DATE=date.today(), TYPE='Bulk Imported tests', COMMENT="")
+            pp = self.PixelDB.insertSession(session)
+            if (pp is None):
+                  print "Cannot insert session"
+                  return None                                                                  
+            
+            print "OOOO",od.NAME
+
+
+# now, let's launch all the possible tests on that OUTDIR            
+# search for fullmodule test:
+            tmpfile =  (tempfile.mkstemp())[1]
+            pattern = 'summaryTests.txt'
+
+
+            
+            os.system("find "+od.NAME+" -name "+pattern+" > "+tmpfile)
+            f=open(tmpfile)
+            for line in f:
+                  line= line.rstrip(os.linesep)
+                  print " working on file: ",line
+                  dir = re.sub(pattern,"",line)
+                  print "Going to add as FullModule Test",dir
+                  res = self.PixelDB.insertTestFullModuleDir(dir,sessionid)
+                  if (res is None):
+                        print "Cannot insert FM test from",dir,"  ... exiting"
+                        return None                                            
+            
+            os.system("rm -f "+tmpfile)
+
+# sensor tests
+            pattern = 'IV.LOG'
+            
+
+            os.system("find "+od.NAME+" -name "+pattern+" > "+tmpfile)
+            
+            f=open(tmpfile)
+            for line in f:
+                  line= line.rstrip(os.linesep)
+                  print " working on file: ",line
+                  dir = re.sub(pattern,"",line)
+                  print "Going to add as Sensor Test",dir
+                  res = self.PixelDB.insertTestSensorDir(dir,sessionid)
+                  if (res is None):
+                        print "Cannot insert Sensor test from",dir,"  ... exiting"
+                        return None                                            
+            
+            os.system("rm -f "+tmpfile)
+# done!
+            od.STATUS=unicode("inserted")
+# set back
+            od.UPLOAD_ID=session.SESSION_ID
+            self.store.commit()      
+            return od
+
+
+
+      def uploadAllTests(self):
+#
+# loop on outdir with status = 'done'
+         aa = self.store.find(ProcessedDir,ProcessedDir.STATUS == unicode("done"))
+
+         for od in aa:
+               res = self.insertTestinDBAllTests(od)
+               if (res is None):
+                     print" Stopped uploadAllTests due to error"
+                     return None
+         return aa
+
+
+
+
+

@@ -95,7 +95,7 @@ pdb.connectToDB()
 #
 # loop over a dir to search for tars
 
-basedir="/data/in_tests"
+basedir=INPUTDIR
 tmpfile = (tempfile.mkstemp())[1]
 print "FILE", tmpfile
 pattern = PATTERN

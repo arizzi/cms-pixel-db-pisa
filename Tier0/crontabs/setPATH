@@ -1,1 +1,1 @@
-export PYTHONPATH=/home/robot/Tier0/:/home/robot/Tier0/storm/:/home/robot/Tier0/storm/locals
+export PYTHONPATH=/home/robot/Tier0/:/home/robot/Tier0/storm/:/home/robot/cgi-bin
