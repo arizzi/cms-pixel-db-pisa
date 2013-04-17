@@ -614,23 +614,35 @@ class PixelDBInterface(object) :
 
 #            out = subprocess.check_output(["ls", dir])
 
-
             ppp = subprocess.Popen(fulltestinfo+" "+dir, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             
             retval = ppp.wait()
-            if (retval != 0):
-                  print "cannot parse Dir",dir
-                  return None
-            fileContent = []
 
-            line = ppp.stdout.readlines()[0]
+            timestamp=0
+            modulename='null'
+            tempnominal2=0
+            ck='null'
 
-            line = line.rstrip(os.linesep)
-
-
-
-            (timestamp,modulename, tempnominal2,ck) = line.split(" ")
+            if (retval == 0):
+                  fileContent = []
+                  
+                  line = ppp.stdout.readlines()[0]
+                  
+                  line = line.rstrip(os.linesep)
+                  
+                  
+                  
+                  (timestamp,modulename, tempnominal2,ck) = line.split(" ")
             
+            else:
+# I try to get the same stuff from the dir name
+                  fields = dir.split("/")
+                  tempnominal2 = fields[-1]
+                  modulename = fields[-2]
+                  timestamp = 0
+                  ck='null'
+            
+
             #
             # check if this already exixts
             #
@@ -664,8 +676,7 @@ class PixelDBInterface(object) :
                   print "DEBUG ",fields
                   #
                   # real parsing
-                  #
-                  
+                  #                  
                   if (fields[0] == 'module' and len (fields)>1):
                         ModuleNumber = fields[1]
                   if (fields[0] == 'deadpi'):
@@ -688,7 +699,7 @@ class PixelDBInterface(object) :
                         AddressPixels=string.join(fields[1:]," ")
 
                   if (fields[0] == 'noisy'):
-                       NoisyPixels=string.join(fields[1:]," ")
+                      NoisyPixels=string.join(fields[1:]," ")
 
                   if (fields[0] == 'thres'):
                         TreshPixels=string.join(fields[1:]," ")
@@ -954,7 +965,7 @@ class PixelDBInterface(object) :
             return (moduleid, i150v, i150100, rootpnfs, preresult, result, timestamp,temperature,True)
             
 
-      def insertTestSensorDir(self,dir,center,operator):
+      def insertTestSensorDir(self,dir,center,operator,session):
             #
             # what to do here :
             #   you need directly I_150V, I_150_100, preresult
@@ -979,11 +990,11 @@ class PixelDBInterface(object) :
 #
 # create a session
 #
-            session = Session(CENTER=center, OPERATOR=operator, DATE=timestamp, TYPE='IV test', COMMENT="")
-            pp = self.insertSession(session)
-            if (pp is None):
-                  print "Cannot insert session"
-                  return None
+#            session = Session(CENTER=center, OPERATOR=operator, DATE=timestamp, TYPE='IV test', COMMENT="")
+#            pp = self.insertSession(session)
+#            if (pp is None):
+#                  print "Cannot insert session"
+#                  return None
             
             #
             #

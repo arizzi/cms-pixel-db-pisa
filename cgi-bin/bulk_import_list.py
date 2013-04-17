@@ -19,9 +19,7 @@ pdb.connectToDB()
 #insert most max, for debugging
 num=0
 
-
 filename = 'summaryTest.txt'
-
 
 print 'Number of arguments:', len(sys.argv), 'arguments.'
 print 'Argument List:', str(sys.argv)
