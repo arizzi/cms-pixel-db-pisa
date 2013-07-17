@@ -1026,7 +1026,7 @@ class PixelDBInterface(object) :
             # the step could be the last one, split it for "."
             batch = ((mylist[0]).split('/'))[-1]
             wafer = str(batch)+'-'+str(mylist[1])
-            sensor = str(wafer)+'-'+str(mylist[2])
+            sensor = "S"+str(wafer)+'-'+str(mylist[2])
             step = ((mylist[3]).split("\."))[0]
             print "PARSED from "+filename+" is : ",batch, wafer, sensor, step
             return (batch, wafer, sensor, step)
@@ -1068,7 +1068,7 @@ class PixelDBInterface(object) :
             centre1 = results['CENTRE']
             step1= results['STEP']
             wafer1 = results['BATCH']+'-'+results['WAFER']
-            sensor1 = results['BATCH']+'-'+results['WAFER']+'-'+results['SENSOR']
+            sensor1 = "S"+results['BATCH']+'-'+results['WAFER']+'-'+results['SENSOR']
             v1 = results['V1']
             v2 = results['V2']
             i1 = results['I1']
