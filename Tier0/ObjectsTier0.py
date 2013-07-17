@@ -9,7 +9,7 @@ from MySQLdb import *
 from storm.locals import *
 
 """
-CREATE TABLE `history` (
+CREATE TABLE `historyTier0` (
   `HISTORY_ID` int(11) NOT NULL AUTO_INCREMENT,
   `TYPE` varchar(32) NOT NULL DEFAULT '',
   `TAR_ID` int(11) default 0,
@@ -131,8 +131,8 @@ class ProcessingRun (object):
         self.PROCESSED_DIR_ID = PROCESSED_DIR_ID
     
 
-class History(object):
-    __storm_table__ = "history"
+class HistoryTier0(object):
+    __storm_table__ = "historyt0"
     HISTORY_ID = Int(primary=True)
     TYPE=Unicode()
     TAR_ID = Int()
@@ -155,8 +155,8 @@ ProcessingRun.tar_id = Reference( ProcessingRun.TAR_ID, InputTar.TAR_ID)
 ProcessedDir.tar_id = Reference (ProcessedDir.TAR_ID, InputTar.TAR_ID)
 
 
-History.tar_id = Reference (History.TAR_ID, InputTar.TAR_ID)
-History.dir_id = Reference (History.DIR_ID, ProcessedDir.DIR_ID)
-History.run_id = Reference (History.RUN_ID, ProcessingRun.RUN_ID)
+HistoryTier0.tar_id = Reference (HistoryTier0.TAR_ID, InputTar.TAR_ID)
+HistoryTier0.dir_id = Reference (HistoryTier0.DIR_ID, ProcessedDir.DIR_ID)
+HistoryTier0.run_id = Reference (HistoryTier0.RUN_ID, ProcessingRun.RUN_ID)
 
 

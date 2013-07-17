@@ -7,7 +7,8 @@ import subprocess
 import os.path
 import ConfigParser
 import re
-#from PixelDB import *
+sys.path.append("../PixelDB")
+from PixelDB import *
 
 class PixelTier0 (object):
       def __init__(self) :
@@ -40,9 +41,8 @@ class PixelTier0 (object):
 #
 # also create a connection to Test DB
 #
-            a=1
-#            self.PixelDB = PixelDBInterface(operator="tommaso",center="pisa")
-#            self.PixelDB.connectToDB()
+            self.PixelDB = PixelDBInterface(operator="tommaso",center="pisa")
+            self.PixelDB.connectToDB()
 
 
       def initProcessing(self, CONFIG, DEBUG):
@@ -71,21 +71,20 @@ class PixelTier0 (object):
 #
 # also create a connection to Test DB
 #
-#            self.PixelDB =  PixelDBInterface(operator="tommaso",center="pisa")
-#            self.PixelDB.connectToDB()
+            self.PixelDB =  PixelDBInterface(operator="tommaso",center="pisa")
+            self.PixelDB.connectToDB()
 
 
       def pixelDB():
-            return 1
-#            return self.PixelDB
+            return self.PixelDB
 
 
       def connectToDB(self,string = "mysql://tester:pixels@cmspixel.pi.infn.it/test_tier0") :
             self.database = create_database(string)
             self.store = Store(self.database)            
 
-      def insertHistory(self, TYPE, TAR_ID, DIR_ID, RUN_ID,  COMMENT,DATE=date.today()):
-            newHist=History(TYPE, TAR_ID, DIR_ID, RUN_ID,  DATE, COMMENT)
+      def insertHistoryTier0(self, TYPE, TAR_ID, DIR_ID, RUN_ID,  COMMENT,DATE=date.today()):
+            newHist=HistoryTier0(TYPE, TAR_ID, DIR_ID, RUN_ID,  DATE, COMMENT)
             self.store.add(newHist)
             self.store.commit()
             return newHist
@@ -104,7 +103,7 @@ class PixelTier0 (object):
             
             self.store.add(tar)
             self.store.commit()
-            self.insertHistory(TYPE = 'insert', TAR_ID=tar.TAR_ID, DIR_ID=0, RUN_ID=0,  DATE=date.today(), COMMENT='new tar insertion')
+            self.insertHistoryTier0(TYPE = 'insert', TAR_ID=tar.TAR_ID, DIR_ID=0, RUN_ID=0,  DATE=date.today(), COMMENT='new tar insertion')
             return tar
 
 
@@ -129,7 +128,7 @@ class PixelTier0 (object):
             if (pr is None) :
                   print 'Failed to inject a ProcessingRun for tar_id=', tar.TAR_ID, ' name=',tar.NAME
                   return None
-            self.insertHistory(TYPE = 'insert', TAR_ID=0, DIR_ID=0, RUN_ID=pr.RUN_ID,  DATE=date.today(), COMMENT='new processing insertion')
+            self.insertHistoryTier0(TYPE = 'insert', TAR_ID=0, DIR_ID=0, RUN_ID=pr.RUN_ID,  DATE=date.today(), COMMENT='new processing insertion')
             
             return pr
 
@@ -167,7 +166,7 @@ class PixelTier0 (object):
             
             self.store.add(pd)
             self.store.commit()
-            self.insertHistory(TYPE = 'insert', TAR_ID=0, DIR_ID=pd.DIR_ID, RUN_ID=0,  DATE=date.today(), COMMENT='inserted processeddir')
+            self.insertHistoryTier0(TYPE = 'insert', TAR_ID=0, DIR_ID=pd.DIR_ID, RUN_ID=0,  DATE=date.today(), COMMENT='inserted processeddir')
             return pd
 
       def startProcessing(self,pr, DEBUG=False):
@@ -201,23 +200,23 @@ class PixelTier0 (object):
 
       def setProcessingStatus(self,pr,status):
             pr.STATUS=unicode(status)
-            self.insertHistory(TYPE = 'changestatus', TAR_ID=0, DIR_ID=0, RUN_ID=pr.RUN_ID,  DATE=date.today(), COMMENT='status set to '+status)
+            self.insertHistoryTier0(TYPE = 'changestatus', TAR_ID=0, DIR_ID=0, RUN_ID=pr.RUN_ID,  DATE=date.today(), COMMENT='status set to '+status)
             self.store.commit()
 
       def setProcessingExitCode(self,pr,status):
             pr.EXIT_CODE=status
-            self.insertHistory(TYPE = 'changeexitcode', TAR_ID=0, DIR_ID=0, RUN_ID=pr.RUN_ID,  DATE=date.today(), COMMENT='status set to '+str(status))
+            self.insertHistoryTier0(TYPE = 'changeexitcode', TAR_ID=0, DIR_ID=0, RUN_ID=pr.RUN_ID,  DATE=date.today(), COMMENT='status set to '+str(status))
             self.store.commit()
 
 
       def setInputStatus(self,tar,status):
             tar.STATUS=unicode(status)
-            self.insertHistory(TYPE = 'changestatus', TAR_ID=tar.TAR_ID, DIR_ID=0, RUN_ID=0,  DATE=date.today(), COMMENT='status set to '+status)
+            self.insertHistoryTier0(TYPE = 'changestatus', TAR_ID=tar.TAR_ID, DIR_ID=0, RUN_ID=0,  DATE=date.today(), COMMENT='status set to '+status)
             self.store.commit()
 
       def setDirStatus(self,dir,status):
             dir.STATUS=unicode(status)
-            self.insertHistory(TYPE = 'changestatus', TAR_ID=0, DIR_ID=dir.DIR_ID, RUN_ID=0,  DATE=date.today(), COMMENT='status set to '+status)
+            self.insertHistoryTier0(TYPE = 'changestatus', TAR_ID=0, DIR_ID=dir.DIR_ID, RUN_ID=0,  DATE=date.today(), COMMENT='status set to '+status)
             self.store.commit()
 
       def setAllDone(self,RUN, DIR, TAR,  STATUSDIR, STATUSTAR, STATUSRUN):
@@ -432,7 +431,7 @@ class PixelTier0 (object):
                   print " working on file: ",line
                   dir = re.sub(pattern,"",line)
                   print "Going to add as FullModule Test",dir
-#                  res = self.PixelDB.insertTestFullModuleDir(dir,sessionid)
+                  res = self.PixelDB.insertTestFullModuleDir(dir,sessionid)
                   if (res is None):
                         print "Cannot insert FM test from",dir,"  ... exiting"
                         return None                                            
@@ -451,7 +450,7 @@ class PixelTier0 (object):
                   print " working on file: ",line
                   dir = re.sub(pattern,"",line)
                   print "Going to add as Sensor Test",dir
-#                  res = self.PixelDB.insertTestSensorDir(dir,sessionid)
+                  res = self.PixelDB.insertTestSensorDir(dir,sessionid)
                   if (res is None):
                         print "Cannot insert Sensor test from",dir,"  ... exiting"
                         return None                                            
