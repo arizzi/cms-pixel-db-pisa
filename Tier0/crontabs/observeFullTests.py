@@ -14,6 +14,8 @@ import datetime
 from time import sleep
 import signal
 import sys
+#sys.path.append("../../PixelDB")
+sys.path.append("/home/robot/cms-pixel-db-pisa/Tier0")
 import PixelTier0
 #cgitb.enable()
 from storm.tracer import debug

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # enable debugging
+import sys
 import cgitb
 from datetime import *
 cgitb.enable()
@@ -45,6 +46,7 @@ print '''
 	                </script>
 
 '''
+sys.path.append("../PixelDB")
 
 from storm.properties import *
 from storm.references import *

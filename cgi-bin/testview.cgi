@@ -42,6 +42,7 @@ function fnShowHide( iCol )
                 </script>
 
 '''
+sys.path.append("../PixelDB")
 
 from storm.properties import *
 from storm.references import *

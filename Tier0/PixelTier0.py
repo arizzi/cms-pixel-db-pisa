@@ -7,7 +7,8 @@ import subprocess
 import os.path
 import ConfigParser
 import re
-sys.path.append("../PixelDB")
+import sys
+sys.path.append("/home/robot/cms-pixel-db-pisa/PixelDB")
 from PixelDB import *
 
 class PixelTier0 (object):
