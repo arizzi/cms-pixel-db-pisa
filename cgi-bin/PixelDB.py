@@ -5,6 +5,7 @@ import commands
 import string
 import subprocess
 import os.path
+import re
 
 class PixelDBInterface(object) :
 
@@ -73,6 +74,30 @@ class PixelDBInterface(object) :
             self.insertHistory(type="NULL", id=0, target_type="HDI", target_id=hdi.HDI_ID, operation="INSERT", datee=date.today(), comment="NO COMMENT")
             return hdi      
       
+
+      def insertBatch (self, batch):
+            if (self.isBatchInserted(batch.BATCH_ID) == True):
+                  print "ERROR: batch already inserted", batch.BATCH_ID
+                  return None
+            self.store.add(batch)
+            self.store.commit()
+            # log in history
+            self.insertHistory(type="NULL", id=0, target_type="BATCH", target_id=batch.BATCH_ID, operation="INSERT", datee=date.today(), comment="NO COMMENT")
+            return batch      
+
+      def insertWafer (self, wafer):
+            if (self.isWaferInserted(wafer.WAFER_ID) == True):
+                  print "ERROR: wafer already inserted", wafer.WAFER_ID
+                  return None
+            self.store.add(wafer)
+            self.store.commit()
+            # log in history
+            self.insertHistory(type="NULL", id=0, target_type="WAFER", target_id=wafer.WAFER_ID, operation="INSERT", datee=date.today(), comment="NO COMMENT")
+            return wafer      
+
+      
+
+
       def joinObjects(self, arrayofrocids):
             return string.join(arrayofrocids,",")
       def splitObjects(self, pp):
@@ -164,8 +189,21 @@ class PixelDBInterface(object) :
 #
       def isSensorInserted(self, sensor_id):
             temp=unicode(sensor_id)
-            aa = self.store.find(Sensor, Sensor.SENSOR_ID==temp).one()
+            aa = self.store.find(Sensor, Sensor.SENSOR_ID==unicode(temp)).one()
             return aa is not None
+
+      def isBatchInserted(self, batch_id):
+            temp=unicode(batch_id)
+            aa = self.store.find(Batch, Batch.BATCH_ID==unicode(temp)).one()
+            return aa is not None
+
+      def isWaferInserted(self, wafer_id):
+            temp=unicode(wafer_id)
+            aa = self.store.find(Wafer, Wafer.WAFER_ID==unicode(temp)).one()
+            return aa is not None
+
+
+
 
       def isRocInserted(self, roc_id):
             temp=unicode(roc_id)
@@ -940,32 +978,120 @@ class PixelDBInterface(object) :
 #
 
 #
-# fake one
+# define a general purpose parser, which parses things like
+#A = B # this is a comment
 #
-      def extractorTestSensorDir(self,dir):
-#
-# just use IV.LOG in the dir
-#
-            ppp = subprocess.Popen("cat "+dir.rstrip()+"/IV.LOG", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            retval = ppp.wait()
-            if (retval != 0):
-                  print "cannot parse File",str(dir+'/IV.LOG')
-                  return (0,0,0,0,0,0,0,0,False)
-            line = ppp.stdout.readlines()[0]
+      def textFileParser(self,filename):
+            debug = True
 
-            line = line.rstrip(os.linesep)
+            COMMENT_CHAR = '#'
+            OPTION_CHAR =  ' '
+            options = {}
+            f = open(filename)
+            for line in f:
+                  if (debug == True):
+                        print "line ...",line
+                  
+                  # First, remove comments:
+                  if COMMENT_CHAR in line:
+                        # split on comment char, keep only the part before
+                        line, comment = line.split(COMMENT_CHAR, 1)
+                  # Second, find lines with an option=value:
+                  if OPTION_CHAR in line:
+                        # split on option char:
+                        option, value = line.split(OPTION_CHAR, 1)
+                        # strip spaces:
+                        option = option.strip()
+                        value = value.strip()
+                        # store in dictionary:
+                        options[option] = value
+                        if (debug == True):
+                              print "SAVED ",option,"=", value
+            f.close()
+            return options
+ 
+      def parseSensorTestFilename(self, filename):
+            debug= True
+            #it has to be of the form (batch_wafer_sensor_step[_(whatever)].inf.txt
+            #first, match .inf.txt
+            if (re.search(".inf.txt", filename) is None):
+                  print "Filename "+filename+" does not end with .inf.txt"
+                  return (None, None, None, None)
+            mylist = filename.split("_")
+            if (debug == True):
+                  print "LIST ",mylist
+            if (len(mylist) <4 ):
+                  print "Filename "+filename+" not well formed."
+                  return (None, None, None, None)
+            # the step could be the last one, split it for "."
+            batch = ((mylist[0]).split('/'))[-1]
+            wafer = str(batch)+'-'+str(mylist[1])
+            sensor = str(wafer)+'-'+str(mylist[2])
+            step = ((mylist[3]).split("\."))[0]
+            print "PARSED from "+filename+" is : ",batch, wafer, sensor, step
+            return (batch, wafer, sensor, step)
+#
+# using the info as in Andrei's mail
+# given a dir
+#   - look for a *.inf.txt file and parse it
+#   - put in data the relevant stuff
+#
+# I will also add later insertTestWaferDir e insertTestBatchDir
+#
 
-            (moduleid, i150v, i150100, rootpnfs, timestamp,temperature) = line.split(" ")
-            #
-            #for the moment
-            #
-            preresult = 0
-            result = 0
+      def extractorTestSensorFile(self,filename):
             
-            return (moduleid, i150v, i150100, rootpnfs, preresult, result, timestamp,temperature,True)
+
+            #
+            # extract parameters from the file name
+            #
+            
+            (batch, wafer, sensor, step) = self.parseSensorTestFilename(filename)
+            if (batch is None):
+                  print "Error in filename extraction from "+filename
+                  return (0,0,0,0,0,0,0,0,0,0,0,0,0,0,False)
+
+            #
+            # now parse internally the file
+            #
+            debug = True
+            if (debug == True):
+                  print " ECCOMI"
+
+            results = self.textFileParser(filename)
+            #
+            # search for stuff inside
+            #
+            if (debug == True):
+                  print " ECCO",results
+            batch1 = results['BATCH']
+            centre1 = results['CENTRE']
+            step1= results['STEP']
+            wafer1 = results['BATCH']+'-'+results['WAFER']
+            sensor1 = results['BATCH']+'-'+results['WAFER']+'-'+results['SENSOR']
+            v1 = results['V1']
+            v2 = results['V2']
+            i1 = results['I1']
+            i2 = results['I2']
+            temperature =  results['TEMPERATURE']
+            slope = results['SLOPE']
+            grade = results['GRADE']
+            date = results['DATE']
+            comment = results['COMMENT']
+
+            if (debug == True):
+                  print batch1,batch,wafer1,wafer,sensor1,sensor,step,step1
+            
+            if (batch1 is None or centre1 is None or step1 is None or sensor1 is None or v1 is None or v2 is None or i1 is None or i2 is None or temperature is None or date is None or slope is None or grade is None):
+                  print "Error in the content of "+filename
+                  return (0,0,0,0,0,0,0,0,0,0,0,0,0,0,False)
+            if (batch1 != batch or wafer1 != wafer or sensor1 != sensor or step != step1):
+                  print " File content and name are not consistent "+filename
+
+            return (batch, wafer, sensor, step, v1, i1, v2, i2, slope, temperature, date, grade, centre1, comment,True)
             
 
-      def insertTestSensorDir(self,dir,center,operator,session):
+      def insertTestSensorDir(self,dir,session):
             #
             # what to do here :
             #   you need directly I_150V, I_150_100, preresult
@@ -973,39 +1099,54 @@ class PixelDBInterface(object) :
             # return None if error, otherwise the sensortest
             #
 
-            (moduleid, i150v, i150100, rootpnfs,preresult, result, timestamp, temperature,ok) = self.extractorTestSensorDir(dir)
-            if (ok == False):
+            debug = True
+
+            ppp = subprocess.Popen("ls -1 "+dir.rstrip()+"/*.inf.txt", shell=True, stdout=subprocess.PIPE, stderr=None)
+            retval = ppp.wait()
+            if (retval != 0):
+                  print "no files *.inf.txt in ",str(dir)
+                  return (0,0,0,0,0,0,0,0,0,0,0,0,0,False)
+            lines = ppp.stdout.readlines()
+            if ( len (lines) > 1):
+                  print "too many *.inf.txt in ",str(dir)
+                  return (0,0,0,0,0,0,0,0,0,0,0,0,0,False)
+                  
+            filename= lines[0]
+            
+            filename = filename.rstrip(os.linesep)
+
+            if (debug is True): 
+                  print "FILENAME = "+filename
+
+            (batch, wafer, sensor, step, v1, i1, v2, i2, slope, temperature, date, grade, centre, comment, ok) = self.extractorTestSensorFile(filename)
+#            (moduleid, i150v, i150100, rootpnfs,preresult, result, timestamp, temperature,ok) = self.extractorTestSensorDir(dir)
+            if (ok is None):
                   print "InsertSensorTest Extractor returned False"
                   return None
             
-            module = self.getFullModule(unicode(moduleid))
-            if (module is None):
-                  print "InsertSensorTest From Dir: trying to insert a test for a non existing Module: ",moduleid
-                  return None
+#
+# check if this sensor is existing
+#
 
+            if (self.isSensorInserted(sensor) is None):
+                  print "Failure: the sensor was not inserted before in inventory "+sensor
+                  return None
 #
-# from module to sensor
-#
-            sensorid = module.baremodule.sensor.SENSOR_ID
-#
-# create a session
-#
-#            session = Session(CENTER=center, OPERATOR=operator, DATE=timestamp, TYPE='IV test', COMMENT="")
-#            pp = self.insertSession(session)
-#            if (pp is None):
-#                  print "Cannot insert session"
-#                  return None
+# take additional stuff: the .tab.txt file
+#            
+#search for a file anmed in the same way            --> [*].inf.txt -> [*].tab.txt
+            tabfile = re.sub(r'.inf.txt$', '.tab.txt', filename) 
+            if (os.path.isfile(tabfile) == False):
+                  print "Associated tab file "+tabfile+" does not exist, exiting"
+                  return None
             
-            #
-            #
-            #
-            data_id = Data(PFNs = rootpnfs)
+            data_id = Data(PFNs = tabfile)
             pp = self.insertData(data_id)
             if (pp is None):
                   print "Cannot insert data"
                   return None
             
-            st = Test_Sensor(SESSION_ID=session.SESSION_ID,SENSOR_ID=sensorid,PRERESULT=preresult,RESULT=result,DATA_ID = data_id.DATA_ID,I_150V = float(i150v),I_150_100 = float(i150100), temperature = float(temperature))
+            st = Test_Sensor(SESSION_ID=session.SESSION_ID,SENSOR_ID=sensor,GRADE=grade,DATA_ID = data_id.DATA_ID,I1 = float(i1),I2=float(i2), V1= float(v1), V2 = float(v2),  temperature = float(temperature), DATE = int(date), SLOPE =float(slope), COMMENT=comment)
             
 
             self.insertSensorTest(st)

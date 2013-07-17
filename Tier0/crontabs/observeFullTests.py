@@ -16,7 +16,8 @@ import signal
 import sys
 import PixelTier0
 #cgitb.enable()
-
+from storm.tracer import debug
+debug(True, stream=sys.stdout)
 
 def handler (signum,frame):
     print "Interjected Signal - exiting"
@@ -113,7 +114,11 @@ for line in f:
     
     
     if (pdb.getInputTarByName(os.path.basename(line),os.path.dirname(line)) is not None):
+        print " ALREADY PROCESSED"
         continue
+
+    print " CI SONO" 
+    
     
     #
     # get cksum
@@ -122,8 +127,11 @@ for line in f:
     (ret, ck) = commands.getstatusoutput('cksum '+line+" | awk \'{print $1}\'")
     
     tar = InputTar (NAME=os.path.basename(line), LOCATION=os.path.dirname(line),    CKSUMTYPE='cksum', CKSUM=ck,         STATUS='new', CENTER = CENTER, DATE = date.today())
-
+    print "PIPPO"
     pp = pdb.insertNewTar(tar)
+
+
+
 
     if(pp is None):
         print "ERROR inserting Tar, skipping ...."
