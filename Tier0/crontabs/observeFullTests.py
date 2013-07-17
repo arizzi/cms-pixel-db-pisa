@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 #
 # this is needed to observe a variety of full tests, ideally at least one per centre 
 #
