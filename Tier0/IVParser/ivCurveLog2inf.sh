@@ -26,7 +26,7 @@ rm $TEMP
 
 
 TEMP2=`mktemp`
-MODULE=M0001
+#MODULE=M0001
 echo STEP $STEP >>  $TEMP2
 /home/robot/cms-pixel-db-pisa/Tier0/IVParser/module2sensor.py $MODULE >> $TEMP2 
 echo V1 $V1  >> $TEMP2
