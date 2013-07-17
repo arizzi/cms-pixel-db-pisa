@@ -15,10 +15,10 @@ class PixelTier0 (object):
       def __init__(self) :
             self.date = date.today()
             self.MACRO_VERSION='null'
-            self.MACRO_LOCATION='null'
-            self.MACRO_PROCESSEDPREFIX='null'
-
-            self.EXE='null'
+            self.MACRO_LOCATION=None
+            self.MACRO_PROCESSEDPREFIX=None
+            self.UPLOAD_METHOD = ""
+            self.EXE=None
             self.MAXEXE=1
 
             self.RUNNING=0
@@ -52,6 +52,7 @@ class PixelTier0 (object):
             #
             # force the presence of the fields
             #
+            print "CCCCC",CONFIG
             if (DEBUG == True):
                   print "Reading File ",CONFIG
             self.MACRO_VERSION = self.ConfigSectionMap("MACRO")["version"]
@@ -59,14 +60,17 @@ class PixelTier0 (object):
             self.EXE =  self.ConfigSectionMap("EXECUTION")['script'] # assumes invocation via self.EXE $tarfile
             self.MAXEXE=int(self.ConfigSectionMap("EXECUTION")['maxinstances'] )
             self.PROCESSEDPREFIX=self.ConfigSectionMap("EXECUTION")['processedprefix'] 
+            self.UPLOAD_METHOD=self.ConfigSectionMap("EXECUTION")['uploadmethod'] 
+
             if (DEBUG == True):
                   print "Config Settings:"
                   print "MACRO.VERSION = ",self.MACRO_VERSION
                   print "MACRO.LOCATION = ", self.MACRO_LOCATION
                   print "EXECUTION.SCRIPT = ", self.EXE
+                  print "EXECUTION.UPLOAD_METHOD = ", self.UPLOAD_METHOD
                   print "EXECUTION.MAXEXE = ", self.MAXEXE
                   print "EXECUTION.PROCESSEDPREFIX = ",self.PROCESSEDPREFIX
-            if (self.MACRO_VERSION=='null' or self.MACRO_LOCATION=='null' or self.EXE=='null' or self.PROCESSEDPREFIX == 'null'):
+            if (self.MACRO_VERSION==None or self.MACRO_LOCATION==None or self.EXE==None or self.PROCESSEDPREFIX == None):
                   print "Config file NOT ok"
                   exit(1)                  
 #
@@ -277,7 +281,7 @@ class PixelTier0 (object):
                               
                               #self.uploadTest()
                               
-                              pd  = self.insertProcessedDir(pr,tar,NAME=fulldir, STATUS=status, UPLOAD_TYPE = "test",
+                              pd  = self.insertProcessedDir(pr,tar,NAME=fulldir, STATUS=status, UPLOAD_TYPE = self.UPLOAD_METHOD,
                                                             UPLOAD_STATUS="",
                                                             UPLOAD_ID=0)
                                                             
@@ -388,95 +392,117 @@ class PixelTier0 (object):
 # Inventory/Test DB insertion
 #
 
-                  
-
 #
-# automatic publishing of FULL MODULE tests (!)
+# idea: for every test there will be 
+# self.uploadMYNAME(ProcessedDir, Session) (processed dir = table outputdir)
+# "uploadMYNAME" will be in the macro definition
 #
-# idea is to add a new processingrunoutdir.status = "inserted"
-# this method will take care of the transition done->inserted
-# it uses in the end PixelDB.insertTestFullModuleDir()
 
-      def  insertTestinDBAllTests(self,od):
+      def uploadAllTests(self,session):
+ #
+ # loop on outdir with status = 'done'
+          aa = self.store.find(ProcessedDir,ProcessedDir.STATUS == unicode("done"))
+
+          for od in aa:
+                res = self.uploadGenericTest(od,session)
+                if (res is None):
+                      print" Stopped uploadAllTests due to error with ",od.NAME
+                      return None
+          return aa
+
+
+
+      def uploadGenericTest(self,pd,session):
+#
+# uses the field 
+# ProcessedDir.UPLOAD_TYPE to decide which to use            
+            print "USING UPLOAD = ",pd.UPLOAD_TYPE
+            ppp = eval ("self.upload"+pd.UPLOAD_TYPE+"(pd,session)")
+            return ppp
+
+      def uploadSensorTest(self,pd, session):
             #
-#please note we work at the level of OD. Each OD can produce more than one test
-            # currently I take care of
-            # FullmoduleTests, SensorTests                       
+            # simply extract the dir from the pd, and use it to run 
+            # pixeldb.insertTestSensorDir(self,dir,session)
             #
-            # first check the status is done, otherwise exit
-            if (od.STATUS != 'done'):
-                  print " Error: OutDir with ID",od.DIR_ID, "has status",od.STATUS
+            dir = pd.NAME
+            aaa = self.PixelDB.insertTestSensorDir(dir,session)
+            if (aaa is None):
+                  print "Failed upload from DIR ",dir
                   return None
-# i save here the session ids of the tests, if any
-# first create a session:
-            session = Session(CENTER="Pisa", OPERATOR="Tommaso", DATE=date.today(), TYPE='Bulk Imported tests', COMMENT="")
-            pp = self.PixelDB.insertSession(session)
-            if (pp is None):
-                  print "Cannot insert session"
-                  return None                                                                  
-            
-            print "OOOO",od.NAME
-
-
-# now, let's launch all the possible tests on that OUTDIR            
-# search for fullmodule test:
-            tmpfile =  (tempfile.mkstemp())[1]
-            pattern = 'summaryTests.txt'
-
-
-            
-            os.system("find "+od.NAME+" -name "+pattern+" > "+tmpfile)
-            f=open(tmpfile)
-            for line in f:
-                  line= line.rstrip(os.linesep)
-                  print " working on file: ",line
-                  dir = re.sub(pattern,"",line)
-                  print "Going to add as FullModule Test",dir
-                  res = self.PixelDB.insertTestFullModuleDir(dir,sessionid)
-                  if (res is None):
-                        print "Cannot insert FM test from",dir,"  ... exiting"
-                        return None                                            
-            
-            os.system("rm -f "+tmpfile)
-
-# sensor tests
-            pattern = 'IV.LOG'
-            
-
-            os.system("find "+od.NAME+" -name "+pattern+" > "+tmpfile)
-            
-            f=open(tmpfile)
-            for line in f:
-                  line= line.rstrip(os.linesep)
-                  print " working on file: ",line
-                  dir = re.sub(pattern,"",line)
-                  print "Going to add as Sensor Test",dir
-                  res = self.PixelDB.insertTestSensorDir(dir,sessionid)
-                  if (res is None):
-                        print "Cannot insert Sensor test from",dir,"  ... exiting"
-                        return None                                            
-            
-            os.system("rm -f "+tmpfile)
-# done!
-            od.STATUS=unicode("inserted")
-# set back
-            od.UPLOAD_ID=session.SESSION_ID
+            pd.STATUS=unicode("uploaded")
+            pd.UPLOAD_ID = aaa.TEST_ID
             self.store.commit()      
-            return od
+            return pd
 
-
-
-      def uploadAllTests(self):
 #
-# loop on outdir with status = 'done'
-         aa = self.store.find(ProcessedDir,ProcessedDir.STATUS == unicode("done"))
+# old stuff
+#
 
-         for od in aa:
-               res = self.insertTestinDBAllTests(od)
-               if (res is None):
-                     print" Stopped uploadAllTests due to error"
-                     return None
-         return aa
+# #
+# # automatic publishing of FULL MODULE tests (!)
+# #
+# # idea is to add a new processingrunoutdir.status = "inserted"
+# # this method will take care of the transition done->inserted
+# # it uses in the end PixelDB.insertTestFullModuleDir()
+
+#       def  insertTestFullModuleTest(self,od,session):
+
+#             #
+# #please note we work at the level of OD. Each OD can produce more than one test
+#             # currently I take care of
+#             # FullmoduleTests, SensorTests                       
+#             #
+#             # first check the status is done, otherwise exit
+#             if (od.STATUS != 'done'):
+#                   print " Error: OutDir with ID",od.DIR_ID, "has status",od.STATUS
+#                   return None
+
+# # now, let's launch all the possible tests on that OUTDIR            
+# # search for fullmodule test:
+#             tmpfile =  (tempfile.mkstemp())[1]
+#             pattern = 'summaryTests.txt'
+            
+#             os.system("find "+od.NAME+" -name "+pattern+" > "+tmpfile)
+#             f=open(tmpfile)
+#             for line in f:
+#                   line= line.rstrip(os.linesep)
+#                   print " working on file: ",line
+#                   dir = re.sub(pattern,"",line)
+#                   print "Going to add as FullModule Test",dir
+#                   res = self.PixelDB.insertTestFullModuleDir(dir,sessionid)
+#                   if (res is None):
+#                         print "Cannot insert FM test from",dir,"  ... exiting"
+#                         return None                                            
+            
+#             os.system("rm -f "+tmpfile)
+
+# # sensor tests
+#             pattern = 'IV.LOG'
+            
+
+#             os.system("find "+od.NAME+" -name "+pattern+" > "+tmpfile)
+            
+#             f=open(tmpfile)
+#             for line in f:
+#                   line= line.rstrip(os.linesep)
+#                   print " working on file: ",line
+#                   dir = re.sub(pattern,"",line)
+#                   print "Going to add as Sensor Test",dir
+#                   res = self.PixelDB.insertTestSensorDir(dir,sessionid)
+#                   if (res is None):
+#                         print "Cannot insert Sensor test from",dir,"  ... exiting"
+#                         return None                                            
+            
+#             os.system("rm -f "+tmpfile)
+# # done!
+#             od.STATUS=unicode("inserted")
+# # set back
+#             od.UPLOAD_ID=session.SESSION_ID
+#             self.store.commit()      
+#             return od
+
+
 
 
 

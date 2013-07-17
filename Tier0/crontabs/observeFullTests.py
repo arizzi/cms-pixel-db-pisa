@@ -18,8 +18,8 @@ import sys
 sys.path.append("/home/robot/cms-pixel-db-pisa/Tier0")
 import PixelTier0
 #cgitb.enable()
-from storm.tracer import debug
-debug(True, stream=sys.stdout)
+#from storm.tracer import debug
+#debug(True, stream=sys.stdout)
 
 def handler (signum,frame):
     print "Interjected Signal - exiting"
@@ -54,11 +54,12 @@ def initProcessing(CONFIG, DEBUG):
     MACRO_INIT = ConfigSectionMap("MACRO")["init"]
     INPUTDIR = ConfigSectionMap("MACRO")["inputdir"]
     CENTER = ConfigSectionMap("MACRO")["center"]
+    OPERATOR = ConfigSectionMap("MACRO")["operator"]
     PATTERN =  ConfigSectionMap("MACRO")["pattern"]
     if (MACRO_INIT=='null' or INPUTDIR=='null' or PATTERN == 'null'):
         print "Config file NOT ok"
         return (Null, Null, Null, Null, False)
-    return (MACRO_INIT, INPUTDIR, CENTER, PATTERN, True)
+    return (MACRO_INIT, INPUTDIR, CENTER, PATTERN,OPERATOR, True)
 
 
 DEBUG=True
@@ -74,7 +75,7 @@ CENTER =  'null'
 PATTERN ='null'
 
 
-(MACRO_INIT, INPUTDIR, CENTER, PATTERN, ok) = initProcessing(CONFIG=sys.argv[1], DEBUG=DEBUG)
+(MACRO_INIT, INPUTDIR, CENTER, PATTERN, OPERATOR, ok) = initProcessing(CONFIG=sys.argv[1], DEBUG=DEBUG)
 
 if (ok == False):
     print "Failed in reading the ini file",sys.argv[1]
@@ -180,6 +181,18 @@ while (True):
        print "---- FINISHED----"
        break
 
+#
+# upload what you can
+#
+
+#new session
+s = Session (CENTER=CENTER, OPERATOR=OPERATOR,TYPE="TESTSESSION",DATE=date.today(), COMMENT="")
+ppp= pdb.PixelDB.insertSession(s)
+if (ppp is None):
+    print "Failed to create a session"
+    exit (2)
+
+pdb.uploadAllTests(s)
 #
 
 os.system ("rm -f "+tmpfile)

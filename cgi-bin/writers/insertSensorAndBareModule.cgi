@@ -5,7 +5,7 @@ from datetime import *
 cgitb.enable()
 
 import sys
-sys.path.append("..")
+sys.path.append("../../PixelDB")
 from storm.properties import *
 from storm.references import *
 from storm import *
