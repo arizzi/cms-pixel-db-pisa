@@ -12,10 +12,13 @@ import re
 
 ID=m.baremodule.sensor.SENSOR_ID
 ID=re.sub('S','',ID)
-spl=re.split('-',ID)
-print "BATCH",spl[0]
-print "WAFER",spl[1]
-print "SENSOR",spl[2]
+if len(sys.argv) >2 and sys.argv[2] == "-s" : 
+ print ID
+else : 
+ spl=re.split('-',ID)
+ print "BATCH",spl[0]
+ print "WAFER",spl[1]
+ print "SENSOR",spl[2]
 
 #print m.baremodule.sensor.wafer.WAFER_ID
 #print m.baremodule.sensor.wafer.batch.BATCH_ID
