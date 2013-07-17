@@ -22,7 +22,7 @@ isensorid=unicode(random.randint(1, 100000))
 ibatchid=unicode(random.randint(1, 100000))
 iwaferid=unicode(random.randint(1, 100000))
 t=pdb.insertTransfer(Transfer(SENDER="",RECEIVER=pdb.operator))
-ppp = pdb.insertBatch(Batch(BATCH_ID=ibatchid, TRANSFER_ID=t.TRANSFER_ID))
+ppp = pdb.insertBatch(Batch(BATCH_ID=ibatchid, TRANSFER_ID=t.TRANSFER_ID, PRODCENTER="PIPPO"))
 if (ppp is None):
     print "Error cannot insert batch"
 ppp = pdb.insertWafer(Wafer(WAFER_ID=iwaferid, BATCH_ID=ibatchid, TRANSFER_ID=t.TRANSFER_ID))

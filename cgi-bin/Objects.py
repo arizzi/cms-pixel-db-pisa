@@ -84,11 +84,13 @@ class Batch(object):
     BATCH_ID = Unicode(primary=True)
     TRANSFER_ID=Int()
     transfer = Reference(TRANSFER_ID, Transfer.TRANSFER_ID)
+    PRODCENTER = Unicode()
     LASTTEST_BATCH =Int()
     COMMENT = Unicode()
-    def __init__(self,BATCH_ID,TRANSFER_ID,  COMMENT="", LASTTEST_BATCH=0):
+    def __init__(self,BATCH_ID,TRANSFER_ID,  PRODCENTER="N/A", COMMENT="", LASTTEST_BATCH=0):
         self.BATCH_ID=unicode(BATCH_ID)
         self.TRANSFER_ID=TRANSFER_ID
+        self.PRODCENTER=unicode(PRODCENTER)
         self.LASTTEST_BATCH=LASTTEST_BATCH
         self.COMMENT=unicode(COMMENT)
 
@@ -135,7 +137,7 @@ class Sensor(object):
   TYPE= Unicode()
   STATUS=Unicode()
   LASTTEST_SENSOR =Int()
-  def __init__(self,SENSOR_ID,TRANSFER_ID, TYPE, COMMENT="", LASTTEST_SENSOR=0,STATUS="", WAFER_ID=""):
+  def __init__(self,SENSOR_ID,TRANSFER_ID, TYPE, PRODCENTER,COMMENT="", LASTTEST_SENSOR=0,STATUS="", WAFER_ID=""):
       self.SENSOR_ID=unicode(SENSOR_ID)
       self.TRANSFER_ID=(TRANSFER_ID)
       self.TYPE=unicode(TYPE)
