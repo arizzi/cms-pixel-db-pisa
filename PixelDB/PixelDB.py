@@ -1017,17 +1017,18 @@ class PixelDBInterface(object) :
             if (re.search(".inf.txt", filename) is None):
                   print "Filename "+filename+" does not end with .inf.txt"
                   return (None, None, None, None)
+            print"BEING PASSED ",filename
             mylist = filename.split("_")
             if (debug == True):
                   print "LIST ",mylist
-            if (len(mylist) <4 ):
+            if (len(mylist) <5 ):
                   print "Filename "+filename+" not well formed."
                   return (None, None, None, None)
             # the step could be the last one, split it for "."
-            batch = ((mylist[0]).split('/'))[-1]
-            wafer = str(batch)+'-'+str(mylist[1])
-            sensor = "S"+str(wafer)+'-'+str(mylist[2])
-            step = ((mylist[3]).split("\."))[0]
+            batch = str(mylist[1])
+            wafer = str(batch)+'-'+str(mylist[2])
+            sensor = "S"+str(wafer)+'-'+str(mylist[3])
+            step = ((mylist[4]).split("\."))[0]
             print "PARSED from "+filename+" is : ",batch, wafer, sensor, step
             return (batch, wafer, sensor, step)
 #
@@ -1080,7 +1081,7 @@ class PixelDBInterface(object) :
             comment = results['COMMENT']
 
             if (debug == True):
-                  print batch1,batch,wafer1,wafer,sensor1,sensor,step,step1
+                  print "batch", batch1,batch,"wafer", wafer1,wafer,"sensor", sensor1,sensor,"step",step,step1
             
             if (batch1 is None or centre1 is None or step1 is None or sensor1 is None or v1 is None or v2 is None or i1 is None or i2 is None or temperature is None or date is None or slope is None or grade is None):
                   print "Error in the content of "+filename

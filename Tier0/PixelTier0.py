@@ -398,6 +398,11 @@ class PixelTier0 (object):
 # "uploadMYNAME" will be in the macro definition
 #
 
+      def checkNumberOfTestsToBeUploaded(self):
+          aa = self.store.find(ProcessedDir,ProcessedDir.STATUS == unicode("done"))
+          return aa.count()
+            
+
       def uploadAllTests(self,session):
  #
  # loop on outdir with status = 'done'

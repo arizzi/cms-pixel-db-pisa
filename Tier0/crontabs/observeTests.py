@@ -183,17 +183,19 @@ while (True):
 #
 # upload what you can
 #
-
+number = pdb.checkNumberOfTestsToBeUploaded()
+print " I NEED TO UPLOAD ", number, " results ..."
+if (number>0):
 #new session
-s = Session (CENTER=CENTER, OPERATOR=OPERATOR,TYPE="TESTSESSION",DATE=date.today(), COMMENT="")
-ppp= pdb.PixelDB.insertSession(s)
-if (ppp is None):
-    print "Failed to create a session"
-    exit (2)
-
-pdb.uploadAllTests(s)
+    s = Session (CENTER=CENTER, OPERATOR=OPERATOR,TYPE="TESTSESSION",DATE=date.today(), COMMENT="")
+    ppp= pdb.PixelDB.insertSession(s)
+    if (ppp is None):
+        print "Failed to create a session"
+        exit (2)
+        
+    pdb.uploadAllTests(s)
 #
-
+        
 os.system ("rm -f "+tmpfile)
 
 
