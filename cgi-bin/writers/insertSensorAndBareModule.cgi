@@ -67,7 +67,7 @@ if action == "submit" :
      
     
 else : 
-    print "<form action=insertSensoAndBareModule.cgi method=POST>"
+    print "<form action=insertSensorAndBareModule.cgi method=POST>"
     print 'Sensor ID (e.g. S12345-18-2): <input type="text" name="Sensor"><br>'
     print 'Sensor type: <select name=type><option value="old">Old Analog Full Module</option><option value="old">Old Analog Half Module</option><option value="new">Digital</option></select><br>'
     print 'Received from : <input type="text" name="Sender"><br>'

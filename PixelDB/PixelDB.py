@@ -353,6 +353,16 @@ class PixelDBInterface(object) :
      
 # get methods
 #
+      def getBatch(self, batch_id):
+            temp=unicode(batch_id)
+            aa = self.store.find(Batch, Batch.BATCH_ID==temp).one()
+            return aa
+ 
+      def getWafer(self, wafer_id):
+            temp=unicode(wafer_id)
+            aa = self.store.find(Wafer, Wafer.WAFER_ID==temp).one()
+            return aa
+
       def getSensor(self, sensor_id):
             temp=unicode(sensor_id)
             aa = self.store.find(Sensor, Sensor.SENSOR_ID==temp).one()
