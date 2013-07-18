@@ -15,7 +15,6 @@ class PixelTier0 (object):
       def __init__(self) :
             self.date = date.today()
             self.MACRO_VERSION='null'
-            self.MACRO_LOCATION=None
             self.MACRO_PROCESSEDPREFIX=None
             self.UPLOAD_METHOD = ""
             self.EXE=None
@@ -56,7 +55,6 @@ class PixelTier0 (object):
             if (DEBUG == True):
                   print "Reading File ",CONFIG
             self.MACRO_VERSION = self.ConfigSectionMap("MACRO")["version"]
-            self.MACRO_LOCATION = self.ConfigSectionMap("MACRO")['location']
             self.EXE =  self.ConfigSectionMap("EXECUTION")['script'] # assumes invocation via self.EXE $tarfile
             self.MAXEXE=int(self.ConfigSectionMap("EXECUTION")['maxinstances'] )
             self.PROCESSEDPREFIX=self.ConfigSectionMap("EXECUTION")['processedprefix'] 
@@ -65,12 +63,11 @@ class PixelTier0 (object):
             if (DEBUG == True):
                   print "Config Settings:"
                   print "MACRO.VERSION = ",self.MACRO_VERSION
-                  print "MACRO.LOCATION = ", self.MACRO_LOCATION
                   print "EXECUTION.SCRIPT = ", self.EXE
                   print "EXECUTION.UPLOAD_METHOD = ", self.UPLOAD_METHOD
                   print "EXECUTION.MAXEXE = ", self.MAXEXE
                   print "EXECUTION.PROCESSEDPREFIX = ",self.PROCESSEDPREFIX
-            if (self.MACRO_VERSION==None or self.MACRO_LOCATION==None or self.EXE==None or self.PROCESSEDPREFIX == None):
+            if (self.MACRO_VERSION==None or self.EXE==None or self.PROCESSEDPREFIX == None):
                   print "Config file NOT ok"
                   exit(1)                  
 #
@@ -139,7 +136,7 @@ class PixelTier0 (object):
 
 
       def injectProcessingRunFromInputTar (self,tar):
-            pr = ProcessingRun(MACRO_VERSION = self.MACRO_VERSION, EXECUTED_COMMAND = self.EXE, EXIT_CODE = -1,  MACRO_LOCATION = self.MACRO_LOCATION,STATUS="injected", DATE=date.today(), TAR_ID=tar.TAR_ID,PROCESSED_DIR_ID = 0)
+            pr = ProcessingRun(MACRO_VERSION = self.MACRO_VERSION, EXECUTED_COMMAND = self.EXE, EXIT_CODE = -1,  STATUS="injected", DATE=date.today(), TAR_ID=tar.TAR_ID,PROCESSED_DIR_ID = 0)
             self.store.add(pr)
             self.store.commit()
             return pr
@@ -424,6 +421,14 @@ class PixelTier0 (object):
             print "USING UPLOAD = ",pd.UPLOAD_TYPE
             ppp = eval ("self.upload"+pd.UPLOAD_TYPE+"(pd,session)")
             return ppp
+
+      def uploadNull(self,pd, session):
+      #do nothing
+            pd.STATUS=unicode("uploaded")
+            pd.UPLOAD_ID = 0
+            self.store.commit()      
+
+            return pd
 
       def uploadSensorTest(self,pd, session):
             #

@@ -117,15 +117,13 @@ class ProcessingRun (object):
     EXECUTED_COMMAND = Unicode()
     EXIT_CODE = Int()
     STATUS = Unicode()
-    MACRO_LOCATION = Unicode()
     DATE = datetime(1970,1,1)
     PROCESSED_DIR_ID = Int()
-    def __init__(self, MACRO_VERSION, EXECUTED_COMMAND, EXIT_CODE, MACRO_LOCATION, DATE, STATUS, TAR_ID, PROCESSED_DIR_ID=0):
+    def __init__(self, MACRO_VERSION, EXECUTED_COMMAND, EXIT_CODE, DATE, STATUS, TAR_ID, PROCESSED_DIR_ID=0):
         self.TAR_ID = TAR_ID
         self.MACRO_VERSION = unicode(MACRO_VERSION)
         self.EXECUTED_COMMAND = unicode(EXECUTED_COMMAND)
         self.EXIT_CODE = (EXIT_CODE)
-        self.MACRO_LOCATION = unicode(MACRO_LOCATION)
         self.DATE = DATE
         self.STATUS = unicode(STATUS)
         self.PROCESSED_DIR_ID = PROCESSED_DIR_ID
