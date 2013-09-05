@@ -18,7 +18,16 @@ def findMax(o,referencesforMax,analysisToUse,field) :
         except ValueError:
 	   tmp = max(tmp,eval("o"+r+"."+analysisToUse+"."+field))
    return tmp
-   
+  
+def concat(o,referencesforMax,analysisToUse,field) :
+   tmp = ""
+   for r in referencesforMax :
+        one = eval("o"+r+"."+analysisToUse+"."+field)
+	if one != "" :
+	   tmp+=" / "+one
+   return tmp
+
+ 
 form = cgi.FieldStorage() # instantiate only once!
 
 
@@ -76,14 +85,15 @@ pdb.connectToDB()
 referencesforMax = [".fullmoduletest_t1",".fullmoduletest_t2"]
 analysisToUse = "analyses.order_by(\"MACRO_VERSION\").last()"
 evals = ["\"<a href=ModuleQualificationView.cgi?ModuleID=%s>%s</a>\"%( o.FULLMODULE_ID,o.FULLMODULE_ID)","datetime.fromtimestamp(float(o.fullmoduletest_t1.TIMESTAMP)).isoformat()","o.QUALIFICATIONTYPE","findMax(o,referencesforMax,analysisToUse,\"GRADE\")"
-	,"\"%d\"%(findMax(o,referencesforMax,analysisToUse,\"NOISYPIXELS\"))"
+	,"\"%d\"%(findMax(o,referencesforMax,analysisToUse,\"PIXELDEFECTS\"))"
 	,"\"%d\"%(findMax(o,referencesforMax,analysisToUse,\"ROCSWORSEPERCENT\"))"
 	,"\"%d\"%(findMax(o,referencesforMax,analysisToUse,\"PHCAL\"))"
 	,"(findMax(o,referencesforMax,analysisToUse,\"TRIMMING\"))"
+	,"(concat(o,referencesforMax,analysisToUse,\"COMMENT\"))"
 
 	]
 
-headers = ["Module ID","Date","Qualification Type","Grade","Noisy","ROCs >1%","PhCal","Trimming"]
+headers = ["Module ID","Date","Qualification Type","Grade","Pixel Defects","ROCs >1%","PhCal","Trimming","Comments"]
 i =0 
 #objName = "Test_FullModule"
 

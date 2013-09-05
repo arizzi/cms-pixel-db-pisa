@@ -54,7 +54,7 @@ def specificView(objName,form,pdb) :
 	       printObject(ana,"TEST_ID",columns,refs,"Test_FullModuleAnalysis")
 	     printTableFooter()
 #	     print "<img src=%s%s%s.gif><br>" % (re.sub("\n","",re.sub("file:","",ana.data.PFNs)),moduleID,test.TEMPNOMINAL) #file:/data/OUT/M0289/1.1/T+17a/ M0289T+17a.gif
-	     print "<iframe width=900 height=600 src=\"%s%s%s.html\" ></iframe>" % (re.sub("\n","",re.sub("file:","",ana.data.PFNs)),moduleID,test.TEMPNOMINAL) #file:/data/OUT/M0289/1.1/T+17a/ M0289T+17a.gif
+	     print "<iframe width=900 height=600 src=\"%s/TestResult.html\" ></iframe>" % (re.sub("\n","",re.sub("file:","",ana.data.PFNs))) #file:/data/OUT/M0289/1.1/T+17a/ M0289T+17a.gif
                
 #             print "Grade: %s" % ana.GRADE 	
 #	     print test.CKSUM

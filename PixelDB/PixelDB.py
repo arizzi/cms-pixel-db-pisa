@@ -637,352 +637,6 @@ class PixelDBInterface(object) :
             # log in history
             self.insertHistory(type="TEST_ROC", id=test.TEST_ID, target_type="ROC", target_id=test.ROC_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
             return test
-
-
-#
-# parses files (see '/afs/cern.ch/user/s/starodum/public/moduleDB/M1215-080320.09:34/T-10a/summaryTest.txt'
-#
-      def insertTestFullModuleDir(self,dir,sessionid,overwritemodid=0):
-            #
-            # tries to open a standard dir, as in the previous above
-            # searches for summaryTest.txt inside + tars the dir in add_data
-            #
-            fileName = dir
-            #
-            # run php on it
-            #
-
-#
-# run fulltestinfo to check whether this is new or not
-#
-
-            fulltestinfo = '/home/robot/cgi-bin/fulltestinfo.sh'
-
-            command = str(fulltestinfo+" "+dir)
-
-#            out = subprocess.check_output(["ls", dir])
-
-            ppp = subprocess.Popen(fulltestinfo+" "+dir, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            
-            retval = ppp.wait()
-
-            timestamp=0
-            modulename='null'
-            tempnominal2=0
-            ck='null'
-
-            if (retval == 0):
-                  fileContent = []
-                  
-                  line = ppp.stdout.readlines()[0]
-                  
-                  line = line.rstrip(os.linesep)
-                  
-                  
-                  
-                  (timestamp,modulename, tempnominal2,ck) = line.split(" ")
-            
-            else:
-# I try to get the same stuff from the dir name
-                  fields = dir.split("/")
-                  tempnominal2 = fields[-1]
-                  modulename = fields[-2]
-                  timestamp = 0
-                  ck='null'
-            
-
-            #
-            # check if this already exixts
-            #
-
-            print "asking for a module test with" ,modulename, ck, tempnominal2,timestamp
-
-            ttt = self.getFullModuleTestWithCkSumAndTimestamp(modulename, ck, tempnominal2,timestamp)
-
-            if (ttt is None) :
-                  print "NEW MODULE TEST"
-            else:
-                  print "OLD MODULE TEST"
-
-            p = subprocess.Popen("php prodTable.php "+fileName, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            print "FILE IS  "+fileName
-            retval = p.wait()
-            if (retval!=0):
-                  return None
-            fileContent = []
-#
-# set initially
-#
-            ModuleNumber=0
-            Grade=0
-            isThermalCycling=0
-            TThermalCycling=0
-            eTThermalCycling=0
-
-            for line in p.stdout.readlines():
-                  fields = (line.strip()).split(" ")
-                  print "DEBUG ",fields
-                  #
-                  # real parsing
-                  #                  
-                  if (fields[0] == 'module' and len (fields)>1):
-                        ModuleNumber = fields[1]
-                  if (fields[0] == 'deadpi'):
-                        DeadPixels=string.join(fields[1:]," ")
-                              
-                  if (fields[0] == 'mask'):
-                        MaskPixels=string.join(fields[1:]," ")
-                    
-
-
-                  if (fields[0] == 'bump'):
-                        BumpPixels=string.join(fields[1:]," ")
-
-
-                  if (fields[0] == 'trim'):
-                        TrimPixels=string.join(fields[1:]," ")
-
-
-                  if (fields[0] == 'add'):
-                        AddressPixels=string.join(fields[1:]," ")
-
-                  if (fields[0] == 'noisy'):
-                      NoisyPixels=string.join(fields[1:]," ")
-
-                  if (fields[0] == 'thres'):
-                        TreshPixels=string.join(fields[1:]," ")
-
-                  if (fields[0] == 'gain'):
-                       GainPixels=string.join(fields[1:]," ")
-                    
-                  if (fields[0] == 'pedestal'):
-                       PedPixels=string.join(fields[1:]," ")
-
-                  if (fields[0] == 'parameter1'):
-                       ParPixels=string.join(fields[1:]," ")
-
-                  if (fields[0] == 'finalGrade' and len(fields) >1 ):
-                       FinalGrade = fields[1]
-                  if (fields[0] == 'fullGrade'  and len (fields)>1):
-                      FulltestGrade = fields[1]
-                  if (fields[0] == 'grade'  and len (fields)>1):
-                        Grade = fields[1]
-                  if (fields[0] == 'shortGrade'  and len (fields)>1):
-                        ShorttestGrade = fields[1]
-
-                  if (fields[0] == 'rocs'):
-                        RocDefects = string.join(fields[1:]," ")
-
-
-                  if (fields[0] == 'date'):
-                        Date = string.join(fields[1:]," ")
-                  if (fields[0] == 'trimming' and len(fields)>1):
-                        isTrimming = fields[1]
-                  if (fields[0] == 'phcal'):
-                        isphCal = string.join(fields[1:]," ")
-
-                  if (fields[0] == 'noise'  and len (fields)>1):
-                       NOISE = fields[1]
-                  if (fields[0] == 'iv150'):
-                      if (len(fields) >1):
-                        I150 = fields[1]
-                      else:
-                        I150=0
-                  if (fields[0] == 'iv150n2'):
-                      if (len(fields) >1):
-                        I1502 = fields[1]
-                      else:
-                         I1502=0   
-                  if (fields[0] == 'current' ):
-                       if (len(fields) >1):
-                            Current = fields[1]
-                       else:
-                            Current=0
-                  if (fields[0] == 'currentn2' ):
-                      if (len(fields) >1):
-                            Current2 = fields[1]
-                      else:
-                            Current2=0
-
-                  if (fields[0] == 'com'):
-                        if (len(fields) >1):
-                           Comment=  fields[1]
-                        else:
-                              Comment=""
-                
-                  if (fields[0] == 'slope'):
-                      if (len(fields) >1):
-                            I150I100 = fields[1]
-                      else:
-                             I150I100 = 0
-                  if (fields[0] == 'temp'):
-                      Temp = fields[1]
-                  if (fields[0] == 'etemp'):
-                      eTemp = fields[1]
- 
-                  if (fields[0]=='tcy'  and len (fields)>1):
-                      isThermalCycling=fields[1]
-                  if (fields[0]=='tcycl'  and len (fields)>1):
-                      TThermalCycling=fields[1]
-
-                  if (fields[0]=='etcycl'  and len (fields)>1):
-                      eTThermalCycling=fields[1]
-
-                  if (fields[0] == 'mount'  and len (fields)>1):
-                      position=fields[1]
-                  if (fields[0] == 'testN'):
-                      TestNumber=fields[1]
-
-
-            #
-            # create a data_id
-            #
-            data = Data(PFNs="file:"+dir)
-            pp = self.insertData(data)
-            if (pp is None):
-                print"<br>Error inserting data"
-                return None
-            #
-            # here I need to invent FM_ID otherwise the test cannot be inserted
-            #
-            if (overwritemodid ==0):
-                  ppp=ModuleNumber
-            else:
-                  ppp=overwritemodid
-
-            #
-            # try and refuse inserting 
-            #
-            if (DeadPixels != '-' and Current != '-'):
-                  print "HERE"
-                  #
-                  # new version, splitting in session, summary, test, analysis
-                  #
-
-                  # step #1 : create a fullmodulesession with an empty data
-                  data1 = Data()
-                  pp = self.insertData(data1)
-                  if (pp is None):
-                        print"<br>Error inserting data"
-                        return None
-
-                  fmsession = Test_FullModuleSession(DATA_ID=data1.DATA_ID,SESSION_ID=sessionid,FULLMODULE_ID=unicode(ppp))
-
-                  pp=self.insertFullModuleTestSession(fmsession)
-                  if pp is None:
-                        print "ERRORE FMSESSION", fmsession.TEST_ID
-
-                  # step #2 : create a test
-                  data2 = Data(PFNs = "file:"+dir)
-                  pp = self.insertData(data2)
-                  if (pp is None):
-                        print"<br>Error inserting data"
-                        return None
-
-                  TempNominal = tempnominal2
-
-
-                  if (ttt is None):
-                        t = Test_FullModule(SESSION_ID=fmsession.TEST_ID,
-                        FULLMODULE_ID=ppp,
-                                            DATA_ID = data2.DATA_ID,
-                                            TEMPNOMINAL=unicode(TestNumber),
-                                            COLDBOX="dummy",COLDBOX_SLOT="dummy",CKSUM=ck,TIMESTAMP=timestamp,
-                                            RESULT = "n/a")
-
-                        pp=self.insertFullModuleTest(t)
-                        if pp is None:
-                                                  print "ERRORE FMTEST"
-                  
-                  else:
-                        t=ttt
-
-                        
-
-                  #
-                  # step # 3: all the rest gos into an analysis
-                        
-                  fmanalysis = Test_FullModuleAnalysis(FULLMODULE_ID=ppp, DATA_ID=data.DATA_ID,FULLMODULETEST_ID=t.TEST_ID,
-                   GRADE=Grade,
-                   HOSTNAME="dummy",
-                   DEADPIXELS=DeadPixels,
-                   MASKEDPIXELS=MaskPixels,
-                   BUMPDEFPIXELS=BumpPixels,
-                   TRIMDEFPIXELS=TrimPixels,
-                   ADDRESSDEFPIXELS=AddressPixels,
-                   NOISYPIXELS=NoisyPixels,
-                   THRESHDEFPIXELS=TreshPixels,
-                   GAINDEFPIXELS=GainPixels,
-                   PEDESTALDEFPIXELS=PedPixels,
-                   PAR1DEFPIXELS=ParPixels,
-                   I150=I150,
-                   I150_2=I1502,
-                   CURRENT=Current,CURRENT_2=Current2,
-                   CYCLING=isThermalCycling,
-                   TEMPVALUE=Temp,
-                   TEMPERROR=eTemp,
-                   TCYCLVALUE=TThermalCycling,
-                        TCYCLERROR=eTThermalCycling,
-                        MACRO_VERSION="dummyV0.0")
-                  
-                  print "ECCOMI" 
-                  
-                  rr = self.insertFullModuleTestAnalysis(fmanalysis)
-                  if (rr is None):
-                        print"<br>Error inserting test FM"
-                        return None
-                  
-
-
-
-                  
-
-                  #
-                  #                create or search a session, based on dirname
-                  #
-
-                  path = os.path.abspath(os.path.join(os.path.dirname(dir),".."))
-
-                  print " ECCO CHE PROVO A TROVARE IL SUMMARY", path
-
-                  summ = self.searchFullModuleTestSummaryByDirName(path)
-                  
-                  if (summ is None):
-                        print "create new FMSummary"
-                        dataS = Data(PFNs = 'file:'+path)
-                        pp = self.insertData(dataS)
-                        
-                        summary = Test_FullModuleSummary(FULLMODULE_ID=ppp,DATA_ID=dataS.DATA_ID)
-                        pp = self.insertFullModuleTestSummary(summary)
-                  else:
-                        summary = summ
-                  print " SUMM ", summ
-                  #
-                  # fill the correct one
-                  #
-                  if (TestNumber == 'T+17a'):
-                        summary.FULLMODULETEST_T1 = t.TEST_ID
-                  elif(TestNumber == 'T-10a'):
-                        summary.FULLMODULETEST_T2 = t.TEST_ID
-                  elif(TestNumber == 'T-10b'):
-                        print "RIEMPIO ",t.TEST_ID
-
-                        summary.FULLMODULETEST_T3 = t.TEST_ID
-                  else:
-                        print " CANNOT FILL SUMMARY, SINCE TEMP IS ",TestNumber
-                  self.store.commit()
-            
-                  return rr     
-            
-             
-            else:
-                  print " Discarding bad result"
-                  self.store.commit()
-                              
-                  return None
-
-
-
 #
 # loads IV curves
 #
@@ -1165,3 +819,287 @@ class PixelDBInterface(object) :
                   print "Failed Sensor Test Insertion"
                   return None
             return st
+
+
+#
+# methods to have automatic insert by moreweb
+#
+
+# Row is something like
+# ROW  {'QualificationType': 'FullQualification', 'Temperature': '-10', 'PHCalibration': '0', 'CycleTempHigh': None, 'Comments': '', 'nCycles': None, 'CurrentAtVoltage150': 0, 'initialCurrent': 0, 'Noise': '0', 'nTrimDefects': '5', 'nMaskDefects': '0', 'nDeadPixels': '1', 'nBumpDefects': '3', 'nGainDefPixels': '0', 'Trimming': '5', 'TestType': 'm10_1', 'ROCsMoreThanOnePercent': '0', 'IVSlope': 0, 'CycleTempLow': None, 'nPedDefPixels': '0', 'StorageFolder': '../../../../../../data/pixels/FTTEST/OUT/M0823/1.1/M0823_FullQualification_2013-05-31_14h38m_1370003934/M0823_FullQualification_2013-05-31_14h38m_1370003934', 'nNoisyPixels': '0', 'RelativeModuleFulltestStoragePath': 'FinalResults/QualificationGroup/ModuleFulltest_m10_1', 'ModuleID': 'M0823', 'Grade': 'B', 'nPar1DefPixels': '0', 'PixelDefects': '1', 'TestDate': '1370003934'}
+
+      def insertTestFullModuleDirPlusMap(self,dire,sessionid,Row,overwritemodid=0):
+
+
+            #
+            # tries to open a standard dir, as in the previous above
+            # searches for summaryTest.txt inside + tars the dir in add_data
+            #
+            fileName = dire
+            print "***************************"
+            #
+            # tryng to get if I already have this
+            #
+
+
+            print "ROOOW", Row
+            
+            modulename = Row['ModuleID']
+            print "***************************"
+            tempnominal2 = Row['Temperature']
+            print "***************************"
+            ck ='0000'
+            print "***************************"
+            timestamp = Row['TestDate']
+
+
+            print "STARRT!!!!!!",modulename, ck, tempnominal2,timestamp
+            
+
+            print "asking for a module test with" ,modulename, ck, tempnominal2,timestamp
+            print "and dir is ",dire
+
+            ttt = self.getFullModuleTestWithCkSumAndTimestamp(modulename, ck, tempnominal2,timestamp)
+
+            if (ttt is None) :
+                  print "NEW MODULE TEST"
+            else:
+                  print "OLD MODULE TEST"
+
+#
+# Parse Row and extract stuff
+#
+
+            ModuleNumber=modulename
+            Grade=Row['Grade']
+            isThermalCycling=Row['nCycles']
+            if (isThermalCycling is None):
+                  isThermalCycling = 1
+            ThermalCyclingHigh=Row['CycleTempHigh']
+            if (ThermalCyclingHigh is None):
+                  ThermalCyclingHigh = 0
+            ThermalCyclingLow=Row['CycleTempLow']
+            if (ThermalCyclingLow is None):
+                  ThermalCyclingLow = 0
+#defects
+
+            DeadPixels = Row['nDeadPixels']
+            MaskPixels= Row['nMaskDefects']
+            BumpPixels= Row['nBumpDefects']
+            TrimPixels= Row['nTrimDefects']
+# caveat
+            AddressPixels = -10
+            NoisyPixels = Row['nNoisyPixels']
+# caveat    
+            TreshPixels = -10
+            GainPixels = Row['nGainDefPixels']
+
+            PedPixels = Row['nPedDefPixels']
+            ParPixels = Row['nPar1DefPixels']
+
+            PHCalibration = Row['PHCalibration']
+#caveat missing + unit of measurement
+            I150 = Row['CurrentAtVoltage150']
+            I1502 = -10
+            Current = Row['initialCurrent']
+#caveat missing
+            Current2 = -10
+            I150I100 = Row['IVSlope']
+            Temp = Row['Temperature']
+#caveat
+            eTemp = -10
+
+            
+            ROCsMoreThanOnePercent = Row['ROCsMoreThanOnePercent']
+            Trimming = Row['Trimming']
+            TestType = Row['TestType']
+            Comments = Row['Comments']
+            QualificationType = Row['QualificationType']
+
+
+#
+# produce a link to the real results
+#
+
+            resultPath =  os.path.abspath(os.path.join(os.path.dirname(dire),Row['RelativeModuleFulltestStoragePath']))
+
+            print "FINISHED PARSING", QualificationType
+
+#
+# what is pixel defects????
+#
+            PixelDefects = Row['PixelDefects']
+#
+# try and build a FullModuleTest_analysis
+#
+
+
+            #
+            # create a data_id
+            #
+
+
+            pf = str('file:'+resultPath)
+            print "LLLLLLLd "
+            data = Data(PFNs=pf)
+            print "LLLLLLL "
+            pp = self.insertData(data)
+            if (pp is None):
+                  print"<br>Error inserting data"
+                  return None
+
+            print "data inserted"
+
+            #
+            # here I need to invent FM_ID otherwise the test cannot be inserted
+            #
+            if (overwritemodid ==0):
+                  ppp=ModuleNumber
+            else:
+                  ppp=overwritemodid
+
+            #
+            # try and refuse inserting 
+            #
+            #
+            # new version, splitting in session, summary, test, analysis
+            #
+                  
+            # step #1 : create a fullmodulesession with an empty data
+            data1 = Data()
+            pp = self.insertData(data1)
+            if (pp is None):
+                  print"<br>Error inserting data"
+                  return None
+
+
+            fmsession = Test_FullModuleSession(DATA_ID=data1.DATA_ID,SESSION_ID=sessionid,FULLMODULE_ID=unicode(ppp))
+
+
+            pp=self.insertFullModuleTestSession(fmsession)
+            if pp is None:
+                  print "ERRORE FMSESSION", fmsession.TEST_ID
+                  
+
+            print "session inserted"
+
+            # step #2 : create a test
+            data2 = Data(PFNs = "file:"+dire)
+            pp = self.insertData(data2)
+            if (pp is None):
+                  print"<br>Error inserting data"
+                  return None
+
+
+            if (ttt is None):
+                  print "CREATE FMT"
+                  t = Test_FullModule(SESSION_ID=fmsession.TEST_ID,
+                                      FULLMODULE_ID=ppp,
+                                      DATA_ID = data2.DATA_ID,
+                                      TEMPNOMINAL=unicode(TestType),
+                                      COLDBOX="dummy",COLDBOX_SLOT="dummy",CKSUM=ck,TIMESTAMP=timestamp,
+                                      RESULT = "n/a")
+
+                  pp=self.insertFullModuleTest(t)
+                  if pp is None:
+                        print "ERRORE FMTEST"
+                  print "...DONE"
+            else:
+                  t=ttt
+
+                        
+
+            #
+            # step # 3: all the rest gos into an analysis
+                  
+
+            fmanalysis = Test_FullModuleAnalysis(FULLMODULE_ID=ppp, DATA_ID=data.DATA_ID,FULLMODULETEST_ID=t.TEST_ID,
+                                                 GRADE=Grade,
+                                                 HOSTNAME="dummy",
+                                                 DEADPIXELS=DeadPixels,
+                                                 MASKEDPIXELS=MaskPixels,
+                                                 BUMPDEFPIXELS=BumpPixels,
+                                                 TRIMDEFPIXELS=TrimPixels,
+                                                 ADDRESSDEFPIXELS=AddressPixels,
+                                                 NOISYPIXELS=NoisyPixels,
+                                                 THRESHDEFPIXELS=TreshPixels,
+                                                 GAINDEFPIXELS=GainPixels,
+                                                 PEDESTALDEFPIXELS=PedPixels,
+                                                 PAR1DEFPIXELS=ParPixels,
+                                                 I150=I150,
+                                                 I150_2=I1502,
+                                                 CURRENT=Current,CURRENT_2=Current2,
+                                                 IVSLOPE=I150I100,PHCAL=PHCalibration,
+                                                 CYCLING=isThermalCycling,
+                                                 TEMPVALUE=Temp,
+                                                 TEMPERROR=eTemp,
+                                                 COMMENT=Comments,
+                                                 PIXELDEFECTS=PixelDefects,
+                                                 TCYCLHIGH=ThermalCyclingHigh,
+                                                 TRIMMING=Trimming, ROCSWORSEPERCENT=ROCsMoreThanOnePercent,
+                                                 TCYCLLOW=ThermalCyclingLow,
+                                                 MACRO_VERSION="dummyV0.0")
+                  
+            print "ECCOMI" 
+                  
+            rr = self.insertFullModuleTestAnalysis(fmanalysis)
+            if (rr is None):
+                  print"<br>Error inserting test FM"
+                  return None
+                  
+            print "CREATE FMA ... done"
+            #
+            #                create or search a session, based on dirname
+            #
+            
+            path = os.path.abspath(os.path.join(os.path.dirname(dire),".."))
+
+            print " ECCO CHE PROVO A TROVARE IL SUMMARY", path
+
+            summ = self.searchFullModuleTestSummaryByDirName(path)
+                  
+            if (summ is None):
+                  print "create new FMSummary"
+                  dataS = Data(PFNs = 'file:'+path)
+                  pp = self.insertData(dataS)
+                  print "paperino"
+
+                  summary = Test_FullModuleSummary(FULLMODULE_ID=ppp,DATA_ID=dataS.DATA_ID, QUALIFICATIONTYPE=QualificationType)
+                  print "LLLLLLLLLLLLL ",ppp,dataS.DATA_ID
+#                  summary = Test_FullModuleSummary(FULLMODULE_ID=unicode(ppp),DATA_ID=(dataS.DATA_ID))
+                  print "paperino2"
+
+                  pp = self.insertFullModuleTestSummary(summary)
+                  print 'eccheccazzo'
+            else:
+                  summary = summ
+                  print " SUMM ", summ
+                  #
+                  # fill the correct one
+                  #
+            print "riempio SUMMARY"
+            if (TestType == 'T+17a' or TestType == 'p17_1'):
+                  print "T1"
+                  summary.FULLMODULETEST_T1 = t.TEST_ID
+                  print "RIEMPIO ",t.TEST_ID
+
+            elif(TestType == 'T-10a' or TestType == 'm10_1'):
+                  print "T2"
+                  print "RIEMPIO ",t.TEST_ID
+
+                  summary.FULLMODULETEST_T2 = t.TEST_ID
+            elif(TestType == 'T-10b'or TestType == 'm10_2'):
+                  print "T3"
+                  print "RIEMPIO ",t.TEST_ID
+                  
+                  summary.FULLMODULETEST_T3 = t.TEST_ID
+            else:
+                  print " CANNOT FILL SUMMARY, SINCE TEMP IS ",TestType
+            
+            self.store.commit()
+            
+            return rr     
+            
+             
+      
+

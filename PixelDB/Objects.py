@@ -325,14 +325,16 @@ class Test_FullModuleSummary(object):
       FULLMODULETEST_T3 =  Int()
       DATA_ID = Int()
       data=Reference(DATA_ID,Data.DATA_ID)
+      QUALIFICATIONTYPE=Unicode()
       FULLTESTGRADE=Unicode()
       SHORTTESTGRADE=Unicode()
-      def __init__(self, FULLMODULE_ID,DATA_ID, FULLMODULETEST_T1=0, FULLMODULETEST_T2=0, FULLMODULETEST_T3=0, FULLTESTGRADE="", SHORTTESTGRADE=""):
+      def __init__(self, FULLMODULE_ID,DATA_ID, FULLMODULETEST_T1=0, FULLMODULETEST_T2=0, FULLMODULETEST_T3=0, FULLTESTGRADE="", SHORTTESTGRADE="",QUALIFICATIONTYPE=""):
           self.FULLMODULE_ID=    unicode(      FULLMODULE_ID)
           self.DATA_ID=DATA_ID
-          self.FULLMODULETEST_T1=FULLMODULETEST_T1
-          self.FULLMODULETEST_T2=FULLMODULETEST_T2
-          self.FULLMODULETEST_T3=FULLMODULETEST_T3
+          self.QUALIFICATIONTYPE=unicode(QUALIFICATIONTYPE)
+          self.FULLMODULETEST_T1=(FULLMODULETEST_T1)
+          self.FULLMODULETEST_T2=(FULLMODULETEST_T2)
+          self.FULLMODULETEST_T3=(FULLMODULETEST_T3)
           self.FULLTESTGRADE=unicode(FULLTESTGRADE)
           self.SHORTTESTGRADE =unicode(SHORTTESTGRADE )
 
@@ -370,6 +372,8 @@ class Test_FullModuleAnalysis(object):
       fullmoduletest=Reference(FULLMODULETEST_ID, Test_FullModule.TEST_ID)
       DATA_ID=Int()
       HOSTNAME=Unicode()
+      COMMENT=Unicode()
+      PIXELDEFECTS=Int()
       GRADE=Unicode()
       MACRO_VERSION=Unicode()
       data=Reference(DATA_ID,Data.DATA_ID)
@@ -394,26 +398,28 @@ class Test_FullModuleAnalysis(object):
       TEMPVALUE = Float() 
       TEMPERROR = Float()
       CYCLING= Unicode()
-      TCYCLVALUE = Float()
-      TCYCLERROR = Float()
+      TCYCLHIGH = Float()
+      TCYCLLOW = Float()
       def __init__(self,FULLMODULE_ID, DATA_ID,FULLMODULETEST_ID,
                    GRADE="",HOSTNAME="",
                    DEADPIXELS=-1,MASKEDPIXELS=-1,BUMPDEFPIXELS=-1,TRIMDEFPIXELS=-1,ADDRESSDEFPIXELS=-1,NOISYPIXELS=-1,THRESHDEFPIXELS=-1,
                    GAINDEFPIXELS=-1,PEDESTALDEFPIXELS=-1,PAR1DEFPIXELS=-1,ROCSWORSEPERCENT="",MACRO_VERSION="",
-                   I150=0,I150_2=0,CURRENT=0,CURRENT_2=0,TRIMMING="",PHCAL="",IVSLOPE=0,TEMPVALUE=0,TEMPERROR=0,CYCLING=0,TCYCLVALUE=0,TCYCLERROR=0):
+                   I150=0,I150_2=0,CURRENT=0,CURRENT_2=0,TRIMMING="",PHCAL="",IVSLOPE=0,TEMPVALUE=0,TEMPERROR=0,CYCLING=0,TCYCLHIGH=0,TCYCLLOW=0, PIXELDEFECTS=0, COMMENT=""):
 
           self.DATA_ID=DATA_ID
           self.FULLMODULETEST_ID=(FULLMODULETEST_ID)
           self.FULLMODULE_ID=unicode(FULLMODULE_ID)
           self.GRADE=unicode(GRADE)
           self.ROCSWORSEPERCENT=unicode(ROCSWORSEPERCENT)
+          self.COMMENT=unicode(COMMENT)
+          self.PIXELDEFECTS=int(PIXELDEFECTS)
           self.TRIMMING=unicode(TRIMMING)
           self.PHCAL=unicode(PHCAL)
           self.IVSLOPE=float(IVSLOPE)
           self.TEMPVALUE=float(TEMPVALUE)
           self.TEMPERROR=float(TEMPERROR)
-          self.TCYCLVALUE=float(TCYCLVALUE)
-          self.TCYCLERROR=float(TCYCLERROR)
+          self.TCYCLHIGH=float(TCYCLHIGH)
+          self.TCYCLLOW=float(TCYCLLOW)
           self.DEADPIXELS = float(DEADPIXELS)
           self.MASKEDPIXELS=float(MASKEDPIXELS)
           self.BUMPDEFPIXELS=float(BUMPDEFPIXELS)

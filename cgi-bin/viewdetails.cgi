@@ -60,8 +60,8 @@ objName = form.getfirst('objName', 'empty')
 objName = cgi.escape(objName)
 objType = eval(objName)
 refToShow = form.getfirst("ref", 'empty')
-
-specificView(objName,form,pdb)
+if cgi.escape(form.getfirst("spec", "1")) == "1" :
+  specificView(objName,form,pdb)
 
 if re.match("test",objName,flags=re.IGNORECASE) : 
   ID="TEST_ID"
