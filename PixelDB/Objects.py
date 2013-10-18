@@ -136,14 +136,21 @@ class Sensor(object):
   COMMENT = Unicode()
   TYPE= Unicode()
   STATUS=Unicode()
-  LASTTEST_SENSOR =Int()
-  def __init__(self,SENSOR_ID,TRANSFER_ID, TYPE, PRODCENTER,COMMENT="", LASTTEST_SENSOR=0,STATUS="", WAFER_ID=""):
+  LASTTEST_SENSOR_IV =Int()
+  LASTTEST_SENSOR_IT =Int()
+  LASTTEST_SENSOR_CV =Int()
+  LASTTEST_SENSOR_INSPECTION =Int()
+  def __init__(self,SENSOR_ID,TRANSFER_ID, TYPE, PRODCENTER,COMMENT="", 
+               LASTTEST_SENSOR_IV=0,LASTTEST_SENSOR_CV=0,LASTTEST_SENSOR_IT=0,LASTTEST_SENSOR_INSPECTION=0,STATUS="", WAFER_ID=""):
       self.SENSOR_ID=unicode(SENSOR_ID)
       self.TRANSFER_ID=(TRANSFER_ID)
       self.TYPE=unicode(TYPE)
       self.WAFER_ID=unicode(WAFER_ID)
       self.COMMENT=unicode(COMMENT)
-      self.LASTTEST_SENSOR = LASTTEST_SENSOR
+      self.LASTTEST_SENSOR_IV         = LASTTEST_SENSOR_IV
+      self.LASTTEST_SENSOR_CV         = LASTTEST_SENSOR_CV
+      self.LASTTEST_SENSOR_IT         = LASTTEST_SENSOR_IT
+      self.LASTTEST_SENSOR_INSPECTION = LASTTEST_SENSOR_INSPECTION
       self.STATUS=unicode(STATUS)
       
 
@@ -167,14 +174,18 @@ class BareModule(object):
   POWERCABLE=Unicode()
   SIGNALCABLE=Unicode()
   TYPE=Unicode()
-  LASTTEST_BAREMODULE =Int()
+  LASTTEST_BAREMODULE_INSPECTION =Int()
+  LASTTEST_CHIPS = Unicode()
   def getRoc(self,i):
       #
       # parse ROC_IDs to extract field # N
       #
       result =(self.ROC_ID.split(","))[i]
       return result
-  def __init__(self,BAREMODULE_ID,ROC_ID,SENSOR_ID,TRANSFER_ID,  BUILTBY, BUILTON=date.today(),COMMENT="", LASTTEST_BAREMODULE=0, STATUS="",LABEL2D="",POWERCABLE="", SIGNALCABLE="", TYPE="" ):
+  def getChipTest(self,i):
+      result =(self.LASTTEST_CHIPS.split(","))[i]
+      return int(result)
+  def __init__(self,BAREMODULE_ID,ROC_ID,SENSOR_ID,TRANSFER_ID,  BUILTBY, BUILTON=date.today(),COMMENT="", LASTTEST_CHIPS = "",LASTTEST_BAREMODULE_INSPECTION=0, STATUS="",LABEL2D="",POWERCABLE="", SIGNALCABLE="", TYPE="" ):
       self.BAREMODULE_ID=unicode(BAREMODULE_ID)
       self.ROC_ID=unicode(ROC_ID)
       self.SENSOR_ID=unicode(SENSOR_ID)
@@ -182,7 +193,8 @@ class BareModule(object):
       self.BUILTON=BUILTON
       self.BUILTBY=unicode(BUILTBY)
       self.COMMENT=unicode(COMMENT)
-      self.LASTTEST_BAREMODULE=LASTTEST_BAREMODULE
+      self.LASTTEST_BAREMODULE_INSPECTION=LASTTEST_BAREMODULE_INSPECTION
+      self.LASTTEST_CHIPS=unicode(LASTTEST_CHIPS)
       self.STATUS=unicode(STATUS)
       self.LABEL2D=unicode(LABEL2D)
       self.POWERCABLE=unicode(POWERCABLE)
@@ -320,21 +332,35 @@ class Test_FullModuleSummary(object):
       TEST_ID=Int(primary=True)
       FULLMODULE_ID = Unicode()
       fullmodule=Reference(FULLMODULE_ID, FullModule.FULLMODULE_ID)
-      FULLMODULETEST_T1 =  Int()
-      FULLMODULETEST_T2 =  Int()
-      FULLMODULETEST_T3 =  Int()
+      FULLMODULETEST_NAMES = Unicode()
+      FULLMODULETEST_TYPES = Unicode()
+      FULLMODULETEST_IDS = Unicode()
       DATA_ID = Int()
       data=Reference(DATA_ID,Data.DATA_ID)
       QUALIFICATIONTYPE=Unicode()
       FULLTESTGRADE=Unicode()
       SHORTTESTGRADE=Unicode()
-      def __init__(self, FULLMODULE_ID,DATA_ID, FULLMODULETEST_T1=0, FULLMODULETEST_T2=0, FULLMODULETEST_T3=0, FULLTESTGRADE="", SHORTTESTGRADE="",QUALIFICATIONTYPE=""):
+      def splitObjects(self,pippo, i):
+          result =((unicode(pippo)).split(","))[i]
+          return result
+      def joinObjects(self, arrayofrocids):
+            return unicode(string.join(arrayofrocids,","))
+      def findObjectFromCommaSeparatedList(self, stringcommaseparated,name):
+          temp = unicode(name)
+          lista =((unicode(stringcommaseparated)).split(","))
+          if temp  in lista:
+              return lista.index(temp)
+          else:
+              return None
+          
+          
+      def __init__(self, FULLMODULE_ID,DATA_ID, FULLMODULETEST_NAMES="", FULLMODULETEST_TYPES="", FULLMODULETEST_IDS="", FULLTESTGRADE="", SHORTTESTGRADE="",QUALIFICATIONTYPE=""):
           self.FULLMODULE_ID=    unicode(      FULLMODULE_ID)
           self.DATA_ID=DATA_ID
           self.QUALIFICATIONTYPE=unicode(QUALIFICATIONTYPE)
-          self.FULLMODULETEST_T1=(FULLMODULETEST_T1)
-          self.FULLMODULETEST_T2=(FULLMODULETEST_T2)
-          self.FULLMODULETEST_T3=(FULLMODULETEST_T3)
+          self.FULLMODULETEST_NAMES=unicode(FULLMODULETEST_NAMES)
+          self.FULLMODULETEST_TYPES=unicode(FULLMODULETEST_TYPES)
+          self.FULLMODULETEST_IDS=unicode(FULLMODULETEST_IDS)
           self.FULLTESTGRADE=unicode(FULLTESTGRADE)
           self.SHORTTESTGRADE =unicode(SHORTTESTGRADE )
 
@@ -531,8 +557,8 @@ class Test_Wafer(object):
         self.NUMBEROFGOODSENSORS=NUMBEROFGOODSENSORS
         self.DATA_ID=DATA_ID
 
-class Test_Sensor(object):
-      __storm_table__ = "test_sensor"
+class Test_IV(object): # e' il vecchio test_sensor
+      __storm_table__ = "test_iv"
       TEST_ID = Int(primary=True)
       SESSION_ID=Int()
       session = Reference (SESSION_ID,Session.SESSION_ID)
@@ -547,10 +573,10 @@ class Test_Sensor(object):
       I2= Float()
       DATE = Int()
       SLOPE = Float()
-      temperature = Float()
+      TEMPERATURE= Float()
       TYPE = Unicode()
       data=Reference(DATA_ID,Data.DATA_ID)
-      def __init__(self,SESSION_ID,SENSOR_ID,GRADE,DATA_ID,V1,I1,V2,I2,SLOPE, temperature, DATE,TYPE="", COMMENT=""):
+      def __init__(self,SESSION_ID,SENSOR_ID,GRADE,DATA_ID,V1,I1,V2,I2,SLOPE, t, DATE,TYPE="", COMMENT=""):
           self.SESSION_ID=SESSION_ID
           self.SENSOR_ID=unicode(SENSOR_ID)
           self.TYPE=unicode(TYPE)
@@ -564,7 +590,147 @@ class Test_Sensor(object):
           self.I2=float(I2)
           self.DATE = int(DATE)
           self.SLOPE= float(SLOPE)
-          self.temperature = temperature
+          self.TEMPERATURE = TEMPERATURE
+
+
+class Test_IT(object):
+      __storm_table__ = "test_it"
+      TEST_ID = Int(primary=True)
+      SESSION_ID=Int()
+      session = Reference (SESSION_ID,Session.SESSION_ID)
+      SENSOR_ID =  Unicode()
+      sensor=Reference(SENSOR_ID, Sensor.SENSOR_ID)
+      TIMELENGTH = Float()
+      GRADE = Unicode()
+      DATA_ID=Int()
+      AVG_I = Float()
+      MAX_I = Float()
+      MIN_I = Float()
+      RMS_I = Float()
+      COMMENT=Unicode()
+      DATE = Int()
+      SLOPE = Float()
+      TEMPERATURE = Float()
+      TYPE = Unicode()
+      data=Reference(DATA_ID,Data.DATA_ID)
+      def __init__(self,SESSION_ID,SENSOR_ID,GRADE,DATA_ID,  TIMELENGTH, AVG_I, RMS_I,MAX_I, MIN_I , SLOPE  , TEMPERATURE, DATE,TYPE="", COMMENT=""):
+          self.SESSION_ID=SESSION_ID
+          self.SENSOR_ID=unicode(SENSOR_ID)
+          self.TYPE=unicode(TYPE)
+          self.GRADE=unicode(GRADE)
+          self.DATA_ID=DATA_ID
+          self.GRADE=unicode(GRADE)
+          self.COMMENT=unicode(COMMENT)
+          self.DATE = int(DATE)
+          self.SLOPE= float(SLOPE)
+          self.TIMELENGTH= float(TIMELENGTH)
+          self.MAX_I= float(MAX_I)
+          self.MIN_I= float(MIN_I)
+          self.RMS_I= float(RMS_I)
+          self.AVG_I= float(AVG_I)
+          self.TEMPERATURE = TEMPERATURE
+
+class Test_SensorInspection(object):
+      __storm_table__ = "test_sensor_inspection"
+      TEST_ID = Int(primary=True)
+      SESSION_ID=Int()
+      session = Reference (SESSION_ID,Session.SESSION_ID)
+      SENSOR_ID =  Unicode()
+      sensor=Reference(SENSOR_ID, Sensor.SENSOR_ID)
+      RESULT = Unicode()
+      DATA_ID=Int()
+      DATE = Int()
+      COMMENT = Unicode()
+      data=Reference(DATA_ID,Data.DATA_ID)
+      def __init__(self,SESSION_ID,SENSOR_ID,RESULT,DATA_ID,DATE,TYPE="", COMMENT=""):
+          self.SESSION_ID=SESSION_ID
+          self.SENSOR_ID=unicode(SENSOR_ID)
+          self.TYPE=unicode(TYPE)
+          self.GRADE=unicode(GRADE)
+          self.DATA_ID=DATA_ID
+          self.DATE = int(DATE)
+          self.RESULT=unicode(RESULT)
+          self.COMMENT=unicode(COMMENT)
+          self.DATE = int(DATE)
+
+class Test_BareModuleInspection(object):
+      __storm_table__ = "test_baremodule_inspection"
+      TEST_ID = Int(primary=True)
+      SESSION_ID=Int()
+      session = Reference (SESSION_ID,Session.SESSION_ID)
+      BAREMODULE_ID =  Unicode()
+      baremodule=Reference(BAREMODULE_ID, BareModule.BAREMODULE_ID)
+      RESULT = Unicode()
+      DATA_ID=Int()
+      DATE = Int()
+      COMMENT = Unicode()
+      data=Reference(DATA_ID,Data.DATA_ID)
+      def __init__(self,SESSION_ID,BAREMODULE_ID,RESULT,DATA_ID,DATE,TYPE="", COMMENT=""):
+          self.SESSION_ID=SESSION_ID
+          self.BAREMODULE_ID=unicode(BAREMODULE_ID)
+          self.TYPE=unicode(TYPE)
+          self.GRADE=unicode(GRADE)
+          self.DATA_ID=DATA_ID
+          self.DATE = int(DATE)
+          self.RESULT=unicode(RESULT)
+          self.COMMENT=unicode(COMMENT)
+          self.DATE = int(DATE)
+
+class Test_BareModule_Chip(object):
+      __storm_table__ = "test_baremodule_chip"
+      TEST_ID = Int(primary=True)
+      SESSION_ID=Int()
+      session = Reference (SESSION_ID,Session.SESSION_ID)
+      BAREMODULE_ID =  Unicode()
+      CHIP_N = Int()
+      DATE = Int()
+      baremodule=Reference(BAREMODULE_ID, BareModule.BAREMODULE_ID)
+      GRADE = Unicode()
+      DATA_ID=Int()
+      COMMENT=Unicode()
+      def __init__(self,SESSION_ID,BAREMODULE_ID,GRADE,DATA_ID,V1,CHIP_N,DATE,TYPE="", COMMENT=""):
+          self.SESSION_ID=SESSION_ID
+          self.BAREMODULE_ID=unicode(BAREMODULE_ID)
+          self.TYPE=unicode(TYPE)
+          self.GRADE=unicode(GRADE)
+          self.DATA_ID=DATA_ID
+          self.COMMENT=unicode(COMMENT)
+          self.CHIP_N = int(CHIP_N)
+
+class Test_CV(object):
+      __storm_table__ = "test_cv"
+      TEST_ID = Int(primary=True)
+      SESSION_ID=Int()
+      session = Reference (SESSION_ID,Session.SESSION_ID)
+      SENSOR_ID =  Unicode()
+      sensor=Reference(SENSOR_ID, Sensor.SENSOR_ID)
+      GRADE = Unicode()
+      DATA_ID=Int()
+      VDEPL = Float()
+      C= Float()
+      COMMENT=Unicode()
+      R = Float()
+      SLOPE_BEFORE_DEPLETION = Float()
+      DATE = Int()
+      TEMPERATURE = Float()
+      TYPE = Unicode()
+      data=Reference(DATA_ID,Data.DATA_ID)
+      def __init__(self,SESSION_ID,SENSOR_ID,GRADE,DATA_ID,V1,C1,V2,C2,SLOPE, TEMPERATURE, R,DATE,TYPE="", COMMENT=""):
+          self.SESSION_ID=SESSION_ID
+          self.SENSOR_ID=unicode(SENSOR_ID)
+          self.TYPE=unicode(TYPE)
+          self.GRADE=unicode(GRADE)
+          self.DATA_ID=DATA_ID
+          self.V1=float(V1)
+          self.GRADE=unicode(GRADE)
+          self.COMMENT=unicode(COMMENT)
+          self.R = float(R)
+          self.V2=float(V2)
+          self.C1=float(C1)
+          self.C2=float(C2)
+          self.DATE = int(DATE)
+          self.SLOPE= float(SLOPE)
+          self.TEMPERATURE = TEMPERATURE
           
 
 #history
@@ -590,8 +756,13 @@ class History(object):
     
 # References
 Roc.lasttest_roc = Reference(  Roc.LASTTEST_ROC, Test_Roc.TEST_ID)
-Sensor.lasttest_sensor = Reference(  Sensor.LASTTEST_SENSOR, Test_Sensor.TEST_ID)
-BareModule.lasttest_baremodule = Reference(  BareModule.LASTTEST_BAREMODULE, Test_BareModule.TEST_ID)
+
+Sensor.lasttest_sensor_iv          = Reference(  Sensor.LASTTEST_SENSOR_IV, Test_IV.TEST_ID)
+Sensor.lasttest_sensor_cv          = Reference(  Sensor.LASTTEST_SENSOR_CV, Test_CV.TEST_ID)
+Sensor.lasttest_sensor_it          = Reference(  Sensor.LASTTEST_SENSOR_IT, Test_IT.TEST_ID)
+Sensor.lasttest_sensor_inspection  = Reference(  Sensor.LASTTEST_SENSOR_INSPECTION, Test_SensorInspection.TEST_ID)
+
+BareModule.lasttest_baremodule_inspection = Reference(  BareModule.LASTTEST_BAREMODULE_INSPECTION, Test_BareModuleInspection.TEST_ID)
 Hdi.lasttest_hdi = Reference(  Hdi.LASTTEST_HDI, Test_Hdi.TEST_ID)
 Tbm.lasttest_tbm = Reference(  Tbm.LASTTEST_TBM, Test_Tbm.TEST_ID)
 #FullModule.lasttest_fullmodule = Reference(  FullModule.LASTTEST_FULLMODULE, Test_FullModule.TEST_ID)
@@ -600,18 +771,14 @@ Batch.lasttest_wafer = Reference(Wafer.LASTTEST_WAFER, Test_Wafer.TEST_ID)
 
 Logbook.adddata = Reference(Logbook.ADDDATA_ID,Data.DATA_ID)
 
-
-
 #
 # ne mancano ...
 #
-Test_FullModuleSummary.fullmoduletest_t1 = Reference(Test_FullModuleSummary.FULLMODULETEST_T1,Test_FullModule.TEST_ID)
-Test_FullModuleSummary.fullmoduletest_t2 = Reference(Test_FullModuleSummary.FULLMODULETEST_T2,Test_FullModule.TEST_ID)
-Test_FullModuleSummary.fullmoduletest_t3 = Reference(Test_FullModuleSummary.FULLMODULETEST_T3,Test_FullModule.TEST_ID)
-
-
-
+#Test_FullModuleSummary.fullmoduletest_t1 = Reference(Test_FullModuleSummary.FULLMODULETEST_T1,Test_FullModule.TEST_ID)
+#Test_FullModuleSummary.fullmoduletest_t2 = Reference(Test_FullModuleSummary.FULLMODULETEST_T2,Test_FullModule.TEST_ID)
+#Test_FullModuleSummary.fullmoduletest_t3 = Reference(Test_FullModuleSummary.FULLMODULETEST_T3,Test_FullModule.TEST_ID)
 
 FullModule.summaries = ReferenceSet(FullModule.FULLMODULE_ID, Test_FullModuleSummary.FULLMODULE_ID)
 FullModule.tests = ReferenceSet(FullModule.FULLMODULE_ID, Test_FullModule.FULLMODULE_ID)
-Test_FullModule.analyses = ReferenceSet(Test_FullModule.TEST_ID, Test_FullModuleAnalysis.FULLMODULETEST_ID)
+Test_FullModule.analyses = ReferenceSet(Test_FullModule.TEST_ID, Test_FullModuleAnalysis.FULLMODULETEST_ID
+)

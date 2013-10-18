@@ -229,10 +229,14 @@ class PixelDBInterface(object) :
             return aa is not None
 
       def searchFullModuleTestSummaryByDirName(self, dirname):
-            temp=unicode('file:'+dirname)
+#
+# lo faccio in modo diverso: decido che e' lo stesso in base all'ultima parte del nome.
+# per esempio, se passo 
+#
+            temp=unicode(dirname)
             result = self.store.find((Test_FullModuleSummary, Data),
                                 Test_FullModuleSummary.DATA_ID == Data.DATA_ID,
-                                Data.PFNs.like(temp))
+                                Data.PFNs.like("%"+temp))
 
             aa=[(session) for session,data in result]
 
@@ -514,6 +518,19 @@ class PixelDBInterface(object) :
 #
 # TESTS
 #
+      def insertFullModuleSummaryNewTest(self,summ,name, type, id):
+            summ.FULLMODULETEST_NAMES+=","+unicode(name)
+            summ.FULLMODULETEST_TYPES+=","+unicode(type)
+            summ.FULLMODULETEST_IDS+=","+unicode(str(id))
+            summ.FULLMODULETEST_NAMES=summ.FULLMODULETEST_NAMES.lstrip(',')
+            summ.FULLMODULETEST_TYPES=summ.FULLMODULETEST_TYPES.lstrip(',')
+            summ.FULLMODULETEST_IDS=summ.FULLMODULETEST_IDS.lstrip(',')
+            
+# strip ',' iniziale
+            self.store.commit()
+            
+
+
       def insertFullModuleTestSession(self,fms):
             if (self.isFullModuleInserted(fms.FULLMODULE_ID) == False):
                   print " Cannot insert a test on a not existing FM "
@@ -1055,8 +1072,11 @@ class PixelDBInterface(object) :
             path = os.path.abspath(os.path.join(os.path.dirname(dire),".."))
 
             print " ECCO CHE PROVO A TROVARE IL SUMMARY", path
+            matchstring = (string.split(path,'/'))[-1]
+            print "uso come stringa" , matchstring
 
-            summ = self.searchFullModuleTestSummaryByDirName(path)
+#            summ = self.searchFullModuleTestSummaryByDirName(path)
+            summ = self.searchFullModuleTestSummaryByDirName(matchstring)
                   
             if (summ is None):
                   print "create new FMSummary"
@@ -1078,24 +1098,21 @@ class PixelDBInterface(object) :
                   # fill the correct one
                   #
             print "riempio SUMMARY"
-            if (TestType == 'T+17a' or TestType == 'p17_1'):
-                  print "T1"
-                  summary.FULLMODULETEST_T1 = t.TEST_ID
-                  print "RIEMPIO ",t.TEST_ID
+#
+# now I search in the "names" to see if I find one
+#
 
-            elif(TestType == 'T-10a' or TestType == 'm10_1'):
-                  print "T2"
-                  print "RIEMPIO ",t.TEST_ID
+            thistype=t.__class__.__name__
 
-                  summary.FULLMODULETEST_T2 = t.TEST_ID
-            elif(TestType == 'T-10b'or TestType == 'm10_2'):
-                  print "T3"
-                  print "RIEMPIO ",t.TEST_ID
-                  
-                  summary.FULLMODULETEST_T3 = t.TEST_ID
+
+            res = summary.findObjectFromCommaSeparatedList(summary.FULLMODULETEST_NAMES,TestType);
+
+            print " RES is ", res, thistype, t.TEST_ID
+            if (res is None):
+                  # it is new, I insert
+                  self.insertFullModuleSummaryNewTest(summary,TestType,thistype, t.TEST_ID)
             else:
-                  print " CANNOT FILL SUMMARY, SINCE TEMP IS ",TestType
-            
+                  print " I REFUSE TO FILL  THE SUMMARY WITH ",summary.FULLMODULETEST_NAMES,TestType
             self.store.commit()
             
             return rr     
