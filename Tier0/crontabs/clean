@@ -1,0 +1,11 @@
+connect test_tier0
+delete from inputtar;
+delete  from processingrun;
+delete from historyt0;
+delete from outputdir;
+connect prod_pixel
+delete from test_fullmoduleanalysis;
+delete from test_fullmodulesession;
+delete from test_fullmodulesummary;
+delete from test_fullmodule;
+

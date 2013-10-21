@@ -228,6 +228,13 @@ class PixelDBInterface(object) :
             aa = self.store.find(FullModule, FullModule.FULLMODULE_ID==FullModule_id).one()
             return aa is not None
 
+      def insertSummaryIdIntoFullModuleTest(self,test_id,summary_id):
+            aa = self.store.find(Test_FullModule, Test_FullModule.TEST_ID==test_id).one()
+            aa.SUMMARY_ID = summary_id
+            self.store.commit()                 
+            return aa
+            
+
       def searchFullModuleTestSummaryByDirName(self, dirname):
 #
 # lo faccio in modo diverso: decido che e' lo stesso in base all'ultima parte del nome.
@@ -1021,6 +1028,7 @@ class PixelDBInterface(object) :
                   if pp is None:
                         print "ERRORE FMTEST"
                   print "...DONE"
+                  t=pp
             else:
                   t=ttt
 
@@ -1091,13 +1099,18 @@ class PixelDBInterface(object) :
 
                   pp = self.insertFullModuleTestSummary(summary)
                   print 'eccheccazzo'
+                  summary = pp
             else:
                   summary = summ
                   print " SUMM ", summ
                   #
                   # fill the correct one
                   #
-            print "riempio SUMMARY"
+            print "riempio SUMMARY con ",summary.TEST_ID
+#
+# I want the test_fullmodule to know the summary
+#
+            self.insertSummaryIdIntoFullModuleTest(t.TEST_ID, summary.TEST_ID)
 #
 # now I search in the "names" to see if I find one
 #
@@ -1113,6 +1126,8 @@ class PixelDBInterface(object) :
                   self.insertFullModuleSummaryNewTest(summary,TestType,thistype, t.TEST_ID)
             else:
                   print " I REFUSE TO FILL  THE SUMMARY WITH ",summary.FULLMODULETEST_NAMES,TestType
+            
+
             self.store.commit()
             
             return rr     

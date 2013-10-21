@@ -374,6 +374,8 @@ class Test_FullModule(object):
       RESULT=Unicode()
       TEMPNOMINAL = Unicode()
       DATA_ID=Int()
+      SUMMARY_ID = Int() 
+      summary=Reference(SUMMARY_ID, Test_FullModuleSummary.TEST_ID)
       data=Reference(DATA_ID,Data.DATA_ID)
       CKSUM=Unicode()
       TIMESTAMP=Unicode()
@@ -778,7 +780,9 @@ Logbook.adddata = Reference(Logbook.ADDDATA_ID,Data.DATA_ID)
 #Test_FullModuleSummary.fullmoduletest_t2 = Reference(Test_FullModuleSummary.FULLMODULETEST_T2,Test_FullModule.TEST_ID)
 #Test_FullModuleSummary.fullmoduletest_t3 = Reference(Test_FullModuleSummary.FULLMODULETEST_T3,Test_FullModule.TEST_ID)
 
-FullModule.summaries = ReferenceSet(FullModule.FULLMODULE_ID, Test_FullModuleSummary.FULLMODULE_ID)
+Test_FullModuleSummary.fullmoduletests =  ReferenceSet(Test_FullModuleSummary.TEST_ID,Test_FullModule.SUMMARY_ID)
+
+#FullModule.summaries = ReferenceSet(FullModule.FULLMODULE_ID, Test_FullModuleSummary.FULLMODULE_ID)
 FullModule.tests = ReferenceSet(FullModule.FULLMODULE_ID, Test_FullModule.FULLMODULE_ID)
 Test_FullModule.analyses = ReferenceSet(Test_FullModule.TEST_ID, Test_FullModuleAnalysis.FULLMODULETEST_ID
 )
