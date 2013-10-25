@@ -1,0 +1,147 @@
+MACROTEST PARAMETERS /home/robot/tests/TESTESTEBAN/M1170_FastQualification_2013-05-31_11h29m_1369992595.tar /data/pixels/FTTEST/OUT//M1170/1.1/M1170_FastQualification_2013-05-31_11h29m_1369992595
+MACROTEST PARAMETERS /home/robot/tests/TESTESTEBAN/M0722_FastQualification_2013-06-04_11h18m_1370337527.tar /data/pixels/FTTEST/OUT//M0722/1.1/M0722_FastQualification_2013-06-04_11h18m_1370337527
+ECCOMI /home/robot/Analysis/moreweb/Analyse
+mkdir: cannot create directory `/data/pixels/FTTEST/OUT/M1170/1.1/M1170_FastQualification_2013-05-31_11h29m_1369992595/temprNFI': File exists
+TEMPDIR /data/pixels/FTTEST/OUT/M1170/1.1/M1170_FastQualification_2013-05-31_11h29m_1369992595/temprNFI
+ECCOMI /home/robot/Analysis/moreweb/Analyse
+mkdir: cannot create directory `/data/pixels/FTTEST/OUT/M0722/1.1/M0722_FastQualification_2013-06-04_11h18m_1370337527/tempymY6': File exists
+MACROTEST PARAMETERS /home/robot/tests/TESTESTEBAN/M0827_FastQualification_2013-05-31_14h38m_1370003934.tar /data/pixels/FTTEST/OUT//M0827/1.1/M0827_FastQualification_2013-05-31_14h38m_1370003934
+TEMPDIR /data/pixels/FTTEST/OUT/M0722/1.1/M0722_FastQualification_2013-06-04_11h18m_1370337527/tempymY6
+ECCOMI /home/robot/Analysis/moreweb/Analyse
+mkdir: cannot create directory `/data/pixels/FTTEST/OUT/M0827/1.1/M0827_FastQualification_2013-05-31_14h38m_1370003934/tempbVaC': File exists
+MACROTEST PARAMETERS /home/robot/tests/TESTESTEBAN/M0823_FastQualification_2013-05-31_14h38m_1370003934.tar /data/pixels/FTTEST/OUT//M0823/1.1/M0823_FastQualification_2013-05-31_14h38m_1370003934
+TEMPDIR /data/pixels/FTTEST/OUT/M0827/1.1/M0827_FastQualification_2013-05-31_14h38m_1370003934/tempbVaC
+MACROTEST PARAMETERS /home/robot/tests/TESTESTEBAN/M0864_FastQualification_2013-06-06_12h15m_1370513733.tar /data/pixels/FTTEST/OUT//M0864/1.1/M0864_FastQualification_2013-06-06_12h15m_1370513733
+ECCOMI /home/robot/Analysis/moreweb/Analyse
+mkdir: cannot create directory `/data/pixels/FTTEST/OUT/M0823/1.1/M0823_FastQualification_2013-05-31_14h38m_1370003934/tempyJ14': File exists
+TEMPDIR /data/pixels/FTTEST/OUT/M0823/1.1/M0823_FastQualification_2013-05-31_14h38m_1370003934/tempyJ14
+MACROTEST PARAMETERS /home/robot/tests/TESTESTEBAN/M1172_FastQualification_2013-05-31_11h29m_1369992595.tar /data/pixels/FTTEST/OUT//M1172/1.1/M1172_FastQualification_2013-05-31_11h29m_1369992595
+ECCOMI /home/robot/Analysis/moreweb/Analyse
+mkdir: cannot create directory `/data/pixels/FTTEST/OUT/M0864/1.1/M0864_FastQualification_2013-06-06_12h15m_1370513733/tempYyoP': File exists
+TEMPDIR /data/pixels/FTTEST/OUT/M0864/1.1/M0864_FastQualification_2013-06-06_12h15m_1370513733/tempYyoP
+ECCOMI /home/robot/Analysis/moreweb/Analyse
+mkdir: cannot create directory `/data/pixels/FTTEST/OUT/M1172/1.1/M1172_FastQualification_2013-05-31_11h29m_1369992595/temp73iw': File exists
+MACROTEST PARAMETERS /home/robot/tests/TESTESTEBAN/M1205_FastQualification_2013-06-03_13h41m_1370259701.tar /data/pixels/FTTEST/OUT//M1205/1.1/M1205_FastQualification_2013-06-03_13h41m_1370259701
+TEMPDIR /data/pixels/FTTEST/OUT/M1172/1.1/M1172_FastQualification_2013-05-31_11h29m_1369992595/temp73iw
+ECCOMI /home/robot/Analysis/moreweb/Analyse
+mkdir: cannot create directory `/data/pixels/FTTEST/OUT/M1205/1.1/M1205_FastQualification_2013-06-03_13h41m_1370259701/tempMxIj': File exists
+MACROTEST PARAMETERS /home/robot/tests/TESTESTEBAN/M1193_FastQualification_2013-05-31_11h29m_1369992595.tar /data/pixels/FTTEST/OUT//M1193/1.1/M1193_FastQualification_2013-05-31_11h29m_1369992595
+TEMPDIR /data/pixels/FTTEST/OUT/M1205/1.1/M1205_FastQualification_2013-06-03_13h41m_1370259701/tempMxIj
+MACROTEST PARAMETERS /home/robot/tests/TESTESTEBAN/M0695_FastQualification_2013-06-04_11h18m_1370337527.tar /data/pixels/FTTEST/OUT//M0695/1.1/M0695_FastQualification_2013-06-04_11h18m_1370337527
+ECCOMI /home/robot/Analysis/moreweb/Analyse
+mkdir: cannot create directory `/data/pixels/FTTEST/OUT/M1193/1.1/M1193_FastQualification_2013-05-31_11h29m_1369992595/tempimKK': File exists
+TEMPDIR /data/pixels/FTTEST/OUT/M1193/1.1/M1193_FastQualification_2013-05-31_11h29m_1369992595/tempimKK
+MACROTEST PARAMETERS /home/robot/tests/TESTESTEBAN/M0110_FastQualification_2013-06-04_14h09m_1370347771.tar /data/pixels/FTTEST/OUT//M0110/1.1/M0110_FastQualification_2013-06-04_14h09m_1370347771
+ECCOMI /home/robot/Analysis/moreweb/Analyse
+mkdir: cannot create directory `/data/pixels/FTTEST/OUT/M0695/1.1/M0695_FastQualification_2013-06-04_11h18m_1370337527/tempVYs9': File exists
+TEMPDIR /data/pixels/FTTEST/OUT/M0695/1.1/M0695_FastQualification_2013-06-04_11h18m_1370337527/tempVYs9
+ECCOMI /home/robot/Analysis/moreweb/Analyse
+mkdir: cannot create directory `/data/pixels/FTTEST/OUT/M0110/1.1/M0110_FastQualification_2013-06-04_14h09m_1370347771/tempsPk6': File exists
+TEMPDIR /data/pixels/FTTEST/OUT/M0110/1.1/M0110_FastQualification_2013-06-04_14h09m_1370347771/tempsPk6
+ APRO eth_fullmoduletest.ini
+Reading File  eth_fullmoduletest.ini
+{'operator': 'n/a', 'inputdir': '/home/robot/tests/TESTESTEBAN', 'init': '/home/robot/cms-pixel-db-pisa/Tier0/crontabs/ethfullmoduletestmacro.ini', 'center': 'ETH', 'pattern': '"M*.tar"'}
+CCCCC /home/robot/cms-pixel-db-pisa/Tier0/crontabs/ethfullmoduletestmacro.ini
+FILE /tmp/tmpO9zrS2
+ working on Tar file:  /home/robot/tests/TESTESTEBAN/M1170_FastQualification_2013-05-31_11h29m_1369992595.tar
+ CI SONO
+PIPPO
+Inserted new tar =  20833
+ try and process it
+Insert done! ID= 23274
+ working on Tar file:  /home/robot/tests/TESTESTEBAN/M0722_FastQualification_2013-06-04_11h18m_1370337527.tar
+ CI SONO
+PIPPO
+Inserted new tar =  20834
+ try and process it
+Insert done! ID= 23275
+ working on Tar file:  /home/robot/tests/TESTESTEBAN/M0827_FastQualification_2013-05-31_14h38m_1370003934.tar
+ CI SONO
+PIPPO
+Inserted new tar =  20835
+ try and process it
+Insert done! ID= 23276
+ working on Tar file:  /home/robot/tests/TESTESTEBAN/M0823_FastQualification_2013-05-31_14h38m_1370003934.tar
+ CI SONO
+PIPPO
+Inserted new tar =  20836
+ try and process it
+Insert done! ID= 23277
+ working on Tar file:  /home/robot/tests/TESTESTEBAN/M0864_FastQualification_2013-06-06_12h15m_1370513733.tar
+ CI SONO
+PIPPO
+Inserted new tar =  20837
+ try and process it
+Insert done! ID= 23278
+ working on Tar file:  /home/robot/tests/TESTESTEBAN/M1172_FastQualification_2013-05-31_11h29m_1369992595.tar
+ CI SONO
+PIPPO
+Inserted new tar =  20838
+ try and process it
+Insert done! ID= 23279
+ working on Tar file:  /home/robot/tests/TESTESTEBAN/M1205_FastQualification_2013-06-03_13h41m_1370259701.tar
+ CI SONO
+PIPPO
+Inserted new tar =  20839
+ try and process it
+Insert done! ID= 23280
+ working on Tar file:  /home/robot/tests/TESTESTEBAN/M1193_FastQualification_2013-05-31_11h29m_1369992595.tar
+ CI SONO
+PIPPO
+Inserted new tar =  20840
+ try and process it
+Insert done! ID= 23281
+ working on Tar file:  /home/robot/tests/TESTESTEBAN/M0695_FastQualification_2013-06-04_11h18m_1370337527.tar
+ CI SONO
+PIPPO
+Inserted new tar =  20841
+ try and process it
+Insert done! ID= 23282
+ working on Tar file:  /home/robot/tests/TESTESTEBAN/M0110_FastQualification_2013-06-04_14h09m_1370347771.tar
+ CI SONO
+PIPPO
+Inserted new tar =  20842
+ try and process it
+Insert done! ID= 23283
+ working on Tar file:  /home/robot/tests/TESTESTEBAN/M0696_FastQualification_2013-06-04_14h09m_1370347771.tar
+ CI SONO
+PIPPO
+Inserted new tar =  20843
+ try and process it
+Insert done! ID= 23284
+ working on Tar file:  /home/robot/tests/TESTESTEBAN/M0662_FastQualification_2013-06-04_14h09m_1370347771.tar
+ CI SONO
+PIPPO
+Inserted new tar =  20844
+ try and process it
+Insert done! ID= 23285
+ working on Tar file:  /home/robot/tests/TESTESTEBAN/M0985_FastQualification_2013-06-06_12h15m_1370513733.tar
+ CI SONO
+PIPPO
+Inserted new tar =  20845
+ try and process it
+Insert done! ID= 23286
+ working on Tar file:  /home/robot/tests/TESTESTEBAN/M0677_FastQualification_2013-06-06_12h15m_1370513733.tar
+ CI SONO
+PIPPO
+Inserted new tar =  20846
+ try and process it
+Insert done! ID= 23287
+ working on Tar file:  /home/robot/tests/TESTESTEBAN/M0865_FastQualification_2013-06-03_13h41m_1370259701.tar
+ CI SONO
+PIPPO
+Inserted new tar =  20847
+ try and process it
+Insert done! ID= 23288
+Starting check of who's running
+2013-10-25 15:03:08.863331  Running Instances =  10  Waiting Instances =  5
+2013-10-25 15:03:10.866244  Running Instances =  10  Waiting Instances =  5
+2013-10-25 15:03:12.869236  Running Instances =  10  Waiting Instances =  5
+2013-10-25 15:03:14.872275  Running Instances =  10  Waiting Instances =  5
+2013-10-25 15:03:16.875283  Running Instances =  10  Waiting Instances =  5
+2013-10-25 15:03:18.878324  Running Instances =  10  Waiting Instances =  5
+2013-10-25 15:03:20.881230  Running Instances =  10  Waiting Instances =  5
+2013-10-25 15:03:22.884206  Running Instances =  10  Waiting Instances =  5
+2013-10-25 15:03:24.887194  Running Instances =  10  Waiting Instances =  5
+2013-10-25 15:03:26.890232  Running Instances =  10  Waiting Instances =  5
+2013-10-25 15:03:28.893244  Running Instan
