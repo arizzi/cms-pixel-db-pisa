@@ -64,10 +64,27 @@ def initProcessing(CONFIG, DEBUG):
 DEBUG=True
 Config = ConfigParser.ConfigParser()
 
-if (len(sys.argv) != 2):
-    print " Need one input: the config file!"
+if (len(sys.argv) != 3):
+    print " Need two inputs: the config file + processing mode"
     exit (2)
     
+if (sys.argv[2] != 'insert' and sys.argv[2] != 'insert+process' and sys.argv[2] != 'process'):
+    print "processing mode can be only insert, process, insert+process"
+    exit (3)
+
+insert=0
+process=0
+
+if (sys.argv[2] == 'insert'):
+    insert=1
+elif (sys.argv[2] == 'insert+process'):
+    insert=1
+    process=1
+elif (sys.argv[2] == 'process'):
+    process=1
+
+    
+
 MACRO_INIT = 'null'
 INPUTDIR = 'null'
 CENTER =  'null'
@@ -95,106 +112,85 @@ pdb = PixelTier0()
 pdb.initProcessing(CONFIG=MACRO_INIT, DEBUG=False)
 pdb.connectToDB()
 
-#
-# loop over a dir to search for tars
-
-basedir=INPUTDIR
 tmpfile = (tempfile.mkstemp())[1]
-print "FILE", tmpfile
-pattern = PATTERN
-os.system("find "+basedir+" -name "+pattern+" > "+tmpfile)
 
-INSERTED=0
-f=open(tmpfile)
-for line in f:
-
-    if (INSERTED>MAX):
-        continue
-    
-    line= line.rstrip(os.linesep)
-    print " working on Tar file: ",line
-    
-    
-    if (pdb.getInputTarByName(os.path.basename(line),os.path.dirname(line)) is not None):
-        print " ALREADY PROCESSED"
-        continue
-
-    print " CI SONO" 
-    
-    
-    #
-    # get cksum
-    #
-    
-    (ret, ck) = commands.getstatusoutput('cksum '+line+" | awk \'{print $1}\'")
-    
-    tar = InputTar (NAME=os.path.basename(line), LOCATION=os.path.dirname(line),    CKSUMTYPE='cksum', CKSUM=ck,         STATUS='new', CENTER = CENTER, DATE = date.today())
-    print "PIPPO"
-    pp = pdb.insertNewTar(tar)
-
-
-
-
-    if(pp is None):
-        print "ERROR inserting Tar, skipping ...."
-        continue
-
-
-    print "Inserted new tar = ", tar.TAR_ID
-    INSERTED=INSERTED+1
+if (insert==1):
 
     #
-    # process it
-    #
+    # loop over a dir to search for tars
+
+    basedir=INPUTDIR
+    print "FILE", tmpfile
+    pattern = PATTERN
+    os.system("find "+basedir+" -name "+pattern+" > "+tmpfile)
     
-    print " try and process it"
-    pr = pdb.processInputTar(tar)
-    if(pr is None):
-        print "ERROR inserting PR - skipping"
-        continue
-    print "Insert done! ID=",pr.RUN_ID
+    INSERTED=0
+    f=open(tmpfile)
+    for line in f:
+
+        if (INSERTED>MAX):
+            continue
     
-    #
-     #process it
-     #
-    procevd = pdb.startProcessing(pr)
-#
-# inject processing for all tars with status still new
-#
+        line= line.rstrip(os.linesep)
+        print " working on Tar file: ",line
+    
+    
+        if (pdb.getInputTarByName(os.path.basename(line),os.path.dirname(line)) is not None):
+            print " ALREADY PROCESSED"
+            continue
 
-numinjected = pdb.injectsProcessingJobs()
+        print " CI SONO" 
+    
+    
+        #
+        # get cksum
+        #
+    
+        (ret, ck) = commands.getstatusoutput('cksum '+line+" | awk \'{print $1}\'")
+    
+        tar = InputTar (NAME=os.path.basename(line), LOCATION=os.path.dirname(line),    CKSUMTYPE='cksum', CKSUM=ck,         STATUS='new', CENTER = CENTER, DATE = date.today())
+        print "PIPPO"
+        pp = pdb.insertNewTar(tar)
+
+        if(pp is None):
+            print "ERROR inserting Tar, skipping ...."
+            continue
+
+
+        print "Inserted new tar = ", tar.TAR_ID
+        INSERTED=INSERTED+1
 
 
 
-#
-# check
+if (process==1):
+    numinjected = pdb.injectsProcessingJobs()
 
-print "Starting check of who's running"
+    print "Starting check of who's running"
 
-while (True):
-   num = pdb.checkAllRunning(DEBUG=False)
-   num2 = pdb.startProcessingJobs()
-   print str(datetime.now())," Running Instances = ",num, " Waiting Instances = ",num2
-   sleep (2)   
-   if (num==0 and num2==0):
-       print "---- FINISHED----"
-       break
+    while (True):
+        num = pdb.checkAllRunning(DEBUG=False)
+        num2 = pdb.startProcessingJobs()
+        print str(datetime.now())," Running Instances = ",num, " Waiting Instances = ",num2
+        sleep (10)   
+        if (num==0 and num2==0):
+            print "---- FINISHED----"
+            break
 
-#
-# upload what you can
-#
-number = pdb.checkNumberOfTestsToBeUploaded()
-print " I NEED TO UPLOAD ", number, " results ..."
-if (number>0):
+        #
+        # upload what you can
+        #
+        number = pdb.checkNumberOfTestsToBeUploaded()
+        print " I NEED TO UPLOAD ", number, " results ..."
+        if (number>0):
 #new session
-    s = Session (CENTER=CENTER, OPERATOR=OPERATOR,TYPE="TESTSESSION",DATE=date.today(), COMMENT="")
-    ppp= pdb.PixelDB.insertSession(s)
-    if (ppp is None):
-        print "Failed to create a session"
-        exit (2)
-        
-    pdb.uploadAllTests(s)
-#
+            s = Session (CENTER=CENTER, OPERATOR=OPERATOR,TYPE="TESTSESSION",DATE=date.today(), COMMENT="")
+            ppp= pdb.PixelDB.insertSession(s)
+            if (ppp is None):
+                print "Failed to create a session"
+                exit (2)
+                
+                pdb.uploadAllTests(s)
+        #
         
 os.system ("rm -f "+tmpfile)
 
