@@ -175,21 +175,20 @@ if (process==1):
         if (num==0 and num2==0):
             print "---- FINISHED----"
             break
-
-        #
-        # upload what you can
-        #
-        number = pdb.checkNumberOfTestsToBeUploaded()
-        print " I NEED TO UPLOAD ", number, " results ..."
-        if (number>0):
+    #
+    # upload what you can
+    #
+    number = pdb.checkNumberOfTestsToBeUploaded()
+    print " I NEED TO UPLOAD ", number, " results ..."
+    if (number>0):
 #new session
-            s = Session (CENTER=CENTER, OPERATOR=OPERATOR,TYPE="TESTSESSION",DATE=date.today(), COMMENT="")
-            ppp= pdb.PixelDB.insertSession(s)
-            if (ppp is None):
-                print "Failed to create a session"
-                exit (2)
-               
-            pdb.uploadAllTests(s)
+        s = Session (CENTER=CENTER, OPERATOR=OPERATOR,TYPE="TESTSESSION",DATE=date.today(), COMMENT="")
+        ppp= pdb.PixelDB.insertSession(s)
+        if (ppp is None):
+            print "Failed to create a session"
+            exit (2)
+            
+        pdb.uploadAllTests(s)
         #
         
 os.system ("rm -f "+tmpfile)
