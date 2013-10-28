@@ -188,8 +188,8 @@ if (process==1):
             if (ppp is None):
                 print "Failed to create a session"
                 exit (2)
-                
-                pdb.uploadAllTests(s)
+               
+            pdb.uploadAllTests(s)
         #
         
 os.system ("rm -f "+tmpfile)
