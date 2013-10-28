@@ -53,6 +53,9 @@ cat $CONFIGPATHTEMPLATE/PathsTemplate.cfg |sed "s#DIRECTORY#$2#g" > $CONFIGPATH/
 echo TEMPDIR $TEMPDIR
 export PYTHONPATH=$PYTHONPATH:/home/robot/cms-pixel-db-pisa/PixelDB/
 python Controller.py
-cd /
+exstatus=$?
+echo EXIT STATUS $exstatus
+cd -
 rm -rf $TEMPDIR
-exit  0 
+exit  $exstatus
+#
