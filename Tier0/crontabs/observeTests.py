@@ -89,6 +89,7 @@ MACRO_INIT = 'null'
 INPUTDIR = 'null'
 CENTER =  'null'
 PATTERN ='null'
+INSERTED=0
 
 
 (MACRO_INIT, INPUTDIR, CENTER, PATTERN, OPERATOR, ok) = initProcessing(CONFIG=sys.argv[1], DEBUG=DEBUG)
@@ -124,7 +125,6 @@ if (insert==1):
     pattern = PATTERN
     os.system("find "+basedir+" -name "+pattern+" > "+tmpfile)
     
-    INSERTED=0
     f=open(tmpfile)
     for line in f:
 
@@ -159,6 +159,9 @@ if (insert==1):
 
         print "Inserted new tar = ", tar.TAR_ID
         INSERTED=INSERTED+1
+
+
+print "INSERTED ", INSERTED, " TAR FILES"
 
 
 
