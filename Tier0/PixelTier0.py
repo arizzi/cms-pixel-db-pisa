@@ -109,12 +109,18 @@ class PixelTier0 (object):
             return tar
 
 
-      def processInputTar(self,tar):
+      def processInputTar(self,tar,center=""):
+#
+# # if center is set, processes only those from it, retrieving via inputtdir
+#
             #
             # CHECK if there is already a processing for this 
             #
             if (tar.STATUS != 'new'):
                   print 'Failed to process TAR with name=',tar.NAME,' and id=',tar.TAR_ID,'since status is ',tar.STATUS
+                  return None
+            if (center != "" and center != tar.CENTER):
+                  print "refusing to process TAR with name =",tar.NAME,' and id=',tar.TAR_ID,'since status is ',tar.STATUS, " since center is not matching", center, tar.CENTER
                   return None
             #
             # launch a processing run on this
@@ -348,7 +354,10 @@ class PixelTier0 (object):
 # recheck what is runnable
 #
 
-      def startProcessingJobs  (self):
+      def startProcessingJobs  (self,initcenter=""):
+#
+# if center is set, processes only those from it, retrieving via inputtdir
+#
             #
             # search for jobs in status = "injected"
             #
@@ -357,17 +366,19 @@ class PixelTier0 (object):
                   return 0
             n=0
             for job in jobs:
+                  if (initcenter != "" and initcenter != job.tar_id.CENTER):
+                        continue
                   n=n+1
                   self.startProcessing(job)
             return n
 
 
-      def injectsProcessingJobs(self):
+      def injectsProcessingJobs(self,mycenter=""):
             tars = self.store.find(InputTar,InputTar.STATUS==unicode('new'))
             n=0
             for job in tars:
                   n=n+1
-                  self.processInputTar(job)
+                  self.processInputTar(job,mycenter)
             return n
 
 
@@ -400,12 +411,15 @@ class PixelTier0 (object):
           return aa.count()
             
 
-      def uploadAllTests(self,session):
+      def uploadAllTests(self,session,initcenter=""):
+# if initcenter != "" works only on these
  #
  # loop on outdir with status = 'done'
           aa = self.store.find(ProcessedDir,ProcessedDir.STATUS == unicode("done"))
 
           for od in aa:
+                if (initcenter !="" and od.tar_id.CENTER != initcenter):
+                      continue
                 res = self.uploadGenericTest(od,session)
                 if (res is None):
                       print" Stopped uploadAllTests due to error with ",od.NAME

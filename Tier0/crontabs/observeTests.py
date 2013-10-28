@@ -166,13 +166,13 @@ print "INSERTED ", INSERTED, " TAR FILES"
 
 
 if (process==1):
-    numinjected = pdb.injectsProcessingJobs()
+    numinjected = pdb.injectsProcessingJobs(CENTER)
 
     print "Starting check of who's running"
 
     while (True):
         num = pdb.checkAllRunning(DEBUG=False)
-        num2 = pdb.startProcessingJobs()
+        num2 = pdb.startProcessingJobs(CENTER)
         print str(datetime.now())," Running Instances = ",num, " Waiting Instances = ",num2
         sleep (10)   
         if (num==0 and num2==0):
