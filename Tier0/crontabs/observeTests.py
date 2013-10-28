@@ -115,6 +115,8 @@ pdb.connectToDB()
 
 tmpfile = (tempfile.mkstemp())[1]
 
+listinserted=[]
+
 if (insert==1):
 
     #
@@ -156,23 +158,37 @@ if (insert==1):
             print "ERROR inserting Tar, skipping ...."
             continue
 
+        listinserted.append(pp.TAR_ID)
+
+        #
+# I can ge the tar_ids in a vector!
+#
+
+        
+
 
         print "Inserted new tar = ", tar.TAR_ID
         INSERTED=INSERTED+1
 
+        numinjected = pdb.injectsProcessingJobs()
+        
+        print "injected processing runs " , numinjected
+
 
 print "INSERTED ", INSERTED, " TAR FILES"
+print "TARS are ",listinserted
 
-
+#
+# pleasenote: in the way it is done, this will start ALL THE PROCESSING JOBS, not only these created here
+#
 
 if (process==1):
-    numinjected = pdb.injectsProcessingJobs(CENTER)
 
     print "Starting check of who's running"
 
     while (True):
         num = pdb.checkAllRunning(DEBUG=False)
-        num2 = pdb.startProcessingJobs(CENTER)
+        num2 = pdb.startProcessingJobs()
         print str(datetime.now())," Running Instances = ",num, " Waiting Instances = ",num2
         sleep (10)   
         if (num==0 and num2==0):

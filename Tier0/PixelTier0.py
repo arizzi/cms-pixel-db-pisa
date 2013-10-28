@@ -142,7 +142,7 @@ class PixelTier0 (object):
 
 
       def injectProcessingRunFromInputTar (self,tar):
-            pr = ProcessingRun(MACRO_VERSION = self.MACRO_VERSION, EXECUTED_COMMAND = self.EXE, EXIT_CODE = -1,  STATUS="injected", DATE=date.today(), TAR_ID=tar.TAR_ID,PROCESSED_DIR_ID = 0)
+            pr = ProcessingRun(MACRO_VERSION = self.MACRO_VERSION, EXECUTED_COMMAND = self.EXE, EXIT_CODE = -1,  STATUS="injected", DATE=date.today(), TAR_ID=tar.TAR_ID,PROCESSED_DIR_ID = 0, PROCESSEDPREFIX=self.PROCESSEDPREFIX)
             self.store.add(pr)
             self.store.commit()
             return pr
@@ -193,10 +193,10 @@ class PixelTier0 (object):
                   print " Cannot get tar with ID=",pr.TAR_ID
                   return None
                   
-            (nameout,fulldir) = self.createDirOut(tar)
+            (nameout,fulldir) = self.createDirOut(tar,pr.PROCESSEDPREFIX,pr.MACRO_VERSION)
 
 
-            procevd = subprocess.Popen(self.EXE+" "+tar.LOCATION+"/"+tar.NAME+" "+fulldir, stdin=None, stdout=None, stderr=subprocess.STDOUT, shell=True) 
+            procevd = subprocess.Popen(pr.EXECUTED_COMMAND+" "+tar.LOCATION+"/"+tar.NAME+" "+fulldir, stdin=None, stdout=None, stderr=subprocess.STDOUT, shell=True) 
             self.RUNNING=self.RUNNING+1
             self.RUNNINGINSTANCES.append([procevd,pr.RUN_ID])
             return procevd
@@ -231,7 +231,6 @@ class PixelTier0 (object):
             self.setProcessingStatus(RUN,STATUSRUN)
             self.setInputStatus(RUN,STATUSTAR)
             self.setDirStatus(RUN,STATUSDIR)
-
 
 
       def checkAllRunning(self, DEBUG=False):
@@ -276,7 +275,7 @@ class PixelTier0 (object):
 
                               self.setInputStatus(tar,"processed")
 
-                              (namedir,fulldir) = self.createDirOut(tar)
+                              (namedir,fulldir) = self.createDirOut(tar,pr.PROCESSEDPREFIX,pr.MACRO_VERSION)
                               
                               #
                               # now I should also upload
@@ -334,10 +333,10 @@ class PixelTier0 (object):
             return ( tar1.NAME == tar2.NAME and  tar1.LOCATION == tar2.LOCATION and  tar1.CKSUM  == tar2.CKSUM)
 
 
-      def createDirOut(self,tar):
+      def createDirOut(self,tar,prefix,macro):
 #            namedir = (self.PROCESSEDPREFIX+'/'+re.sub('.tar','',tar.NAME)+"_"+re.sub("[\s/]","_",self.MACRO_VERSION))
             modname = re.split("_",tar.NAME)[0]
-            namedir = (self.PROCESSEDPREFIX+'/'+modname+"/"+re.sub("[\s/]","_",self.MACRO_VERSION))
+            namedir = (prefix+'/'+modname+"/"+re.sub("[\s/]","_",macro))
 
 #            print " ECCCO ",tar.NAME,modname, namedir
 
@@ -353,6 +352,39 @@ class PixelTier0 (object):
 #
 # recheck what is runnable
 #
+
+
+
+      def startProcessingJobsFromList  (self,mylist):
+#
+# if center is set, processes only those from it, retrieving via inputtdir
+#
+            jobs=[]
+            for i in mylist:
+                  if (i.STATUS == 'injected'):
+                        jobs.append(i)
+
+            if (jobs ==[]):
+                  return 0
+
+            n=0
+            for job in jobs:
+                  n=n+1
+                  self.startProcessing(job)
+            return n
+
+
+      def injectsProcessingJobs(self,mycenter=""):
+            tars = self.store.find(InputTar,InputTar.STATUS==unicode('new'))
+            n=0
+            for job in tars:
+                  n=n+1
+                  self.processInputTar(job,mycenter)
+            return n
+
+
+
+
 
       def startProcessingJobs  (self,initcenter=""):
 #
