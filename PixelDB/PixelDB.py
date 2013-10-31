@@ -262,8 +262,8 @@ class PixelDBInterface(object) :
                   return False
             if ((self.getSensor(sensor_id)).STATUS == "USED" ):
                   return False
-            if (((self.getSensor(sensor_id)).transfer).STATUS != "ARRIVED"):
-                  return False
+      #      if (((self.getSensor(sensor_id)).transfer).STATUS != "ARRIVED"):
+      #            return False
             return True
             
       def canRocBeUsed(self, roc_id):
@@ -274,8 +274,8 @@ class PixelDBInterface(object) :
             print "ROC IDDDDDDD",roc_id 
             if ((self.getRoc(roc_id)).STATUS == "USED" ):
                   return False
-            if (((self.getRoc(roc_id)).transfer).STATUS != "ARRIVED"):
-                  return False
+       #     if (((self.getRoc(roc_id)).transfer).STATUS != "ARRIVED"):
+       #           return False
             return True
 
       def canBareModuleBeUsed(self, baremodule_id):
@@ -283,8 +283,8 @@ class PixelDBInterface(object) :
                   return False
             if ((self.getBareModule(baremodule_id)).STATUS == "USED" ):
                   return False
-            if (((self.getBareModule(baremodule_id)).transfer).STATUS != "ARRIVED"):
-                  return False
+       #     if (((self.getBareModule(baremodule_id)).transfer).STATUS != "ARRIVED"):
+       #           return False
             return True
 
       def canFullModuleBeUsed(self, fullmodule_id):
@@ -292,8 +292,8 @@ class PixelDBInterface(object) :
                   return False
             if ((self.getFullModule(fullmodule_id)).STATUS == "USED" ):
                   return False
-            if (((self.getFullModule(fullmodule_id)).transfer).STATUS != "ARRIVED"):
-                  return False
+        #    if (((self.getFullModule(fullmodule_id)).transfer).STATUS != "ARRIVED"):
+        #          return False
             return True
 
       def canHdiBeUsed(self, hdi_id):
@@ -301,8 +301,8 @@ class PixelDBInterface(object) :
                   return False
             if ((self.getHdi(hdi_id)).STATUS == "USED" ):
                   return False
-            if (((self.getHdi(hdi_id)).transfer).STATUS != "ARRIVED"):
-                  return False
+        #    if (((self.getHdi(hdi_id)).transfer).STATUS != "ARRIVED"):
+        #          return False
             return True
 
       def canTbmBeUsed(self, tbm_id):
@@ -310,8 +310,8 @@ class PixelDBInterface(object) :
                   return False
             if ((self.getTbm(tbm_id)).STATUS == "USED" ):
                   return False
-            if (((self.getTbm(tbm_id)).transfer).STATUS != "ARRIVED"):
-                  return False
+         #   if (((self.getTbm(tbm_id)).transfer).STATUS != "ARRIVED"):
+         #         return False
             return True
       
 
@@ -1027,6 +1027,7 @@ class PixelDBInterface(object) :
                   pp=self.insertFullModuleTest(t)
                   if pp is None:
                         print "ERRORE FMTEST"
+			return None
                   print "...DONE"
                   t=pp
             else:

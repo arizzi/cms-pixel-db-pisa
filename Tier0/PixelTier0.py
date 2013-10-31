@@ -195,8 +195,10 @@ class PixelTier0 (object):
                   
             (nameout,fulldir) = self.createDirOut(tar,pr.PROCESSEDPREFIX,pr.MACRO_VERSION)
 
-
-            procevd = subprocess.Popen(pr.EXECUTED_COMMAND+" "+tar.LOCATION+"/"+tar.NAME+" "+fulldir, stdin=None, stdout=None, stderr=subprocess.STDOUT, shell=True) 
+            my_env = os.environ
+	    my_env["PIXEL_OPERATOR"] =  "robot"
+	    my_env["PIXEL_CENTER"] = pr.tar_id.CENTER
+            procevd = subprocess.Popen(pr.EXECUTED_COMMAND+" "+tar.LOCATION+"/"+tar.NAME+" "+fulldir, stdin=None, stdout=None, stderr=subprocess.STDOUT, shell=True, env=my_env) 
             self.RUNNING=self.RUNNING+1
             self.RUNNINGINSTANCES.append([procevd,pr.RUN_ID])
             return procevd
