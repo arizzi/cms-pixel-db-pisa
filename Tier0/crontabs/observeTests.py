@@ -90,7 +90,7 @@ INPUTDIR = 'null'
 CENTER =  'null'
 PATTERN ='null'
 INSERTED=0
-
+numinjected=0
 
 (MACRO_INIT, INPUTDIR, CENTER, PATTERN, OPERATOR, ok) = initProcessing(CONFIG=sys.argv[1], DEBUG=DEBUG)
 
@@ -134,15 +134,11 @@ if (insert==1):
             continue
     
         line= line.rstrip(os.linesep)
-        print " working on Tar file: ",line
-    
-    
+        print " working on Tar file: ",line    
+
         if (pdb.getInputTarByName(os.path.basename(line),os.path.dirname(line)) is not None):
             print " ALREADY PROCESSED"
-            continue
-
-        print " CI SONO" 
-    
+            continue    
     
         #
         # get cksum
@@ -151,7 +147,6 @@ if (insert==1):
         (ret, ck) = commands.getstatusoutput('cksum '+line+" | awk \'{print $1}\'")
     
         tar = InputTar (NAME=os.path.basename(line), LOCATION=os.path.dirname(line),    CKSUMTYPE='cksum', CKSUM=ck,         STATUS='new', CENTER = CENTER, DATE = date.today())
-        print "PIPPO"
         pp = pdb.insertNewTar(tar)
 
         if(pp is None):
@@ -172,19 +167,17 @@ if (insert==1):
 
     numinjected = pdb.injectsProcessingJobs()
         
-    print "injected processing runs " , numinjected
 
 
 print "INSERTED ", INSERTED, " TAR FILES"
 print "TARS are ",listinserted
+print "injected processing runs " , numinjected
 
 #
 # pleasenote: in the way it is done, this will start ALL THE PROCESSING JOBS, not only these created here
 #
 
 if (process==1):
-
-    print "Starting check of who's running"
 
     while (True):
         num = pdb.checkAllRunning(DEBUG=False)
