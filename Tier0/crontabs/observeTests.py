@@ -172,7 +172,7 @@ if (insert==1):
 
     numinjected = pdb.injectsProcessingJobs()
         
-print "injected processing runs " , numinjected
+    print "injected processing runs " , numinjected
 
 
 print "INSERTED ", INSERTED, " TAR FILES"
