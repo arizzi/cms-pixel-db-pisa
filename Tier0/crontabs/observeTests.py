@@ -170,7 +170,7 @@ if (insert==1):
         print "Inserted new tar = ", tar.TAR_ID
         INSERTED=INSERTED+1
 
-numinjected = pdb.injectsProcessingJobs()
+    numinjected = pdb.injectsProcessingJobs()
         
 print "injected processing runs " , numinjected
 
