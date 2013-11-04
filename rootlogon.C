@@ -1,0 +1,2 @@
+gROOT->SetStyle("Plain");
+
