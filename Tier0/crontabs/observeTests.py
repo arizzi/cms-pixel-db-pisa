@@ -46,7 +46,6 @@ def initProcessing(CONFIG, DEBUG):
     #
     # force the presence of the fields
     #
-    print " APRO", CONFIG
     if (DEBUG == True):
         print "Reading File ",CONFIG
         print ConfigSectionMap("MACRO")

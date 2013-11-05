@@ -51,7 +51,6 @@ class PixelTier0 (object):
             #
             # force the presence of the fields
             #
-            print "CCCCC",CONFIG
             if (DEBUG == True):
                   print "Reading File ",CONFIG
             self.MACRO_VERSION = self.ConfigSectionMap("MACRO")["version"]
