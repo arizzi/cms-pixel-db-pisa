@@ -8,21 +8,23 @@ cgitb.enable()
 import re
 import cgi
 
-def findMax(o,referencesforMax,analysisToUse,field) :
+def findMax(o,analysisToUse,field) :
    tmp = 0
-   for r in referencesforMax :
-	one = eval("o"+r+"."+analysisToUse+"."+field)
+   for r in o.fullmoduletests :
+	one = eval("r."+analysisToUse+"."+field)
 	try: 
   	 if float(one) > float(tmp) :
   	    tmp = one
         except ValueError:
-	   tmp = max(tmp,eval("o"+r+"."+analysisToUse+"."+field))
+	   tmp = max(tmp,eval("r."+analysisToUse+"."+field))
    return tmp
   
-def concat(o,referencesforMax,analysisToUse,field) :
+def concat(o,analysisToUse,field) :
    tmp = ""
-   for r in referencesforMax :
-        one = eval("o"+r+"."+analysisToUse+"."+field)
+   for r in o.fullmoduletests :
+        one = eval("r."+analysisToUse+"."+field)
+#   for r in referencesforMax :
+#        one = eval("o"+r+"."+analysisToUse+"."+field)
 	if one != "" :
 	   tmp+=" / "+one
    return tmp
@@ -82,18 +84,19 @@ import random
 pdb = PixelDBInterface(operator="webfrontend",center="cern")
 pdb.connectToDB()
 
-referencesforMax = [".fullmoduletest_t1",".fullmoduletest_t2"]
 analysisToUse = "analyses.order_by(\"MACRO_VERSION\").last()"
-evals = ["\"<a href=ModuleQualificationView.cgi?ModuleID=%s>%s</a>\"%( o.FULLMODULE_ID,o.FULLMODULE_ID)","datetime.fromtimestamp(float(o.fullmoduletest_t1.TIMESTAMP)).isoformat()","o.QUALIFICATIONTYPE","findMax(o,referencesforMax,analysisToUse,\"GRADE\")"
-	,"\"%d\"%(findMax(o,referencesforMax,analysisToUse,\"PIXELDEFECTS\"))"
-	,"\"%d\"%(findMax(o,referencesforMax,analysisToUse,\"ROCSWORSEPERCENT\"))"
-	,"\"%d\"%(findMax(o,referencesforMax,analysisToUse,\"PHCAL\"))"
-	,"(findMax(o,referencesforMax,analysisToUse,\"TRIMMING\"))"
-	,"(concat(o,referencesforMax,analysisToUse,\"COMMENT\"))"
+evals = ["\"<a href=ModuleQualificationView.cgi?ModuleID=%s>%s</a>\"%( o.FULLMODULE_ID,o.FULLMODULE_ID)"
+	,"o.fullmoduletests.any().session.session.CENTER"
+	,"datetime.fromtimestamp(float(o.fullmoduletests.any().TIMESTAMP)).isoformat()","o.QUALIFICATIONTYPE","findMax(o,analysisToUse,\"GRADE\")"
+	,"\"%d\"%(findMax(o,analysisToUse,\"PIXELDEFECTS\"))"
+	,"\"%d\"%(findMax(o,analysisToUse,\"ROCSWORSEPERCENT\"))"
+	,"\"%d\"%(findMax(o,analysisToUse,\"PHCAL\"))"
+	,"str(findMax(o,analysisToUse,\"TRIMMING\"))"
+	,"(concat(o,analysisToUse,\"COMMENT\"))"
 
 	]
 
-headers = ["Module ID","Date","Qualification Type","Grade","Pixel Defects","ROCs >1%","PhCal","Trimming","Comments"]
+headers = ["Module ID","Center","Date","Qualification Type","Grade","Pixel Defects","ROCs >1%","PhCal","Trimming","Comments"]
 i =0 
 #objName = "Test_FullModule"
 

@@ -79,6 +79,7 @@ referencesforMax = [""]
 analysisToUse = "analyses.order_by(\"MACRO_VERSION\").last()"
 evals = ["\"%s (<a href=viewdetails.cgi?spec=0&objName=Test_FullModule&TEST_ID=%d>details</a>)\" % (o.TEST_ID,o.TEST_ID)"
         ,"\"%s (<a href=\"%(o.FULLMODULE_ID)+pfn(o."+analysisToUse+".data.PFNs)+\">last analysis results</a>)\""
+	,"o.summary.QUALIFICATIONTYPE"
         ,"datetime.fromtimestamp(float(o.TIMESTAMP)).isoformat()","o.TEMPNOMINAL","o."+analysisToUse+".GRADE"
 #evals = ["\"%s (<a href=>last analysis results</a>)\"%(o.FULLMODULE_ID)","datetime.fromtimestamp(float(o.TIMESTAMP)).isoformat()","o.TEMPNOMINAL","o."+analysisToUse+".GRADE"
 	,"\"%d\"%(o."+analysisToUse+".NOISYPIXELS)"
@@ -88,7 +89,7 @@ evals = ["\"%s (<a href=viewdetails.cgi?spec=0&objName=Test_FullModule&TEST_ID=%
 
 	]
 
-headers = ["Test ID","Module ID","Date","Temperature","Grade","Noisy","ROCs >1%","PhCal","Trimming"]
+headers = ["Test ID","Module ID","Qualification","Date","Temperature","Grade","Noisy","ROCs >1%","PhCal","Trimming"]
 i =0 
 #objName = "Test_FullModule"
 

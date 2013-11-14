@@ -40,7 +40,7 @@ if action == "submit" :
       t = pdb.insertTransfer(Transfer(cgi.escape(form.getfirst('Sender', 'Unknown')),"HERE"))
       s  = pdb.getSensor(sensor)
       if not s :
-         s = Sensor(sensor,t.TRANSFER_ID,"OLD")
+         s = Sensor(sensor,t.TRANSFER_ID,"OLD",cgi.escape(form.getfirst('Sender', 'Unknown')))
          if pdb.insertSensor(s) :
 		print "<br><b> Sensor inserted </b>"
       else :

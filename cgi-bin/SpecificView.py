@@ -44,7 +44,7 @@ def specificView(objName,form,pdb) :
           print "<H1>Module ID: %s</h1>" % moduleID
           printTable([fm],"FullModule","FULLMODULE_ID","details","cellspacing=0 cellpadding=2 border=1")
           tests = fm.tests
-	  summaries = fm.summaries
+#  summaries = fm.summaries
           for test in tests : 
              print "<h2> Test at %s on %s</h2>" % (test.TEMPNOMINAL,strftime("%d/%m/%Y %H:%M", localtime(float(test.TIMESTAMP))))
              columns,refs,refset = getAllPrintableFields("Test_FullModuleAnalysis")
