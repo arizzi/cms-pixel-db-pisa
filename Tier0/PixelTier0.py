@@ -197,7 +197,12 @@ class PixelTier0 (object):
             my_env = os.environ
 	    my_env["PIXEL_OPERATOR"] =  "robot"
 	    my_env["PIXEL_CENTER"] = pr.tar_id.CENTER
-            procevd = subprocess.Popen(pr.EXECUTED_COMMAND+" "+tar.LOCATION+"/"+tar.NAME+" "+fulldir, stdin=None, stdout=None, stderr=subprocess.STDOUT, shell=True, env=my_env) 
+##
+## new interface : I pass to the macro
+            # 1 - tar name
+            # 2 - expected directory with the results (which is NOT supposed to be changed by the script
+##
+            procevd = subprocess.Popen(pr.EXECUTED_COMMAND+" "+tar.LOCATION+"/"+tar.NAME+" "+fulldir+" "+pr.MACRO_VERSION, stdin=None, stdout=None, stderr=subprocess.STDOUT, shell=True, env=my_env) 
             self.RUNNING=self.RUNNING+1
             self.RUNNINGINSTANCES.append([procevd,pr.RUN_ID])
             return procevd
