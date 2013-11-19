@@ -72,7 +72,7 @@ ID=ID.upper()
 
 keys=objType.__dict__.keys()
 for attr in keys:
-    print attr #,type(eval(objName+"."+attr)).__name__,"<br>"
+#    print attr #,type(eval(objName+"."+attr)).__name__,"<br>"
     if  type(eval(objName+"."+attr)) is properties.PropertyColumn or  type(eval(objName+"."+attr)).__name__ == "date"  or  type(eval(objName+"."+attr)).__name__ == "datetime":
 #    if  type(eval(objName+"."+attr)) is properties.PropertyColumn :
          columns.append(attr) 
@@ -95,7 +95,7 @@ print "</thead></tr><tbody>"
 
 for o in objects : 
    print "<tr>"
-   print "<td>", getattr(o,ID) ,"(<a href=viewdetails.cgi?objName="+objName+"&"+ID+"="+str(getattr(o,ID)),">details</a>)</td>"
+   print "<td>", getattr(o,ID) ,"(<a href=viewdetails.cgi?objName="+objName+"&"+ID+"="+str(getattr(o,ID)),">details</a>|<a href=writers/edit.cgi?objName="+objName+"&"+ID+"="+str(getattr(o,ID)),">edit</a>)</td>"
    for c in columns:
     v=getattr(o,c)
     if type(v).__name__ == "unicode" : 

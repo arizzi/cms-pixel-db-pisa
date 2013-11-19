@@ -87,6 +87,7 @@ pdb.connectToDB()
 analysisToUse = "analyses.order_by(\"MACRO_VERSION\").last()"
 evals = ["\"<a href=ModuleQualificationView.cgi?ModuleID=%s>%s</a>\"%( o.FULLMODULE_ID,o.FULLMODULE_ID)"
 	,"o.fullmoduletests.any().session.session.CENTER"
+#	,"\"%d\" %o.fullmoduletests.count()"
 	,"datetime.fromtimestamp(float(o.fullmoduletests.any().TIMESTAMP)).isoformat()","o.QUALIFICATIONTYPE","findMax(o,analysisToUse,\"GRADE\")"
 	,"\"%d\"%(findMax(o,analysisToUse,\"PIXELDEFECTS\"))"
 	,"\"%d\"%(findMax(o,analysisToUse,\"ROCSWORSEPERCENT\"))"
@@ -111,7 +112,8 @@ for c in headers:
 print "</thead></tr><tbody>"
 
 
-for o in objects : 
+for o in objects :
+ if o.fullmoduletests.count() > 0 : 
    print "<tr>"
    for e in evals:
     print "<td>"+eval(e)+"</td>"

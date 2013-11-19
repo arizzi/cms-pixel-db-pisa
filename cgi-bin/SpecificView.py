@@ -36,6 +36,13 @@ def specificView(objName,form,pdb) :
             
        print "</table>"		
 
+   if objName == "Data" :
+	 dataID=cgi.escape(form.getfirst('DATA_ID', 'empty'))
+	 data = pdb.getData(int(dataID))
+	 m=re.match("file:/home/(.*)/dropbox/(.*)",data.PFNs)
+	 if m :
+		print "<h1> Input file %s </h1>" % m.group(2)
+		print "<a href=/data/pixels/centerinputs/%s/%s>Download file </a>" %(m.group(1),m.group(2))
 
    if objName == "FullModule" :
 	  moduleID=cgi.escape(form.getfirst('FULLMODULE_ID', 'empty'))
