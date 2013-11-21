@@ -22,6 +22,31 @@ from storm.references import *
 from storm import *
 from PixelDB import *
 import random
+import ConfigParser
+
+
+def inputField(objName,column, defVal = "") :
+	config = ConfigParser.ConfigParser()
+	config.read('/var/www/cgi-bin/writers/editor.ini')
+	#default input string:
+	inputString = "<input type=input name=\"%s\" value=\"%s\">" % (column,defVal)
+
+	if config.has_section(objName+"/"+column) :
+ 	    type = config.get(objName+"/"+column,"type")
+ 	    if type == "select" :
+		   options = re.split(',',config.get(objName+"/"+column,"options"))
+		   inputString="<select name=\"%s\">" % column
+		   for o in options :
+			if o== defVal :
+			    selected = "SELECTED"
+			else :
+			    selected = ""
+			inputString+="<option value=\"%s\" %s>%s</option>" % (o,selected,o)
+
+		   inputString+="</select>"
+  	    if config.has_option(objName+"/"+column,"comment") :
+		inputString+="&nbsp;&nbsp;&nbsp;(<i>"+config.get(objName+"/"+column,"comment")+"</i>)"
+	return inputString	
 
 pdb = PixelDBInterface(operator="webfrontend",center="cern")
 pdb.connectToDB()
@@ -141,22 +166,29 @@ if True :
 	print "<form>"
 	print "<input type=hidden name=objName value=\"%s\">" % objName
 	print "<thead> <tr>"
-	print "<th> Field </th>"
-	print "<th> Value </th>"
+	print "<th align=left> Field: </th>"
+	print "<th align=left> Value: </th>"
 	print "</thead></tr><tbody>"
 	if o :
 		print "<input type=hidden name=%s value=\"%s\">" % (ID,objID)
 	        print "<tr><td>",ID.lower().capitalize()," (main ID)</td><td><b>%s<b></td></tr>"%(getattr(o,ID))
 	else :
-                print "<tr><td>",ID.lower().capitalize()," (main ID)</td><td><input type=input name=\"%s\" value=\"%s\">"%(ID,"")
+                print "<tr><td>",ID.lower().capitalize()," (main ID)</td><td>"
+                print inputField(objName,ID)
+
+#<input type=input name=\"%s\" value=\"%s\">"%(ID,"")
 
 	summary=""
         for c in columns:
           if c != ID :
 	   if o :
-  		   print "<tr><td>",c.lower().capitalize(),"</td><td><input type=input name=\"%s\" value=\"%s\">"%(c,getattr(o,c))
+  		   print "<tr><td>",c.lower().capitalize(),"</td><td>"
+#d><input type=input name=\"%s\" value=\"%s\">"%(c,getattr(o,c))
+		   print inputField(objName,c,getattr(o,c))
 	   else :
-                   print "<tr><td>",c.lower().capitalize(),"</td><td><input type=input name=\"%s\" value=\"%s\">"%(c,"")
+                   print "<tr><td>",c.lower().capitalize(),"</td><td>"
+#<input type=input name=\"%s\" value=\"%s\">"%(c,"")
+		   print inputField(objName,c)
 
 	   print "</td></tr>"
 	   
