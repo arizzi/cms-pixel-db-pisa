@@ -69,6 +69,7 @@ from PixelDB import *
 import random
 
 moduleid = form.getfirst('ModuleID', 'empty')
+summaryid = form.getfirst('SummaryID', 'empty')
 # Avoid script injection escaping the user input
 moduleid = cgi.escape(moduleid)
 
@@ -93,10 +94,23 @@ headers = ["Test ID","Module ID","Qualification","Date","Temperature","Grade","N
 i =0 
 #objName = "Test_FullModule"
 
-print "<h1>List of FullModule Tests for  <a href=viewdetails.cgi?spec=0&objName=FullModule&FULLMODULE_ID="+moduleid+">"+moduleid+"</b></h1>" 
- 
-objects = pdb.store.find(Test_FullModule ,Test_FullModule.FULLMODULE_ID==unicode(moduleid))
+
+objects = None
+if summaryid == "empty" :
+  module = pdb.store.find(FullModule ,FullModule.FULLMODULE_ID==unicode(moduleid)).one()
+  summaryid=module.LASTTEST_FULLMODULE
+  titlestring="(last qualification only) "
+else:
+  titlestring="(only for fullsummary %s) " % summaryid
+
+if summaryid == "all" :
+  objects = pdb.store.find(Test_FullModule ,Test_FullModule.FULLMODULE_ID==unicode(moduleid))
+  titlestring="(all qualifications) "
+else :
+  objects = pdb.store.find(Test_FullModule ,Test_FullModule.FULLMODULE_ID==unicode(moduleid) and Test_FullModule.SUMMARY_ID==int(summaryid))
 #print "<br> <ul><li> View <a href=viewdetails.cgi?spec=0&objName=FullModule&FULLMODULE_ID="+moduleid+">Module Details</a><br><br>"
+
+print ("<h1>List of FullModule Tests %sfor  <a href=viewdetails.cgi?spec=0&objName=FullModule&FULLMODULE_ID="+moduleid+">"+moduleid+"</b></h1>") % (titlestring) 
 
 print "<table id=example width=\"100%\" class=\"pretty\" >"
 print " <thead> <tr>"

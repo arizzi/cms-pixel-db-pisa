@@ -85,7 +85,8 @@ pdb = PixelDBInterface(operator="webfrontend",center="cern")
 pdb.connectToDB()
 
 analysisToUse = "analyses.order_by(\"MACRO_VERSION\").last()"
-evals = ["\"<a href=ModuleQualificationView.cgi?ModuleID=%s>%s</a>\"%( o.FULLMODULE_ID,o.FULLMODULE_ID)"
+evals = ["\"<a href=ModuleQualificationView.cgi?ModuleID=%s&SummaryID=all>%s</a>\"%( o.FULLMODULE_ID,o.FULLMODULE_ID)"
+	,"\"<a href=ModuleQualificationView.cgi?ModuleID=%s&SummaryID=%s>%s</a>\"%( o.FULLMODULE_ID,o.TEST_ID,o.TEST_ID)"
 	,"o.fullmoduletests.any().session.session.CENTER"
 #	,"\"%d\" %o.fullmoduletests.count()"
 	,"datetime.fromtimestamp(float(o.fullmoduletests.any().TIMESTAMP)).isoformat()","o.QUALIFICATIONTYPE","findMax(o,analysisToUse,\"GRADE\")"
@@ -97,7 +98,7 @@ evals = ["\"<a href=ModuleQualificationView.cgi?ModuleID=%s>%s</a>\"%( o.FULLMOD
 
 	]
 
-headers = ["Module ID","Center","Date","Qualification Type","Grade","Pixel Defects","ROCs >1%","PhCal","Trimming","Comments"]
+headers = ["Module ID","Summary ID","Center","Date","Qualification Type","Grade","Pixel Defects","ROCs >1%","PhCal","Trimming","Comments"]
 i =0 
 #objName = "Test_FullModule"
 
@@ -113,7 +114,7 @@ print "</thead></tr><tbody>"
 
 
 for o in objects :
- if o.fullmoduletests.count() > 0 : 
+# if o.fullmoduletests.count() > 0 : 
    print "<tr>"
    for e in evals:
     print "<td>"+eval(e)+"</td>"

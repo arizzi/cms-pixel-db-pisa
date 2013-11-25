@@ -482,13 +482,13 @@ class PixelTier0 (object):
 
             return pd
 
-      def uploadSensorTest(self,pd, session):
+      def uploadIVTest(self,pd, session):
             #
             # simply extract the dir from the pd, and use it to run 
             # pixeldb.insertTestSensorDir(self,dir,session)
             #
             dir = pd.NAME
-            aaa = self.PixelDB.insertTestSensorDir(dir,session)
+            aaa = self.PixelDB.insertIVTestDir(dir,session)
             if (aaa is None):
                   print "Failed upload from DIR ",dir
                   return None

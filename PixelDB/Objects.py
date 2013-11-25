@@ -29,6 +29,19 @@ class Transfer (object):
         self.STATUS=unicode(STATUS)
         self.COMMENT=unicode(COMMENT)
 
+
+class Data(object):
+      __storm_table__ = "test_data"
+      DATA_ID = Int(primary=True)
+      URLs = Unicode()
+      PFNs=Unicode()
+      COMMENT=Unicode()
+      def __init__(self,URLs="", PFNs="", COMMENT=""):
+            self.URLs=unicode(URLs)
+            self.PFNs=unicode(PFNs)
+            self.COMMENT=unicode(COMMENT)
+
+
 #
 # Session
 #
@@ -85,14 +98,18 @@ class Batch(object):
     TRANSFER_ID=Int()
     transfer = Reference(TRANSFER_ID, Transfer.TRANSFER_ID)
     PRODCENTER = Unicode()
-    LASTTEST_BATCH =Int()
     COMMENT = Unicode()
-    def __init__(self,BATCH_ID,TRANSFER_ID,  PRODCENTER="N/A", COMMENT="", LASTTEST_BATCH=0):
+    DATA_ID=Int()
+    data=Reference(DATA_ID,Data.DATA_ID)
+    RESULT=Unicode()	
+    def __init__(self,BATCH_ID,TRANSFER_ID,  PRODCENTER="N/A", COMMENT="", DATA_ID=0, RESULT=""):
         self.BATCH_ID=unicode(BATCH_ID)
         self.TRANSFER_ID=TRANSFER_ID
         self.PRODCENTER=unicode(PRODCENTER)
-        self.LASTTEST_BATCH=LASTTEST_BATCH
         self.COMMENT=unicode(COMMENT)
+        self.RESULT=unicode(RESULT)
+        self.DATA_ID=DATA_ID
+
 
 class Wafer(object):
     __storm_table__ = "inventory_wafer"
@@ -101,7 +118,6 @@ class Wafer(object):
     batch = Reference(BATCH_ID, Batch.BATCH_ID)
     TRANSFER_ID=Int()
     transfer = Reference(TRANSFER_ID, Transfer.TRANSFER_ID)
-    LASTTEST_WAFER =Int()
     METALIZATION=Unicode()
     PASSIVATION=Unicode()
     UNDER_BUMP_METALIZATION=Unicode()
@@ -110,11 +126,15 @@ class Wafer(object):
     OPTICAL_INSPECTION=Unicode()
     OPTICAL_INSPECTION_RESULT=Unicode()
     COMMENT = Unicode()
-    def __init__(self,WAFER_ID,BATCH_ID, TRANSFER_ID, LASTTEST_WAFER=0, METALIZATION="", PASSIVATION="", UNDER_BUMP_METALIZATION="", SIZE_OF_OPENING="", CV="", OPTICAL_INSPECTION="",  COMMENT=""):
+    DATA_ID=Int()
+    data=Reference(DATA_ID,Data.DATA_ID)
+    NUMBEROFGOODSENSORS=Int()
+    RESULT=Unicode()
+
+    def __init__(self,WAFER_ID,BATCH_ID, TRANSFER_ID, METALIZATION="", PASSIVATION="", UNDER_BUMP_METALIZATION="", SIZE_OF_OPENING="", CV="", OPTICAL_INSPECTION="", OPTICAL_INSPECTION_RESULT="", COMMENT="",DATA_ID=0, NUMBEROFGOODSENSORS=0, RESULT=""):
         self.BATCH_ID=unicode(BATCH_ID)
         self.WAFER_ID=unicode(WAFER_ID)
         self.TRANSFER_ID=TRANSFER_ID
-        self.LASTTEST_WAFER=LASTTEST_WAFER
         self.COMMENT=unicode(COMMENT)
         self.METALIZATION= unicode(METALIZATION )       
         self.PASSIVATION= unicode(PASSIVATION )       
@@ -122,6 +142,10 @@ class Wafer(object):
         self.SIZE_OF_OPENING= unicode(SIZE_OF_OPENING )       
         self.CV= unicode(CV )       
         self.OPTICAL_INSPECTION= unicode(OPTICAL_INSPECTION)       
+        self.OPTICAL_INSPECTION_RESULT= unicode(OPTICAL_INSPECTION_RESULT)       
+        self.RESULT=unicode(RESULT)
+        self.NUMBEROFGOODSENSORS=NUMBEROFGOODSENSORS
+        self.DATA_ID=DATA_ID
 
     
 
@@ -251,8 +275,9 @@ class FullModule(object):
   BUILTON = date.today()
   BUILTBY = Unicode()
   COMMENT = Unicode()
-  #  LASTTEST_FULLMODULE=Int()
-  def __init__(self,FULLMODULE_ID, BAREMODULE_ID, HDI_ID, TBM_ID, TRANSFER_ID, BUILTBY, BUILTON=date.today(), COMMENT="", STATUS=""):
+  LASTTEST_FULLMODULE=Int()
+
+  def __init__(self,FULLMODULE_ID, BAREMODULE_ID, HDI_ID, TBM_ID, TRANSFER_ID, BUILTBY, BUILTON=date.today(), COMMENT="", STATUS="",LASTTEST_FULLMODULE=0):
       self.TBM_ID=unicode(TBM_ID)
       self.HDI_ID=unicode(HDI_ID)
       self.BAREMODULE_ID=unicode(BAREMODULE_ID)
@@ -262,7 +287,7 @@ class FullModule(object):
       self.BUILTON=BUILTON
       self.BUILTBY=unicode(BUILTBY)
       self.STATUS=unicode(STATUS)
-        
+      self.LASTTEST_FULLMODULE=LASTTEST_FULLMODULE        
 
 #
 # logbook
@@ -286,17 +311,6 @@ class Logbook(object):
 #
 # Data
 
-
-class Data(object):
-      __storm_table__ = "test_data"
-      DATA_ID = Int(primary=True)
-      URLs = Unicode()
-      PFNs=Unicode()
-      COMMENT=Unicode()
-      def __init__(self,URLs="", PFNs="", COMMENT=""):
-            self.URLs=unicode(URLs)
-            self.PFNs=unicode(PFNs)
-            self.COMMENT=unicode(COMMENT)
 
 #"Bulk Import"||
 # tests
@@ -340,6 +354,7 @@ class Test_FullModuleSummary(object):
       QUALIFICATIONTYPE=Unicode()
       FULLTESTGRADE=Unicode()
       SHORTTESTGRADE=Unicode()
+      TIMESTAMP=Unicode()
       def splitObjects(self,pippo, i):
           result =((unicode(pippo)).split(","))[i]
           return result
@@ -354,7 +369,7 @@ class Test_FullModuleSummary(object):
               return None
           
           
-      def __init__(self, FULLMODULE_ID,DATA_ID, FULLMODULETEST_NAMES="", FULLMODULETEST_TYPES="", FULLMODULETEST_IDS="", FULLTESTGRADE="", SHORTTESTGRADE="",QUALIFICATIONTYPE=""):
+      def __init__(self, FULLMODULE_ID,DATA_ID, FULLMODULETEST_NAMES="", FULLMODULETEST_TYPES="", FULLMODULETEST_IDS="", FULLTESTGRADE="", SHORTTESTGRADE="",QUALIFICATIONTYPE="",TIMESTAMP=""):
           self.FULLMODULE_ID=    unicode(      FULLMODULE_ID)
           self.DATA_ID=DATA_ID
           self.QUALIFICATIONTYPE=unicode(QUALIFICATIONTYPE)
@@ -363,6 +378,7 @@ class Test_FullModuleSummary(object):
           self.FULLMODULETEST_IDS=unicode(FULLMODULETEST_IDS)
           self.FULLTESTGRADE=unicode(FULLTESTGRADE)
           self.SHORTTESTGRADE =unicode(SHORTTESTGRADE )
+	  self.TIMESTAMP=unicode(TIMESTAMP)
 
 class Test_FullModule(object):
       __storm_table__ = "test_fullmodule"
@@ -527,40 +543,6 @@ class Test_Roc(object):
       DATA_ID=Int()
       data=Reference(DATA_ID,Data.DATA_ID)
 
-class Test_Batch(object):
-    __storm_table__ = "test_batch"
-    TEST_ID=Int(primary=True)
-    SESSION_ID=Int()
-    BATCH_ID=Unicode()
-    session = Reference (SESSION_ID,Session.SESSION_ID)    
-    batch=Reference(BATCH_ID, Batch.BATCH_ID)
-    DATA_ID=Int()
-    data=Reference(DATA_ID,Data.DATA_ID)
-    RESULT=Float()
-    def __init__(self,SESSION_ID,BATCH_ID,DATA_ID, RESULT=-1):
-        self.SESSION_ID=SESSION_ID
-        self.DATA_ID=DATA_ID
-        self.BATCH_ID=unicode(BATCH_ID)
-        self.RESULT=float(RESULT)
-
-class Test_Wafer(object):
-    __storm_table__ = "test_wafer"
-    TEST_ID=Int(primary=True)
-    SESSION_ID=Int()
-    WAFER_ID=Unicode()
-    session = Reference (SESSION_ID,Session.SESSION_ID)    
-    wafer=Reference(WAFER_ID, Wafer.WAFER_ID)
-    DATA_ID=Int()
-    data=Reference(DATA_ID,Data.DATA_ID)
-    NUMBEROFGOODSENSORS=Int()
-    RESULT=Float()
-    def __init__(self,SESSION_ID,WAFER,DATA_ID, NUMBEROFGOODSENSORS=0, RESULT=-1):
-        self.SESSION_ID=SESSION_ID
-        self.WAFER_ID=unicode(WAFER_ID)
-        self.RESULT=Float(RESULT)
-        self.NUMBEROFGOODSENSORS=NUMBEROFGOODSENSORS
-        self.DATA_ID=DATA_ID
-
 class Test_IV(object): # e' il vecchio test_sensor
       __storm_table__ = "test_iv"
       TEST_ID = Int(primary=True)
@@ -580,7 +562,7 @@ class Test_IV(object): # e' il vecchio test_sensor
       TEMPERATURE= Float()
       TYPE = Unicode()
       data=Reference(DATA_ID,Data.DATA_ID)
-      def __init__(self,SESSION_ID,SENSOR_ID,GRADE,DATA_ID,V1,I1,V2,I2,SLOPE, t, DATE,TYPE="", COMMENT=""):
+      def __init__(self,SESSION_ID,SENSOR_ID,GRADE,DATA_ID,V1,I1,V2,I2,SLOPE, DATE,TYPE="", COMMENT="", TEMPERATURE=0):
           self.SESSION_ID=SESSION_ID
           self.SENSOR_ID=unicode(SENSOR_ID)
           self.TYPE=unicode(TYPE)
@@ -770,8 +752,6 @@ BareModule.lasttest_baremodule_inspection = Reference(  BareModule.LASTTEST_BARE
 Hdi.lasttest_hdi = Reference(  Hdi.LASTTEST_HDI, Test_Hdi.TEST_ID)
 Tbm.lasttest_tbm = Reference(  Tbm.LASTTEST_TBM, Test_Tbm.TEST_ID)
 #FullModule.lasttest_fullmodule = Reference(  FullModule.LASTTEST_FULLMODULE, Test_FullModule.TEST_ID)
-Batch.lasttest_batch = Reference(Batch.LASTTEST_BATCH, Test_Batch.TEST_ID)
-Batch.lasttest_wafer = Reference(Wafer.LASTTEST_WAFER, Test_Wafer.TEST_ID)
 
 Logbook.adddata = Reference(Logbook.ADDDATA_ID,Data.DATA_ID)
 
@@ -784,6 +764,7 @@ Logbook.adddata = Reference(Logbook.ADDDATA_ID,Data.DATA_ID)
 
 Test_FullModuleSummary.fullmoduletests =  ReferenceSet(Test_FullModuleSummary.TEST_ID,Test_FullModule.SUMMARY_ID)
 
+FullModule.lasttest = Reference(FullModule.LASTTEST_FULLMODULE, Test_FullModuleSummary.TEST_ID)
 FullModule.summaries = ReferenceSet(FullModule.FULLMODULE_ID, Test_FullModuleSummary.FULLMODULE_ID)
 FullModule.tests = ReferenceSet(FullModule.FULLMODULE_ID, Test_FullModule.FULLMODULE_ID)
 Test_FullModule.analyses = ReferenceSet(Test_FullModule.TEST_ID, Test_FullModuleAnalysis.FULLMODULETEST_ID

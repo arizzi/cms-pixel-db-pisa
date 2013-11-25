@@ -600,7 +600,7 @@ class PixelDBInterface(object) :
             self.insertHistory(type="TEST_BM", id=test_bm.TEST_ID, target_type="BAREMODULE", target_id=test_bm.BAREMODULE_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
             return test_bm
 
-      def insertSensorTest(self, test):
+      def insertIVTest(self, test):
             #
             # first check that the module exists
             #
@@ -612,7 +612,7 @@ class PixelDBInterface(object) :
             (self.getSensor(test.SENSOR_ID)).LASTTEST_SENSOR =  test.TEST_ID
             self.store.commit()
             # log in history
-            self.insertHistory(type="TEST_S", id=test.TEST_ID, target_type="SENSOR", target_id=test.SENSOR_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="TEST_S", id=test.TEST_ID, target_type="SENSOR", target_id=test.SENSOR_ID, operation="TEST_IV", datee=date.today(), comment="NO COMMENT")
             return test
 
       def insertHdiTest(self, test):
@@ -780,7 +780,7 @@ class PixelDBInterface(object) :
             return (batch, wafer, sensor, step, v1, i1, v2, i2, slope, temperature, date, grade, centre1, comment,True)
             
 
-      def insertTestSensorDir(self,dir,session):
+      def insertIVTestDir(self,dir,session):
             #
             # what to do here :
             #   you need directly I_150V, I_150_100, preresult
@@ -835,10 +835,10 @@ class PixelDBInterface(object) :
                   print "Cannot insert data"
                   return None
             
-            st = Test_Sensor(SESSION_ID=session.SESSION_ID,SENSOR_ID=sensor,GRADE=grade,DATA_ID = data_id.DATA_ID,I1 = float(i1),I2=float(i2), V1= float(v1), V2 = float(v2),  temperature = float(temperature), DATE = int(date), SLOPE =float(slope), COMMENT=comment)
+            st = Test_IV(SESSION_ID=session.SESSION_ID,SENSOR_ID=sensor,GRADE=grade,DATA_ID = data_id.DATA_ID,I1 = float(i1),I2=float(i2), V1= float(v1), V2 = float(v2),  TEMPERATURE = float(temperature), DATE = int(date), SLOPE =float(slope), COMMENT=comment)
             
 
-            self.insertSensorTest(st)
+            self.insertIVTest(st)
             if (st is None):
                   print "Failed Sensor Test Insertion"
                   return None
@@ -1091,13 +1091,15 @@ class PixelDBInterface(object) :
                   pp = self.insertData(dataS)
                   print "paperino"
 
-                  summary = Test_FullModuleSummary(FULLMODULE_ID=ppp,DATA_ID=dataS.DATA_ID, QUALIFICATIONTYPE=QualificationType)
+                  summary = Test_FullModuleSummary(FULLMODULE_ID=ppp,DATA_ID=dataS.DATA_ID, QUALIFICATIONTYPE=QualificationType,TIMESTAMP=timestamp)
                   print "LLLLLLLLLLLLL ",ppp,dataS.DATA_ID
 #                  summary = Test_FullModuleSummary(FULLMODULE_ID=unicode(ppp),DATA_ID=(dataS.DATA_ID))
                   print "paperino2"
 
                   pp = self.insertFullModuleTestSummary(summary)
-                  print 'eccheccazzo'
+		  pippo=self.updateLastTestFullModule(ppp,summary.TEST_ID,QualificationType,summary.TIMESTAMP)
+		  if (pippo is None):
+			print "CANNOT UPDATE LAST SUMMARY IN INVENTORY FOR",ppp	
                   summary = pp
             else:
                   summary = summ
@@ -1133,4 +1135,26 @@ class PixelDBInterface(object) :
             
              
       
+      def updateLastTestFullModule(self,moduleId,summaryId, newType, newDate):
+	  fm=self.getFullModule(unicode(moduleId))
+	  if fm is None :
+	     return None
+	  if fm.LASTTEST_FULLMODULE != 0 and fm.LASTTEST_FULLMODULE != None :
+  	     prevSummary=fm.lasttest
+	     prevType=prevSummary.QUALIFICATIONTYPE
+	     prevDate=prevSummary.TIMESTAMP
+	     #if both are full qualification	
+	     if  prevType == "FullQualification" and newType == "FullQualification" :
+		#check the timestamp
+ 		if prevDate < newDate :
+		  fm.LASTTEST_FULLMODULE=summaryId
+		  self.store.commit()	
+	     #if new is Full and the old is not, take this one no matter what
+             if  prevType != "FullQualification" and newType == "FullQualification" :
+   	        fm.LASTTEST_FULLMODULE=summaryId
+                self.store.commit()
+          else:
+              fm.LASTTEST_FULLMODULE=summaryId
+              self.store.commit()
+          return fm 
 
