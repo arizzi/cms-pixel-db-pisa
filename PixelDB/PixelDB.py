@@ -1139,7 +1139,7 @@ class PixelDBInterface(object) :
 	  fm=self.getFullModule(unicode(moduleId))
 	  if fm is None :
 	     return None
-	  if fm.LASTTEST_FULLMODULE != 0 and fm.LASTTEST_FULLMODULE != None :
+	  if fm.LASTTEST_FULLMODULE != 0 and fm.LASTTEST_FULLMODULE != None and fm.lasttest != None:
   	     prevSummary=fm.lasttest
 	     prevType=prevSummary.QUALIFICATIONTYPE
 	     prevDate=prevSummary.TIMESTAMP
