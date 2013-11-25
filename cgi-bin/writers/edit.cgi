@@ -19,6 +19,12 @@ sys.path.append("../../PixelDB")
 
 from storm.properties import *
 from storm.references import *
+from storm.variables import (
+    Variable, VariableFactory, BoolVariable, IntVariable, FloatVariable,
+    DecimalVariable, RawStrVariable, UnicodeVariable, DateTimeVariable,
+    DateVariable, TimeVariable, TimeDeltaVariable, PickleVariable,
+    ListVariable, EnumVariable)
+
 from storm import *
 from PixelDB import *
 import random
@@ -30,8 +36,10 @@ def inputField(objName,column, defVal = "") :
 	config.read('/var/www/cgi-bin/writers/editor.ini')
 	#default input string:
 	inputString = "<input type=input name=\"%s\" value=\"%s\">" % (column,defVal)
-
-	if config.has_section(objName+"/"+column) :
+	if column == "DATA_ID" :
+	    if defVal == "" :
+	 	inputString="<input type=\"file\" name=\"DATA_ID_filename\" />"
+	elif config.has_section(objName+"/"+column) :
  	    type = config.get(objName+"/"+column,"type")
  	    if type == "select" :
 		   options = re.split(',',config.get(objName+"/"+column,"options"))
@@ -56,6 +64,8 @@ form = cgi.FieldStorage() # instantiate only once!
 action = form.getfirst('submit', 'empty')
 action = cgi.escape(action)
 objName = form.getfirst('objName', 'empty')
+if objName == "empty" :
+    exit()
 if objName != "" :
 # Avoid script injection escaping the user input
   objName = cgi.escape(objName)
@@ -104,19 +114,31 @@ if action == "Insert" :
      for c in columns:
            columnType=type(eval("aux."+c))
            adate=date(2000,1,1)
-           print columnType		
-           if columnType == type(adate) :
+           columnType2=type(eval(objName+"."+c+".variable_factory()"))
+	   if c == "DATA_ID" and form['DATA_ID_filename'].filename :
+  		    fileitem = form['DATA_ID_filename']
+         	    fn = objID+"__"+os.path.basename(fileitem.filename)
+                    open('/data/pixels/inventory/'+objName+'/' + fn, 'wb').write(fileitem.file.read())
+		    pfn='file:/data/pixels/inventory/'+objName+'/' + fn
+ 	            data = Data(PFNs=pfn)
+	            insertedData = pdb.insertData(data)
+ 		    if (insertedData is None):
+	                 print"<br>Error inserting data"
+			 buildString+="DATA_ID=0"
+		    else:
+			 buildString+="DATA_ID=%s,"%insertedData.DATA_ID
+           elif columnType == type(adate) :
                 d=form.getfirst(c, "")
 		try: 
 		        dd=datetime.strptime(d,"%Y-%m-%d")
 		except:
 			dd=date.today()
 		buildString+=" "+c+"=dd,"
-           elif columnType == unicode : 
+           elif columnType2 == UnicodeVariable : 
 		buildString+=" "+c+"=\""+form.getfirst(c, "")+"\","
-	   elif columnType == int :
+	   elif columnType2 == IntVariable :
 		buildString+=" "+c+"=int("+form.getfirst(c, "")+"),"
-	   elif columnType == float :
+	   elif columnType2 == FloatVariable :
 		buildString+=" "+c+"=float("+form.getfirst(c, "")+"),"
 	   else :
 		buildString+=" "+c+"=\""+form.getfirst(c, "")+"\","
@@ -132,6 +154,8 @@ if action == "Insert" :
         pdb.store.add(o)
 	pdb.store.commit()
 	print " Objected added"
+	pdb.insertHistory(type=0,id=0, target_id=eval("o."+ID), target_type=objName, operation="INSERT", datee=date.today(), comment="")
+
   else:     
      print "This object ALREADY exists. You CANNOT INSERT, but you can EDIT ! "
 
@@ -163,7 +187,7 @@ if action == "Save changes" :
 
 if True :
 	print "<table id=example cellspacing=10 >"
-	print "<form>"
+	print "<form enctype=\"multipart/form-data\" method=\"post\">"
 	print "<input type=hidden name=objName value=\"%s\">" % objName
 	print "<thead> <tr>"
 	print "<th align=left> Field: </th>"
