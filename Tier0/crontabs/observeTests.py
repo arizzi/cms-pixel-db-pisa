@@ -54,10 +54,11 @@ def initProcessing(CONFIG, DEBUG):
     CENTER = ConfigSectionMap("MACRO")["center"]
     OPERATOR = ConfigSectionMap("MACRO")["operator"]
     PATTERN =  ConfigSectionMap("MACRO")["pattern"]
+    TESTNAME =  ConfigSectionMap("MACRO")["testname"]
     if (MACRO_INIT=='null' or INPUTDIR=='null' or PATTERN == 'null'):
         print "Config file NOT ok"
-        return (Null, Null, Null, Null, False)
-    return (MACRO_INIT, INPUTDIR, CENTER, PATTERN,OPERATOR, True)
+        return (None, None, None,  None, None,False)
+    return (MACRO_INIT, INPUTDIR, CENTER, PATTERN,OPERATOR, TESTNAME, True)
 
 
 DEBUG=True
@@ -91,7 +92,7 @@ PATTERN ='null'
 INSERTED=0
 numinjected=0
 
-(MACRO_INIT, INPUTDIR, CENTER, PATTERN, OPERATOR, ok) = initProcessing(CONFIG=sys.argv[1], DEBUG=DEBUG)
+(MACRO_INIT, INPUTDIR, CENTER, PATTERN, OPERATOR, TESTNAME, ok) = initProcessing(CONFIG=sys.argv[1], DEBUG=DEBUG)
 
 if (ok == False):
     print "Failed in reading the ini file",sys.argv[1]
@@ -145,7 +146,7 @@ if (insert==1):
     
         (ret, ck) = commands.getstatusoutput('cksum '+line+" | awk \'{print $1}\'")
     
-        tar = InputTar (NAME=os.path.basename(line), LOCATION=os.path.dirname(line),    CKSUMTYPE='cksum', CKSUM=ck,         STATUS='new', CENTER = CENTER, DATE = date.today())
+        tar = InputTar (NAME=os.path.basename(line), LOCATION=os.path.dirname(line),    CKSUMTYPE='cksum', CKSUM=ck,         STATUS='new', CENTER = CENTER, DATE = date.today(),TESTNAME=TESTNAME)
         pp = pdb.insertNewTar(tar)
 
         if(pp is None):

@@ -8,4 +8,8 @@ delete from test_fullmoduleanalysis;
 delete from test_fullmodulesession;
 delete from test_fullmodulesummary;
 delete from test_fullmodule;
+delete from test_iv;
+delete from test_it;
+delete from test_cv;
+
 

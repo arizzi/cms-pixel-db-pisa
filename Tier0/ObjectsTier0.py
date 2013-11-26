@@ -76,14 +76,16 @@ class InputTar (object):
     LOCATION = Unicode()
     CKSUM = Unicode()
     CKSUMTYPE = Unicode()
+    TESTNAME=Unicode()
     DATE = datetime(1970,1,1)
     STATUS = Unicode()
     CENTER = Unicode()
-    def __init__ (self, NAME,    LOCATION,    CKSUM   ,CKSUMTYPE,  DATE, STATUS, CENTER):
+    def __init__ (self, NAME,    LOCATION,    CKSUM   ,CKSUMTYPE,  DATE, STATUS, CENTER, TESTNAME):
         self.NAME = unicode(NAME)
         self.LOCATION  = unicode(LOCATION)
         self.CKSUM = unicode(CKSUM)
         self.CKSUMTYPE = unicode(CKSUMTYPE)
+        self.TESTNAME = unicode(TESTNAME)
         self.DATE = DATE 
         self.STATUS =unicode(STATUS)
         self.CENTER = unicode(CENTER)
@@ -116,15 +118,17 @@ class ProcessingRun (object):
     MACRO_VERSION = Unicode()
     EXECUTED_COMMAND = Unicode()
     PROCESSEDPREFIX=Unicode()
+    UPLOADMETHOD=Unicode()
     EXIT_CODE = Int()
     STATUS = Unicode()
     DATE = datetime(1970,1,1)
     PROCESSED_DIR_ID = Int()
-    def __init__(self, MACRO_VERSION, EXECUTED_COMMAND, EXIT_CODE, DATE, STATUS, TAR_ID, PROCESSEDPREFIX,PROCESSED_DIR_ID=0):
+    def __init__(self, MACRO_VERSION, EXECUTED_COMMAND, EXIT_CODE, DATE, STATUS, TAR_ID, PROCESSEDPREFIX,UPLOADMETHOD,PROCESSED_DIR_ID=0):
         self.TAR_ID = TAR_ID
         self.MACRO_VERSION = unicode(MACRO_VERSION)
         self.PROCESSEDPREFIX = unicode(PROCESSEDPREFIX)
         self.EXECUTED_COMMAND = unicode(EXECUTED_COMMAND)
+        self.UPLOADMETHOD = unicode(UPLOADMETHOD)
         self.EXIT_CODE = (EXIT_CODE)
         self.DATE = DATE
         self.STATUS = unicode(STATUS)

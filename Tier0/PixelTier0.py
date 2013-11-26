@@ -141,7 +141,7 @@ class PixelTier0 (object):
 
 
       def injectProcessingRunFromInputTar (self,tar):
-            pr = ProcessingRun(MACRO_VERSION = self.MACRO_VERSION, EXECUTED_COMMAND = self.EXE, EXIT_CODE = -1,  STATUS="injected", DATE=date.today(), TAR_ID=tar.TAR_ID,PROCESSED_DIR_ID = 0, PROCESSEDPREFIX=self.PROCESSEDPREFIX)
+            pr = ProcessingRun(MACRO_VERSION = self.MACRO_VERSION, EXECUTED_COMMAND = self.EXE, EXIT_CODE = -1,  STATUS="injected", DATE=date.today(), TAR_ID=tar.TAR_ID,PROCESSED_DIR_ID = 0, PROCESSEDPREFIX=self.PROCESSEDPREFIX,UPLOADMETHOD=self.UPLOAD_METHOD)
             self.store.add(pr)
             self.store.commit()
             return pr
@@ -289,7 +289,7 @@ class PixelTier0 (object):
                               
                               #self.uploadTest()
                               
-                              pd  = self.insertProcessedDir(pr,tar,NAME=fulldir, STATUS=status, UPLOAD_TYPE = self.UPLOAD_METHOD,
+                              pd  = self.insertProcessedDir(pr,tar,NAME=fulldir, STATUS=status, UPLOAD_TYPE = pr.UPLOADMETHOD,
                                                             UPLOAD_STATUS="",
                                                             UPLOAD_ID=0)
                                                             
@@ -491,9 +491,14 @@ class PixelTier0 (object):
             aaa = self.PixelDB.insertIVTestDir(dir,session)
             if (aaa is None):
                   print "Failed upload from DIR ",dir
+                  pd.STATUS=unicode("upload-failed")
+                  pd.UPLOAD_ID = 0
+                  pd.UPLOAD_STATUS=unicode('failed')
+                  self.store.commit()      
                   return None
             pd.STATUS=unicode("uploaded")
             pd.UPLOAD_ID = aaa.TEST_ID
+            pd.UPLOAD_STATUS=unicode('ok')
             self.store.commit()      
             return pd
 
