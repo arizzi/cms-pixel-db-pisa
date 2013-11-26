@@ -11,9 +11,6 @@ form = cgi.FieldStorage() # instantiate only once!
 
 
 
-objName = form.getfirst('objName', 'empty')
-# Avoid script injection escaping the user input
-objName = cgi.escape(objName)
 
 
 print "Content-Type: text/html"
@@ -54,6 +51,7 @@ from storm import *
 from PixelDB import *
 import random
 
+from pixelwebui import *
 
 pdb = PixelDBInterface(operator="webfrontend",center="cern")
 pdb.connectToDB()
@@ -63,7 +61,11 @@ columns = []
 refs = []
 i =0 
 #objName = "Test_FullModule"
+objName = form.getfirst('objName', 'empty')
+# Avoid script injection escaping the user input
+objName = parseObjName(cgi.escape(objName))
 objType = eval(objName)
+
 if re.match("test",objName,flags=re.IGNORECASE) : 
   ID="TEST_ID"
 else:

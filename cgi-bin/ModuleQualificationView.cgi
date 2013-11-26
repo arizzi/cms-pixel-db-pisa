@@ -7,6 +7,8 @@ cgitb.enable()
 
 import re
 import cgi
+from pixelwebui import *
+
 
 def findMax(o,referencesforMax,analysisToUse,field) :
    tmp = 0
@@ -24,7 +26,7 @@ form = cgi.FieldStorage() # instantiate only once!
 
 objName = form.getfirst('objName', 'empty')
 # Avoid script injection escaping the user input
-objName = cgi.escape(objName)
+objName = parseObjName(cgi.escape(objName))
 
 
 print "Content-Type: text/html"

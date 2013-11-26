@@ -2,10 +2,12 @@ from time import *
 import sys
 sys.path.append("../PixelDB")
 
+
 from PixelDB import *
 import cgi
 import re
 from GenericView import *
+
 
 def specificView(objName,form,pdb) :
    if objName == "BareModule" :

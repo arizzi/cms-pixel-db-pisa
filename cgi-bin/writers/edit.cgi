@@ -16,6 +16,7 @@ print '''
 
 '''
 sys.path.append("../../PixelDB")
+sys.path.append("..")
 
 from storm.properties import *
 from storm.references import *
@@ -29,7 +30,7 @@ from storm import *
 from PixelDB import *
 import random
 import ConfigParser
-
+from pixelwebui import *
 
 def inputField(objName,column, defVal = "") :
 	config = ConfigParser.ConfigParser()
@@ -68,7 +69,7 @@ if objName == "empty" :
     exit()
 if objName != "" :
 # Avoid script injection escaping the user input
-  objName = cgi.escape(objName)
+  objName = parseObjName(cgi.escape(objName))
   objType = eval(objName)
 
   if re.match("test",objName,flags=re.IGNORECASE) : 

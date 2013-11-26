@@ -17,18 +17,17 @@ class Transfer (object):
     TRANSFER_ID=Int(primary=True)
     SENDER=Unicode()
     RECEIVER=Unicode()
-    ISSUED_DATE=datetime(1970,1,1)
-    RECEIVED_DATE=date.today()
+    ISSUED_DATE=DateTime()
+    RECEIVED_DATE=DateTime() 
     STATUS=Unicode()
     COMMENT=Unicode()
-    def __init__(self, SENDER,RECEIVER, ISSUED_DATE=datetime(1970,1,1), RECEIVED_DATE=date.today(), STATUS="ARRIVED", COMMENT=""):
+    def __init__(self, SENDER,RECEIVER, ISSUED_DATE=datetime(1970,1,1), RECEIVED_DATE=datetime.now(), STATUS="ARRIVED", COMMENT=""):
         self.SENDER=unicode(SENDER)
         self.RECEIVER=unicode(RECEIVER)
         self.ISSUED_DATE=ISSUED_DATE
         self.RECEIVED_DATE=RECEIVED_DATE
         self.STATUS=unicode(STATUS)
         self.COMMENT=unicode(COMMENT)
-
 
 class Data(object):
       __storm_table__ = "test_data"
@@ -50,10 +49,10 @@ class Session (object):
     SESSION_ID=Int(primary=True)
     CENTER=Unicode()
     OPERATOR=Unicode()
-    DATE=date.today()
+    DATE=DateTime()
     TYPE=Unicode()
     COMMENT=Unicode()
-    def __init__(self,CENTER, OPERATOR,TYPE="TESTSESSION",DATE=date.today(), COMMENT=""):
+    def __init__(self,CENTER, OPERATOR,TYPE="TESTSESSION",DATE=datetime.now(), COMMENT=""):
         self.CENTER=unicode(CENTER)
         self.OPERATOR=unicode(OPERATOR)
         self.DATE=DATE
@@ -191,7 +190,7 @@ class BareModule(object):
       return rocc
   sensor = Reference(SENSOR_ID, Sensor.SENSOR_ID)
   transfer = Reference(TRANSFER_ID, Transfer.TRANSFER_ID)
-  BUILTON = date.today()
+  BUILTON = DateTime()
   BUILTBY = Unicode()
   COMMENT = Unicode()
   LABEL2D = Unicode()
@@ -209,7 +208,7 @@ class BareModule(object):
   def getChipTest(self,i):
       result =(self.LASTTEST_CHIPS.split(","))[i]
       return int(result)
-  def __init__(self,BAREMODULE_ID,ROC_ID,SENSOR_ID,TRANSFER_ID,  BUILTBY, BUILTON=date.today(),COMMENT="", LASTTEST_CHIPS = "",LASTTEST_BAREMODULE_INSPECTION=0, STATUS="",LABEL2D="",POWERCABLE="", SIGNALCABLE="", TYPE="" ):
+  def __init__(self,BAREMODULE_ID,ROC_ID,SENSOR_ID,TRANSFER_ID,  BUILTBY, BUILTON=datetime.now(),COMMENT="", LASTTEST_CHIPS = "",LASTTEST_BAREMODULE_INSPECTION=0, STATUS="",LABEL2D="",POWERCABLE="", SIGNALCABLE="", TYPE="" ):
       self.BAREMODULE_ID=unicode(BAREMODULE_ID)
       self.ROC_ID=unicode(ROC_ID)
       self.SENSOR_ID=unicode(SENSOR_ID)
@@ -272,12 +271,12 @@ class FullModule(object):
   tbm = Reference(TBM_ID, Tbm.TBM_ID)
   baremodule = Reference(BAREMODULE_ID, BareModule.BAREMODULE_ID)
   hdi = Reference(HDI_ID, Hdi.HDI_ID)
-  BUILTON = date.today()
+  BUILTON = DateTime()
   BUILTBY = Unicode()
   COMMENT = Unicode()
   LASTTEST_FULLMODULE=Int()
 
-  def __init__(self,FULLMODULE_ID, BAREMODULE_ID, HDI_ID, TBM_ID, TRANSFER_ID, BUILTBY, BUILTON=date.today(), COMMENT="", STATUS="",LASTTEST_FULLMODULE=0):
+  def __init__(self,FULLMODULE_ID, BAREMODULE_ID, HDI_ID, TBM_ID, TRANSFER_ID, BUILTBY, BUILTON=datetime.now(), COMMENT="", STATUS="",LASTTEST_FULLMODULE=0):
       self.TBM_ID=unicode(TBM_ID)
       self.HDI_ID=unicode(HDI_ID)
       self.BAREMODULE_ID=unicode(BAREMODULE_ID)
@@ -729,9 +728,9 @@ class History(object):
     TARGET_TYPE=Unicode()
     TARGET_ID=Unicode()
     OPERATION=Unicode()
-    DATE=date.today()
+    DATE=DateTime()
     COMMENT=Unicode()
-    def __init__(self, TYPE, ID, TARGET_TYPE, TARGET_ID, OPERATION, DATE=date.today(), COMMENT=""):
+    def __init__(self, TYPE, ID, TARGET_TYPE, TARGET_ID, OPERATION, DATE=datetime.now(), COMMENT=""):
         self.TYPE=unicode(TYPE)
         self.ID=unicode(ID)
         self.TARGET_TYPE=unicode(TARGET_TYPE)

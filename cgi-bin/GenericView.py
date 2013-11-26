@@ -13,12 +13,18 @@ from storm.properties import *
 from storm.references import *
 from storm import *
 
+legalNames = ["Transfer","Data","Session","Roc","Batch","Wafer","Sensor","BareModule","Hdi","Tbm","FullModule","Logbook","Test_BareModule","Test_FullModuleSession","Test_FullModuleSummary","Test_FullModule","Test_FullModuleAnalysis","Test_Tbm","Test_Hdi","Test_Roc","Test_IV","Test_IT","Test_SensorInspection","Test_BareModuleInspection","Test_BareModule_Chip","Test_CV","History"]
+def parseObjName(objName) :
+    for name in legalNames:
+     if objName == name :
+       return name
+    return "empty"
 
 def getAllPrintableFields(objName) : 
 	columns = []
 	refs = []
 	refsets = []
-        objType = eval(objName)
+        objType = eval(parseObjName(objName))
 	i =0 
 	#type(eval(objName+".FULLMODULE_ID")).__name__
 	keys=objType.__dict__.keys()

@@ -9,7 +9,7 @@ import re
 
 class PixelDBInterface(object) :
 
-      def __init__(self, operator, center, datee =date.today() ) :
+      def __init__(self, operator, center, datee =datetime.now() ) :
             self.operator = operator
             self.center =  center
             self.date = datee
@@ -41,7 +41,7 @@ class PixelDBInterface(object) :
             self.store.add(sensor)
             self.store.commit()
             # log in history
-            self.insertHistory(type="NULL", id=0, target_type="SENSOR", target_id=sensor.SENSOR_ID, operation="INSERT", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="NULL", id=0, target_type="SENSOR", target_id=sensor.SENSOR_ID, operation="INSERT", datee=datetime.now(), comment="NO COMMENT")
             return sensor
       
       def insertRoc (self, roc):
@@ -51,7 +51,7 @@ class PixelDBInterface(object) :
             self.store.add(roc)
             self.store.commit()
             # log in history
-            self.insertHistory(type="NULL", id=0, target_type="ROC", target_id=roc.ROC_ID, operation="INSERT", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="NULL", id=0, target_type="ROC", target_id=roc.ROC_ID, operation="INSERT", datee=datetime.now(), comment="NO COMMENT")
             return roc
 
       def insertTbm (self, tbm):
@@ -61,7 +61,7 @@ class PixelDBInterface(object) :
             self.store.add(tbm)
             self.store.commit()
             # log in history
-            self.insertHistory(type="NULL", id=0, target_type="TBM", target_id=tbm.TBM_ID, operation="INSERT", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="NULL", id=0, target_type="TBM", target_id=tbm.TBM_ID, operation="INSERT", datee=datetime.now(), comment="NO COMMENT")
             return tbm
 
       def insertHdi (self, hdi):
@@ -71,7 +71,7 @@ class PixelDBInterface(object) :
             self.store.add(hdi)
             self.store.commit()
             # log in history
-            self.insertHistory(type="NULL", id=0, target_type="HDI", target_id=hdi.HDI_ID, operation="INSERT", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="NULL", id=0, target_type="HDI", target_id=hdi.HDI_ID, operation="INSERT", datee=datetime.now(), comment="NO COMMENT")
             return hdi      
       
 
@@ -82,7 +82,7 @@ class PixelDBInterface(object) :
             self.store.add(batch)
             self.store.commit()
             # log in history
-            self.insertHistory(type="NULL", id=0, target_type="BATCH", target_id=batch.BATCH_ID, operation="INSERT", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="NULL", id=0, target_type="BATCH", target_id=batch.BATCH_ID, operation="INSERT", datee=datetime.now(), comment="NO COMMENT")
             return batch      
 
       def insertWafer (self, wafer):
@@ -92,7 +92,7 @@ class PixelDBInterface(object) :
             self.store.add(wafer)
             self.store.commit()
             # log in history
-            self.insertHistory(type="NULL", id=0, target_type="WAFER", target_id=wafer.WAFER_ID, operation="INSERT", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="NULL", id=0, target_type="WAFER", target_id=wafer.WAFER_ID, operation="INSERT", datee=datetime.now(), comment="NO COMMENT")
             return wafer      
 
       
@@ -127,10 +127,10 @@ class PixelDBInterface(object) :
             self.store.add(bm)
             self.store.commit()
             # log in history sensor
-            self.insertHistory(type="SENSOR", id=bm.SENSOR_ID, target_type="BAREMODULE", target_id=bm.BAREMODULE_ID, operation="ASSEMBLE", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="SENSOR", id=bm.SENSOR_ID, target_type="BAREMODULE", target_id=bm.BAREMODULE_ID, operation="ASSEMBLE", datee=datetime.now(), comment="NO COMMENT")
             # log in history rocs
             for i in self.splitObjects(bm.ROC_ID):
-                  self.insertHistory(type="ROC", id=i, target_type="BAREMODULE", target_id=bm.BAREMODULE_ID, operation="ASSEMBLE", datee=date.today(), comment="NO COMMENT")
+                  self.insertHistory(type="ROC", id=i, target_type="BAREMODULE", target_id=bm.BAREMODULE_ID, operation="ASSEMBLE", datee=datetime.now(), comment="NO COMMENT")
             
             return bm
 
@@ -143,7 +143,7 @@ class PixelDBInterface(object) :
             return bm
             
             
-      def insertHistory(self, type, id, target_type, target_id, operation, datee=date.today(), comment=""):
+      def insertHistory(self, type, id, target_type, target_id, operation, datee=datetime.now(), comment=""):
             newHist=History(type, id, target_type, target_id, operation, datee, comment)
             self.store.add(newHist)
             self.store.commit()            
@@ -171,15 +171,15 @@ class PixelDBInterface(object) :
             self.store.add(fm)
             self.store.commit()
             # log in history 
-            self.insertHistory(type="BAREMODULE", id=fm.BAREMODULE_ID, target_type="FULLMODULE", target_id=fm.FULLMODULE_ID, operation="ASSEMBLE", datee=date.today(), comment="NO COMMENT")
-            self.insertHistory(type="HDI", id=fm.HDI_ID, target_type="FULLMODULE", target_id=fm.FULLMODULE_ID, operation="ASSEMBLE", datee=date.today(), comment="NO COMMENT")
-            self.insertHistory(type="TBM", id=fm.TBM_ID, target_type="FULLMODULE", target_id=fm.FULLMODULE_ID, operation="ASSEMBLE", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="BAREMODULE", id=fm.BAREMODULE_ID, target_type="FULLMODULE", target_id=fm.FULLMODULE_ID, operation="ASSEMBLE", datee=datetime.now(), comment="NO COMMENT")
+            self.insertHistory(type="HDI", id=fm.HDI_ID, target_type="FULLMODULE", target_id=fm.FULLMODULE_ID, operation="ASSEMBLE", datee=datetime.now(), comment="NO COMMENT")
+            self.insertHistory(type="TBM", id=fm.TBM_ID, target_type="FULLMODULE", target_id=fm.FULLMODULE_ID, operation="ASSEMBLE", datee=datetime.now(), comment="NO COMMENT")
             return fm
 
             
 
 
-      def assembleFullModule(self, fullmodule_id, baremodule_id, tbm_id, hdi_id,  builtby, transfer_id,builton=date.today(),comment=""):
+      def assembleFullModule(self, fullmodule_id, baremodule_id, tbm_id, hdi_id,  builtby, transfer_id,builton=datetime.now(),comment=""):
             newfm = FullModule(FULLMODULE_ID=fullmodule_id, BAREMODULE_ID=baremodule_id, HDI_ID=hdi_id, TBM_ID=tbm_id,TRANSFER_ID=transfer_id, BUILTBY=builtby, BUILTON=builton, COMMENT=comment)
             self.insertFullModule(newfm)
             return newfm
@@ -423,7 +423,7 @@ class PixelDBInterface(object) :
 # transfer
 #
 
-      def transferSensor(self, sensor_id, SENDER, RECEIVER, ISSUED_DATE=datetime(1970,1,1), RECEIVED_DATE=date.today(), STATUS="", COMMENT=""):
+      def transferSensor(self, sensor_id, SENDER, RECEIVER, ISSUED_DATE=datetime(1970,1,1), RECEIVED_DATE=datetime.now(), STATUS="", COMMENT=""):
             #
             # moves only an EXISTING sensor
             #
@@ -434,7 +434,7 @@ class PixelDBInterface(object) :
             t = self.insertTransfer(Transfer(SENDER=SENDER, RECEIVER=RECEIVER, ISSUED_DATE=ISSUED_DATE, RECEIVED_DATE=RECEIVED_DATE, STATUS="SHIPPED", COMMENT=COMMENT))
             aa.TRANSFER_ID=t.TRANSFER_ID
             # log in history
-            self.insertHistory(type="TRANSFER", id=t.TRANSFER_ID, target_type="SENSOR", target_id=aa.SENSOR_ID, operation="TRASFER", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="TRANSFER", id=t.TRANSFER_ID, target_type="SENSOR", target_id=aa.SENSOR_ID, operation="TRASFER", datee=datetime.now(), comment="NO COMMENT")
             self.store.commit()
             return aa
 
@@ -450,7 +450,7 @@ class PixelDBInterface(object) :
 
             
 
-      def transferTbm(self, tbm_id, SENDER, RECEIVER, ISSUED_DATE=datetime(1970,1,1), RECEIVED_DATE=date.today(), STATUS="", COMMENT=""):
+      def transferTbm(self, tbm_id, SENDER, RECEIVER, ISSUED_DATE=datetime(1970,1,1), RECEIVED_DATE=datetime.now(), STATUS="", COMMENT=""):
             #
             # moves only an EXISTING tbm
             #
@@ -461,11 +461,11 @@ class PixelDBInterface(object) :
             t = self.insertTransfer(Transfer(SENDER=SENDER, RECEIVER=RECEIVER, ISSUED_DATE=ISSUED_DATE, RECEIVED_DATE=RECEIVED_DATE, STATUS=STATUS, COMMENT=COMMENT))
             aa.TRANSFER_ID=t.TRANSFER_ID
             # log in history
-            self.insertHistory(type="TRANSFER", id=t.TRANSFER_ID, target_type="TBM", target_id=aa.TBM_ID, operation="TRASFER", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="TRANSFER", id=t.TRANSFER_ID, target_type="TBM", target_id=aa.TBM_ID, operation="TRASFER", datee=datetime.now(), comment="NO COMMENT")
             self.store.commit()
             return aa
 
-      def transferHdi(self, hdi_id, SENDER, RECEIVER, ISSUED_DATE=datetime(1970,1,1), RECEIVED_DATE=date.today(), STATUS="", COMMENT=""):
+      def transferHdi(self, hdi_id, SENDER, RECEIVER, ISSUED_DATE=datetime(1970,1,1), RECEIVED_DATE=datetime.now(), STATUS="", COMMENT=""):
             #
             # moves only an EXISTING hdi
             #
@@ -476,10 +476,10 @@ class PixelDBInterface(object) :
             t = self.insertTransfer(Transfer(SENDER=SENDER, RECEIVER=RECEIVER, ISSUED_DATE=ISSUED_DATE, RECEIVED_DATE=RECEIVED_DATE, STATUS=STATUS, COMMENT=COMMENT))
             aa.TRANSFER_ID=t.TRANSFER_ID
             # log in history
-            self.insertHistory(type="TRANSFER", id=t.TRANSFER_ID, target_type="HDI", target_id=aa.HDI_ID, operation="TRASFER", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="TRANSFER", id=t.TRANSFER_ID, target_type="HDI", target_id=aa.HDI_ID, operation="TRASFER", datee=datetime.now(), comment="NO COMMENT")
             self.store.commit()
             return aa
-      def transferRoc(self, roc_id, SENDER, RECEIVER, ISSUED_DATE=datetime(1970,1,1), RECEIVED_DATE=date.today(), STATUS="", COMMENT=""):
+      def transferRoc(self, roc_id, SENDER, RECEIVER, ISSUED_DATE=datetime(1970,1,1), RECEIVED_DATE=datetime.now(), STATUS="", COMMENT=""):
             #
             # moves only an EXISTING roc
             #
@@ -490,10 +490,10 @@ class PixelDBInterface(object) :
             t = self.insertTransfer(Transfer(SENDER=SENDER, RECEIVER=RECEIVER, ISSUED_DATE=ISSUED_DATE, RECEIVED_DATE=RECEIVED_DATE, STATUS=STATUS, COMMENT=COMMENT))
             aa.TRANSFER_ID=t.TRANSFER_ID
             # log in history
-            self.insertHistory(type="TRANSFER", id=t.TRANSFER_ID, target_type="ROC", target_id=aa.ROC_ID, operation="TRASFER", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="TRANSFER", id=t.TRANSFER_ID, target_type="ROC", target_id=aa.ROC_ID, operation="TRASFER", datee=datetime.now(), comment="NO COMMENT")
             self.store.commit()
             return aa
-      def transferFullModule(self, fullmodule_id, SENDER, RECEIVER, ISSUED_DATE=datetime(1970,1,1), RECEIVED_DATE=date.today(), STATUS="", COMMENT=""):
+      def transferFullModule(self, fullmodule_id, SENDER, RECEIVER, ISSUED_DATE=datetime(1970,1,1), RECEIVED_DATE=datetime.now(), STATUS="", COMMENT=""):
             #
             # moves only an EXISTING fullmodule
             #
@@ -504,10 +504,10 @@ class PixelDBInterface(object) :
             t = self.insertTransfer(Transfer(SENDER=SENDER, RECEIVER=RECEIVER, ISSUED_DATE=ISSUED_DATE, RECEIVED_DATE=RECEIVED_DATE, STATUS=STATUS, COMMENT=COMMENT))
             aa.TRANSFER_ID=t.TRANSFER_ID
             # log in history
-            self.insertHistory(type="TRANSFER", id=t.TRANSFER_ID, target_type="FULLMODULE", target_id=aa.FULLMODULE_ID, operation="TRASFER", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="TRANSFER", id=t.TRANSFER_ID, target_type="FULLMODULE", target_id=aa.FULLMODULE_ID, operation="TRASFER", datee=datetime.now(), comment="NO COMMENT")
             self.store.commit()
             return aa
-      def transferBareModule(self, baremodule_id, SENDER, RECEIVER, ISSUED_DATE=datetime(1970,1,1), RECEIVED_DATE=date.today(), STATUS="", COMMENT=""):
+      def transferBareModule(self, baremodule_id, SENDER, RECEIVER, ISSUED_DATE=datetime(1970,1,1), RECEIVED_DATE=datetime.now(), STATUS="", COMMENT=""):
             #
             # moves only an EXISTING baremodule
             #
@@ -518,7 +518,7 @@ class PixelDBInterface(object) :
             t = self.insertTransfer(Transfer(SENDER=SENDER, RECEIVER=RECEIVER, ISSUED_DATE=ISSUED_DATE, RECEIVED_DATE=RECEIVED_DATE, STATUS=STATUS, COMMENT=COMMENT))
             aa.TRANSFER_ID=t.TRANSFER_ID
             # log in history
-            self.insertHistory(type="TRANSFER", id=t.TRANSFER_ID, target_type="BAREMODULE", target_id=aa.BAREMODULE_ID, operation="TRASFER", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="TRANSFER", id=t.TRANSFER_ID, target_type="BAREMODULE", target_id=aa.BAREMODULE_ID, operation="TRASFER", datee=datetime.now(), comment="NO COMMENT")
             self.store.commit()
             return aa
 #
@@ -545,7 +545,7 @@ class PixelDBInterface(object) :
             self.store.add(fms)
             self.store.commit()
             # log in history
-            self.insertHistory(type="TEST_FMSession", id=fms.TEST_ID, target_type="FULLMODULE", target_id=fms.FULLMODULE_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="TEST_FMSession", id=fms.TEST_ID, target_type="FULLMODULE", target_id=fms.FULLMODULE_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
             return fms
 
       def insertFullModuleTestSummary(self,fms):
@@ -555,7 +555,7 @@ class PixelDBInterface(object) :
             self.store.add(fms)
             self.store.commit()
             # log in history
-            self.insertHistory(type="TEST_FMSummary", id=fms.TEST_ID,target_type="FULLMODULE", target_id=fms.FULLMODULE_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="TEST_FMSummary", id=fms.TEST_ID,target_type="FULLMODULE", target_id=fms.FULLMODULE_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
             return fms
 
       def insertFullModuleTestAnalysis(self,fms):
@@ -565,7 +565,7 @@ class PixelDBInterface(object) :
             self.store.add(fms)
             self.store.commit()
             # log in history
-            self.insertHistory(type="TEST_FMAnalysis", id=fms.TEST_ID, target_type="FULLMODULE", target_id=fms.FULLMODULE_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="TEST_FMAnalysis", id=fms.TEST_ID, target_type="FULLMODULE", target_id=fms.FULLMODULE_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
             return fms
 
             
@@ -582,7 +582,7 @@ class PixelDBInterface(object) :
             self.store.add(test_fm)
             self.store.commit()
             # log in history
-            self.insertHistory(type="TEST_FM", id=test_fm.TEST_ID, target_type="FULLMODULES", target_id=test_fm.TEST_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="TEST_FM", id=test_fm.TEST_ID, target_type="FULLMODULES", target_id=test_fm.TEST_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
             return test_fm
 
       def insertBareModuleTest(self, test_bm):
@@ -597,7 +597,7 @@ class PixelDBInterface(object) :
             (self.getBareModule(test_bm.BAREMODULE_ID)).LASTTEST_BAREMODULE =  test_bm.TEST_ID
             self.store.commit()
             # log in history
-            self.insertHistory(type="TEST_BM", id=test_bm.TEST_ID, target_type="BAREMODULE", target_id=test_bm.BAREMODULE_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="TEST_BM", id=test_bm.TEST_ID, target_type="BAREMODULE", target_id=test_bm.BAREMODULE_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
             return test_bm
 
       def insertIVTest(self, test):
@@ -612,7 +612,7 @@ class PixelDBInterface(object) :
             (self.getSensor(test.SENSOR_ID)).LASTTEST_SENSOR =  test.TEST_ID
             self.store.commit()
             # log in history
-            self.insertHistory(type="TEST_S", id=test.TEST_ID, target_type="SENSOR", target_id=test.SENSOR_ID, operation="TEST_IV", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="TEST_S", id=test.TEST_ID, target_type="SENSOR", target_id=test.SENSOR_ID, operation="TEST_IV", datee=datetime.now(), comment="NO COMMENT")
             return test
 
       def insertHdiTest(self, test):
@@ -628,7 +628,7 @@ class PixelDBInterface(object) :
             (self.getHdi(test.HDI_ID)).LASTTEST_HDI =  test.TEST_ID
             self.store.commit()
             # log in history
-            self.insertHistory(type="TEST_HDI", id=test.TEST_ID, target_type="HDI", target_id=test.HDI_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="TEST_HDI", id=test.TEST_ID, target_type="HDI", target_id=test.HDI_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
             return test
 
 
@@ -644,7 +644,7 @@ class PixelDBInterface(object) :
             (self.getTbm(test.TBM_ID)).LASTTEST_TBM =  test.TEST_ID
             self.store.commit()
             # log in history
-            self.insertHistory(type="TEST_TBM", id=test.TEST_ID, target_type="TBM", target_id=test.TBM_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="TEST_TBM", id=test.TEST_ID, target_type="TBM", target_id=test.TBM_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
             return test
 
       def insertRocTest(self, test):
@@ -659,7 +659,7 @@ class PixelDBInterface(object) :
             (self.getRoc(test.ROC_ID)).LASTTEST_ROC =  test.TEST_ID
             self.store.commit()
             # log in history
-            self.insertHistory(type="TEST_ROC", id=test.TEST_ID, target_type="ROC", target_id=test.ROC_ID, operation="TEST", datee=date.today(), comment="NO COMMENT")
+            self.insertHistory(type="TEST_ROC", id=test.TEST_ID, target_type="ROC", target_id=test.ROC_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
             return test
 #
 # loads IV curves

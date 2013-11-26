@@ -49,6 +49,7 @@ from storm import *
 from PixelDB import *
 import random
 from SpecificView import *
+from pixelwebui import *
 
 pdb = PixelDBInterface(operator="webfrontend",center="cern")
 pdb.connectToDB()
@@ -57,7 +58,7 @@ pdb.connectToDB()
 form = cgi.FieldStorage() # instantiate only once!
 objName = form.getfirst('objName', 'empty')
 # Avoid script injection escaping the user input
-objName = cgi.escape(objName)
+objName = cgi.escape(parseObjName(objName))
 objType = eval(objName)
 refToShow = form.getfirst("ref", 'empty')
 if cgi.escape(form.getfirst("spec", "1")) == "1" :
