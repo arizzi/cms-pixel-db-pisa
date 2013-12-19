@@ -149,7 +149,13 @@ class PixelDBInterface(object) :
             self.store.commit()            
             return newHist
 
-
+      def buildHdiPlusTbm(self, hdi, tbm1, tbm2):
+# please note : tbm2 can be None is the hdi has just one TBM
+            hdi.TBM1_ID=tbm1.TBM_ID
+            if (tbm2 is not None):
+                  hdi.TBM2_ID=tbm2.TBM_ID
+            return hdi
+      
       def insertFullModule(self,fm):
             #
             # check if all the objects are already in DB
