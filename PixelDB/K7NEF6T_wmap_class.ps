@@ -1,0 +1,565 @@
+%!PS-Adobe-3.0
+%%BoundingBox: 0 0 590 840
+%%Pages: (atend)
+%%DocumentPaperSizes: a4
+%%EndComments
+
+%%BeginProlog
+/LOCAL 10 dict def
+/fontSize { /Helvetica findfont exch scalefont setfont }def
+/colorText  { 0 setgray }def
+/colorLine  { 0 setgray }def
+/colorBgd   { 0.95 setgray }def
+/colorBar   { 1.0 0.8 0.0 setrgbcolor}def
+/logo
+{
+  newpath 72 20 20 0 360 arc closepath 0.8 setgray fill
+  newpath 52 20 20 0 360 arc closepath 0.7 setgray fill
+  /Helvetica-Bold findfont [41 0 8 16 0 0] makefont setfont
+  0 setgray
+  newpath 0 11 moveto (WMap) true charpath
+  gsave 1 setgray fill grestore
+  0.3 setlinewidth stroke
+  
+  /Helvetica findfont [10 0 4 8 0 0] makefont setfont
+  0 setgray
+  5 0 moveto (Beat Meier) show
+  
+  /Helvetica-Bold findfont [16 0 4 8 0 0] makefont setfont
+  3 0 rmoveto (ETH IPP) show
+} bind def
+
+% wafer map -----------------------------------------------
+
+% periodicity (notch right)
+/pitchX 17.658 def
+/pitchY 21.338 def
+
+/colorWafer { 0.9 setgray }def
+/colorRect  { 0.7 setgray }def
+
+/colorBinTable
+[
+[0.0 0.0 0.0] %  0 black
+[0.5 0.5 0.5] %  1 dark gray
+[.75 .75 .75] %  2 light gray
+[1.0 1.0 1.0] %  3 white
+
+[.75 0.0 0.0] %  4 dark red
+[1.0 0.0 0.0] %  5 red
+[1.0 0.4 0.5] %  6 light red
+
+[0.0 0.5 0.0] %  7 dark green
+[0.0 .75 0.0] %  8 green
+[0.0 1.0 0.0] %  9 green
+[.75 1.0 0.0] % 10 yellow green
+[0.7 1.0 0.7] % 11 light green
+
+[0.0 0.5 0.5] % 12 dark blue green
+
+[0.0 0.0 1.0] % 13 dark blue
+[.25 0.5 1.0] % 14 blue
+[0.0 .75 1.0] % 15 blue
+[0.5 .75 1.0] % 16 blue
+[0.0 1.0 1.0] % 17 light blue
+[0.5 1.0 1.0] % 18 light blue
+
+[0.5 .25 0.0] % 19 dark brown
+[.75 0.5 0.0] % 20 brown
+[1.0 0.5 .25] % 21 orange
+[1.0 .75 0.5] % 22 light orange
+[1.0 1.0 0.0] % 23 yellow
+[1.0 1.0 .75] % 24 light yellow
+
+[0.5 0.0 0.5] % 25 dark red blue
+[1.0 0.0 1.0] % 26 red blue
+[1.0 .75 1.0] % 27 light red blue
+] def
+
+/colorBin
+{
+  colorBinTable exch get aload pop setrgbcolor
+} bind def
+
+/legendEntry
+{
+  gsave
+  translate
+  newpath
+  0 0 moveto 6 0 lineto 6 4 lineto 0 4 lineto closepath
+  colorBin fill
+  newpath
+  0 0 moveto 6 0 lineto 6 4 lineto 0 4 lineto closepath
+  0 setgray 0.2 setlinewidth stroke
+  8 0.5 moveto show
+  10 string cvs dup stringwidth pop neg -2 add 0.5 moveto show
+  grestore
+}bind def
+
+/legend_bin
+{
+  5 fontSize
+  yield  0 get (ok)                   8 -95 -110 legendEntry
+  yield  1 get (shortcut)             5 -95 -116 legendEntry
+  yield  2 get (I < 5mA)             23 -95 -122 legendEntry
+  yield  3 get (missing token)       21 -95 -128 legendEntry
+  yield  4 get (i2c error)           24 -95 -134 legendEntry
+  
+  yield  5 get (>= 5 dcol defect)    25 -25 -110 legendEntry
+  yield  6 get (2...4 dcol defect)   26 -25 -116 legendEntry
+  yield  7 get (1 dcol defect)       27 -25 -122 legendEntry
+
+  yield  8 get (>= 30 pixel defect)  12  45 -110 legendEntry
+  yield  9 get (10...29 pixel defect)13  45 -116 legendEntry
+  yield 10 get (3...9 pixel defect)  14  45 -122 legendEntry
+  yield 11 get (2 pixel defect)      16  45 -128 legendEntry
+  yield 12 get (1 pixel defect)      18  45 -134 legendEntry
+}def
+
+/legend_fail
+{
+  5 fontSize
+  yield  0 get (CL5: shortcut)       5  -95 -110 legendEntry
+  yield  1 get (CL5: I < 5mA)       23  -95 -116 legendEntry
+  yield  2 get (CL5: missing token) 21  -95 -122 legendEntry
+  yield  3 get (CL5: i2c error)     24  -95 -128 legendEntry
+  yield  4 get (CL5: >4000 pix def) 25  -95 -134 legendEntry
+  yield  5 get (CL4: dcol def)      26  -95 -140 legendEntry
+  yield  6 get (CL4: >40 pix def)   13  -95 -146 legendEntry
+  yield  7 get (CL4: mask)          14  -95 -152 legendEntry
+  yield  8 get (CL4: addr)          17  -25 -110 legendEntry
+  yield  9 get (CL4: IdOn)           0  -25 -116 legendEntry
+  yield 10 get (CL4: IaOn)           1  -25 -122 legendEntry
+  yield 11 get (CL4: IdInit)         2  -25 -128 legendEntry
+  yield 12 get (CL4: IaInit)         3  -25 -134 legendEntry
+  yield 13 get (CL3: >4 pix def)     7  -25 -140 legendEntry
+  yield 14 get (CL3: Tmean)         19  -25 -146 legendEntry
+  yield 15 get (CL3: Tstd)          20  -25 -152 legendEntry
+  yield 16 get (CL3: Tdiff)         22   45 -110 legendEntry
+
+  yield 17 get (CL3: Tcol)          12   45 -116 legendEntry
+  yield 18 get (CL3: Ph offs)       27   45 -122 legendEntry
+  yield 19 get (CL3: Ph gain)        4   45 -128 legendEntry
+
+  yield 20 get (CL3: addr step)      6   45 -134 legendEntry
+  yield 21 get (CL3: black)         11   45 -140 legendEntry
+  yield 22 get (CL2: 1..4 pix def)  10   45 -146 legendEntry
+  yield 23 get (CL1: ok)             8   45 -152 legendEntry
+}def
+
+/legend_class
+{
+  5 fontSize
+  yield 0 get (Class 1)  8  -95 -110 legendEntry
+  yield 1 get (Class 2) 10  -95 -116 legendEntry
+  yield 2 get (Class 3) 17  -95 -122 legendEntry
+  yield 3 get (Class 4) 23  -95 -128 legendEntry
+  yield 4 get (Class 5)  5  -95 -134 legendEntry
+}def
+
+/waferCoords
+{
+  gsave
+  pitchX pitchY scale
+  -4.97 -4.12 translate
+  newpath
+  0 1 10 { 0 moveto 0 9.08 rlineto }for
+  0 1  8 { -1.1 exch moveto 11.1 0 rlineto }for
+  0.005 setlinewidth stroke
+  newpath
+  0.5 0 moveto 0.5 1 lineto
+  0 0.5 moveto 1 0.5 lineto
+  stroke
+  0.4 fontSize
+  0.09 0.08 moveto (A)show
+  0.59 0.08 moveto (B)show
+  0.09 0.58 moveto (C)show
+  0.59 0.58 moveto (D)show
+
+  0.25 fontSize
+  0.33 8.9 moveto (Y0) show
+  1.33 8.9 moveto (Y1) show
+  2.33 8.9 moveto (Y2) show
+  3.33 8.9 moveto (Y3) show
+  4.33 8.9 moveto (Y4) show
+  5.33 8.9 moveto (Y5) show
+  6.33 8.9 moveto (Y6) show
+  7.33 8.9 moveto (Y7) show
+  8.33 8.9 moveto (Y8) show
+  9.33 8.9 moveto (Y9) show
+  -1.1 7.42 moveto (0X) show
+  -1.1 6.42 moveto (1X) show
+  -1.1 5.42 moveto (2X) show
+  -1.1 4.42 moveto (3X) show
+  -1.1 3.42 moveto (4X) show
+  -1.1 2.42 moveto (5X) show
+  -1.1 1.42 moveto (6X) show
+  -1.1 0.42 moveto (7X) show
+  grestore
+}bind def
+
+/waferOutline
+{
+  newpath
+  0 0 100 8 352 arc
+  closepath
+} bind def
+
+/rectOutline
+{
+  newpath
+   0  0 moveto
+  16.9  0 lineto
+  16.9 20.6 lineto
+   0 20.6 lineto
+  closepath
+} bind def
+
+/chipPos
+{ % ABCD
+  [0.05 0.1  8.48 0.1  0.05 10.32  8.45 10.32]
+  exch 2 mul 2 getinterval aload pop translate
+} bind def
+
+/chipOutline
+{
+  newpath
+  0 0 moveto
+  8.35 0 rlineto
+  0 10.2 rlineto
+  -8.35 0 rlineto
+  closepath
+} bind def
+
+/rectPos
+{
+  pitchY neg mul exch pitchX mul exch translate
+  -87.316 62.0 translate
+% /pitchX 17.658 def
+% /pitchY 21.338 def
+% -52.0 62.0 translate
+} bind def
+
+/chip
+{
+  gsave
+  rectPos
+  chipPos
+  colorBin
+  chipOutline fill
+  chipOutline 0.2 setlinewidth colorLine stroke
+  grestore
+} bind def
+
+/rect
+{
+  gsave
+  rectPos
+  rectOutline colorRect fill
+  grestore
+} bind def
+
+/waferMap
+{
+  waferCoords
+  legend
+  0.3 setlinewidth
+  waferOutline colorWafer fill
+  gsave
+  waferOutline clip
+  -1 1 8 { 0 1 10 { 1 index rect } for pop } for
+  -1 1 rect -1 2 rect -1 5 rect -1 6 rect  
+  { aload pop chip } forall
+  
+  6 fontSize colorText
+  -90 0 translate 90 rotate
+  waferId
+  dup stringwidth pop -2 div 0 moveto 
+  show
+
+  grestore
+  waferOutline colorLine stroke
+} bind def
+
+/wafermapPage
+{
+  18 fontSize colorText
+  62  760 moveto (Product ID:) show
+  180 760 moveto productId show
+  62  740 moveto (Wafer ID:) show
+  180 740 moveto waferId show
+  62  720 moveto (Tested:) show
+  180 720 moveto testDate show
+  62  700 moveto (Plot:) show
+  180 700 moveto plotType show
+
+  gsave 450 35 translate 0.7 0.7 scale logo grestore
+  gsave
+  314 420 translate
+  2.3 2.3 scale
+  waferMap
+  grestore
+} def
+%%EndProlog
+%%Page: 1 1
+LOCAL begin
+/plotType(class)def
+/productId(PSI46V2)def
+/waferId(K7NEF6T)def
+/testDate(Feb 02 08:34:52 2007)def
+/legend {legend_class} def
+/yield [ 184 19 8 26 11]def
+[
+[8 2 3 0]
+[8 3 3 0]
+[8 2 4 0]
+[8 3 4 0]
+[10 2 5 0]
+[8 3 5 0]
+[8 2 6 0]
+[10 3 6 0]
+[8 0 3 0]
+[17 1 3 0]
+[8 0 4 0]
+[8 1 4 0]
+[8 0 5 0]
+[8 1 5 0]
+[8 0 6 0]
+[8 1 6 0]
+[23 2 1 1]
+[5 3 1 1]
+[8 2 2 1]
+[23 3 2 1]
+[8 2 3 1]
+[8 3 3 1]
+[8 2 4 1]
+[10 3 4 1]
+[8 2 5 1]
+[8 3 5 1]
+[23 2 6 1]
+[8 3 6 1]
+[8 2 7 1]
+[8 3 7 1]
+[8 2 8 1]
+[8 3 8 1]
+[8 0 1 1]
+[8 1 1 1]
+[8 0 2 1]
+[8 1 2 1]
+[8 0 3 1]
+[8 1 3 1]
+[10 0 4 1]
+[8 1 4 1]
+[8 0 5 1]
+[8 1 5 1]
+[23 0 6 1]
+[10 1 6 1]
+[8 0 7 1]
+[8 1 7 1]
+[8 0 8 1]
+[23 1 8 1]
+[5 2 0 2]
+[5 3 0 2]
+[8 2 1 2]
+[8 3 1 2]
+[17 2 2 2]
+[10 3 2 2]
+[8 2 3 2]
+[8 3 3 2]
+[8 2 4 2]
+[8 3 4 2]
+[8 2 5 2]
+[10 3 5 2]
+[8 2 6 2]
+[10 3 6 2]
+[8 2 7 2]
+[8 3 7 2]
+[8 2 8 2]
+[5 3 8 2]
+[8 2 9 2]
+[23 3 9 2]
+[23 0 0 2]
+[17 1 0 2]
+[23 0 1 2]
+[8 1 1 2]
+[8 0 2 2]
+[8 1 2 2]
+[8 0 3 2]
+[8 1 3 2]
+[17 0 4 2]
+[5 1 4 2]
+[8 0 5 2]
+[8 1 5 2]
+[23 0 6 2]
+[8 1 6 2]
+[8 0 7 2]
+[10 1 7 2]
+[8 0 8 2]
+[8 1 8 2]
+[8 0 9 2]
+[10 1 9 2]
+[8 2 0 3]
+[23 3 0 3]
+[8 2 1 3]
+[8 3 1 3]
+[8 2 2 3]
+[8 3 2 3]
+[8 2 3 3]
+[8 3 3 3]
+[10 2 4 3]
+[8 3 4 3]
+[8 2 5 3]
+[8 3 5 3]
+[8 2 6 3]
+[8 3 6 3]
+[8 2 7 3]
+[10 3 7 3]
+[10 2 8 3]
+[8 3 8 3]
+[8 2 9 3]
+[8 3 9 3]
+[8 0 0 3]
+[23 1 0 3]
+[8 0 1 3]
+[8 1 1 3]
+[8 0 2 3]
+[23 1 2 3]
+[8 0 3 3]
+[8 1 3 3]
+[8 0 4 3]
+[8 1 4 3]
+[8 0 5 3]
+[8 1 5 3]
+[8 0 6 3]
+[8 1 6 3]
+[8 0 7 3]
+[8 1 7 3]
+[23 0 8 3]
+[23 1 8 3]
+[17 0 9 3]
+[8 1 9 3]
+[8 2 0 4]
+[10 3 0 4]
+[8 2 1 4]
+[8 3 1 4]
+[8 2 2 4]
+[8 3 2 4]
+[8 2 3 4]
+[8 3 3 4]
+[8 2 4 4]
+[8 3 4 4]
+[8 2 5 4]
+[8 3 5 4]
+[10 2 6 4]
+[8 3 6 4]
+[10 2 7 4]
+[10 3 7 4]
+[8 2 8 4]
+[23 3 8 4]
+[8 2 9 4]
+[8 3 9 4]
+[5 0 0 4]
+[17 1 0 4]
+[23 0 1 4]
+[8 1 1 4]
+[8 0 2 4]
+[8 1 2 4]
+[8 0 3 4]
+[8 1 3 4]
+[8 0 4 4]
+[5 1 4 4]
+[8 0 5 4]
+[8 1 5 4]
+[8 0 6 4]
+[8 1 6 4]
+[8 0 7 4]
+[8 1 7 4]
+[8 0 8 4]
+[8 1 8 4]
+[23 0 9 4]
+[8 1 9 4]
+[8 2 1 5]
+[8 3 1 5]
+[8 2 2 5]
+[8 3 2 5]
+[23 2 3 5]
+[8 3 3 5]
+[8 2 4 5]
+[8 3 4 5]
+[17 2 5 5]
+[8 3 5 5]
+[8 2 6 5]
+[10 3 6 5]
+[8 2 7 5]
+[8 3 7 5]
+[8 2 8 5]
+[8 3 8 5]
+[23 0 1 5]
+[8 1 1 5]
+[23 0 2 5]
+[8 1 2 5]
+[8 0 3 5]
+[8 1 3 5]
+[8 0 4 5]
+[8 1 4 5]
+[8 0 5 5]
+[23 1 5 5]
+[8 0 6 5]
+[8 1 6 5]
+[8 0 7 5]
+[8 1 7 5]
+[8 0 8 5]
+[5 1 8 5]
+[10 2 1 6]
+[8 3 1 6]
+[8 2 2 6]
+[23 3 2 6]
+[8 2 3 6]
+[8 3 3 6]
+[8 2 4 6]
+[8 3 4 6]
+[8 2 5 6]
+[8 3 5 6]
+[8 2 6 6]
+[8 3 6 6]
+[8 2 7 6]
+[8 3 7 6]
+[8 2 8 6]
+[8 3 8 6]
+[5 0 1 6]
+[8 1 1 6]
+[23 0 2 6]
+[8 1 2 6]
+[8 0 3 6]
+[8 1 3 6]
+[8 0 4 6]
+[8 1 4 6]
+[8 0 5 6]
+[8 1 5 6]
+[8 0 6 6]
+[8 1 6 6]
+[8 0 7 6]
+[8 1 7 6]
+[23 0 8 6]
+[5 1 8 6]
+[8 2 3 7]
+[8 3 3 7]
+[8 2 4 7]
+[8 3 4 7]
+[8 2 5 7]
+[5 3 5 7]
+[8 2 6 7]
+[8 3 6 7]
+[8 0 3 7]
+[8 1 3 7]
+[17 0 4 7]
+[8 1 4 7]
+[8 0 5 7]
+[8 1 5 7]
+[23 0 6 7]
+[23 1 6 7]
+]wafermapPage
+end showpage
+%%Trailer
+%%Pages: 1
+%%EOF

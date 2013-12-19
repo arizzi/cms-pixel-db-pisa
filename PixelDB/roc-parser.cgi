@@ -1,8 +1,11 @@
 #!/usr/bin/python
 import re
 from PixelDB import *
-pdb = PixelDBInterface(operator="andrea",center="pisa")
-pdb.connectToDB()
+DEBUG=1
+pdb = 0
+if (DEBUG == 0):
+  pdb = PixelDBInterface(operator="andrea",center="pisa")
+  pdb.connectToDB()
 
 file = open("rocinputtest.txt")
 x=0
@@ -31,10 +34,25 @@ for line in file :
      idigi =re.sub(" ","", fields[9])
      iana =re.sub(" ","", fields[10])
      vana =re.sub(" ","", fields[14])
-     t=pdb.insertTransfer(Transfer(SENDER="",RECEIVER=pdb.operator))
-     ppp=pdb.insertRoc(Roc(ROC_ID=wafer+"_"+pos, TRANSFER_ID=t.TRANSFER_ID,WAFER_ID=wafer,ROC_POSITION=pos,GRADING_CLASS=grade,CURRENT_D=idigi,CURRENT_A=iana,VANA=vana))
-     if (ppp is None):
+     defpixel = re.sub(" ","", fields[23])
+     addpixel = re.sub(" ","", fields[24])
+     trimpixel = re.sub(" ","", fields[25])
+     maskpixel = re.sub(" ","", fields[26])
+     nsigpixel = re.sub(" ","", fields[27])
+     noisepixel = re.sub(" ","", fields[28])
+     thpixel = re.sub(" ","", fields[29])
+     phfail = re.sub(" ","", fields[39])
+     comment = (" ".join(fields[45:] )).rstrip()
+     if (DEBUG==0):
+       #
+       # here i do this: just insert in the DB the test
+       #
+       t=pdb.insertTransfer(Transfer(SENDER="",RECEIVER=pdb.operator))
+       ppp=pdb.insertRoc(Roc(ROC_ID=wafer+"_"+pos, TRANSFER_ID=t.TRANSFER_ID,WAFER_ID=wafer,ROC_POSITION=pos,GRADING_CLASS=grade,CURRENT_D=idigi,CURRENT_A=iana,VANA=vana))
+       if (ppp is None):
          print "Error cannot insert roc"
+     else:
+       print "ROC_ID",wafer+"_"+pos, "RESULT",grade,"CURRENT_D",idigi, "CURRENT_A",iana, "VANA", vana,   "DEFECTPIXELS", defpixel,"ADDRPIXEL",addpixel, "TRIMP", trimpixel, "MASKPIXEL",maskpixel,"NSIGPIXEL", nsigpixel, "NOISEPIXEL", noisepixel, "THRESHPIXEL", thpixel, "PHFAIL", phfail, "COMMENT", comment 
 
 #  for field in fields :
 #     print field , 

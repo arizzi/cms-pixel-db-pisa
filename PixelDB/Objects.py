@@ -538,9 +538,41 @@ class Test_Roc(object):
       session = Reference (SESSION_ID,Session.SESSION_ID)
       ROC_ID =  Unicode()
       roc=Reference(ROC_ID, Roc.ROC_ID)
-      RESULT=Float()
+      RESULT= Int()
       DATA_ID=Int()
       data=Reference(DATA_ID,Data.DATA_ID)
+      DEFECTPIXELS = Int()
+      ADDRPIXELS = Int()
+      TRIMPIXELS = Int()
+      MASKPIXELS = Int()
+      NSIGPIXELS = Int()
+      NOISEPIXELS = Int()
+      THRESHOLDPIXELS = Int()
+      IANA = Float()
+      IDIGI = Float()
+      VDAC = Float()
+      V24 = Float()
+      PHFAIL = Int()
+      
+      COMMENT = Unicode()
+      def __init__(self,SESSION_ID, ROC_ID, RESULT, DATA_ID, V24, IANA, IDIGI, VDAC, DEFECTPIXELS, ADDRPIXELS, TRIMPIXELS, MASKPIXELS, NSIGPIXELS, NOISEPIXELS, THRESHOLDPIXELS, PHFAIL, COMMENT=""):
+          self.SESSION_ID=SESSION_ID 
+          self.ROC_ID=unicode(ROC_ID)
+          self.RESULT=int(RESULT)
+          self.DATA_ID=DATA_ID
+          self.DEFECTPIXELS=int(DEFECTPIXELS)
+          self.VDAC = float(VDAC)
+          self.IANA= float(IANA)
+          self.V24 = float(V24)
+          self.IDIGI=float(IDIGI)
+          self.ADDRPIXELS=int(ADDRPIXELS)
+          self.TRIMPIXELS=int(TRIMPIXELS)
+          self.MASKPIXELS=int(MASKPIXELS)
+          self.NSIGPIXELS=int(NSIGPIXELS)
+          self.NOISEPIXELS=int(NOISEPIXELS)
+          self.THRESHOLDPIXELS=int(THRESHOLDPIXELS)
+          self.PHFAIL=int(PHFAIL)
+          self.COMMENT=unicode(COMMENT)
 
 class Test_IV(object): # e' il vecchio test_sensor
       __storm_table__ = "test_iv"
