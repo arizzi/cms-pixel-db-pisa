@@ -225,6 +225,22 @@ class BareModule(object):
       self.TYPE=unicode(TYPE)
 
       
+class Tbm(object):
+  __storm_table__ = "inventory_tbm"
+  TBM_ID = Unicode(primary=True)
+  TRANSFER_ID = Int()
+  transfer = Reference(TRANSFER_ID, Transfer.TRANSFER_ID)
+  COMMENT = Unicode()
+  TYPE=Unicode()
+  STATUS=Unicode()
+  LASTTEST_TBM=Int()
+  def __init__(self,TBM_ID, TRANSFER_ID, COMMENT="", LASTTEST_TBM=0, STATUS="", TYPE=""):
+      self.TBM_ID=unicode(TBM_ID)
+      self.TRANSFER_ID=TRANSFER_ID
+      self.COMMENT=unicode(COMMENT)
+      self.LASTTEST_TBM=LASTTEST_TBM
+      self.STATUS=unicode(STATUS)
+      self.TYPE=unicode(TYPE)
   
   
 class Hdi(object):
@@ -232,33 +248,25 @@ class Hdi(object):
   HDI_ID = Unicode(primary=True)
   TRANSFER_ID = Int()
   transfer = Reference(TRANSFER_ID, Transfer.TRANSFER_ID)
+  TBM1_ID=Unicode()
+  TBM2_ID=Unicode()
+  tbm1 = Reference(TBM1_ID, Tbm.TBM_ID)
+  tbm2 = Reference(TBM2_ID, Tbm.TBM_ID)
   COMMENT = Unicode()
+  TYPE = Unicode()
   STATUS=Unicode()
   LASTTEST_HDI=Int()
-  def __init__(self,HDI_ID, TRANSFER_ID, COMMENT="", LASTTEST_HDI=0, STATUS=""):
+  def __init__(self,HDI_ID, TRANSFER_ID, COMMENT="", LASTTEST_HDI=0, STATUS="",TYPE="", TBM1_ID="", TBM2_ID=""):
     self.HDI_ID=unicode(HDI_ID)
     self.TRANSFER_ID=TRANSFER_ID
     self.COMMENT=unicode(COMMENT)
     self.LASTTEST_HDI=LASTTEST_HDI
     self.STATUS=unicode(STATUS)
+    self.TYPE=unicode(TYPE)
+    self.TBM1_ID=unicode(TBM1_ID)
+    self.TBM2_ID=unicode(TBM2_ID)
 
-class Tbm(object):
-  __storm_table__ = "inventory_tbm"
-  TBM_ID = Unicode(primary=True)
-  TRANSFER_ID = Int()
-  transfer = Reference(TRANSFER_ID, Transfer.TRANSFER_ID)
-  COMMENT = Unicode()
-  STATUS=Unicode()
-  LASTTEST_TBM=Int()
-  def __init__(self,TBM_ID, TRANSFER_ID, COMMENT="", LASTTEST_TBM=0, STATUS=""):
-      self.TBM_ID=unicode(TBM_ID)
-      self.TRANSFER_ID=TRANSFER_ID
-      self.COMMENT=unicode(COMMENT)
-      self.LASTTEST_TBM=LASTTEST_TBM
-      self.STATUS=unicode(STATUS)
           
-
-     
 class FullModule(object):
   __storm_table__ = "inventory_fullmodule"
   FULLMODULE_ID = Unicode(primary=True)
