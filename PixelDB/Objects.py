@@ -62,6 +62,35 @@ class Session (object):
 #
 # inventory
 #
+
+class BaseStripBatch(object):
+    __storm_table__ = "inventory_basestripbatch"
+    BSBATCH_ID = Unicode()
+    LENGTH = Float()
+    COMMENT = Unicode()
+    TYPE = Unicode()
+    NDELIVERED = Int()
+    def __init__ (self, BSBATCH_ID, LENGTH, NDELIVERED,COMMENT="", TYPE=""):
+        self.BSBATCH_ID = unicode(BSBATCH_ID)
+        self.LENGTH = float(LNGTH)
+        self.NDELIVERED = int(NDELIVERED)
+        self.COMMENT = unicode(COMMENT)
+        self.TYPE = unicode(TYPE)
+
+class CableBatch(object):
+    __storm_table__ = "inventory_cablebatch"
+    CABLEBATCH_ID = Unicode()
+    LENGTH = Float()
+    COMMENT = Unicode()
+    NDELIVERED = Int()
+    TYPE=Unicode()
+    def __init__ (self, CABLEBATCH_ID, LENGTH, NDELIVERED,TYPE="",COMMENT=""):
+        self.BSBATCH_ID = unicode(BSBATCH_ID)
+        self.LENGTH = float(LNGTH)
+        self.NDELIVERED = int(NDELIVERED)
+        self.COMMENT = unicode(COMMENT)
+        self.TYPE = unicode(TYPE)
+
 class Roc(object):
   __storm_table__ = "inventory_roc"
   ROC_ID = Unicode(primary=True)
@@ -274,8 +303,12 @@ class FullModule(object):
   HDI_ID =  Unicode()
   TBM_ID =  Unicode()
   STATUS=Unicode()    
+  CABLEBATCH_ID = Unicode()
+  BSBATCH_ID = Unicode()
   TRANSFER_ID = Int()
   transfer = Reference(TRANSFER_ID, Transfer.TRANSFER_ID)
+  bsbatch = Reference(BSBATCH_ID, BaseStripBatch.BSBATCH_ID)
+  cablebatch = Reference(CABLEBATCH_ID, CableBatch.CABLEBATCH_ID)
   tbm = Reference(TBM_ID, Tbm.TBM_ID)
   baremodule = Reference(BAREMODULE_ID, BareModule.BAREMODULE_ID)
   hdi = Reference(HDI_ID, Hdi.HDI_ID)
@@ -284,13 +317,15 @@ class FullModule(object):
   COMMENT = Unicode()
   LASTTEST_FULLMODULE=Int()
 
-  def __init__(self,FULLMODULE_ID, BAREMODULE_ID, HDI_ID, TBM_ID, TRANSFER_ID, BUILTBY, BUILTON=datetime.now(), COMMENT="", STATUS="",LASTTEST_FULLMODULE=0):
+  def __init__(self,FULLMODULE_ID, BAREMODULE_ID, HDI_ID, TBM_ID, TRANSFER_ID, BUILTBY, BUILTON=datetime.now(), COMMENT="", STATUS="",LASTTEST_FULLMODULE=0, CABLEBATCH_ID="", BSBATCH_ID=""):
       self.TBM_ID=unicode(TBM_ID)
       self.HDI_ID=unicode(HDI_ID)
       self.BAREMODULE_ID=unicode(BAREMODULE_ID)
       self.FULLMODULE_ID=unicode(FULLMODULE_ID)
       self.TRANSFER_ID=TRANSFER_ID
       self.COMMENT=unicode(COMMENT)
+      self.CABLEBATCH_ID=unicode(CABLEBATCH_ID)
+      self.BSBATCH_ID=unicode(BSBATCH_ID)
       self.BUILTON=BUILTON
       self.BUILTBY=unicode(BUILTBY)
       self.STATUS=unicode(STATUS)
