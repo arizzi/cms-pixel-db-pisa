@@ -1,2 +1,2 @@
 AddHandler cgi-script .cgi
-Options +ExecCGI
+Options +ExecCGI +SymLinksIfOwnerMatch
