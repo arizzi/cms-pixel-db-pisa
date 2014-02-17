@@ -27,6 +27,10 @@ from PixelDB import *
 import random
 
 
+pdb = PixelDBInterface(operator="webfrontend",center="cern")
+pdb.connectToDB()
+
+
 columns = []
 refs = []
 i =0 
@@ -53,7 +57,16 @@ llast = form.getfirst("iDisplayLength", "-1")
 first = int(cgi.escape(first))
 llast= int(cgi.escape(llast))
 
+last =llast+ first
 
+#if last == -1 : 
+#        ob = "objects[%d:]"%first
+#else :
+#        ob = "objects[%d:%d]"%(first,last)
+
+objects = pdb.store.find(objType)
+#,objType.ROC_ID.like(u"%%%s%%"%form.getfirst("sSearch","")) or objType.TRANSFER_ID.like("%%%s%%"%form.getfirst("sSearch","")))
+#objects = pdb.store.find(objType ,objType.TRANSFER_ID.like(int(form.getfirst("sSearch",""))))
 sortCol = form.getfirst("iSortCol_0","empty")
 
 objString = "objects"
@@ -66,13 +79,21 @@ for r in refs:
    colNames.append(r)
 
 if sortCol != "empty" :
+                cols=int(form.getfirst('iSortingCols'))
+                if cols > 0 : 
+                       sortcol= int(form.getfirst("iSortCol_0"))
+                       if form.getfirst('bSortable_%d'%sortcol) == "true" :
+                              if form.getfirst("sSortDir_%d"%i) == "asc" :
+			          objString = "objects.order_by(%s.%s)"	% (objName,colNames[sortcol])	
+			      else:	
+			          objString = "objects.order_by(Desc(%s.%s))"	% (objName,colNames[sortcol])	
 
 		sOrder = "ORDER BY  "
 	        dosort=0
-                cols=int(form.getfirst('iSortingCols'))
-
+#	        print cols
 		for  i in range (0,cols) :
 			sortcol= int(form.getfirst("iSortCol_%d"%i))
+#		        print i,sortcol
 			if form.getfirst('bSortable_%d'%sortcol) == "true" :
 				if dosort !=0 :
 					  sOrder+=" , "
@@ -86,25 +107,43 @@ if sortCol != "empty" :
 			sOrder = ""
 
 
+
+#print objString
+#searchedObj = []
+#for o in eval(objString) :
+#   search=""
+#   search+=str(getattr(o,ID))
+#   for c in columns:
+#    v=getattr(o,c)
+#    if type(v).__name__ == "unicode" :
+#       search+=(v.encode('utf-8'))
+#    else :
+#       search+="%s"%v
+#   if re.match(form.getfirst("sSearch",""),search) :
+#      searchedObj.append(o)
 import MySQLdb
 
 db = MySQLdb.connect(host="localhost", # your host, usually localhost
                      user="tester", # your username
                       passwd="pixels", # your password
                       db="prod_pixel") # name of the data base
+
+# you must create a Cursor object. It will let
+#  you execute all the query you need
 cur = db.cursor(MySQLdb.cursors.DictCursor) 
 
+# Use all the SQL you like
 colNames = ",".join(columns)
+#print colNames
 sLimit = ""
-
-if llast != -1 :
+if last != -1 :
   sLimit = "LIMIT %d,%d" %(first,llast)
 
 
 sWhere = ""
 sSearch = form.getfirst("sSearch","empty")
-escapedSearch = escape_string(sSearch)
-if sSearch != "empty" :
+escapedSearch = conn.escape_string(sSearch)
+if sSearch != empty :
 		sWhere = "WHERE (";
 		for c in columns :
 			if sWhere != "WHERE (":
@@ -112,20 +151,21 @@ if sSearch != "empty" :
 			sWhere += "`%s` LIKE '%%%s%%' " % (c,escapedSearch)
 		sWhere += ')'
 	
-#ur.execute("SELECT SQL_CALC_FOUND_ROWSSELECT COUNT(1) FROM  %s"% (table))
-#=cur.fetchone()
-#ount = l['COUNT(1)']
-
-cur.execute("SELECT COUNT(1) FROM  %s"% (table))
-l=cur.fetchone()
-count = l['COUNT(1)']
 
 cur.execute("SELECT %s FROM %s %s %s %s"% (colNames,table,sWhere,sOrder,sLimit))
 
+# print all the first cell of all the rows
+
+
+if last == -1 : 
+        ob = "objects[%d:]"%first
+else :
+        ob = "objects[%d:%d]"%(first,last)
+
 output = {}
 output["sEcho"] = form.getfirst('sEcho',1)
-output["iTotalRecords"] = count
-output["iTotalDisplayRecords"] =  count
+output["iTotalRecords"] = objects.count()
+output["iTotalDisplayRecords"] =  objects.count()
 output["aaData"] = []
 
 
@@ -135,7 +175,7 @@ for o in cur.fetchall() :
    row = []
    row.append( o[ID]+"(<a href=viewdetails.cgi?objName="+objName+"&"+ID+"="+o[ID]+">details</a>)")
    for c in columns:
-     row.append("%s"%o[c])	
+     row.append(o[c])	
    for r in refs:
      row.append("<a href=\"viewdetails.cgi?objName="+objName+"&"+ID+"="+o[ID]+"&ref="+r+"\"> details</a></td>")
    output["aaData"].append(row)
