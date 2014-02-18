@@ -89,8 +89,8 @@ if sortCol != "empty" :
 import MySQLdb
 
 db = MySQLdb.connect(host="localhost", # your host, usually localhost
-                     user="tester", # your username
-                      passwd="pixels", # your password
+                     user=secrets.USER, # your username
+                      passwd=secrets.PASSWORD, # your password
                       db="prod_pixel") # name of the data base
 cur = db.cursor(MySQLdb.cursors.DictCursor) 
 

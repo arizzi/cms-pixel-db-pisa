@@ -155,7 +155,7 @@ if action == "Insert" :
         pdb.store.add(o)
 	pdb.store.commit()
 	print " Objected added"
-	pdb.insertHistory(type=0,id=0, target_id=eval("o."+ID), target_type=objName, operation="INSERT", datee=date.today(), comment="")
+	pdb.insertHistory(type=0,id=0, target_id=eval("o."+ID), target_type=objName, operation="INSERT", datee=datetime.now(), comment="")
 
   else:     
      print "This object ALREADY exists. You CANNOT INSERT, but you can EDIT ! "
