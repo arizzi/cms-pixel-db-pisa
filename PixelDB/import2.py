@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
 import MySQLdb
-db=MySQLdb.connect(host="cmspixel.pi.infn.it",user="tester",
-                  passwd="pixels",db="cms-pixel")
+import secrets
+db=MySQLdb.connect(host="localhost",user=secrets.USER,
+                  passwd=sectrets.PASSWORD,db="cms-pixel")
 
 
 from PixelDB import *

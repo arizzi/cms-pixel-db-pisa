@@ -194,7 +194,7 @@ if (process==1):
     print " I NEED TO UPLOAD ", number, " results ..."
     if (number>0):
 #new session
-        s = Session (CENTER=CENTER, OPERATOR=OPERATOR,TYPE="TESTSESSION",DATE=date.today(), COMMENT="")
+        s = Session (CENTER=CENTER, OPERATOR=OPERATOR,TYPE="TESTSESSION",DATE=datetime.now(), COMMENT="")
         ppp= pdb.PixelDB.insertSession(s)
         if (ppp is None):
             print "Failed to create a session"

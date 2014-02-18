@@ -6,7 +6,7 @@ import string
 import subprocess
 import os.path
 import re
-
+import secrets
 class PixelDBInterface(object) :
 
       def __init__(self, operator, center, datee =datetime.now() ) :
@@ -15,7 +15,7 @@ class PixelDBInterface(object) :
             self.date = datee
             
       def connectToDB(self) :
-            self.database = create_database("mysql://tester:pixels@cmspixel.pi.infn.it/prod_pixel")
+            self.database = create_database("mysql://%s:%s@localhost/prod_pixel"%(secrets.USER,secrets.PASSWORD))
             self.store = Store(self.database)
             
       def insertTransfer(self,transfer):

@@ -80,7 +80,7 @@ class PixelTier0 (object):
             return self.PixelDB
 
 
-      def connectToDB(self,string = "mysql://tester:pixels@cmspixel.pi.infn.it/test_tier0") :
+      def connectToDB(self,string = "mysql://%s:%s@localhost/test_tier0"%(secrets.USER,secrets.PASSWORD)) :
             self.database = create_database(string)
             self.store = Store(self.database)            
 
