@@ -60,8 +60,11 @@ objString = "objects"
 
 colNames=[]
 colNames.append(ID)
+hasTrans=False
 for c in columns:
    colNames.append(c)
+   if c == "TRANSFER_ID" :
+	hasTrans = True 	
 for r in refs:
    colNames.append(r)
 
@@ -133,11 +136,20 @@ output["aaData"] = []
 
 for o in cur.fetchall() :
    row = []
-   row.append( o[ID]+"(<a href=viewdetails.cgi?objName="+objName+"&"+ID+"="+o[ID]+">details</a>)")
+#   row.append(o[IDgetattr(o,ID) ,"(<a href=viewdetails.cgi?objName="+objName+"&"+ID+"="+str(getattr(o,ID)),">details</a>|<a href=writers/edit.cgi?objName="+objName+"&"+ID+"="+str(getattr(o,ID)),">edit</a>)</td>"
+   row.append( "%s"%(o[ID])+"(<a href=\"viewdetails.cgi?objName="+objName+"&"+ID+"="+"%s"%(o[ID])+"\">details</a>|<a href=\"writers/edit.cgi?objName="+objName+"&"+ID+"="+"%s"%(o[ID])+"\">edit</a>)")
+#   row.append( o[ID]+"(<a href=viewdetails.cgi?objName="+objName+"&"+ID+"="+o[ID]+">details</a>)")
+   if hasTrans:
+	cur.execute("SELECT RECEIVER,SENDER,STATUS from transfers where TRANSFER_ID = %s"% (o["TRANSFER_ID"]))
+	r=cur.fetchone()
+	if r["STATUS"] == "ARRIVED" :
+		row.append(r["RECEIVER"])
+	else:
+		row.append("%s to %s"%(r["SENDER"],r["RECEIVER"]))
    for c in columns:
      row.append("%s"%o[c])	
    for r in refs:
-     row.append("<a href=\"viewdetails.cgi?objName="+objName+"&"+ID+"="+o[ID]+"&ref="+r+"\"> details</a></td>")
+     row.append("<a href=\"viewdetails.cgi?objName="+objName+"&"+ID+"="+"%s"%(o[ID])+"&ref="+r+"\"> details</a></td>")
    output["aaData"].append(row)
 
 print json.dumps(output)

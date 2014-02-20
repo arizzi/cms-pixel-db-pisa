@@ -9,6 +9,15 @@ import re
 import cgi
 from pixelwebui import *
 
+def defaultHidden(cols) :
+	i=0
+	s=""	
+	for c in cols:
+		i+=1
+		if re.match("LASTTEST",c) or c == "TRANSFER_ID" :  
+			 s+="{ \"bVisible\": false, \"aTargets\": [ %s ] },\n" % (i+1)
+	return s 
+
 form = cgi.FieldStorage() # instantiate only once!
 
 
@@ -41,7 +50,20 @@ else:
   ID=objName+"_ID"
 ID=ID.upper()
 
-
+keys=objType.__dict__.keys()
+hasTrans=False
+for attr in keys:
+    #print attr #,type(eval(objName+"."+attr)).__name__,"<br>"
+    if  type(eval(objName+"."+attr)) is properties.PropertyColumn or  type(eval(objName+"."+attr)).__name__ == "date"  or  type(eval(objName+"."+attr)).__name__ == "datetime":
+#    if  type(eval(objName+"."+attr)) is properties.PropertyColumn :
+         columns.append(attr) 
+	 if attr == "TRANSFER_ID" :
+		hasTrans=True
+    if  type(eval(objName+"."+attr)) is references.Reference :
+         refs.append(attr)
+    
+columns.sort()
+hide=defaultHidden(columns)
 
 print "Content-Type: text/html"
 print
@@ -59,6 +81,7 @@ print '''
                         $(document).ready(function() {
                                 $('#example').dataTable( {
 					"sDom": 'C<"clear">lfrtip',
+					"aoColumnDefs": [%s],
 			                "iDisplayLength" : 25,
 					"bProcessing": true,
 					"bServerSide": true,
@@ -78,24 +101,16 @@ print '''
 			}
 	                </script>
 
-'''%objName
+'''%(hide,objName)
 
-keys=objType.__dict__.keys()
-for attr in keys:
-    #print attr #,type(eval(objName+"."+attr)).__name__,"<br>"
-    if  type(eval(objName+"."+attr)) is properties.PropertyColumn or  type(eval(objName+"."+attr)).__name__ == "date"  or  type(eval(objName+"."+attr)).__name__ == "datetime":
-#    if  type(eval(objName+"."+attr)) is properties.PropertyColumn :
-         columns.append(attr) 
-    if  type(eval(objName+"."+attr)) is references.Reference :
-         refs.append(attr)
- 
-columns.sort()
 objects = pdb.store.find(objType) # ,objType.TEST_ID==88)
 
 print "<table id=example width=\"100%\">"
 
 print " <thead> <tr>"
 print "<th> ",ID," </th>"
+if hasTrans :
+	print "<th> Location </th>"
 for c in columns:
     print "<th>",c.lower().capitalize(),"</th>"
 for r in refs:

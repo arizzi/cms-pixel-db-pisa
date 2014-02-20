@@ -631,7 +631,7 @@ class Test_IV(object): # e' il vecchio test_sensor
       COMMENT=Unicode()
       V2 = Float()
       I2= Float()
-      DATE = Int()
+      DATE = DateTime()
       SLOPE = Float()
       TEMPERATURE= Float()
       TYPE = Unicode()
@@ -648,7 +648,7 @@ class Test_IV(object): # e' il vecchio test_sensor
           self.V2=float(V2)
           self.I1=float(I1)
           self.I2=float(I2)
-          self.DATE = int(DATE)
+          self.DATE = DATE
           self.SLOPE= float(SLOPE)
           self.TEMPERATURE = TEMPERATURE
 
@@ -668,7 +668,7 @@ class Test_IT(object):
       MIN_I = Float()
       RMS_I = Float()
       COMMENT=Unicode()
-      DATE = Int()
+      DATE = DateTime()
       SLOPE = Float()
       TEMPERATURE = Float()
       TYPE = Unicode()
@@ -681,7 +681,7 @@ class Test_IT(object):
           self.DATA_ID=DATA_ID
           self.GRADE=unicode(GRADE)
           self.COMMENT=unicode(COMMENT)
-          self.DATE = int(DATE)
+          self.DATE = (DATE)
           self.SLOPE= float(SLOPE)
           self.TIMELENGTH= float(TIMELENGTH)
           self.MAX_I= float(MAX_I)
@@ -699,7 +699,7 @@ class Test_SensorInspection(object):
       sensor=Reference(SENSOR_ID, Sensor.SENSOR_ID)
       RESULT = Unicode()
       DATA_ID=Int()
-      DATE = Int()
+      DATE = DateTime()
       COMMENT = Unicode()
       data=Reference(DATA_ID,Data.DATA_ID)
       def __init__(self,SESSION_ID,SENSOR_ID,RESULT,DATA_ID,DATE,TYPE="", COMMENT=""):
@@ -708,10 +708,9 @@ class Test_SensorInspection(object):
           self.TYPE=unicode(TYPE)
           self.GRADE=unicode(GRADE)
           self.DATA_ID=DATA_ID
-          self.DATE = int(DATE)
+          self.DATE = (DATE)
           self.RESULT=unicode(RESULT)
           self.COMMENT=unicode(COMMENT)
-          self.DATE = int(DATE)
 
 class Test_BareModuleInspection(object):
       __storm_table__ = "test_baremodule_inspection"
@@ -722,7 +721,7 @@ class Test_BareModuleInspection(object):
       baremodule=Reference(BAREMODULE_ID, BareModule.BAREMODULE_ID)
       RESULT = Unicode()
       DATA_ID=Int()
-      DATE = Int()
+      DATE = DateTime()
       COMMENT = Unicode()
       data=Reference(DATA_ID,Data.DATA_ID)
       def __init__(self,SESSION_ID,BAREMODULE_ID,RESULT,DATA_ID,DATE,TYPE="", COMMENT=""):
@@ -731,10 +730,9 @@ class Test_BareModuleInspection(object):
           self.TYPE=unicode(TYPE)
           self.GRADE=unicode(GRADE)
           self.DATA_ID=DATA_ID
-          self.DATE = int(DATE)
+          self.DATE = (DATE)
           self.RESULT=unicode(RESULT)
           self.COMMENT=unicode(COMMENT)
-          self.DATE = int(DATE)
 
 class Test_BareModule_Chip(object):
       __storm_table__ = "test_baremodule_chip"
@@ -743,7 +741,7 @@ class Test_BareModule_Chip(object):
       session = Reference (SESSION_ID,Session.SESSION_ID)
       BAREMODULE_ID =  Unicode()
       CHIP_N = Int()
-      DATE = Int()
+      DATE = DateTime()
       baremodule=Reference(BAREMODULE_ID, BareModule.BAREMODULE_ID)
       GRADE = Unicode()
       DATA_ID=Int()
@@ -771,7 +769,7 @@ class Test_CV(object):
       COMMENT=Unicode()
       R = Float()
       SLOPE_BEFORE_DEPLETION = Float()
-      DATE = Int()
+      DATE = DateTime()
       TEMPERATURE = Float()
       TYPE = Unicode()
       data=Reference(DATA_ID,Data.DATA_ID)
@@ -788,7 +786,7 @@ class Test_CV(object):
           self.V2=float(V2)
           self.C1=float(C1)
           self.C2=float(C2)
-          self.DATE = int(DATE)
+          self.DATE = (DATE)
           self.SLOPE= float(SLOPE)
           self.TEMPERATURE = TEMPERATURE
           
