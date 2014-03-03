@@ -77,14 +77,22 @@ if sortCol != "empty" :
 		for  i in range (0,cols) :
 			sortcol= int(form.getfirst("iSortCol_%d"%i))
 			if form.getfirst('bSortable_%d'%sortcol) == "true" :
+				if hasTrans:
+					sortcol-=1
 				if dosort !=0 :
 					  sOrder+=" , "
 				if form.getfirst("sSortDir_%d"%i) == "asc" :
 					dosort=1
-					sOrder += colNames[sortcol]+" asc "
+					if sortcol > 0 or not hasTrans :
+						sOrder += colNames[sortcol]+" asc "
+					else:
+						sOrder += "RECEIVER asc"
 				else:
 					dosort=1
-					sOrder += colNames[sortcol]+" desc "
+					if sortcol > 0 or not hasTrans :
+						sOrder += colNames[sortcol]+" desc "
+					else:
+						sOrder += "RECEIVER desc"
 		if dosort ==0 :
 			sOrder = ""
 
@@ -112,7 +120,11 @@ if sSearch != "empty" :
 		for c in columns :
 			if sWhere != "WHERE (":
 			   sWhere += " OR "	
-			sWhere += "`%s` LIKE '%%%s%%' " % (c,escapedSearch)
+			sWhere += "%s LIKE '%%%s%%' " % (table+"."+c,escapedSearch)
+		if hasTrans:
+			sWhere += "OR (transfers.STATUS='ARRIVED' and RECEIVER like '%%%s%%')"% (escapedSearch)
+			sWhere += "OR (transfers.STATUS<>'ARRIVED' and (RECEIVER like '%%%s%%' OR SENDER like '%%%s%%') )"% (escapedSearch,escapedSearch)
+
 		sWhere += ')'
 	
 #ur.execute("SELECT SQL_CALC_FOUND_ROWSSELECT COUNT(1) FROM  %s"% (table))
@@ -122,8 +134,15 @@ if sSearch != "empty" :
 cur.execute("SELECT COUNT(1) FROM  %s"% (table))
 l=cur.fetchone()
 count = l['COUNT(1)']
-
-cur.execute("SELECT %s FROM %s %s %s %s"% (colNames,table,sWhere,sOrder,sLimit))
+colNamesFull=[]
+for cc in columns :
+   colNamesFull.append(table+"."+cc)
+colNamesFull=",".join(colNamesFull)
+if hasTrans:
+# 	print "SELECT %s,transfer.RECEIVER,transfer.SENDER,transfer.STATUS FROM %s left join transfers on TRANSFER_ID=transfers.TRANSFER_ID %s %s %s"% (colNamesFull,table,sWhere,sOrder,sLimit)
+ 	cur.execute("SELECT %s,transfers.RECEIVER,transfers.SENDER,transfers.STATUS as TSTATUS FROM %s left join transfers on %s.TRANSFER_ID=transfers.TRANSFER_ID %s %s %s"% (colNamesFull,table,table,sWhere,sOrder,sLimit))
+else:
+        cur.execute("SELECT %s FROM %s %s %s %s"% (colNamesFull,table,sWhere,sOrder,sLimit))
 
 output = {}
 output["sEcho"] = form.getfirst('sEcho',1)
@@ -140,12 +159,12 @@ for o in cur.fetchall() :
    row.append( "%s"%(o[ID])+"(<a href=\"viewdetails.cgi?objName="+objName+"&"+ID+"="+"%s"%(o[ID])+"\">details</a>|<a href=\"writers/edit.cgi?objName="+objName+"&"+ID+"="+"%s"%(o[ID])+"\">edit</a>)")
 #   row.append( o[ID]+"(<a href=viewdetails.cgi?objName="+objName+"&"+ID+"="+o[ID]+">details</a>)")
    if hasTrans:
-	cur.execute("SELECT RECEIVER,SENDER,STATUS from transfers where TRANSFER_ID = %s"% (o["TRANSFER_ID"]))
-	r=cur.fetchone()
-	if r["STATUS"] == "ARRIVED" :
-		row.append(r["RECEIVER"])
+#	cur.execute("SELECT RECEIVER,SENDER,STATUS from transfers where TRANSFER_ID = %s"% (o["TRANSFER_ID"]))
+#	r=cur.fetchone()
+	if o["TSTATUS"] == "ARRIVED" :
+		row.append(o["RECEIVER"])
 	else:
-		row.append("%s to %s"%(r["SENDER"],r["RECEIVER"]))
+		row.append("%s to %s"%(o["SENDER"],o["RECEIVER"]))
    for c in columns:
      row.append("%s"%o[c])	
    for r in refs:

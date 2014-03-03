@@ -62,7 +62,82 @@ pdb.connectToDB()
 form = cgi.FieldStorage() # instantiate only once!
 action = form.getfirst('submit', 'empty')
 action = cgi.escape(action)
-if action == "Insert" :
+if action == "Transfer with children" :
+   objName  = parseObjName(form.getfirst('type', 'empty'))
+   if objName == "Batch" :
+        sender = form.getfirst('sender', 'empty')
+        receiver = form.getfirst('receiver', 'empty')
+        comment  = form.getfirst('comment', '')
+        t = pdb.insertTransfer(Transfer(SENDER=sender, RECEIVER=receiver, ISSUED_DATE=datetime.now(), RECEIVED_DATE=datetime(1970,1,1), STATUS="NEW", COMMENT=comment))
+        print "<p>Inserted transfer %s, received date %s, issued date %s<p>" % (t.TRANSFER_ID, t.RECEIVED_DATE, t.ISSUED_DATE)
+        tt=pdb.store.find(Transfer,Transfer.TRANSFER_ID==t.TRANSFER_ID).one()
+        print "<p>Inserted transfer %s, received date %s, issued date %s<p>" % (tt.TRANSFER_ID, tt.RECEIVED_DATE, tt.ISSUED_DATE)
+        pdb.store.commit()
+        idsString  = form.getfirst('ids', '')
+        objName  = parseObjName(form.getfirst('type', 'empty'))
+        objType = eval(objName)
+        ID=idField(objName)
+        filter=eval(objName+"."+ID)
+        ids=re.split("\s",idsString)
+        for id in ids:
+                value=idFieldTypedValue(objName,id)
+                o=pdb.store.find(objType,filter==value).one()
+                if o :
+                        print "OLD ID", o.TRANSFER_ID
+                        o.TRANSFER_ID=t.TRANSFER_ID
+                        print "Children Wafers:"
+		        wafers = pdb.store.find(Wafer,Wafer.BATCH_ID==value)
+			for w in wafers :
+                  	      	sensors = pdb.store.find(Sensor,Sensor.WAFER_ID==w.WAFER_ID)         
+                               	print "- OLD ID", w.TRANSFER_ID
+                               	w.TRANSFER_ID=t.TRANSFER_ID
+                        	for s in sensors :
+                                	print "+ OLD ID", s.TRANSFER_ID
+                                	s.TRANSFER_ID=t.TRANSFER_ID
+                        pdb.store.commit()
+                else :
+                        print "<p><b>cannot find %s with %s = %s</b>" %(objName,ID,id)
+
+#$("#barcodeTarget").html("").show().barcode(
+        print'''<div  id="bcTarget" style="height: 50px; width: 250px"></div><button onclick='$("#bcTarget").barcode("123","ean13",{barWidth:2, barHeight:30});'>Barcode</button>'''
+        print "<a href=transfers.cgi>Back to list of transfers</a>"
+   elif objName == "Wafer" :
+        sender = form.getfirst('sender', 'empty')
+   	receiver = form.getfirst('receiver', 'empty')
+   	comment  = form.getfirst('comment', '')
+   	t = pdb.insertTransfer(Transfer(SENDER=sender, RECEIVER=receiver, ISSUED_DATE=datetime.now(), RECEIVED_DATE=datetime(1970,1,1), STATUS="NEW", COMMENT=comment))
+   	print "<p>Inserted transfer %s, received date %s, issued date %s<p>" % (t.TRANSFER_ID, t.RECEIVED_DATE, t.ISSUED_DATE)
+   	tt=pdb.store.find(Transfer,Transfer.TRANSFER_ID==t.TRANSFER_ID).one()
+   	print "<p>Inserted transfer %s, received date %s, issued date %s<p>" % (tt.TRANSFER_ID, tt.RECEIVED_DATE, tt.ISSUED_DATE)
+   	pdb.store.commit()
+   	idsString  = form.getfirst('ids', '')
+   	objName  = parseObjName(form.getfirst('type', 'empty'))
+   	objType = eval(objName)
+   	ID=idField(objName)
+   	filter=eval(objName+"."+ID)
+   	ids=re.split("\s",idsString)
+   	for id in ids:
+        	value=idFieldTypedValue(objName,id)
+        	o=pdb.store.find(objType,filter==value).one()
+        	if o :
+           		print "OLD ID", o.TRANSFER_ID
+           		o.TRANSFER_ID=t.TRANSFER_ID
+	   		print "Children Sensors:"
+	   		sensors = pdb.store.find(Sensor,Sensor.WAFER_ID==value)		
+	   		for s in sensors :
+		 		print "- OLD ID", s.TRANSFER_ID
+           	 		s.TRANSFER_ID=t.TRANSFER_ID
+           		pdb.store.commit()
+        	else :
+           		print "<p><b>cannot find %s with %s = %s</b>" %(objName,ID,id)
+
+#$("#barcodeTarget").html("").show().barcode(
+   	print'''<div  id="bcTarget" style="height: 50px; width: 250px"></div><button onclick='$("#bcTarget").barcode("123","ean13",{barWidth:2, barHeight:30});'>Barcode</button>'''
+   	print "<a href=transfers.cgi>Back to list of transfers</a>"
+   else:
+     print "Transfer with Children not available for ",objName," making simple transfer"
+ 	
+if action == "Transfer" :
 #   print "<pre>%s</pre>", form
    #insert new transfer
    sender = form.getfirst('sender', 'empty')
@@ -139,14 +214,15 @@ if action == "newTransferForm" :
    <option>HDI</option>
    <option>TBM</option>
    <option>Wafer</option>
-   <option>Batche</option>
+   <option>Batch</option>
    </select><p>
    List of IDs:<p> 
 <textarea rows="4" cols="50" name=ids>
 </textarea>
 
    <p>
-   <p><input type="submit" name="submit" value="Insert" /></p>
+   <p><input type="submit" name="submit" value="Transfer" /></p>
+   <p><input type="submit" name="submit" value="Transfer with children" /></p>
 
    </form>
 </body>
