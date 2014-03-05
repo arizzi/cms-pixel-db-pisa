@@ -97,16 +97,12 @@ class Roc(object):
   WAFER_ID = Unicode()
   ROC_POSITION = Unicode()
   GRADING_CLASS = Unicode()
-  CURRENT_D = Unicode()
-  CURRENT_A = Unicode()
-  VANA  = Unicode()
-  DEFECTS =  Unicode()
   TRANSFER_ID = Int()
   transfer = Reference(TRANSFER_ID, Transfer.TRANSFER_ID)
   COMMENT = Unicode()
   STATUS=Unicode()
   LASTTEST_ROC=Int()
-  def __init__(self,ROC_ID, TRANSFER_ID, COMMENT="",LASTTEST_ROC=0, STATUS="",WAFER_ID="",ROC_POSITION="",GRADING_CLASS="",CURRENT_D="",CURRENT_A="",VANA="",DEFECTS=""):
+  def __init__(self,ROC_ID, TRANSFER_ID, COMMENT="",LASTTEST_ROC=0, STATUS="",WAFER_ID="",ROC_POSITION="",GRADING_CLASS=""):
       self.ROC_ID=unicode(ROC_ID)
       self.TRANSFER_ID=(TRANSFER_ID)
       self.COMMENT=unicode(COMMENT)
@@ -115,10 +111,6 @@ class Roc(object):
       self.WAFER_ID=unicode(WAFER_ID)
       self.ROC_POSITION=unicode(ROC_POSITION)
       self.GRADING_CLASS=unicode(GRADING_CLASS)
-      self.CURRENT_D=unicode(CURRENT_D)
-      self.CURRENT_A=unicode(CURRENT_A)
-      self.VANA=unicode(VANA)
-      self.DEFECTS=unicode(DEFECTS)
 
 class Batch(object):
     __storm_table__ = "inventory_batch"
@@ -277,6 +269,7 @@ class Hdi(object):
   HDI_ID = Unicode(primary=True)
   TRANSFER_ID = Int()
   transfer = Reference(TRANSFER_ID, Transfer.TRANSFER_ID)
+  BATCH_ID=Unicode()
   TBM1_ID=Unicode()
   TBM2_ID=Unicode()
   tbm1 = Reference(TBM1_ID, Tbm.TBM_ID)
@@ -285,7 +278,7 @@ class Hdi(object):
   TYPE = Unicode()
   STATUS=Unicode()
   LASTTEST_HDI=Int()
-  def __init__(self,HDI_ID, TRANSFER_ID, COMMENT="", LASTTEST_HDI=0, STATUS="",TYPE="", TBM1_ID="", TBM2_ID=""):
+  def __init__(self,HDI_ID, TRANSFER_ID, COMMENT="", LASTTEST_HDI=0, STATUS="",TYPE="", TBM1_ID="", TBM2_ID="",BATCH_ID=""):
     self.HDI_ID=unicode(HDI_ID)
     self.TRANSFER_ID=TRANSFER_ID
     self.COMMENT=unicode(COMMENT)
@@ -294,6 +287,7 @@ class Hdi(object):
     self.TYPE=unicode(TYPE)
     self.TBM1_ID=unicode(TBM1_ID)
     self.TBM2_ID=unicode(TBM2_ID)
+    self.BATCH_ID=unicode(BATCH_ID)
 
           
 class FullModule(object):
@@ -598,7 +592,7 @@ class Test_Roc(object):
       PHFAIL = Int()
       
       COMMENT = Unicode()
-      def __init__(self,SESSION_ID, ROC_ID, RESULT, DATA_ID, V24, IANA, IDIGI, VDAC, DEFECTPIXELS, ADDRPIXELS, TRIMPIXELS, MASKPIXELS, NSIGPIXELS, NOISEPIXELS, THRESHOLDPIXELS, PHFAIL, COMMENT=""):
+      def __init__(self,SESSION_ID, ROC_ID, RESULT,  V24, IANA, IDIGI, VDAC, DEFECTPIXELS, ADDRPIXELS, TRIMPIXELS, MASKPIXELS, NSIGPIXELS, NOISEPIXELS, THRESHOLDPIXELS, PHFAIL, COMMENT="",DATA_ID=0):
           self.SESSION_ID=SESSION_ID 
           self.ROC_ID=unicode(ROC_ID)
           self.RESULT=int(RESULT)

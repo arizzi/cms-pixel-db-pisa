@@ -1165,7 +1165,7 @@ class PixelDBInterface(object) :
           return fm 
 
        
-      def insertRocTestsFromDir(self,sessionid,filename, filenamePS):
+      def insertRocTestsFromDir(self,sessionid,filename, filenamePS, createROC=False):
             DEBUG=1
             if DEBUG==1:
                   print "working on FileName ",filename,filenamePS
@@ -1210,10 +1210,7 @@ class PixelDBInterface(object) :
                               comment = (" ".join(fields[45:] )).rstrip()
                               if (DEBUG==1):
                                     print "ROC_ID",wafer+"-"+pos, "RESULT",grade,"CURRENT_D",idigi, "CURRENT_A",iana, "VDAC", vdac,   "DEFECTPIXELS", defpixel,"ADDRPIXEL",addpixel, "TRIMP", trimpixel, "MASKPIXEL",maskpixel,"NSIGPIXEL", nsigpixel, "NOISEPIXEL", noisepixel, "THRESHPIXEL", thpixel, "PHFAIL", phfail, "COMMENT", comment 
-#
-# I try and insert the roc_test
-#                              
- 
+
                               data = Data(PFNs = ('file:'+filenamePS+',file:'+filename))
                               pp = self.insertData(data)
                               if (pp is None):
