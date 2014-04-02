@@ -86,13 +86,19 @@ if sortCol != "empty" :
 					if sortcol > 0 or not hasTrans :
 						sOrder += colNames[sortcol]+" asc "
 					else:
+					   if sortcol == 0 :
 						sOrder += "RECEIVER asc"
+					   else :
+						sOrder += colNames[0]	
 				else:
 					dosort=1
 					if sortcol > 0 or not hasTrans :
 						sOrder += colNames[sortcol]+" desc "
 					else:
+					   if sortcol == 0 :
 						sOrder += "RECEIVER desc"
+					   else :
+						sOrder += colNames[0]+" desc"	
 		if dosort ==0 :
 			sOrder = ""
 

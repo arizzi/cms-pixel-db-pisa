@@ -91,10 +91,11 @@ if objects.count() == 0 :
 else :
 #if reference details were requested, show the details for it rather than the original object
 	if refToShow != "empty" :
+	 
 	 r=getattr(objects[0],refToShow)
-	# if not r:
-	#  print "NOT FOUND in objtype ", type(objects[0]).__name__, "ref :",refToShow,":<br>"
-	# print   "class " , r.__class__.__name__
+	 #if not r:
+	 # print "NOT FOUND in objtype ", type(objects[0]).__name__, "ref :",refToShow,":<br>"
+	 #print   "class " , r.__class__.__name__
 	 objects = [] 
 	 objects.append(r)
 	 objType=r.__class__
