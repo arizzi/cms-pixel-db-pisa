@@ -34,7 +34,7 @@ print '''
 
 function verify(a)
 {
-var s=prompt("Please scan the barcode of the transfer","");
+var s=prompt("Please scan the barcode of the transfer\\n"+a,"");
 if(s!=a) alert("Wrong barcode!!");
 return (s==a);
 }
@@ -55,125 +55,161 @@ from PixelDB import *
 import random
 import ConfigParser
 
+transferObjects=['FullModule','BareModule','Sensor','Roc','Hdi','Tbm','Wafer','Batch']
+centers=['CIS','FACTORY','ETH','PSI','CERN','Bari','Catania','Perugia','Pisa','Hamburg','Aachen','Helsinki']
+
 
 pdb = PixelDBInterface(operator="webfrontend",center="cern")
 pdb.connectToDB()
 
+def checkCenter(objName,id,sender) :
+    value=idFieldTypedValue(objName,id)
+    ID=idField(objName)
+    filter=eval(objName+"."+ID)
+    objType = eval(objName)
+    o=pdb.store.find(objType,filter==value).one()
+    if o :
+      if o.transfer.RECEIVER != sender and sender != "any" :
+         return False
+      else :
+	 return True
+    return False
+
+def getChildren(objName,ids,sender) :
+   objects = []
+   notAtRightcenter = []
+   objName  = parseObjName(form.getfirst('type', 'empty'))
+   if objName == "Batch" :
+        for id in ids:
+		value=idFieldTypedValue(objName,id)
+		if not checkCenter(objName,id,sender) :
+                       	notAtRightcenter.append((objName,id))
+		else :
+		        objects.append((objName,id))
+                wafers = pdb.store.find(Wafer,Wafer.BATCH_ID==value)
+                for w in wafers :
+	             if not  checkCenter("Wafer",w.WAFER_ID,sender) :
+	                   notAtRightcenter.append(("Wafer",w.WAFER_ID))
+        	     else :
+                           objects.append(("Wafer",w.WAFER_ID))
+                     sensors = pdb.store.find(Sensor,Sensor.WAFER_ID==w.WAFER_ID)         
+                     for s in sensors :
+	                  if not checkCenter("Sensor",s.SENSOR_ID,sender) :
+		                  notAtRightcenter.append(("Sensor",s.SENSOR_ID))
+                          else :
+             	                  objects.append(("Sensor",s.SENSOR_ID))
+   elif objName == "Wafer" :
+        for id in ids:
+                value=idFieldTypedValue(objName,id)
+		if not checkCenter("Wafer",value,sender) :
+			notAtRightcenter.append(("Wafer",value))
+                else :
+			objects.append(("Wafer",value))
+                sensors = pdb.store.find(Sensor,Sensor.WAFER_ID==value)
+                for s in sensors :
+                  if not checkCenter("Sensor",s.SENSOR_ID,sender) :
+                       notAtRightcenter.append(("Sensor",s.SENSOR_ID))
+                  else :
+                       objects.append(("Sensor",s.SENSOR_ID))
+
+
+   return (objects,notAtRightcenter)
+
+
+def getTransferList(objName,ids,sender,children) :
+   objects = []
+   notAtRightcenter = []
+   objName  = parseObjName(form.getfirst('type', 'empty'))
+   if children :
+	return getChildren(objName,ids,sender)
+   else :
+	objects = []
+	notAtRightcenter = []
+        for id in ids:
+                value=idFieldTypedValue(objName,id)
+                if not checkCenter(objName,id,sender) :
+                        notAtRightcenter.append((objName,id))
+                else :
+                        objects.append((objName,id))
+	return (objects,notAtRightcenter)
+
+
+
 form = cgi.FieldStorage() # instantiate only once!
 action = form.getfirst('submit', 'empty')
 action = cgi.escape(action)
-if action == "Transfer with children" :
-   objName  = parseObjName(form.getfirst('type', 'empty'))
-   if objName == "Batch" :
-        sender = form.getfirst('sender', 'empty')
-        receiver = form.getfirst('receiver', 'empty')
-        comment  = form.getfirst('comment', '')
-        t = pdb.insertTransfer(Transfer(SENDER=sender, RECEIVER=receiver, ISSUED_DATE=datetime.now(), RECEIVED_DATE=datetime(1970,1,1), STATUS="NEW", COMMENT=comment))
-        print "<p>Inserted transfer %s, received date %s, issued date %s<p>" % (t.TRANSFER_ID, t.RECEIVED_DATE, t.ISSUED_DATE)
-        tt=pdb.store.find(Transfer,Transfer.TRANSFER_ID==t.TRANSFER_ID).one()
-        print "<p>Inserted transfer %s, received date %s, issued date %s<p>" % (tt.TRANSFER_ID, tt.RECEIVED_DATE, tt.ISSUED_DATE)
-        pdb.store.commit()
-        idsString  = form.getfirst('ids', '')
-        objName  = parseObjName(form.getfirst('type', 'empty'))
-        objType = eval(objName)
-        ID=idField(objName)
-        filter=eval(objName+"."+ID)
-        ids=re.split("\s",idsString)
-        for id in ids:
-                value=idFieldTypedValue(objName,id)
-                o=pdb.store.find(objType,filter==value).one()
-                if o :
-                        print "OLD ID", o.TRANSFER_ID
-                        o.TRANSFER_ID=t.TRANSFER_ID
-                        print "Children Wafers:"
-		        wafers = pdb.store.find(Wafer,Wafer.BATCH_ID==value)
-			for w in wafers :
-                  	      	sensors = pdb.store.find(Sensor,Sensor.WAFER_ID==w.WAFER_ID)         
-                               	print "- OLD ID", w.TRANSFER_ID
-                               	w.TRANSFER_ID=t.TRANSFER_ID
-                        	for s in sensors :
-                                	print "+ OLD ID", s.TRANSFER_ID
-                                	s.TRANSFER_ID=t.TRANSFER_ID
-                        pdb.store.commit()
-                else :
-                        print "<p><b>cannot find %s with %s = %s</b>" %(objName,ID,id)
+children=False
+if action == "Transfer with children":
+    children = True
 
-#$("#barcodeTarget").html("").show().barcode(
-        print'''<div  id="bcTarget" style="height: 50px; width: 250px"></div><button onclick='$("#bcTarget").barcode("123","ean13",{barWidth:2, barHeight:30});'>Barcode</button>'''
-        print "<a href=transfers.cgi>Back to list of transfers</a>"
-   elif objName == "Wafer" :
-        sender = form.getfirst('sender', 'empty')
-   	receiver = form.getfirst('receiver', 'empty')
-   	comment  = form.getfirst('comment', '')
-   	t = pdb.insertTransfer(Transfer(SENDER=sender, RECEIVER=receiver, ISSUED_DATE=datetime.now(), RECEIVED_DATE=datetime(1970,1,1), STATUS="NEW", COMMENT=comment))
-   	print "<p>Inserted transfer %s, received date %s, issued date %s<p>" % (t.TRANSFER_ID, t.RECEIVED_DATE, t.ISSUED_DATE)
-   	tt=pdb.store.find(Transfer,Transfer.TRANSFER_ID==t.TRANSFER_ID).one()
-   	print "<p>Inserted transfer %s, received date %s, issued date %s<p>" % (tt.TRANSFER_ID, tt.RECEIVED_DATE, tt.ISSUED_DATE)
-   	pdb.store.commit()
-   	idsString  = form.getfirst('ids', '')
-   	objName  = parseObjName(form.getfirst('type', 'empty'))
-   	objType = eval(objName)
-   	ID=idField(objName)
-   	filter=eval(objName+"."+ID)
-   	ids=re.split("\s",idsString)
-   	for id in ids:
-        	value=idFieldTypedValue(objName,id)
-        	o=pdb.store.find(objType,filter==value).one()
-        	if o :
-           		print "OLD ID", o.TRANSFER_ID
-           		o.TRANSFER_ID=t.TRANSFER_ID
-	   		print "Children Sensors:"
-	   		sensors = pdb.store.find(Sensor,Sensor.WAFER_ID==value)		
-	   		for s in sensors :
-		 		print "- OLD ID", s.TRANSFER_ID
-           	 		s.TRANSFER_ID=t.TRANSFER_ID
-           		pdb.store.commit()
-        	else :
-           		print "<p><b>cannot find %s with %s = %s</b>" %(objName,ID,id)
+if action == "Transfer with children" or action == "Transfer" :
+    objName  = parseObjName(form.getfirst('type', 'empty'))
+    idsString  = form.getfirst('ids', '')
+    sender = form.getfirst('sender', 'empty')
+    receiver = form.getfirst('receiver', 'empty')
+    comment  = form.getfirst('comment', '')
+    ids=re.split("\s",idsString)
+    center=sender #"any"
+    (objs,errors) = getTransferList(objName,ids,center,children)
+    if len(errors) > 0 :
+	   print "Not Found at Center %s:<br><table border=1><tr><td>Type</td><td>Id</td></tr>" % center
+	   for i in errors : 
+		print "<tr><td>%s</td><td>%s</td></tr>" % (i[0],i[1])		
+	   print "</table>"
+    if len(objs) > 0 :
+	    print "You are going to transfer:<br><table border=1><tr><td>Type</td><td>Id</td></tr>"
+	    print "<form>"
+	    for i in objs : 
+		print "<tr><td>%s</td><td>%s</td></tr>" % (i[0],i[1])		
+		print "<input type=\"hidden\" name=\"object[]\" value=\"%s,%s\" >" % (i[0],i[1])		
+	    print "</table>"
+	    print "<input type=\"hidden\" name=\"sender\" value=\"%s\" >" % sender
+	    print "<input type=\"hidden\" name=\"receiver\" value=\"%s\" >" % receiver
+	    print "<input type=\"hidden\" name=\"comment\" value=\"%s\" >" % comment
+            print "<p><input type=\"submit\" name=\"submit\" value=\"Confirm this transfer\" /></p></form>"
 
-#$("#barcodeTarget").html("").show().barcode(
-   	print'''<div  id="bcTarget" style="height: 50px; width: 250px"></div><button onclick='$("#bcTarget").barcode("123","ean13",{barWidth:2, barHeight:30});'>Barcode</button>'''
-   	print "<a href=transfers.cgi>Back to list of transfers</a>"
-   else:
-     print "Transfer with Children not available for ",objName," making simple transfer"
- 	
-if action == "Transfer" :
-#   print "<pre>%s</pre>", form
-   #insert new transfer
+    else:
+	    print "None of the specified objects have been found at center %s!!" % (center)
+ 
+
+if action == "Confirm this transfer" :
    sender = form.getfirst('sender', 'empty')
    receiver = form.getfirst('receiver', 'empty')
    comment  = form.getfirst('comment', '')
    t = pdb.insertTransfer(Transfer(SENDER=sender, RECEIVER=receiver, ISSUED_DATE=datetime.now(), RECEIVED_DATE=datetime(1970,1,1), STATUS="NEW", COMMENT=comment))
    print "<p>Inserted transfer %s, received date %s, issued date %s<p>" % (t.TRANSFER_ID, t.RECEIVED_DATE, t.ISSUED_DATE)
-   tt=pdb.store.find(Transfer,Transfer.TRANSFER_ID==t.TRANSFER_ID).one()
-   print "<p>Inserted transfer %s, received date %s, issued date %s<p>" % (tt.TRANSFER_ID, tt.RECEIVED_DATE, tt.ISSUED_DATE)
+#  tt=pdb.store.find(Transfer,Transfer.TRANSFER_ID==t.TRANSFER_ID).one()
+#  print "<p>Inserted transfer %s, received date %s, issued date %s<p>" % (tt.TRANSFER_ID, tt.RECEIVED_DATE, tt.ISSUED_DATE)
    pdb.store.commit()
-   idsString  = form.getfirst('ids', '')
-   objName  = parseObjName(form.getfirst('type', 'empty'))
-   objType = eval(objName)
-   ID=idField(objName)
-   filter=eval(objName+"."+ID)
- 
-   ids=re.split("\s",idsString)
-   for id in ids:
+   objects = form.getlist('object[]')
+   for ob in objects :
+	(objName,id) = re.split(",",ob)
+	print "Inserting", objName,id,"<br>"
+        objType = eval(objName)
+	ID=idField(objName)
+        filter=eval(objName+"."+ID)
         value=idFieldTypedValue(objName,id)
-	o=pdb.store.find(objType,filter==value).one()
+        o=pdb.store.find(objType,filter==value).one()
         if o :
-	   print "OLD ID", o.TRANSFER_ID
-  	   o.TRANSFER_ID=t.TRANSFER_ID
-	   pdb.store.commit()
+           print "OLD ID", o.TRANSFER_ID
+	   pdb.insertHistory("TRANSFER", t.TRANSFER_ID , objName, id, "SEND", datee=datetime.now(), comment="OLDTRANS=%s"%o.TRANSFER_ID)
+           o.TRANSFER_ID=t.TRANSFER_ID
+           pdb.store.commit()
         else :
-	   print "<p><b>cannot find %s with %s = %s</b>" %(objName,ID,id)
+           print "<p><b>cannot find %s with %s = %s</b>" %(objName,ID,id)
+
 
 #$("#barcodeTarget").html("").show().barcode(
    print'''<div  id="bcTarget" style="height: 50px; width: 250px"></div><button onclick='$("#bcTarget").barcode("123","ean13",{barWidth:2, barHeight:30});'>Barcode</button>'''
    print "<a href=transfers.cgi>Back to list of transfers</a>"
 
 
+
 if action == "receive" :
    #mark transfer as received
    #TODO: check receiver center
    transfer = pdb.store.find(Transfer,Transfer.TRANSFER_ID==int(form.getfirst('TRANSFER_ID', 'empty'))).one()
+   pdb.insertHistory("TRANSFER", transfer.TRANSFER_ID ,"" , 0 , "RECEIVE", datee=datetime.now(), comment="")
    transfer.STATUS=unicode("ARRIVED")
    transfer.RECEIVED_DATE=datetime.now()
    #TODO: insert in history
@@ -181,10 +217,35 @@ if action == "receive" :
    pdb.store.commit()
    action="empty"
 
+if action == "cancel" :
+   #mark transfer as received
+   #TODO: check receiver center
+   transfer = pdb.store.find(Transfer,Transfer.TRANSFER_ID==int(form.getfirst('TRANSFER_ID', 'empty'))).one()
+   pdb.insertHistory("TRANSFER", transfer.TRANSFER_ID ,"" , 0 , "CANCEL", datee=datetime.now(), comment="")
+   transfer.STATUS=unicode("ARRIVED")
+   transfer.RECEIVER=transfer.SENDER
+   transfer.RECEIVED_DATE=datetime.now()
+   #TODO: insert in history
+   print "CANCELLED (receiver set back to sender)"
+   pdb.store.commit()
+   action="empty"
+
+if action == "details" :
+   print "<h1>This transfer contains:</h1>"
+   for objName in transferObjects :
+        objType = eval(objName)
+	objs = pdb.store.find(objType,objType.TRANSFER_ID==int(form.getfirst('TRANSFER_ID', 'empty')))
+	if objs :
+	       print "<h3>the following %s(s)</h3>"%(objName)
+	for o in objs :
+		print getattr(o,idField(objName)),"<BR>"
+	
+
 if action == "empty" :
-   print "<h2> Actions </h2><p>"
-   print "<a href=transfers.cgi?submit=newTransferForm> <button>Add new transfer</button> </a>"
-   print "<h2> Active transfers </h2><p>"
+   print "<h1> Pixel upgrade Transfer Interface</h1>" 
+   print "<img src=/Truck.png width=200><br>"
+   print "<a href=transfers.cgi?submit=newTransferForm> <button>Add NEW transfer</button> </a>"
+   print "<h2> List of active transfers </h2><p>"
 
    #show list of open transfers
    transfers = pdb.store.find(Transfer,Transfer.STATUS!=unicode("ARRIVED"))
@@ -194,35 +255,51 @@ if action == "empty" :
    print "</thead></tr><tbody>"
    for o in transfers :
      print "<tr>"
-     print "<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td><a href=transfers.cgi?submit=receive&TRANSFER_ID=%s onClick=\"return verify(%s);\" >receive</a>" %(o.SENDER,o.RECEIVER,o.COMMENT,o.STATUS,o.ISSUED_DATE, o.TRANSFER_ID,o.TRANSFER_ID)
+     print "<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td><a href=transfers.cgi?submit=receive&TRANSFER_ID=%s onClick=\"return verify(%s);\" >receive</a> | <a href=transfers.cgi?submit=cancel&TRANSFER_ID=%s onClick=\"return verify(%s);\" >cancel</a> |  <a href=transfers.cgi?submit=details&TRANSFER_ID=%s >details</a> " %(o.SENDER,o.RECEIVER,o.COMMENT,o.STATUS,o.ISSUED_DATE, o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID)
    print "</tbody><tfoot></tfoot>"
 
-   
+   if False:
+    print "<h2> List of received transfers </h2><p>"
+    transfers = pdb.store.find(Transfer,Transfer.STATUS==unicode("ARRIVED"))
+    print "<table id=transfers2 width=\"100%\">"
+    print " <thead> <tr>"
+    print "<th>Sender</th><th>Receiver</th><th>Comment</th><th>Status</th><th>Date sent</th>"
+    print "</thead></tr><tbody>"
+    for o in transfers :
+      print "<tr>"
+      print "<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td>" %(o.SENDER,o.RECEIVER,o.COMMENT,o.STATUS,o.ISSUED_DATE )
+    print "</tbody><tfoot></tfoot>"
+  
+ 
 if action == "newTransferForm" :
    #show form for new transfers
    print '''<html>
 <body>
    <form >
-   <p>Sender:   <input type="text" name="sender" />
-   <p>Receiver:   <input type="text" name="receiver" />
+'''
+   print "<p>Sender:   <select name=sender/>"
+   for o in centers :
+        print "<option>%s</option>" % o
+   print" </select><p>"
+   print "<p>Receiver:   <select name=receiver/>"
+   for o in centers :
+        print "<option>%s</option>" % o
+   print" </select><p>"
+
+   print '''
    <p>Comment:   <input type="text" name="comment" />
    <p> Type of transferred objects:<select name=type>
-   <option>FullModule</option>
-   <option>BareModule</option>
-   <option>Sensor</option>
-   <option>Roc</option>
-   <option>HDI</option>
-   <option>TBM</option>
-   <option>Wafer</option>
-   <option>Batch</option>
-   </select><p>
-   List of IDs:<p> 
+'''
+   for o in transferObjects :
+     print "<option>%s</option>" % o
+   print '''   </select><p>
+   List of IDs (space or new line separated):<p> 
 <textarea rows="4" cols="50" name=ids>
 </textarea>
 
    <p>
-   <p><input type="submit" name="submit" value="Transfer" /></p>
-   <p><input type="submit" name="submit" value="Transfer with children" /></p>
+   <p><input type="submit" name="submit" value="Transfer" /> 
+   <input type="submit" name="submit" value="Transfer with children" /></p>
 
    </form>
 </body>
