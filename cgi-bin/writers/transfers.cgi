@@ -56,7 +56,7 @@ import random
 import ConfigParser
 
 transferObjects=['FullModule','BareModule','Sensor','Roc','Hdi','Tbm','Wafer','Batch']
-centers=['CIS','FACTORY','ETH','PSI','CERN','Bari','Catania','Perugia','Pisa','Hamburg','Aachen','Helsinki']
+centers=['CIS','FACTORY','ETH','PSI','CERN','BARI','CATANIA','PERUGIA','PISA','HAMBURG','AACHEN','HELSINKI']
 
 
 pdb = PixelDBInterface(operator="webfrontend",center="cern")
@@ -277,11 +277,11 @@ if action == "newTransferForm" :
 <body>
    <form >
 '''
-   print "<p>Sender:   <select name=sender/>"
+   print "<p>Sender:   <select name=sender>"
    for o in centers :
         print "<option>%s</option>" % o
    print" </select><p>"
-   print "<p>Receiver:   <select name=receiver/>"
+   print "<p>Receiver:   <select name=receiver>"
    for o in centers :
         print "<option>%s</option>" % o
    print" </select><p>"
