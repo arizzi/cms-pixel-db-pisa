@@ -45,6 +45,31 @@ def specificView(objName,form,pdb) :
 	 if m :
 		print "<h1> Input file %s </h1>" % m.group(2)
 		print "<a href=/data/pixels/centerinputs/%s/%s>Download file </a>" %(m.group(1),m.group(2))
+   if objName == "Sensor" :
+         sensorid=cgi.escape(form.getfirst('SENSOR_ID', 'empty'))
+         tl = ""
+         if sensorid != "empty" :
+                  tests = pdb.store.find(Test_IV,Test_IV.SENSOR_ID==unicode(sensorid))
+                  for t in tests :
+                    tl+="test=%s&" % t.TEST_ID
+         if tl != "" :
+                print "<img src=iv.cgi?%s><br>" %tl
+
+   if objName == "Wafer" :
+	 waferid=cgi.escape(form.getfirst('WAFER_ID', 'empty'))
+         tl = ""
+       	 if waferid != "empty" : 
+	    sensors = pdb.store.find(Sensor,Sensor.WAFER_ID==unicode(waferid))
+	    for s in sensors:
+		  tests = pdb.store.find(Test_IV,Test_IV.SENSOR_ID==s.SENSOR_ID)
+		  for t in tests :
+		    tl+="test=%s&" % t.TEST_ID
+	 if tl != "" :
+	        print "<img src=iv.cgi?%s><br>" %tl
+   if objName == "Test_IV" :
+	 testid=cgi.escape(form.getfirst('TEST_ID', 'empty'))
+       	 if testid != "empty" : 
+            print "<img src=iv.cgi?test=%s><br>" % testid
 
    if objName == "FullModule" :
 	  moduleID=cgi.escape(form.getfirst('FULLMODULE_ID', 'empty'))

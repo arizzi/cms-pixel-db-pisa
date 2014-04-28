@@ -132,11 +132,11 @@ else :
 	for o in objects : 
 	   for c in columns:
 	    print "<tr><td>",c.lower().capitalize(),"</td><td>",getattr(o,c)
-	    res=re.match("file:(.*/(M.*)/(T.*)/)",str(getattr(o,c)))
+	    res=re.match(".*PIXELDB(.*)",str(getattr(o,c)))
 	    if res : 
-	     print "(<a href=\"../data/"+res.group(2)+"/"+res.group(3)+"\">view</a>)"
+	     print "(<a href=\"../data/pixels/"+res.group(1)+"\">view</a> | <a href=\"../data/pixels/"+res.group(1)+"\" download>download</a> )"
 	#     print res.group(1)," ",res.group(2),res.group(3) 
-	     summary="../data/"+res.group(1)+"/"+res.group(2)+res.group(3)+".gif" 
+#	     summary="../data/"+res.group(1)+"/"+res.group(2)+res.group(3)+".gif" 
 	   print "</td></tr>"
 	   
 	   for r in refs:

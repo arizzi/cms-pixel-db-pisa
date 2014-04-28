@@ -12,7 +12,7 @@ import csv
 
 
 def processCSV(filename) :
-	unitConversion=1e9 #nA to A
+	unitConversion=1e-9 #nA to A
 	result=[]
 	if os.path.isfile(filename):
 		with open(filename, 'rb') as csvfile:
@@ -45,7 +45,7 @@ def processCSV(filename) :
 				out_file = open("/gpfs/ddn/cms/PIXELDB/Sensors/FactoryImport/%s.IV.txt"%sensorID,"w")
 				for line in iv :
 #					print "V I ", float(line[0]),float(re.sub(",",".",line[1]))*unitConversion;
-					out_file.write("%s %s"%(float(line[0]),float(re.sub(",",".",line[1]))*unitConversion))
+					out_file.write("%s %s\n"%(float(line[0]),float(re.sub(",",".",line[1]))*unitConversion))
 				out_file.close()
 				slopeIV=float(re.sub(",",".",map[i+7][1]))
 				I1=abs(float(re.sub(",",".",map[i+6][1])))

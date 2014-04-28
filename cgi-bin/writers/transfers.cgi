@@ -69,7 +69,7 @@ def checkCenter(objName,id,sender) :
     objType = eval(objName)
     o=pdb.store.find(objType,filter==value).one()
     if o :
-      if o.transfer.RECEIVER != sender and sender != "any" :
+      if o.TRANSFER_ID!=0 and o.transfer and o.transfer.RECEIVER.lower() != sender.lower() and sender != "any" :
          return False
       else :
 	 return True
@@ -112,7 +112,8 @@ def getChildren(objName,ids,sender) :
                   else :
                        objects.append(("Sensor",s.SENSOR_ID))
 
-
+   else:
+	print "Transfer with children not yet implemented for this type. please use normal transfer"
    return (objects,notAtRightcenter)
 
 
@@ -126,6 +127,7 @@ def getTransferList(objName,ids,sender,children) :
 	objects = []
 	notAtRightcenter = []
         for id in ids:
+	     if id != "" :	
                 value=idFieldTypedValue(objName,id)
                 if not checkCenter(objName,id,sender) :
                         notAtRightcenter.append((objName,id))
@@ -184,14 +186,14 @@ if action == "Confirm this transfer" :
    objects = form.getlist('object[]')
    for ob in objects :
 	(objName,id) = re.split(",",ob)
-	print "Inserting", objName,id,"<br>"
+	print "<p>Inserting", objName,id,"<br>"
         objType = eval(objName)
 	ID=idField(objName)
         filter=eval(objName+"."+ID)
         value=idFieldTypedValue(objName,id)
         o=pdb.store.find(objType,filter==value).one()
         if o :
-           print "OLD ID", o.TRANSFER_ID
+           print "OLD Transfer ID", o.TRANSFER_ID
 	   pdb.insertHistory("TRANSFER", t.TRANSFER_ID , objName, id, "SEND", datee=datetime.now(), comment="OLDTRANS=%s"%o.TRANSFER_ID)
            o.TRANSFER_ID=t.TRANSFER_ID
            pdb.store.commit()

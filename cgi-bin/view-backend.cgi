@@ -65,6 +65,10 @@ for c in columns:
    colNames.append(c)
    if c == "TRANSFER_ID" :
 	hasTrans = True 	
+
+if objName == "Transfer" :
+  hasTrans = False
+
 for r in refs:
    colNames.append(r)
 
@@ -144,7 +148,7 @@ colNamesFull=[]
 for cc in columns :
    colNamesFull.append(table+"."+cc)
 colNamesFull=",".join(colNamesFull)
-if hasTrans:
+if hasTrans :
 # 	print "SELECT %s,transfer.RECEIVER,transfer.SENDER,transfer.STATUS FROM %s left join transfers on TRANSFER_ID=transfers.TRANSFER_ID %s %s %s"% (colNamesFull,table,sWhere,sOrder,sLimit)
  	cur.execute("SELECT %s,transfers.RECEIVER,transfers.SENDER,transfers.STATUS as TSTATUS FROM %s left join transfers on %s.TRANSFER_ID=transfers.TRANSFER_ID %s %s %s"% (colNamesFull,table,table,sWhere,sOrder,sLimit))
 else:
