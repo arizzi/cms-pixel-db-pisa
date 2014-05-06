@@ -63,6 +63,7 @@ pdb.connectToDB()
 
 form = cgi.FieldStorage() # instantiate only once!
 action = form.getfirst('submit', 'empty')
+force = form.getfirst('force', False)
 action = cgi.escape(action)
 objName = form.getfirst('objName', 'empty')
 if objName == "empty" :
@@ -107,7 +108,7 @@ if objName != "" :
        o = objects[0]	
        aux = None		
 if action == "Validate" :
-   print "boh"
+   print "to be implemented"
 
 if action == "Insert" :
   if  aux :
@@ -174,29 +175,51 @@ if action == "Insert" :
 
 if action == "Save changes" :
    for c in columns:
+	   field =  getattr(o,c)
+	   list = form.getlist(c)
+	   if len(list) > 0 :
+		field = list[-1] 
 	   columnType=type(eval("o."+c))
+           columnType2=type(eval(objName+"."+c+".variable_factory()"))
+	   print c, field, columnType, columnType2
 	   adate=date(2000,1,1)
-	   if columnType == type(adate) :
-   	        d=form.getfirst(c, getattr(o,c))
+	   if columnType == type(adate) or columnType2 == DateVariable:
+		if field == "None":
+			field = "1970-01-01" 
+   	        d=field #form.getfirst(c, getattr(o,c))
 	        dd=datetime.strptime(d,"%Y-%m-%d")
+		setattr(o,c,dd)
+	   if columnType2 ==  DateTimeVariable :
+                if field == "None":
+                        field = "1970-01-01 00:00:00"   
+                d=field #form.getfirst(c, getattr(o,c))
+                dd=datetime.strptime(d,"%Y-%m-%d %H:%M:%S")
+                setattr(o,c,dd)
 	   elif columnType == type(None) :
-		setattr(o,c,unicode(form.getfirst(c, getattr(o,c))))
+#		setattr(o,c,unicode(form.getfirst(c, getattr(o,c))))
+		setattr(o,c,unicode(field))
 	   else: 
-		setattr(o,c,columnType(form.getfirst(c, getattr(o,c))))
+#		setattr(o,c,columnType(form.getfirst(c, getattr(o,c))))
+		setattr(o,c,columnType(field))
    pdb.store.commit()
    print "Saved"
 
 if True :
 	print "<table id=example cellspacing=10 >"
-	print "<form enctype=\"multipart/form-data\" method=\"post\">"
+	print "<form enctype=\"multipart/form-data\" method=\"post\" action=edit.cgi>"
 	print "<input type=hidden name=objName value=\"%s\">" % objName
 	print "<thead> <tr>"
 	print "<th align=left> Field: </th>"
 	print "<th align=left> Value: </th>"
 	print "</thead></tr><tbody>"
 	if o :
+	    if force != "1" :
 		print "<input type=hidden name=%s value=\"%s\">" % (ID,objID)
 	        print "<tr><td>",ID.lower().capitalize()," (main ID)</td><td><b>%s<b></td></tr>"%(getattr(o,ID))
+	    else : 	
+		print "<input type=hidden name=%s value=\"%s\">" % (ID,objID)
+                print "<tr><td>",ID.lower().capitalize()," (main ID)</td><td>"
+                print inputField(objName,ID,getattr(o,ID))
 	else :
                 print "<tr><td>",ID.lower().capitalize()," (main ID)</td><td>"
                 print inputField(objName,ID)
@@ -205,7 +228,7 @@ if True :
 
 	summary=""
         for c in columns:
-          if c != ID :
+          if c != ID : #or force:
 	   if o :
   		   print "<tr><td>",c.lower().capitalize(),"</td><td>"
 #d><input type=input name=\"%s\" value=\"%s\">"%(c,getattr(o,c))

@@ -21,7 +21,7 @@ class Transfer (object):
     RECEIVED_DATE=DateTime() 
     STATUS=Unicode()
     COMMENT=Unicode()
-    def __init__(self, SENDER,RECEIVER, ISSUED_DATE=datetime(1970,1,1), RECEIVED_DATE=datetime.now(), STATUS="ARRIVED", COMMENT=""):
+    def __init__(self, SENDER,RECEIVER, ISSUED_DATE=datetime.now(), RECEIVED_DATE=datetime.now(), STATUS="ARRIVED", COMMENT=""):
         self.SENDER=unicode(SENDER)
         self.RECEIVER=unicode(RECEIVER)
         self.ISSUED_DATE=ISSUED_DATE
@@ -142,7 +142,7 @@ class Wafer(object):
     PASSIVATION=Unicode()
     UNDER_BUMP_METALIZATION=Unicode()
     SIZE_OF_OPENING=Unicode()
-    CV = Unicode()
+    VDEPL = Unicode()
     OPTICAL_INSPECTION=Unicode()
     OPTICAL_INSPECTION_RESULT=Unicode()
     COMMENT = Unicode()
