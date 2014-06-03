@@ -100,21 +100,23 @@ if objName != "" :
      if  type(eval(objName+"."+attr)) is properties.PropertyColumn or  type(eval(objName+"."+attr)).__name__ == "date"  or  type(eval(objName+"."+attr)).__name__ == "datetime":
            columns.append(attr) 
   objects = pdb.store.find(objType,filter==filterValue)
+  first=objects.count()==0
   if objects.count() != 1 : 
       aux=pdb.store.find(objType).any()
 #       o =eval(objName+"()")
       print "<h1> Create new %s </h1>" % objName 
   else :
+       print "found"	
        o = objects[0]	
-       aux = None		
+       aux = None	
 if action == "Validate" :
    print "to be implemented"
 
 if action == "Insert" :
-  if  aux :
+  if  aux or first :
      buildString=objName+"("
      for c in columns:
-           columnType=type(eval("aux."+c))
+#           columnType=type(eval("aux."+c))
            adate=date(2000,1,1)
            columnType2=type(eval(objName+"."+c+".variable_factory()"))
 	   if c == "DATA_ID" and form['DATA_ID_filename'].filename :
@@ -129,13 +131,20 @@ if action == "Insert" :
 			 buildString+="DATA_ID=0"
 		    else:
 			 buildString+="DATA_ID=%s,"%insertedData.DATA_ID
-           elif columnType == type(adate) :
+           elif columnType2 == DateVariable :
                 d=form.getfirst(c, "")
 		try: 
 		        dd=datetime.strptime(d,"%Y-%m-%d")
 		except:
-			dd=date.today()
+                        dd=date.today()
 		buildString+=" "+c+"=dd,"
+           elif columnType2 == DateTimeVariable :
+                d=form.getfirst(c, "")
+                try:
+                        dd=datetime.strptime(d,"%Y-%m-%d")
+                except:
+			dd=datetime.now()
+                buildString+=" "+c+"=dd,"
            elif columnType2 == UnicodeVariable : 
 		buildString+=" "+c+"=\""+form.getfirst(c, "")+"\","
 	   elif columnType2 == IntVariable :
@@ -148,6 +157,7 @@ if action == "Insert" :
      buildString+=")"
 #     print buildString
      o=eval(buildString)
+#     print buildString	 
 #     print eval("o."+ID),objName+"."+ID
 
      if pdb.store.find(objType,filter==eval("o."+ID)).count() > 0 :

@@ -611,11 +611,11 @@ class PixelDBInterface(object) :
             # first check that the module exists
             #
             if (self.isSensorInserted(test.SENSOR_ID) == False):
-                  print " Cannot insert a test on a not existing S "
+                  print " Cannot insert a test on a not existing S ", test.SENSOR_ID
                   return None
             self.store.add(test)
             self.store.commit()
-            (self.getSensor(test.SENSOR_ID)).LASTTEST_SENSOR =  test.TEST_ID
+            (self.getSensor(test.SENSOR_ID)).LASTTEST_SENSOR_IV =  test.TEST_ID
             self.store.commit()
             # log in history
             self.insertHistory(type="TEST_S", id=test.TEST_ID, target_type="SENSOR", target_id=test.SENSOR_ID, operation="TEST_IV", datee=datetime.now(), comment="NO COMMENT")
@@ -712,19 +712,22 @@ class PixelDBInterface(object) :
                   print "Filename "+filename+" does not end with .inf.txt"
                   return (None, None, None, None)
             print"BEING PASSED ",filename
-            mylist = filename.split("_")
+	    filename1=re.sub(".*/","",filename) 	
+	    filename1=re.sub("\..*","",filename1) 	
+            mylist = re.split("[_-]",filename1)
             if (debug == True):
                   print "LIST ",mylist
-            if (len(mylist) <5 ):
+            if (len(mylist) <4 ):
                   print "Filename "+filename+" not well formed."
                   return (None, None, None, None)
             # the step could be the last one, split it for "."
-            batch = str(mylist[1])
-            wafer = str(batch)+'-'+str(mylist[2])
-            sensor = "S"+str(wafer)+'-'+str(mylist[3])
-            step = ((mylist[4]).split("\."))[0]
+            batch = str(mylist[0])
+	    batch = re.sub("^S","",batch)	
+            wafer = str(batch)+'-'+str(mylist[1])
+            sensor = "S"+str(wafer)+'-'+str(mylist[2])
+            step = ((mylist[3]).split("\."))[0]
             print "PARSED from "+filename+" is : ",batch, wafer, sensor, step
-            return (batch, wafer, sensor, step)
+            return (batch, wafer, sensor, step.upper())
 #
 # using the info as in Andrei's mail
 # given a dir
@@ -761,7 +764,7 @@ class PixelDBInterface(object) :
                   print " ECCO",results
             batch1 = results['BATCH']
             centre1 = results['CENTRE']
-            step1= results['STEP']
+            step1= results['STEP'].upper()
             wafer1 = results['BATCH']+'-'+results['WAFER']
             sensor1 = "S"+results['BATCH']+'-'+results['WAFER']+'-'+results['SENSOR']
             v1 = results['V1']
@@ -782,6 +785,7 @@ class PixelDBInterface(object) :
                   return (0,0,0,0,0,0,0,0,0,0,0,0,0,0,False)
             if (batch1 != batch or wafer1 != wafer or sensor1 != sensor or step != step1):
                   print " File content and name are not consistent "+filename
+		  return (0,0,0,0,0,0,0,0,0,0,0,0,0,0,False)
 
             return (batch, wafer, sensor, step, v1, i1, v2, i2, slope, temperature, date, grade, centre1, comment,True)
             
@@ -793,10 +797,11 @@ class PixelDBInterface(object) :
             #   a root file containing the curves
             # return None if error, otherwise the sensortest
             #
-
+	    print "pippa"
             debug = True
 
             ppp = subprocess.Popen("ls -1 "+dir.rstrip()+"/*.inf.txt", shell=True, stdout=subprocess.PIPE, stderr=None)
+#            ppp = subprocess.Popen("find "+dir.rstrip()+" -name \*.inf.txt", shell=True, stdout=subprocess.PIPE, stderr=None)
             retval = ppp.wait()
             if (retval != 0):
                   print "no files *.inf.txt in ",str(dir)
@@ -841,7 +846,7 @@ class PixelDBInterface(object) :
                   print "Cannot insert data"
                   return None
             
-            st = Test_IV(SESSION_ID=session.SESSION_ID,SENSOR_ID=sensor,GRADE=grade,DATA_ID = data_id.DATA_ID,I1 = float(i1),I2=float(i2), V1= float(v1), V2 = float(v2),  TEMPERATURE = float(temperature), DATE = int(date), SLOPE =float(slope), COMMENT=comment)
+            st = Test_IV(SESSION_ID=session.SESSION_ID,SENSOR_ID=sensor,GRADE=grade,DATA_ID = data_id.DATA_ID,I1 = float(i1),I2=float(i2), V1= float(v1), V2 = float(v2),  TEMPERATURE = float(temperature), DATE = int(date), SLOPE =float(slope), COMMENT=comment, TYPE=step)
             
 
             self.insertIVTest(st)

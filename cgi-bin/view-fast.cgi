@@ -14,8 +14,8 @@ def defaultHidden(cols) :
 	s=""	
 	for c in cols:
 		i+=1
-		if re.match("LASTTEST",c) or c == "TRANSFER_ID" :  
-			 s+="{ \"bVisible\": false, \"aTargets\": [ %s ] },\n" % (i+1)
+		if re.match("LASTTEST",c) or c == "TRANSFER_ID" or re.match("transfer",c) :  
+			 s+="{ \"bVisible\": false, \"aTargets\": [ %s ] }, // %s\n" % (i+1,c)
 	return s 
 
 form = cgi.FieldStorage() # instantiate only once!
@@ -63,8 +63,7 @@ for attr in keys:
          refs.append(attr)
     
 columns.sort()
-hide=defaultHidden(columns)
-
+hide=defaultHidden(columns+refs)
 print "Content-Type: text/html"
 print
 print "<html>\n        <head>\n         "      
@@ -80,6 +79,7 @@ print '''
                 <script type="text/javascript" charset="utf-8">
                         $(document).ready(function() {
                                 $('#example').dataTable( {
+					"bStateSave": true,
 					"sDom": 'C<"clear">lfrtip',
 					"aoColumnDefs": [%s],
 			                "iDisplayLength" : 25,

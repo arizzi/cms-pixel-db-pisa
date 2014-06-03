@@ -18,4 +18,7 @@ cd $2
 #
 tar zxf $1
 
+#if somebody created subdirs, move in pwd
+mv */* .
+
 exit  0 

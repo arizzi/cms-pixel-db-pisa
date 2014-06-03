@@ -53,7 +53,8 @@ def specificView(objName,form,pdb) :
                   for t in tests :
                     tl+="test=%s&" % t.TEST_ID
          if tl != "" :
-                print "<img src=iv.cgi?%s><br>" %tl
+                print "<img src=iv.cgi?%s>" %tl
+                print "<img src=iv.cgi?%slog=0&fixrange=1><br>" %tl
 
    if objName == "Wafer" :
 	 waferid=cgi.escape(form.getfirst('WAFER_ID', 'empty'))

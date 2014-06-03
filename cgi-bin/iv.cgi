@@ -19,7 +19,7 @@ pdb.connectToDB()
 def findFileFromTestID(id) :
   o = pdb.store.find(Test_IV ,Test_IV.TEST_ID==id).one()
   if o:
- 	 return o.data.PFNs,"%s(%s)" %(o.SENSOR_ID,o.TYPE)
+ 	 return o.data.PFNs,"%s (%s)" %(o.SENSOR_ID,o.TYPE)
   else:
          return None 
 
@@ -30,10 +30,12 @@ def readIVFile(ff):
 	v=[]
 	for line in lines:
 	  line= re.sub("#.*","",line)
-	  fields = re.split("\s",line)
-	  if len(fields) >= 2 : 
-		v.append(float(fields[0]))
-		i.append(float(fields[1]))
+	  line= re.sub("^\s*","",line)
+	  fields = re.split("\s+",line)
+          if len(fields) >= 2 and fields[0]!= '' and fields[1] != '':
+#		print fields 
+		v.append(abs(float(fields[0])))
+		i.append(abs(float(fields[1])))
 	return (i,v)
 
 def makeTGraph((ii,vv)) :
@@ -59,10 +61,21 @@ def makePlotForFiles(files):
 	legend = ROOT.TLegend(0.2,0.7,0.7,0.9)
 	legend.SetFillStyle(0)
 	legend.AddEntry(g[-1],name,"LP")
+   	if log != '0':
+         g[-1].SetTitle("IV (log scale)")
+	if fixrange == '1':
+         g[-1].SetTitle("IV (zoomed)")
+#	 g[-1].GetXaxis().SetRangeUser(0,200)	
+	 g[-1].GetXaxis().SetLimits(0,200)	
+	 g[-1].GetYaxis().SetRangeUser(0,0.3e-5)	
+	 g[-1].GetYaxis().SetLimits(0,0.3e-5)
       else:	
 	g[-1].Draw("LP")
 	legend.AddEntry(g[-1],name,"LP")
       i+=1 
+   if log != '0':
+	canvas.SetLogy(1)
+	canvas.Update()
    legend.Draw()
    canvas.SaveAs(out.name)
 
@@ -71,6 +84,8 @@ out = tempfile.NamedTemporaryFile(suffix=".png",delete=False)
 import cgi
 form = cgi.FieldStorage() # instantiate only once!
 tests = form.getlist('test')
+log = form.getfirst('log')
+fixrange = form.getfirst('fixrange')
 files =[]
 for t in tests:
    fn = findFileFromTestID(int(t))

@@ -114,7 +114,7 @@ pdb.initProcessing(CONFIG=MACRO_INIT, DEBUG=False)
 pdb.connectToDB()
 
 tmpfile = (tempfile.mkstemp())[1]
-
+print "TMPFILE ",tmpfile
 listinserted=[]
 
 if (insert==1):

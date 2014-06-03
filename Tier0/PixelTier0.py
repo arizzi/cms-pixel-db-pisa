@@ -487,6 +487,7 @@ class PixelTier0 (object):
             # simply extract the dir from the pd, and use it to run 
             # pixeldb.insertTestSensorDir(self,dir,session)
             #
+	    print "PPPPPIIIPPO"
             dir = pd.NAME
             aaa = self.PixelDB.insertIVTestDir(dir,session)
             if (aaa is None):

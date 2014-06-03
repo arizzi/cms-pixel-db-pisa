@@ -2,6 +2,8 @@
 
 # enable debugging
 import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 import cgitb
 from datetime import *
 cgitb.enable()
@@ -61,7 +63,7 @@ objName = form.getfirst('objName', 'empty')
 objName = cgi.escape(parseObjName(objName))
 objType = eval(objName)
 refToShow = form.getfirst("ref", 'empty')
-if cgi.escape(form.getfirst("spec", "1")) == "1" :
+if cgi.escape(form.getfirst("spec", "1")) == "1" and refToShow=="empty":
   specificView(objName,form,pdb)
 
 if re.match("test",objName,flags=re.IGNORECASE) : 
