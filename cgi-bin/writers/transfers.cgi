@@ -55,8 +55,8 @@ from PixelDB import *
 import random
 import ConfigParser
 
-transferObjects=['FullModule','BareModule','Sensor','Roc','Hdi','Tbm','Wafer','Batch']
-centers=['CIS','FACTORY','ETH','PSI','CERN','BARI','CATANIA','PERUGIA','PISA','HAMBURG','AACHEN','HELSINKI','DESY','KIT']
+#transferObjects=['FullModule','BareModule','Sensor','Roc','Hdi','Tbm','Wafer','Batch']
+#centers=['CIS','FACTORY','ETH','PSI','CERN','BARI','CATANIA','PERUGIA','PISA','HAMBURG','AACHEN','HELSINKI','DESY','KIT']
 
 
 pdb = PixelDBInterface(operator="webfrontend",center="cern")
@@ -69,7 +69,7 @@ def checkCenter(objName,id,sender) :
     objType = eval(objName)
     o=pdb.store.find(objType,filter==value).one()
     if o :
-      if o.TRANSFER_ID!=0 and o.transfer and o.transfer.RECEIVER.lower() != sender.lower() and sender != "any" :
+      if o.TRANSFER_ID!=0 and o.transfer and (o.transfer.RECEIVER.lower() != sender.lower() or o.transfer.STATUS == "NEW") and sender != "any" :
          return False
       else :
 	 return True
@@ -175,17 +175,27 @@ if action == "Transfer with children" or action == "Transfer" :
  
 
 if action == "Confirm this transfer" :
-   sender = form.getfirst('sender', 'empty')
-   receiver = form.getfirst('receiver', 'empty')
-   comment  = form.getfirst('comment', '')
+  sender = form.getfirst('sender', 'empty')
+  receiver = form.getfirst('receiver', 'empty')
+  comment  = form.getfirst('comment', '')
+  nonempty=False
+  objects = form.getlist('object[]')
+  for ob in objects :
+      (objName,id) = re.split(",",ob)
+      if checkCenter(objName,id,sender):
+	 nonempty=True
+	 break
+  if nonempty  :
    t = pdb.insertTransfer(Transfer(SENDER=sender, RECEIVER=receiver, ISSUED_DATE=datetime.now(), RECEIVED_DATE=datetime(1970,1,1), STATUS="NEW", COMMENT=comment))
    print "<p>Inserted transfer %s, received date %s, issued date %s<p>" % (t.TRANSFER_ID, t.RECEIVED_DATE, t.ISSUED_DATE)
 #  tt=pdb.store.find(Transfer,Transfer.TRANSFER_ID==t.TRANSFER_ID).one()
 #  print "<p>Inserted transfer %s, received date %s, issued date %s<p>" % (tt.TRANSFER_ID, tt.RECEIVED_DATE, tt.ISSUED_DATE)
    pdb.store.commit()
-   objects = form.getlist('object[]')
+#  (objs,errors) = getTransferList(objName,ids,center,children)
+#   if len(errors) > 0 :
+
    for ob in objects :
-	(objName,id) = re.split(",",ob)
+        (objName,id) = re.split(",",ob)
 	print "<p>Inserting", objName,id,"<br>"
         objType = eval(objName)
 	ID=idField(objName)
@@ -199,11 +209,13 @@ if action == "Confirm this transfer" :
            pdb.store.commit()
         else :
            print "<p><b>cannot find %s with %s = %s</b>" %(objName,ID,id)
-
-
+   print "<a href=transfers.cgi?submit=details&TRANSFER_ID=%s>Details and transfer sheet</a><br>" % t.TRANSFER_ID
+  else :
+	   print "wrong center or empty transfer, did you hit reload or back button on your browser?<br>"
+     
 #$("#barcodeTarget").html("").show().barcode(
-   print'''<div  id="bcTarget" style="height: 50px; width: 250px"></div><button onclick='$("#bcTarget").barcode("123","ean13",{barWidth:2, barHeight:30});'>Barcode</button>'''
-   print "<a href=transfers.cgi>Back to list of transfers</a>"
+#   print'''<div  id="bcTarget" style="height: 50px; width: 250px"></div><button onclick='$("#bcTarget").barcode("123","ean13",{barWidth:2, barHeight:30});'>Barcode</button>'''
+  print "<a href=transfers.cgi>Back to list of transfers</a>"
 
 
 
@@ -233,16 +245,26 @@ if action == "cancel" :
    action="empty"
 
 if action == "details" :
-   print "<h1>This transfer contains:</h1>"
+   tid=int(form.getfirst('TRANSFER_ID', 'empty'))
+   t = pdb.store.find(Transfer,Transfer.TRANSFER_ID==int(form.getfirst('TRANSFER_ID', 'empty'))).one()
+
+   print "<h1>Transfer ID %s (%s => %s)</h1>"%(tid,t.SENDER,t.RECEIVER)
+   print "Created on date: <b>%s</b> <br>" % (t.ISSUED_DATE)
+   print "Notes: %s <br>" % (t.COMMENT)
+   print "<h2>Content of the transfer</h2>"
    for objName in transferObjects :
         objType = eval(objName)
 	objs = pdb.store.find(objType,objType.TRANSFER_ID==int(form.getfirst('TRANSFER_ID', 'empty')))
-	if objs :
-	       print "<h3>the following %s(s)</h3>"%(objName)
+	first = True
 	for o in objs :
+		if first:
+		       print "<h3>The following %s(s)</h2>"%(objName)
+		       first = False
 		print getattr(o,idField(objName)),"<BR>"
-	
-
+   print "<br><br>"
+   print "<h2>Barcode for fast reception: (to be implemented)</h2>"
+   print "<a href=transfers.cgi>Back to list of transfers</a>"
+   		
 if action == "empty" :
    print "<h1> Pixel upgrade Transfer Interface</h1>" 
    print "<img src=/Truck.png width=200><br>"

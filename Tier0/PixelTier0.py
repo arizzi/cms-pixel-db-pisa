@@ -383,6 +383,7 @@ class PixelTier0 (object):
       def injectsProcessingJobs(self,mycenter=""):
             tars = self.store.find(InputTar,InputTar.STATUS==unicode('new'))
             n=0
+	    print "len of tars", tars	
             for job in tars:
                   n=n+1
                   self.processInputTar(job,mycenter)
@@ -414,6 +415,7 @@ class PixelTier0 (object):
       def injectsProcessingJobs(self,mycenter=""):
             tars = self.store.find(InputTar,InputTar.STATUS==unicode('new'))
             n=0
+            print "len of tars", tars
             for job in tars:
                   n=n+1
                   self.processInputTar(job,mycenter)
@@ -449,16 +451,19 @@ class PixelTier0 (object):
           return aa.count()
             
 
-      def uploadAllTests(self,session,initcenter=""):
+      def uploadAllTests(self,operator="n/a"):
 # if initcenter != "" works only on these
  #
  # loop on outdir with status = 'done'
           aa = self.store.find(ProcessedDir,ProcessedDir.STATUS == unicode("done"))
 
           for od in aa:
-                if (initcenter !="" and od.tar_id.CENTER != initcenter):
+                s = Session (CENTER=od.tar_id.CENTER , OPERATOR=operator,TYPE="TESTSESSION",DATE=datetime.now(), COMMENT="")
+                ppp = self.PixelDB.insertSession(s)
+                if (ppp is None):
+                      print "Failed to create a session"
                       continue
-                res = self.uploadGenericTest(od,session)
+                res = self.uploadGenericTest(od,s)
                 if (res is None):
                       print" Stopped uploadAllTests due to error with ",od.NAME
                       return None

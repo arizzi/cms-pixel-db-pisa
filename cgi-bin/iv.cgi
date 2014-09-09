@@ -47,18 +47,18 @@ def makeTGraph((ii,vv)) :
 colors = [1,2,4,5,6]
 
 def makePlotForFiles(files):
-   canvas= ROOT.TCanvas("plot") 
+   canvas= ROOT.TCanvas("plot","plot",700,500)
    g = []
    i=0
    legend = None
    for f,name in files:
       g.append(makeTGraph(readIVFile(f)))
-      g[-1].SetMarkerColor(colors[i])
-      g[-1].SetLineColor(colors[i])
-      g[-1].SetMarkerStyle(20)
+      g[-1].SetMarkerColor(colors[i%5])
+      g[-1].SetLineColor(colors[i%5])
+      g[-1].SetMarkerStyle(20+i/5)
       if len(g) == 1 :
         g[-1].Draw("ALP")
-	legend = ROOT.TLegend(0.2,0.7,0.7,0.9)
+	legend = ROOT.TLegend(0.2,0.7-len(files)*0.025,0.7,0.9)
 	legend.SetFillStyle(0)
 	legend.AddEntry(g[-1],name,"LP")
    	if log != '0':

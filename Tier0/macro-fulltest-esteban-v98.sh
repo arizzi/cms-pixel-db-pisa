@@ -32,7 +32,10 @@ cd INPUT
 #
 # i go up once to go to the main dir
 #
+
+#AR: try both
 tar xf $1
+tar xzf $1
 
 cd ../
 

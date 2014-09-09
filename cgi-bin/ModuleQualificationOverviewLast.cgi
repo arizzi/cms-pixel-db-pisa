@@ -92,7 +92,7 @@ evals = ["\"<a href=ModuleQualificationView.cgi?ModuleID=%s>%s</a>\"%( o.FULLMOD
 #	,"\"%d\" %o.fullmoduletests.count()"
 	,"datetime.fromtimestamp(float(o.fullmoduletests.any().TIMESTAMP)).isoformat()","o.QUALIFICATIONTYPE","findMax(o,analysisToUse,\"GRADE\")"
 	,"\"%d\"%(findMax(o,analysisToUse,\"PIXELDEFECTS\"))"
-	,"\"%d\"%(findMax(o,analysisToUse,\"ROCSWORSEPERCENT\"))"
+	,"\"%s\"%(findMax(o,analysisToUse,\"ROCSWORSEPERCENT\"))"
 	,"\"%d\"%(findMax(o,analysisToUse,\"PHCAL\"))"
 	,"str(findMax(o,analysisToUse,\"TRIMMING\"))"
 	,"(concat(o,analysisToUse,\"COMMENT\"))"

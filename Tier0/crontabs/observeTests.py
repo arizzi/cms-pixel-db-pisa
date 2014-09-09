@@ -148,10 +148,10 @@ if (insert==1):
     
         tar = InputTar (NAME=os.path.basename(line), LOCATION=os.path.dirname(line),    CKSUMTYPE='cksum', CKSUM=ck,         STATUS='new', CENTER = CENTER, DATE = date.today(),TESTNAME=TESTNAME)
         pp = pdb.insertNewTar(tar)
-
         if(pp is None):
             print "ERROR inserting Tar, skipping ...."
             continue
+	print "tar status",tar.STATUS,pp.STATUS
 
         listinserted.append(pp.TAR_ID)
 
@@ -164,7 +164,8 @@ if (insert==1):
 
         print "Inserted new tar = ", tar.TAR_ID
         INSERTED=INSERTED+1
-
+        pdb.store.commit()
+	
     numinjected = pdb.injectsProcessingJobs()
         
 
@@ -194,13 +195,13 @@ if (process==1):
     print " I NEED TO UPLOAD ", number, " results ..."
     if (number>0):
 #new session
-        s = Session (CENTER=CENTER, OPERATOR=OPERATOR,TYPE="TESTSESSION",DATE=datetime.now(), COMMENT="")
-        ppp= pdb.PixelDB.insertSession(s)
-        if (ppp is None):
-            print "Failed to create a session"
-            exit (2)
+#        s = Session (CENTER=CENTER, OPERATOR=OPERATOR,TYPE="TESTSESSION",DATE=datetime.now(), COMMENT="")
+#        ppp= pdb.PixelDB.insertSession(s)
+#        if (ppp is None):
+#            print "Failed to create a session"
+#            exit (2)
             
-        pdb.uploadAllTests(s)
+        pdb.uploadAllTests()
         #
         
 os.system ("rm -f "+tmpfile)

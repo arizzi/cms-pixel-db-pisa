@@ -151,7 +151,7 @@ class Wafer(object):
     NUMBEROFGOODSENSORS=Int()
     RESULT=Unicode()
 
-    def __init__(self,WAFER_ID,BATCH_ID, TRANSFER_ID, METALIZATION="", PASSIVATION="", UNDER_BUMP_METALIZATION="", SIZE_OF_OPENING="", CV="", OPTICAL_INSPECTION="", OPTICAL_INSPECTION_RESULT="", COMMENT="",DATA_ID=0, NUMBEROFGOODSENSORS=0, RESULT=""):
+    def __init__(self,WAFER_ID,BATCH_ID, TRANSFER_ID, METALIZATION="", PASSIVATION="", UNDER_BUMP_METALIZATION="", SIZE_OF_OPENING="", VDEPL="", OPTICAL_INSPECTION="", OPTICAL_INSPECTION_RESULT="", COMMENT="",DATA_ID=0, NUMBEROFGOODSENSORS=0, RESULT=""):
         self.BATCH_ID=unicode(BATCH_ID)
         self.WAFER_ID=unicode(WAFER_ID)
         self.TRANSFER_ID=TRANSFER_ID
@@ -160,13 +160,12 @@ class Wafer(object):
         self.PASSIVATION= unicode(PASSIVATION )       
         self.UNDER_BUMP_METALIZATION= unicode(UNDER_BUMP_METALIZATION )       
         self.SIZE_OF_OPENING= unicode(SIZE_OF_OPENING )       
-        self.CV= unicode(CV )       
         self.OPTICAL_INSPECTION= unicode(OPTICAL_INSPECTION)       
         self.OPTICAL_INSPECTION_RESULT= unicode(OPTICAL_INSPECTION_RESULT)       
         self.RESULT=unicode(RESULT)
         self.NUMBEROFGOODSENSORS=NUMBEROFGOODSENSORS
         self.DATA_ID=DATA_ID
-
+	self.VDEPL=unicode(VDEPL)
     
 
 
@@ -324,6 +323,28 @@ class FullModule(object):
       self.BUILTBY=unicode(BUILTBY)
       self.STATUS=unicode(STATUS)
       self.LASTTEST_FULLMODULE=LASTTEST_FULLMODULE        
+
+
+class ShippingBox(object):
+    __storm_table__ = "inventory_shippingbox"
+    SHIPPINGBOX_ID = Unicode(primary=True)
+    TRANSFER_ID = Int()
+    transfer = Reference(TRANSFER_ID, Transfer.TRANSFER_ID)
+    COMMENT = Unicode()
+    TYPE = Unicode()
+    MANUFACTURER = Unicode()
+    def __init__(self,SHIPPINGBOX_ID, TRANSFER_ID, MANUFACTURER, TYPE, COMMENT=""):
+        self.SHIPPINGBOX_ID = unicode(SHIPPINGBOX_ID)
+        self.TRANSFER_ID = TRANSFER_ID
+        self.COMMENT=unicode(COMMENT)
+        self.TYPE=unicode(TYPE)
+        self.MANUFACTURER=unicode(MANUFACTURER)
+        
+
+
+
+
+
 
 #
 # logbook

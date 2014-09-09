@@ -37,7 +37,21 @@ def inputField(objName,column, defVal = "") :
 	config.read('/var/www/cgi-bin/writers/editor.ini')
 	#default input string:
 	inputString = "<input type=input name=\"%s\" value=\"%s\">" % (column,defVal)
-	if column == "DATA_ID" :
+	if column == "TRANSFER_ID" and defVal == "":
+		inputString+=" <b>or</b> create transfer..."
+# FROM: <input type=\"input\" name=\"TRANSFER_ID_from\" /> TO: <input type=\"input\" name=\"TRANSFER_ID_to\" /> "
+		inputString+=" Sender:   <select name=TRANSFER_ID_sender>"
+		cents=[""]
+		cents+=centers
+		for o in cents :
+		        inputString+="<option>%s</option>" % o
+		inputString+=" </select>"
+		inputString+=" Receiver:   <select name=TRANSFER_ID_receiver>"
+		for o in cents :
+	        	inputString+="<option>%s</option>" % o
+	   	inputString+=" </select><p>"
+
+	elif column == "DATA_ID" :
 	    if defVal == "" :
 	 	inputString="<input type=\"file\" name=\"DATA_ID_filename\" />"
 	elif config.has_section(objName+"/"+column) :
@@ -131,6 +145,11 @@ if action == "Insert" :
 			 buildString+="DATA_ID=0"
 		    else:
 			 buildString+="DATA_ID=%s,"%insertedData.DATA_ID
+	   elif c == "TRANSFER_ID" and (form.getfirst(c, "empty") == "empty" or form.getfirst(c, "empty") == "" ):
+		print "Creating transfer"
+	        t = pdb.insertTransfer(Transfer(SENDER=form.getfirst("TRANSFER_ID_sender"), RECEIVER=form.getfirst("TRANSFER_ID_receiver"), ISSUED_DATE=datetime.now(), RECEIVED_DATE=datetime.now(), STATUS="ARRIVED", COMMENT="autogen at creation"))
+		pdb.store.commit()
+		buildString+=" "+c+"=int(\"%s\")," % (t.TRANSFER_ID)
            elif columnType2 == DateVariable :
                 d=form.getfirst(c, "")
 		try: 
@@ -252,9 +271,10 @@ if True :
 	   
 
 	print "</tbody><tfoot></tfoot></table><br>"
-	print "<input type=\"submit\" name=\"submit\" value=\"Validate\" />"
+#	print "<input type=\"submit\" name=\"submit\" value=\"Validate\" />"
 	if o : 
  		print "<input type=\"submit\" name=\"submit\" value=\"Save changes\" /></form>"
+		print "<br><br><a href=/> Back to DB home page</a>"
 	else :
  		print "<input type=\"submit\" name=\"submit\" value=\"Insert\" /></form>"
 

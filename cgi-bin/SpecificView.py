@@ -104,7 +104,6 @@ def specificView(objName,form,pdb) :
           print "<a href=%s>output results</a>" % path
           #>M0178T-10a.gif"
 
-
    return 0
 
 
