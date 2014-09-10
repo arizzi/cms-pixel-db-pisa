@@ -13,13 +13,22 @@ print
 
 
 from  rawPredefinedViews import *
-viewNumber = int(form.getfirst('viewNumber', '0'))
-if viewNumber >= len(columns) :
-  exit(1)
 
-cols=columns[viewNumber]
-query=queries[viewNumber]
-countquery=countqueries[viewNumber]
+objName = form.getfirst('objName', 'empty')
+if objName == 'empty' :
+        viewNumber = int(form.getfirst('viewNumber', '0'))
+        if viewNumber >= len(columns) :
+                exit(0)
+        else:
+		cols=columns[viewNumber]
+		query=queries[viewNumber]
+		countquery=countqueries[viewNumber]
+		rowkey=rowkeys[viewNumber]
+else:
+        objName = parseObjName(cgi.escape(objName))
+        rowkey,cols,query,countquery = fromObjectName(objName)
+
+
 
 import json
 
@@ -112,16 +121,18 @@ l=cur.fetchone()
 count = l['COUNT(1)']
 colString=""
 for c in colNames :
+     if c!= '' :
 	if colString !="" :
 		colString+=","
 	colString+="%s as %s"%( c,re.sub('\.','_',c))
 
+countdisplay=cur.execute("%s %s %s "% ((query%colString),sWhere,sOrder))
 cur.execute("%s %s %s %s"% ((query%colString),sWhere,sOrder,sLimit))
 
 output = {}
 output["sEcho"] = form.getfirst('sEcho',1)
 output["iTotalRecords"] = count
-output["iTotalDisplayRecords"] =  count
+output["iTotalDisplayRecords"] =  countdisplay
 output["aaData"] = []
 for o in cur.fetchall() :
    i=0
@@ -133,7 +144,7 @@ for o in cur.fetchall() :
 	else :
 		row[i]=eval(ev)
 	i+=1
-   row["DT_RowId"]=o['Test_IV_TEST_ID']
+   row["DT_RowId"]=o[rowkey]
    output["aaData"].append(row)
 
 print json.dumps(output)

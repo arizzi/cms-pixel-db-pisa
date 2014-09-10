@@ -11,10 +11,21 @@ from  rawPredefinedViews import *
 print "Content-Type: text/html"
 print
 form = cgi.FieldStorage() # instantiate only once!
-viewNumber = int(form.getfirst('viewNumber', '0'))
-if viewNumber >= len(columns) :
-  exit(0)
+toprint=[]
 
+
+objName = form.getfirst('objName', 'empty')
+if objName == 'empty' :
+	viewNumber = int(form.getfirst('viewNumber', '0'))
+	if viewNumber >= len(columns) :
+		exit(0)
+	else:
+		toprint = columns[viewNumber]
+		topush='"name" : "viewNumber", "value" : "%s"' % viewNumber
+else:
+	objName = parseObjName(cgi.escape(objName))
+	id,toprint,query,count = fromObjectName(objName)
+	topush='"name" : "objName", "value" : "%s"' % objName
 
 print "<html>\n        <head>\n         "      
 print '''
@@ -40,7 +51,7 @@ $(document).ready(function() {
 			"bServerSide": true,
 			"sAjaxSource": "/cgi-bin/rawPredefinedView-backend.cgi",
 			"fnServerParams": function ( aoData ) {
-			aoData.push( { "name" : "viewNumber", "value" : "%s" } );
+			aoData.push( { %s } );
 			}
 			} );
 		// Apply the search
@@ -58,7 +69,7 @@ $(document).ready(function() {
 
 	                </script>
 
-''' %(viewNumber)
+''' %(topush)
 sys.path.append("../PixelDB")
 
 from storm import *
@@ -72,7 +83,6 @@ pdb = PixelDBInterface(operator="webfrontend",center="cern")
 pdb.connectToDB()
 
 
-toprint = columns[viewNumber]
 print "<p id=filterPH></p>"
 
 print "<table id=example class=display width=100%>"

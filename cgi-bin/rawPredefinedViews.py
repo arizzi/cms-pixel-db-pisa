@@ -1,3 +1,4 @@
+
 columns=[]
 queries=[]
 countqueries=[]
@@ -28,3 +29,46 @@ columns.append([
 rowkeys.append("Test_IV_TEST_ID");
 queries.append("select %s,Transfer.STATUS as Transfer_STATUS, Transfer.SENDER as Transfer_SENDER from inventory_sensor as Sensor, test_iv as Test_IV,transfers as Transfer,test_data as Data where Sensor.SENSOR_ID=Test_IV.SENSOR_ID and  Sensor.TRANSFER_ID=Transfer.TRANSFER_ID and Data.DATA_ID=Test_IV.DATA_ID ")
 countqueries.append("select COUNT(1) from inventory_sensor as Sensor, test_iv as Test_IV,transfers as Transfer,test_data as Data where Sensor.SENSOR_ID=Test_IV.SENSOR_ID and  Sensor.TRANSFER_ID=Transfer.TRANSFER_ID and Data.DATA_ID=Test_IV.DATA_ID ")
+
+from pixelwebui import *
+import sys
+sys.path.append("../PixelDB")
+from storm.properties import *
+from storm.references import *
+from storm import *
+from PixelDB import *
+
+def fromObjectName(objName):
+	cols = []
+	refs = []
+	i =0
+	objType = eval(parseObjName(objName))
+	ID=idField(objName)
+	table=objType.__storm_table__
+	keys=objType.__dict__.keys()
+	for attr in keys:
+	#    print attr #,type(eval(objName+"."+attr)).__name__,"<br>"
+	    if  type(eval(objName+"."+attr)) is properties.PropertyColumn or  type(eval(objName+"."+attr)).__name__ == "date"  or  type(eval(objName+"."+attr)).__name__ == "datetime":
+	#    if  type(eval(objName+"."+attr)) is properties.PropertyColumn :
+	         cols.append(attr)
+	    if  type(eval(objName+"."+attr)) is references.Reference :
+	         refs.append(attr)
+	cols.sort()
+	cformat=[]
+	#cformat.append((ID,"",'"%s"%(o[ID])+"(<a href=\"viewdetails.cgi?objName="+objName+"&"+ID+"="+"%s"%(o[ID])+"\">details</a>|<a href=\"writers/edit.cgi?objName="+objName+"&"+ID+"="+"%s"%(o[ID])+"\">edit</a>)'")
+
+	cformat.append((ID,ID,'"%s"%(o["'+ID+'"])+"(<a href=\\\"viewdetails.cgi?objName='+objName+'&'+ID+'="+"%s"%(o["'+ID+'"])+"\\\">details</a>|<a href=\\\"writers/edit.cgi?objName='+objName+'&'+ID+'="+"%s"%(o["'+ID+'"])+"\\\">edit</a>)"'))
+#   if hasTrans:
+ #       if o["TSTATUS"] == "ARRIVED" :
+ #               row.append(o["RECEIVER"])
+  #      else:
+   #             row.append("%s to %s"%(o["SENDER"],o["RECEIVER"]))
+
+	for c in cols:
+	    cformat.append((c.lower().capitalize(),c,''))
+	for r in refs:
+	    cformat.append((r.lower().capitalize(),'','"<a href=\\\"viewdetails.cgi?objName='+objName+'&'+ID+'="+"%s"%(o["'+ID+'"])+"&ref='+r+'\\\"> details</a></td>"'))
+	# rowkey,cols,query,countquery
+	return 	ID,cformat,("select %s from %s WHERE 1"%('%s',table)), ("select COUNT(1) from %s"%table)
+	
+
