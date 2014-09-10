@@ -140,7 +140,7 @@ for o in cur.fetchall() :
    for c,rn,ev in cols :
         rn=re.sub('\.','_',rn)
 	if ev == '' :
-		row[i]=o[rn]
+		row[i]="%s"%o[rn]
 	else :
 		row[i]=eval(ev)
 	i+=1

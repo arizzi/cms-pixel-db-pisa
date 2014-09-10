@@ -46,7 +46,11 @@ def fromObjectName(objName):
 	ID=idField(objName)
 	table=objType.__storm_table__
 	keys=objType.__dict__.keys()
+	hasTrans=False
 	for attr in keys:
+	    if attr == "TRANSFER_ID" and table!="transfers" :
+                hasTrans=True
+
 	#    print attr #,type(eval(objName+"."+attr)).__name__,"<br>"
 	    if  type(eval(objName+"."+attr)) is properties.PropertyColumn or  type(eval(objName+"."+attr)).__name__ == "date"  or  type(eval(objName+"."+attr)).__name__ == "datetime":
 	#    if  type(eval(objName+"."+attr)) is properties.PropertyColumn :
@@ -58,17 +62,20 @@ def fromObjectName(objName):
 	#cformat.append((ID,"",'"%s"%(o[ID])+"(<a href=\"viewdetails.cgi?objName="+objName+"&"+ID+"="+"%s"%(o[ID])+"\">details</a>|<a href=\"writers/edit.cgi?objName="+objName+"&"+ID+"="+"%s"%(o[ID])+"\">edit</a>)'")
 
 	cformat.append((ID,ID,'"%s"%(o["'+ID+'"])+"(<a href=\\\"viewdetails.cgi?objName='+objName+'&'+ID+'="+"%s"%(o["'+ID+'"])+"\\\">details</a>|<a href=\\\"writers/edit.cgi?objName='+objName+'&'+ID+'="+"%s"%(o["'+ID+'"])+"\\\">edit</a>)"'))
-#   if hasTrans:
+	if hasTrans:
+	    cformat.append(("Center","Transfer.RECEIVER","o['Transfer_RECEIVER'] if o['Transfer_STATUS']=='ARRIVED' else  o['Transfer_SENDER'] "))
  #       if o["TSTATUS"] == "ARRIVED" :
  #               row.append(o["RECEIVER"])
   #      else:
    #             row.append("%s to %s"%(o["SENDER"],o["RECEIVER"]))
 
 	for c in cols:
-	    cformat.append((c.lower().capitalize(),c,''))
+	    cformat.append((c.lower().capitalize(),table+"."+c,''))
 	for r in refs:
 	    cformat.append((r.lower().capitalize(),'','"<a href=\\\"viewdetails.cgi?objName='+objName+'&'+ID+'="+"%s"%(o["'+ID+'"])+"&ref='+r+'\\\"> details</a></td>"'))
 	# rowkey,cols,query,countquery
-	return 	ID,cformat,("select %s from %s WHERE 1"%('%s',table)), ("select COUNT(1) from %s"%table)
-	
+	if hasTrans :
+		return 	ID,cformat,("select %s,Transfer.STATUS as Transfer_STATUS, Transfer.SENDER as Transfer_SENDER from %s left join transfers as Transfer on %s.TRANSFER_ID=Transfer.TRANSFER_ID WHERE  1 "%('%s',table,table)), ("select COUNT(1) from %s"%table)
+	else:
+		return 	ID,cformat,("select %s from %s WHERE 1"%('%s',table)), ("select COUNT(1) from %s"%table)
 

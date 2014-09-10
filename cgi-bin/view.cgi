@@ -1,1 +1,1 @@
-view-fast.cgi
+rawPredefinedView.cgi
