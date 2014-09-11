@@ -55,8 +55,9 @@ def allColumns(objName):
  return results
 
 def corTemp(I,T) :
-        kb=1.3806488#e-23
-        eg=1.2 #e-19
-        return I*(20./T)**2 * exp(-eg/(2*kb)*(1./20.-1./T))
+        kb=1.3806488e-23
+        eg=1.2e-19
+	T+=273.
+        return I*(293.15/T)**2 * exp(-eg/(2*kb)*(1./293.15-1./T))
 
  

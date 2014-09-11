@@ -9,10 +9,6 @@ import re
 import cgi
 form = cgi.FieldStorage() # instantiate only once!
 
-def corTemp(I,T) :
-	kb=1.3806488
-	eg=1.2
-	return I*(20./T)**2 * exp(-eg/(2*kb)*(1./20.-1./T))
 
 print "Content-Type: text/html"
 print
@@ -33,6 +29,9 @@ print '''
                                                 name+="test="+selected[i]+"&";
 						h=500
                                         }
+                                        if(document.getElementById('correct').checked) {
+                                               name+="correct=1&";
+					 } 
                                         if(! document.getElementById('log').checked) {
                                                name+="log=0&"; 
                                                document.getElementById('zoom').disabled=false;}
@@ -138,7 +137,7 @@ print "<p>"
 if True :
  print "<button onclick='selectAll()'>Select all</button>"
  print "<button onclick='selectNone()'>Unselect all</button>"
- print " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <button>Plot all IVs for selected sensors</button> <button>Plot selected IVs</button>"
+# print " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <button>Plot all IVs for selected sensors</button> <button>Plot selected IVs</button>"
 print "<hr>"
 print "<table id=example class='display compact' >"
 print " <thead> <tr>"
@@ -148,6 +147,7 @@ for (c,e,ev) in toprint :
 print "</thead></tr><tbody>"
 
 print "</tbody><tfoot></tfoot></table>"
-print '<img id=theimg src="" width=700 h=0><p><b>Plot options:</b><p>'
+print '<img id=theimg src="" width=900 h=0><p><b>Plot options:</b><p>'
 print '<input id=log type="checkbox" checked onclick=update()> Log Scale<p>'
-print '<input id=zoom type="checkbox" disabled onclick=update()> Zoom'
+print '<input id=zoom type="checkbox" disabled onclick=update()> Zoom<p>'
+print '<input id=correct type="checkbox" checked onclick=update()> Correct to T=20'
