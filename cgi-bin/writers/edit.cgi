@@ -89,17 +89,18 @@ if objName != "" :
 
   if re.match("test",objName,flags=re.IGNORECASE) : 
     ID="TEST_ID"
-    objID = form.getfirst(ID, 'empty')
+    objID = form.getfirst(ID, '-1')
     objID = cgi.escape(objID)
     filterValue=int(objID)  
   else:
     ID=objName+"_ID"
     ID=ID.upper()
-    objID = form.getfirst(ID, 'empty')
     if objName == "Transfer"  or objName == "Data" or objName == "Session":
+      objID = form.getfirst(ID, '-1')
       objID = cgi.escape(objID)
       filterValue=int(objID)
     else :
+      objID = form.getfirst(ID, 'empty')
       objID = cgi.escape(objID)
       filterValue=unicode(objID)  
 

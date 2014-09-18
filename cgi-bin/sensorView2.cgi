@@ -87,7 +87,7 @@ $(document).ready(function() {
                         } );
 
                 var table =          $('#example').DataTable( {
-                        "bStateSave": false,
+                        "bStateSave": true,
                         "iDisplayLength" : 10,
                         "bProcessing": true,
                         "bServerSide": true,
@@ -97,6 +97,17 @@ $(document).ready(function() {
 				console.log("found")
 		                $(row).addClass('selected');
             		}},
+                        "fnStateLoaded": function (oSettings, oData) {
+                                var jqInputs = $('thead input');
+                                for ( var i=0 ; i<oSettings.aoPreSearchCols.length ; i++ )
+                                {
+                                console.log(oSettings.aoPreSearchCols[i].sSearch);
+                                if(oSettings.aoPreSearchCols[i].sSearch!='')
+                                        {
+                                                jqInputs[i].value = oSettings.aoPreSearchCols[i].sSearch;
+                                        }
+                                }
+                          },
                         "fnServerParams": function ( aoData ) {
                         aoData.push( { "name" : "viewNumber", "value" : "0" } );
                         }

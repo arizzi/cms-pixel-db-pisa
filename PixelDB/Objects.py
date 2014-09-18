@@ -276,17 +276,27 @@ class Hdi(object):
   COMMENT = Unicode()
   TYPE = Unicode()
   STATUS=Unicode()
-  LASTTEST_HDI=Int()
-  def __init__(self,HDI_ID, TRANSFER_ID, COMMENT="", LASTTEST_HDI=0, STATUS="",TYPE="", TBM1_ID="", TBM2_ID="",BATCH_ID=""):
+  LASTTEST_HDI_RECEPTION=Int()
+  LASTTEST_HDI_TBMGLUING=Int()
+  LASTTEST_HDI_BONDING=Int()
+  LASTTEST_HDI_ELECTRIC=Int()
+  LASTTEST_HDI_VALIDATION=Int()
+
+  def __init__(self,HDI_ID, TRANSFER_ID, COMMENT="", LASTTEST_HDI_RECEPTION=0,LASTTEST_HDI_TBMGLUING=0,LASTTEST_HDI_BONDING=0,LASTTEST_HDI_ELECTRIC=0, LASTTEST_HDI_VALIDATION=0, STATUS="",TYPE="", TBM1_ID="", TBM2_ID="",BATCH_ID=""):
     self.HDI_ID=unicode(HDI_ID)
     self.TRANSFER_ID=TRANSFER_ID
     self.COMMENT=unicode(COMMENT)
-    self.LASTTEST_HDI=LASTTEST_HDI
     self.STATUS=unicode(STATUS)
     self.TYPE=unicode(TYPE)
     self.TBM1_ID=unicode(TBM1_ID)
     self.TBM2_ID=unicode(TBM2_ID)
     self.BATCH_ID=unicode(BATCH_ID)
+    self.LASTTEST_HDI_RECEPTION=LASTTEST_HDI_RECEPTION
+    self.LASTTEST_HDI_TBMGLUING=LASTTEST_HDI_TBMGLUING
+    self.LASTTEST_HDI_BONDING=LASTTEST_HDI_BONDING
+    self.LASTTEST_HDI_ELECTRIC=LASTTEST_HDI_ELECTRIC
+    self.LASTTEST_HDI_VALIDATION=LASTTEST_HDI_VALIDATION
+
 
           
 class FullModule(object):
@@ -572,21 +582,118 @@ class Test_Tbm(object):
 
 
 
-class Test_Hdi(object):
-      __storm_table__ = "test_hdi"
+class Test_Hdi_Reception(object):
+      __storm_table__ = "test_hdi_reception"
       TEST_ID = Int(primary=True)
       SESSION_ID=Int()
       session = Reference (SESSION_ID,Session.SESSION_ID)
       HDI_ID =  Unicode()
       hdi=Reference(HDI_ID, Hdi.HDI_ID)
-      RESULT=Float()
+      RESULT=Unicode()
       DATA_ID=Int()
+      INSPECTION_BACK=Int()
+      INSPECTION_FRONT=Int()
       data=Reference(DATA_ID,Data.DATA_ID)
-      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID):
+      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,INSPECTION_BACK,INSPECTION_FRONT):
           self.SESSION_ID=SESSION_ID
           self.HDI_ID=unicode(HDI_ID)
-          self.RESULT=float(RESULT)
+          self.RESULT=unicode(RESULT)
           self.DATA_ID=DATA_ID
+          self.INSPECTION_BACK=INSPECTION_BACK
+          self.INSPECTION_FRONT=INSPECTION_FRONT
+
+class Test_Hdi_TbmGluing(object):
+      __storm_table__ = "test_hdi_tbmgluing"
+      TEST_ID = Int(primary=True)
+      SESSION_ID=Int()
+      session = Reference (SESSION_ID,Session.SESSION_ID)
+      HDI_ID =  Unicode()
+      hdi=Reference(HDI_ID, Hdi.HDI_ID)
+      RESULT=Unicode()
+      COMMENT=Unicode()
+      DATA_ID=Int()
+      data=Reference(DATA_ID,Data.DATA_ID)
+      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID, COMMENT):
+          self.SESSION_ID=SESSION_ID
+          self.HDI_ID=unicode(HDI_ID)
+          self.RESULT=unicode(RESULT)
+          self.DATA_ID=DATA_ID
+          self.COMMENT=unicode(COMMENT)
+
+
+class Test_Hdi_Bonding(object):
+      __storm_table__ = "test_hdi_bonding"
+      TEST_ID = Int(primary=True)
+      SESSION_ID=Int()
+      session = Reference (SESSION_ID,Session.SESSION_ID)
+      HDI_ID =  Unicode()
+      hdi=Reference(HDI_ID, Hdi.HDI_ID)
+      RESULT=Unicode()
+      DATA_ID=Int()
+      COMMENT_TBM = Unicode()
+      HUB_ADDRESS = Unicode()
+      N_TEST_BONDS=Int()
+      AVG_PULL_FORCE_G=Float()
+      data=Reference(DATA_ID,Data.DATA_ID)
+      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,COMMENT_TBM,HUB_ADDRESS, N_TEST_BONDS, AVG_PULL_FORCE_G ):
+          self.SESSION_ID=SESSION_ID
+          self.HDI_ID=unicode(HDI_ID)
+          self.RESULT=unicode(RESULT)
+          self.DATA_ID=DATA_ID
+          self.COMMENT_TBM = unicode(COMMENT_TBM)
+          self.HUB_ADDRESS=unicode(HUB_ADDRESS)
+          self.N_TEST_BONDS=N_TEST_BONDS
+          self.AVG_PULL_FORCE_G=float(AVG_PULL_FORCE_G)
+
+
+class Test_Hdi_Electric(object):
+      __storm_table__ = "test_hdi_electric"
+      TEST_ID = Int(primary=True)
+      SESSION_ID=Int()
+      session = Reference (SESSION_ID,Session.SESSION_ID)
+      HDI_ID =  Unicode()
+      hdi=Reference(HDI_ID, Hdi.HDI_ID)
+      RESULT=Unicode()
+      DATA_ID=Int()
+      data=Reference(DATA_ID,Data.DATA_ID)
+      OSCILLOSCOPE_CHANNELS=Int()
+      STATUS=Unicode()
+      GRADE=Int()
+      HV_TEST_uA=Float()
+      DIGITAL_CURRENT_mA=Float()
+      NUM_TBM=Int()
+      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,  OSCILLOSCOPE_CHANNELS,  STATUS, GRADE, HV_TEST_uA, DIGITAL_CURRENT_mA, NUM_TBM ):
+          self.SESSION_ID=SESSION_ID
+          self.HDI_ID=unicode(HDI_ID)
+          self.RESULT=unicode(RESULT)
+          self.DATA_ID=DATA_ID
+          self.OSCILLOSCOPE_CHANNELS =(OSCILLOSCOPE_CHANNELS)   
+          self.STATUS =   unicode(STATUS)
+          self.GRADE =GRADE   
+          self.HV_TEST_uA =   HV_TEST_uA
+          self.DIGITAL_CURRENT_mA =DIGITAL_CURRENT_mA   
+          self.NUM_TBM = NUM_TBM  
+
+
+class Test_Hdi_Validation(object):
+      __storm_table__ = "test_hdi_validation"
+      TEST_ID = Int(primary=True)
+      SESSION_ID=Int()
+      session = Reference (SESSION_ID,Session.SESSION_ID)
+      HDI_ID =  Unicode()
+      hdi=Reference(HDI_ID, Hdi.HDI_ID)
+      RESULT=Unicode()
+      DATA_ID=Int()
+      data=Reference(DATA_ID,Data.DATA_ID)
+      VISUAL_INSPECTION=Unicode()
+      OTHER=Unicode()
+      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,VISUAL_INSPECTION, OTHER="" ):
+          self.SESSION_ID=SESSION_ID
+          self.HDI_ID=unicode(HDI_ID)
+          self.RESULT=unicode(RESULT)
+          self.DATA_ID=DATA_ID
+          self.VISUAL_INSPECTION = unicode(VISUAL_INSPECTION)
+          self.OTHER=uniceode(OTHER)
 
 
 class Test_Roc(object):
@@ -836,7 +943,13 @@ Sensor.lasttest_sensor_it          = Reference(  Sensor.LASTTEST_SENSOR_IT, Test
 Sensor.lasttest_sensor_inspection  = Reference(  Sensor.LASTTEST_SENSOR_INSPECTION, Test_SensorInspection.TEST_ID)
 
 BareModule.lasttest_baremodule_inspection = Reference(  BareModule.LASTTEST_BAREMODULE_INSPECTION, Test_BareModuleInspection.TEST_ID)
-Hdi.lasttest_hdi = Reference(  Hdi.LASTTEST_HDI, Test_Hdi.TEST_ID)
+Hdi.lasttest_hdi_reception = Reference(  Hdi.LASTTEST_HDI_RECEPTION, Test_Hdi_Reception.TEST_ID)
+Hdi.lasttest_hdi_tbmgluing = Reference(  Hdi.LASTTEST_HDI_TBMGLUING, Test_Hdi_TbmGluing.TEST_ID)
+Hdi.lasttest_hdi_bonding = Reference(  Hdi.LASTTEST_HDI_BONDING, Test_Hdi_Bonding.TEST_ID)
+Hdi.lasttest_hdi_electric = Reference(  Hdi.LASTTEST_HDI_ELECTRIC, Test_Hdi_Electric.TEST_ID)
+Hdi.lasttest_hdi_validation = Reference(  Hdi.LASTTEST_HDI_VALIDATION, Test_Hdi_Validation.TEST_ID)
+
+
 Tbm.lasttest_tbm = Reference(  Tbm.LASTTEST_TBM, Test_Tbm.TEST_ID)
 #FullModule.lasttest_fullmodule = Reference(  FullModule.LASTTEST_FULLMODULE, Test_FullModule.TEST_ID)
 

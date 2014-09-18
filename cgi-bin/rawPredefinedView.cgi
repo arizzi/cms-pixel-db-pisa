@@ -45,11 +45,22 @@ $(document).ready(function() {
 			} );
 
 		var table =          $('#example').DataTable( {
-			"bStateSave": false,
+			"bStateSave": true,
 			"iDisplayLength" : 25,
 			"bProcessing": true,
 			"bServerSide": true,
 			"sAjaxSource": "/cgi-bin/rawPredefinedView-backend.cgi",
+			"fnStateLoaded": function (oSettings, oData) {
+				var jqInputs = $('thead input');
+				for ( var i=0 ; i<oSettings.aoPreSearchCols.length ; i++ )
+				{
+				console.log(oSettings.aoPreSearchCols[i].sSearch);
+				if(oSettings.aoPreSearchCols[i].sSearch!='')
+					{
+						jqInputs[i].value = oSettings.aoPreSearchCols[i].sSearch;
+					}
+				}
+			  },
 			"fnServerParams": function ( aoData ) {
 			aoData.push( { %s } );
 			}

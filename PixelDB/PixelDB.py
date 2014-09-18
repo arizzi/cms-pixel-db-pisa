@@ -621,7 +621,7 @@ class PixelDBInterface(object) :
             self.insertHistory(type="TEST_S", id=test.TEST_ID, target_type="SENSOR", target_id=test.SENSOR_ID, operation="TEST_IV", datee=datetime.now(), comment="NO COMMENT")
             return test
 
-      def insertHdiTest(self, test):
+      def insertHdiTest_Reception(self, test):
             #
             # first check that the module exists
             #
@@ -631,10 +631,74 @@ class PixelDBInterface(object) :
                   return None
             self.store.add(test)
             self.store.commit()
-            (self.getHdi(test.HDI_ID)).LASTTEST_HDI =  test.TEST_ID
+            (self.getHdi(test.HDI_ID)).LASTTEST_HDI_RECEPTION =  test.TEST_ID
             self.store.commit()
             # log in history
-            self.insertHistory(type="TEST_HDI", id=test.TEST_ID, target_type="HDI", target_id=test.HDI_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
+            self.insertHistory(type="TEST_HDI_RECEPTION", id=test.TEST_ID, target_type="HDI", target_id=test.HDI_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
+            return test
+
+      def insertHdiTest_TbmGluing(self, test):
+            #
+            # first check that the module exists
+            #
+
+            if (self.isHdiInserted(test.HDI_ID) == False):
+                  print " Cannot insert a test on a not existing HDI "
+                  return None
+            self.store.add(test)
+            self.store.commit()
+            (self.getHdi(test.HDI_ID)).LASTTEST_HDI_TBMGLUING =  test.TEST_ID
+            self.store.commit()
+            # log in history
+            self.insertHistory(type="TEST_HDI_GLUING", id=test.TEST_ID, target_type="HDI", target_id=test.HDI_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
+            return test
+
+      def insertHdiTest_Bonding(self, test):
+            #
+            # first check that the module exists
+            #
+
+            if (self.isHdiInserted(test.HDI_ID) == False):
+                  print " Cannot insert a test on a not existing HDI "
+                  return None
+            self.store.add(test)
+            self.store.commit()
+            (self.getHdi(test.HDI_ID)).LASTTEST_HDI_BONDING =  test.TEST_ID
+            self.store.commit()
+            # log in history
+            self.insertHistory(type="TEST_HDI_BONDING", id=test.TEST_ID, target_type="HDI", target_id=test.HDI_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
+            return test
+
+      def insertHdiTest_Electric(self, test):
+            #
+            # first check that the module exists
+            #
+
+            if (self.isHdiInserted(test.HDI_ID) == False):
+                  print " Cannot insert a test on a not existing HDI "
+                  return None
+            self.store.add(test)
+            self.store.commit()
+            (self.getHdi(test.HDI_ID)).LASTTEST_HDI_ELECTRIC =  test.TEST_ID
+            self.store.commit()
+            # log in history
+            self.insertHistory(type="TEST_HDI_ELECTRIC", id=test.TEST_ID, target_type="HDI", target_id=test.HDI_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
+            return test
+
+      def insertHdiTest_Validation(self, test):
+            #
+            # first check that the module exists
+            #
+
+            if (self.isHdiInserted(test.HDI_ID) == False):
+                  print " Cannot insert a test on a not existing HDI "
+                  return None
+            self.store.add(test)
+            self.store.commit()
+            (self.getHdi(test.HDI_ID)).LASTTEST_HDI_VALIDATION =  test.TEST_ID
+            self.store.commit()
+            # log in history
+            self.insertHistory(type="TEST_HDI_VALIDATION", id=test.TEST_ID, target_type="HDI", target_id=test.HDI_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
             return test
 
 
