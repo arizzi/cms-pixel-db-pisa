@@ -56,7 +56,7 @@ class Session (object):
         self.CENTER=unicode(CENTER)
         self.OPERATOR=unicode(OPERATOR)
         self.DATE=DATE
-        self.TYPE=unicode(type)
+        self.TYPE=unicode(TYPE)
         self.COMMENT=unicode(COMMENT)
     
 #
@@ -591,16 +591,16 @@ class Test_Hdi_Reception(object):
       hdi=Reference(HDI_ID, Hdi.HDI_ID)
       RESULT=Unicode()
       DATA_ID=Int()
-      INSPECTION_BACK=Int()
-      INSPECTION_FRONT=Int()
+      INSPECTION_BACK=Unicode()()
+      INSPECTION_FRONT=Unicode()
       data=Reference(DATA_ID,Data.DATA_ID)
       def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,INSPECTION_BACK,INSPECTION_FRONT):
           self.SESSION_ID=SESSION_ID
           self.HDI_ID=unicode(HDI_ID)
           self.RESULT=unicode(RESULT)
           self.DATA_ID=DATA_ID
-          self.INSPECTION_BACK=INSPECTION_BACK
-          self.INSPECTION_FRONT=INSPECTION_FRONT
+          self.INSPECTION_BACK=unicode(INSPECTION_BACK)
+          self.INSPECTION_FRONT=unicode(INSPECTION_FRONT)
 
 class Test_Hdi_TbmGluing(object):
       __storm_table__ = "test_hdi_tbmgluing"
@@ -630,17 +630,18 @@ class Test_Hdi_Bonding(object):
       hdi=Reference(HDI_ID, Hdi.HDI_ID)
       RESULT=Unicode()
       DATA_ID=Int()
-      COMMENT_TBM = Unicode()
+      TBM_ID = Unicode()
+      tbm=Reference(TBM_ID, Tbm.TBM_ID)
       HUB_ADDRESS = Unicode()
       N_TEST_BONDS=Int()
       AVG_PULL_FORCE_G=Float()
       data=Reference(DATA_ID,Data.DATA_ID)
-      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,COMMENT_TBM,HUB_ADDRESS, N_TEST_BONDS, AVG_PULL_FORCE_G ):
+      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,TBM_ID,HUB_ADDRESS, N_TEST_BONDS, AVG_PULL_FORCE_G ):
           self.SESSION_ID=SESSION_ID
           self.HDI_ID=unicode(HDI_ID)
           self.RESULT=unicode(RESULT)
           self.DATA_ID=DATA_ID
-          self.COMMENT_TBM = unicode(COMMENT_TBM)
+          self.TBM_ID = unicode(TBM_ID)
           self.HUB_ADDRESS=unicode(HUB_ADDRESS)
           self.N_TEST_BONDS=N_TEST_BONDS
           self.AVG_PULL_FORCE_G=float(AVG_PULL_FORCE_G)
