@@ -591,7 +591,7 @@ class Test_Hdi_Reception(object):
       hdi=Reference(HDI_ID, Hdi.HDI_ID)
       RESULT=Unicode()
       DATA_ID=Int()
-      INSPECTION_BACK=Unicode()()
+      INSPECTION_BACK=Unicode()
       INSPECTION_FRONT=Unicode()
       data=Reference(DATA_ID,Data.DATA_ID)
       def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,INSPECTION_BACK,INSPECTION_FRONT):

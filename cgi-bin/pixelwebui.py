@@ -1,4 +1,17 @@
 from math import *
+import sys
+sys.path.append("../PixelDB")
+from storm.properties import *
+from storm.references import *
+from storm.variables import (
+    Variable, VariableFactory, BoolVariable, IntVariable, FloatVariable,
+    DecimalVariable, RawStrVariable, UnicodeVariable, DateTimeVariable,
+    DateVariable, TimeVariable, TimeDeltaVariable, PickleVariable,
+    ListVariable, EnumVariable)
+
+from storm import *
+
+from PixelDB import *
 import re
 import cgi
 import os
@@ -51,7 +64,8 @@ def idFieldTypedValue(objName,objID):
   return filterValue 
 
 def allColumns(objName):
- objType = eval(parseObjName)
+ objType = eval(parseObjName(objName))
+ columns=[]
  keys=objType.__dict__.keys()
  hasTrans=False
  for attr in keys:
@@ -68,6 +82,17 @@ def allColumns(objName):
   for r in refs :
      results.append((r,r))
  return results
+
+def onlyColumns(objName):
+ objType = eval(parseObjName(objName))
+ keys=objType.__dict__.keys()
+ columns=[]
+ for attr in keys:
+  if  type(eval(objName+"."+attr)) is properties.PropertyColumn or  type(eval(objName+"."+attr)).__name__ == "date"  or  type(eval(objName+"."+attr)).__name__ == "datetime":
+         columns.append(attr)
+ # columns.sort()
+ return columns
+
 
 def corTemp(I,T) :
         kb=1.3806488e-23

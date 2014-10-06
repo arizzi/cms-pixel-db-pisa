@@ -35,7 +35,7 @@ columns.append([
 	("HDI ID","Hdi.HDI_ID",""),
         ("Center","Transfer.RECEIVER","o['Transfer_RECEIVER'] if o['Transfer_STATUS']=='ARRIVED' else  o['Transfer_SENDER'] "),
 	("Reception","Test_Hdi_Reception.RESULT","coloredResult(o['Test_Hdi_Reception_RESULT']) if o['Test_Hdi_Reception_RESULT'] else '<a href=newhdireception>add test</a>'"),
-	("Bonding","Test_Hdi_Bonding.RESULT","o['Test_Hdi_Bonding_RESULT'] if o['Test_Hdi_Bonding_RESULT'] else '<a href=newhdibonding>add test</a>'"),
+	("Bonding","Test_Hdi_Bonding.RESULT","o['Test_Hdi_Bonding_RESULT'] if o['Test_Hdi_Bonding_RESULT'] else '<a href=/cgi-bin/writers/newTest.cgi?objName=Test_Hdi_Bonding&HDI_ID=%s>add test</a>'%o['Hdi_HDI_ID']"),
 	("TBM Gluing","Test_Hdi_TbmGluing.RESULT","o['Test_Hdi_TbmGluing_RESULT'] if o['Test_Hdi_TbmGluing_RESULT'] else '<a href=newhdibonding>add test</a>'"),
 	("Electric","Test_Hdi_Electric.RESULT","o['Test_Hdi_Electric_RESULT'] if o['Test_Hdi_Electric_RESULT'] else '<a href=newhdibonding>add test</a>'"),
 	("Validation","Test_Hdi_Validation.RESULT","o['Test_Hdi_Validation_RESULT'] if o['Test_Hdi_Validation_RESULT'] else '<a href=newhdibonding>add test</a>'"),

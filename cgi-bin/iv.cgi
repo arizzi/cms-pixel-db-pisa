@@ -51,7 +51,7 @@ colors = [1,2,4,5,6]
 
 def makePlotForFiles(files):
    ROOT.gStyle.SetPadRightMargin(0.32)
-   canvas= ROOT.TCanvas("plot","plot",900,500)
+   canvas= ROOT.TCanvas("plot","plot",900,400)
    legend = ROOT.TLegend(0.7,0.1,1.0,0.9)
    g = []
    i=0

@@ -27,7 +27,7 @@ print '''
 					var h=0
                                         for (var i = 0; i < selected.length; i++) {
                                                 name+="test="+selected[i]+"&";
-						h=500
+						h=400
                                         }
                                         if(document.getElementById('correct').checked) {
                                                name+="correct=1&";
