@@ -69,7 +69,7 @@ def checkCenter(objName,id,sender) :
     objType = eval(objName)
     o=pdb.store.find(objType,filter==value).one()
     if o :
-      if o.TRANSFER_ID!=0 and o.transfer and (o.transfer.RECEIVER.lower() != sender.lower() or o.transfer.STATUS == "NEW") and sender != "any" :
+      if o.TRANSFER_ID!=0 and o.transfer and (o.transfer.RECEIVER.lower() != sender.lower() or o.transfer.STATUS == "SENT") and sender != "any" :
          return False
       else :
 	 return True
@@ -186,7 +186,7 @@ if action == "Confirm this transfer" :
 	 nonempty=True
 	 break
   if nonempty  :
-   t = pdb.insertTransfer(Transfer(SENDER=sender, RECEIVER=receiver, ISSUED_DATE=datetime.now(), RECEIVED_DATE=datetime(1970,1,1), STATUS="NEW", COMMENT=comment))
+   t = pdb.insertTransfer(Transfer(SENDER=sender, RECEIVER=receiver, ISSUED_DATE=datetime.now(), RECEIVED_DATE=datetime(1970,1,1), STATUS="SENT", COMMENT=comment))
    print "<p>Inserted transfer %s, received date %s, issued date %s<p>" % (t.TRANSFER_ID, t.RECEIVED_DATE, t.ISSUED_DATE)
 #  tt=pdb.store.find(Transfer,Transfer.TRANSFER_ID==t.TRANSFER_ID).one()
 #  print "<p>Inserted transfer %s, received date %s, issued date %s<p>" % (tt.TRANSFER_ID, tt.RECEIVED_DATE, tt.ISSUED_DATE)

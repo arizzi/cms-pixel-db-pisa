@@ -11,26 +11,33 @@ from PixelDB import *
 import csv
 pdb = PixelDBInterface(operator="webfrontend",center="cern")
 pdb.connectToDB()
-filename="/home/cmsweb/HDI-inventory.csv"
+filename="/home/cmsweb/First_batch_KIT_Oct14.csv"
 os.path.isfile(filename)
+t= None
+i=0
 with open(filename, 'rb') as csvfile:
+   i+=1
    reader = csv.reader(csvfile, delimiter=',', quotechar='"')
    for row in reader:
-	if row[0].isdigit() and  int(row[0]) > 0 :
+	#if row[0].isdigit() and  int(row[0]) > 0 :
 		HDI_ID=row[0]
 		BATCH_ID=row[1]
 		CENTER=row[2]
+		TYPE=row[3]
 		COMMENT=row[4]
-	        t = pdb.insertTransfer(Transfer("FACTORY",CENTER))
+		if not t or t.RECEIVER != CENTER :
+			print "New transfer to " , CENTER
+		        t = pdb.insertTransfer(Transfer("FACTORY",CENTER))
 		h = pdb.getHdi(unicode(HDI_ID))
 		if not h:
 	        	  print "HDI %s is new, inserting it..." % HDI_ID
-        	          h = Hdi(HDI_ID=HDI_ID, TRANSFER_ID=t.TRANSFER_ID, BATCH_ID=BATCH_ID,COMMENT=COMMENT)  
-	                  if pdb.insertHdi(h) :
+        	          h = Hdi(HDI_ID=HDI_ID, TRANSFER_ID=t.TRANSFER_ID, BATCH_ID=BATCH_ID,COMMENT=COMMENT, TYPE=TYPE)  
+	                  if  pdb.insertHdi(h) :
        		               print "OK<br>"
                		  else :
                         	print "FAILED<br>"
    	   	else :
 	               	  print "HDI %s already exists<br>" % HDI_ID
 
-
+#   if i > 2 : 
+#	exit(1) 
