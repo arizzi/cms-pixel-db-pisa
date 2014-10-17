@@ -677,6 +677,12 @@ class PixelDBInterface(object) :
             if (self.isHdiInserted(test.HDI_ID) == False):
                   print " Cannot insert a test on a not existing HDI "
                   return None
+            #
+            # check on SIZES etc
+            #
+            if (len(test.OSCILLOSCOPE_CHANNELS) != test.TOT_SIZE):
+                  print "Cannot insert Test HDI ELECTRIC: OSCILLOSCOPE_CHANNELS not correct size"
+                  return None
             self.store.add(test)
             self.store.commit()
             (self.getHdi(test.HDI_ID)).LASTTEST_HDI_ELECTRIC =  test.TEST_ID
