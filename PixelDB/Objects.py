@@ -658,7 +658,6 @@ class Test_Hdi_Electric(object):
       DATA_ID=Int()
       data=Reference(DATA_ID,Data.DATA_ID)
       OSCILLOSCOPE_CHANNELS=Unicode()
-      STATUS=Unicode()
       GRADE=Int()
       HV_TEST_uA=Float()
       DIGITAL_CURRENT_mA=Float()
@@ -673,7 +672,7 @@ class Test_Hdi_Electric(object):
           self.VALUE_MAP = {'NULL' : 0, 'PASS' : 1, 'FAIL' : 2}
           self.TOT_SIZE = len(self.TEST_MAP)*len(self.CHANNEL_MAP)
 
-      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,  STATUS, GRADE, HV_TEST_uA, DIGITAL_CURRENT_mA, NUM_TBM, OSCILLOSCOPE_CHANNELS=""):
+      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,   GRADE, HV_TEST_uA, DIGITAL_CURRENT_mA, NUM_TBM, OSCILLOSCOPE_CHANNELS=""):
 	  self.init_maps()
           nullOsc = "0"*(self.TOT_SIZE)
 
@@ -685,7 +684,6 @@ class Test_Hdi_Electric(object):
               self.OSCILLOSCOPE_CHANNELS = unicode(nullOsc)
           else:
               self.OSCILLOSCOPE_CHANNELS =unicode(OSCILLOSCOPE_CHANNELS)
-          self.STATUS =   unicode(STATUS)
           self.GRADE =GRADE   
           self.HV_TEST_uA =   HV_TEST_uA
           self.DIGITAL_CURRENT_mA =DIGITAL_CURRENT_mA   
@@ -719,13 +717,11 @@ class Test_Hdi_Electric(object):
               return None
           if len(self.OSCILLOSCOPE_CHANNELS) != self.TOT_SIZE:
               return None
-          if not value in self.VALUE_MAP:
-              return False
           t = self.TEST_MAP[test]          
           c = self.CHANNEL_MAP[channel]
           offset = t*len(self.CHANNEL_MAP)+c
           inv = dict(map(reversed, self.VALUE_MAP.iteritems()))
-          return inv[(self.OSCILLOSCOPE_CHANNELS)[offset]]
+          return inv[int((self.OSCILLOSCOPE_CHANNELS.encode('utf8'))[offset])]
 
 
 class Test_Hdi_Validation(object):
@@ -964,6 +960,70 @@ class Test_CV(object):
           self.DATE = (DATE)
           self.SLOPE= float(SLOPE)
           self.TEMPERATURE = TEMPERATURE
+
+class Test_DacParameters(object):
+      __storm_table__ = "test_dacparameters"
+      TEST_ID = Int(primary=True)
+      ROC_POS=Int()
+      FULLMODULETEST_ID = Int()
+      VDIG=Int()
+      VANA=Int()
+      VSF=Int()
+      VCOMP=Int()
+      VWLLPR=Int()
+      VWLLSH=Int()
+      VTRIM=Int()
+      VTHRCOMP=Int()
+      VHLDDEL=Int()
+      VIBIAS_BUS=Int()
+      VOFFSET_R0=Int()
+      VIBIAS_PH=Int()
+      VIREF_ADC=Int()
+      VICOLOR=Int()
+      CALDEL=Int()
+      CTRLREG=Int()
+      WBC=Int()
+      def __init__(self, 
+                   ROC_POS,
+                   FULLMODULETEST_ID,
+                   VDIG,
+                   VANA,
+                   VSF,
+                   VCOMP,
+                   VWLLPR,
+                   VWLLSH,
+                   VTRIM,
+                   VTHRCOMP,
+                   VHLDDEL,
+                   VIBIAS_BUS,
+                   VOFFSET_R0,
+                   VIBIAS_PH,
+                   VIREF_ADC,
+                   VICOLOR,
+                   CALDEL,
+                   CTRLREG,
+                   WBC):       
+           self.ROC_POS=int(ROC_POS)
+           self.FULLMODULETEST_ID=int(  FULLMODULETEST_ID)
+           self.VDIG=int(                VDIG)     
+           self.VANA=int(                VANA)       
+           self.VSF=int(                 VSF)        
+           self.VCOMP=int(               VCOMP)      
+           self.VWLLPR=int(              VWLLPR)     
+           self.VWLLSH=int(              VWLLSH)     
+           self.VTRIM=int(               VTRIM)      
+           self.VTHRCOMP=int(            VTHRCOMP)   
+           self.VHLDDEL=int(             VHLDDEL)    
+           self.VIBIAS_BUS=int(          VIBIAS_BUS) 
+           self.VOFFSET_R0=int(          VOFFSET_R0) 
+           self.VIBIAS_PH=int(           VIBIAS_PH)  
+           self.VIREF_ADC=int(           VIREF_ADC)  
+           self.VICOLOR=int(             VICOLOR)    
+           self.CALDEL=int(              CALDEL)     
+           self.CTRLREG=int(             CTRLREG   )
+           self.WBC=int(                 WBC)
+      
+    
           
 
 #history

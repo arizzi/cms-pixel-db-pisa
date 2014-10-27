@@ -68,7 +68,7 @@ def printHeaders(setcookies):
                 var opts = sel.options;
 		console.log(opts[sel.selectedIndex]);
 		if(opts[sel.selectedIndex].value == "FAIL") {
-			document.getElementById("RESULT").value="FAIL";
+			document.getElementById("RESULT").value="BAD";
 			document.getElementById("RESULT").style.backgroundColor = "yellow";
 		//	alert("fail");
 		}
@@ -109,7 +109,7 @@ def inputField(objName,column, cookies, defVal = "") :
 			inputString+= "<tr bgcolor=#FFFFFF><td>%s</td>"%tests[j]
 			for i in xrange(0,5) :
 				if lens[i]>j :	
-					inputString+= "<td><select class=sels onClick=update()><option value=undef></option><option value=PASS>PASS</option><option value=FAIL>FAIL</option></select></td>"
+					inputString+= "<td><select class=sels onchange=update() name=%s><option value=NULL></option><option value=PASS>PASS</option><option value=FAIL>FAIL</option></select></td>" % ("OSCILLOSCOPE_CHANNELS_"+channels[i]+"_"+tests[j])
 				else:
 					inputString+= "<td bgcolor=#000000></td>"
 			inputString+= "</tr>"	
@@ -138,6 +138,7 @@ def inputField(objName,column, cookies, defVal = "") :
  	    type = config.get(objName+"/"+column,"type")
  	    if defVal == "" and config.has_option(objName+"/"+column,"default"):
 		    defVal = config.get(objName+"/"+column,"default")
+	            inputString = "<input id=%s type=input name=\"%s\" value=\"%s\">" % (column,column,defVal)
             if type == "select" :
                    options = re.split(',',config.get(objName+"/"+column,"options"))
                    inputString="<select name=\"%s\">" % (column)
@@ -182,8 +183,8 @@ force = form.getfirst('force', False)
 action = cgi.escape(action)
 objName = form.getfirst('objName', 'empty')
 
-if objName == "empty" :
-    printHeaders()
+if objName == "empty" or not re.match('Test',objName) :
+    printHeaders(setcookies)
     exit()
 
 if objName != "" :
@@ -191,22 +192,23 @@ if objName != "" :
   objName = parseObjName(cgi.escape(objName))
   objType = eval(objName)
   ID=idField(objName)
+  m=re.match("Test_([A-Za-z]+)(_*.*)",objName)
+  insertFunction = getattr(pdb,"insert%sTest%s"%(m.group(1),m.group(2)))
 
 if action == "Insert" :
      setcookies["center"]=form.getfirst("SESSION_CENTER","")
      setcookies["operator"]=form.getfirst("SESSION_OPERATOR","")
      printHeaders(setcookies)
 
-     buildString=objName+"("
+     buildDict={}
+     OSCILLOSCOPE_CHANNELS = None
      for c in columns:
-#           columnType=type(eval("aux."+c))
            adate=date(2000,1,1)
            columnType2=type(eval(objName+"."+c+".variable_factory()"))
 	   objID="%s"%time.time()	
 	   if c == ID :
 		 if form.getfirst(c, "") != 'AUTOGEN' :
 			print "Call Houston"	
-#                buildString+=" "+c+"=int("+form.getfirst(c, "")+"),"
 	   elif c == "DATA_ID" and form['DATA_ID_filename'].filename :
   		    fileitem = form['DATA_ID_filename']
          	    fn = objID+"__"+os.path.basename(fileitem.filename)
@@ -216,66 +218,75 @@ if action == "Insert" :
 	            insertedData = pdb.insertData(data)
  		    if (insertedData is None):
 	                 print"<br>Error inserting data"
-			 buildString+="DATA_ID=0"
+			 buildDict["DATA_ID"]=0
 		    else:
-			 buildString+="DATA_ID=%s,"%insertedData.DATA_ID
+			 buildDict["DATA_ID"]=insertedData.DATA_ID
+	   elif c == "OSCILLOSCOPE_CHANNELS" :
+		OSCILLOSCOPE_CHANNELS={}
+		for f in form :
+			m=re.match('OSCILLOSCOPE_CHANNELS_(.*)_(.*)',f) 
+			if m :
+#				print m.group(1),m.group(2)
+				if not m.group(1) in OSCILLOSCOPE_CHANNELS :
+					OSCILLOSCOPE_CHANNELS[m.group(1)]={}
+				OSCILLOSCOPE_CHANNELS[m.group(1)][m.group(2)]=form[f]
+#		print  form,form.getlist("OSCILLOSCOPE_CHANNELS[]")
 	   elif c == "TRANSFER_ID" and (form.getfirst(c, "empty") == "empty" or form.getfirst(c, "empty") == "" ):
 		print "Creating transfer"
 	        t = pdb.insertTransfer(Transfer(SENDER=form.getfirst("TRANSFER_ID_sender"), RECEIVER=form.getfirst("TRANSFER_ID_receiver"), ISSUED_DATE=datetime.now(), RECEIVED_DATE=datetime.now(), STATUS="ARRIVED", COMMENT="autogen at creation"))
 		pdb.store.commit()
-		buildString+=" "+c+"=int(\"%s\")," % (t.TRANSFER_ID)
+		buildDict[c]=int(t.TRANSFER_ID)
 	   elif c == "SESSION_ID" :
 		t = pdb.insertSession(Session(OPERATOR=form.getfirst("SESSION_OPERATOR"), CENTER=form.getfirst("SESSION_CENTER"), DATE=datetime.now(), TYPE=objName,  COMMENT=form.getfirst("SESSION_COMMENT")))
                 pdb.store.commit()
-                buildString+=" "+c+"=int(\"%s\")," % (t.SESSION_ID)
+		buildDict[c]=int(t.SESSION_ID)
            elif columnType2 == DateVariable :
                 d=form.getfirst(c, "")
 		try: 
 		        dd=datetime.strptime(d,"%Y-%m-%d")
 		except:
                         dd=date.today()
-		buildString+=" "+c+"=dd,"
+		buildDict[c]=dd
            elif columnType2 == DateTimeVariable :
                 d=form.getfirst(c, "")
                 try:
                         dd=datetime.strptime(d,"%Y-%m-%d")
                 except:
 			dd=datetime.now()
-                buildString+=" "+c+"=dd,"
+		buildDict[c]=dd
            elif columnType2 == UnicodeVariable : 
-		buildString+=" "+c+"=\""+form.getfirst(c, "")+"\","
+		buildDict[c]=form.getfirst(c, "")
 	   elif columnType2 == IntVariable :
-		buildString+=" "+c+"=int("+form.getfirst(c, "")+"),"
-	   elif columnType2 == FloatVariable :
-		buildString+=" "+c+"=float("+form.getfirst(c, "")+"),"
-	   else :
-		buildString+=" "+c+"=\""+form.getfirst(c, "")+"\","
+                if form.getfirst(c, "") != "" :
+			buildDict[c]=int(form.getfirst(c, "0"))
+		else:
+	                buildDict[c]=int()
 
-     buildString+=")"
-#     print buildString
-     o=eval(buildString)
-#     print buildString	 
+	   elif columnType2 == FloatVariable :
+		if form.getfirst(c, "") != "" :
+	                buildDict[c]=float(form.getfirst(c, ""))
+		else :	
+			buildDict[c]=float()
+	   else :
+		buildDict[c]=form.getfirst(c, "")
+
+#    print "DICT: ",buildDict
+     o=objType(**buildDict)
+     if OSCILLOSCOPE_CHANNELS  :
+		channels = OSCILLOSCOPE_CHANNELS
+		for ch in channels :
+			for t in channels[ch] :
+				o.setBit(t,ch,channels[ch][t].value)	
 #     print eval("o."+ID),objName+"."+ID
 
      if pdb.store.find(objType,filter==eval("o."+ID)).count() > 0 :
 	print "This object ALREADY exists: CANNOT INSERT"	
+#	pdb.insertHistory(type=0,id=0, target_id=eval("o."+ID), target_type=objName, operation="INSERT", datee=datetime.now(), comment="")
      else:
-        pdb.store.add(o)
-	pdb.store.commit()
+	insertFunction(o)
 	print " Objected added"
-	pdb.insertHistory(type=0,id=0, target_id=eval("o."+ID), target_type=objName, operation="INSERT", datee=datetime.now(), comment="")
-	print " <a href=/>back home</a>" 
+	print " <a href=/>back home</a> | <a href=%s>back to last list view </a>" % (setcookies["lastview"].value if "lastview" in setcookies else "")
 
-#    s = Sensor()	
-
-#    if (self.isSensorInserted(sensor.SENSOR_ID) == True):
-#                 print "ERROR: sensor already inserted", sensor.SENSOR_ID
-#                 return None
-#           self.store.add(sensor)
-#           self.store.commit()
-            # log in history
-#           self.insertHistory(type="NULL", id=0, target_type="SENSOR", target_id=sensor.SENSOR_ID, operation="INSERT", datee=date.today(), comment="NO COMMENT")
-#           return sensor
 
 
 else :

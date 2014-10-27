@@ -13,6 +13,47 @@ print "Content-Type: text/html"
 print
 print "<html>\n        <head>\n         "      
 print '''
+    <script>
+        function setAllPass(){
+                var val = "PASS";
+                var sels = document.getElementsByClassName("sels");
+                for (var i = sels.length - 1; i >= 0; i--)
+                {
+                sel=sels[i];
+                var opts = sel.options;
+                for(var opt, j = 0; opt = opts[j]; j++) {
+                        if(opt.value == val) {
+                                sel.selectedIndex = j;
+                                break;
+                        }
+                }
+                }
+        }
+        function setAllEmpty(){
+                var sels = document.getElementsByClassName("sels");
+                for (var i = sels.length - 1; i >= 0; i--)
+                {
+                sel=sels[i];
+                var opts = sel.options;
+                sel.selectedIndex = 0;
+                }
+        }
+        function update(){
+                var sels = document.getElementsByClassName("sels");
+                for (var i = sels.length - 1; i >= 0; i--)
+                {
+                sel=sels[i];
+                var opts = sel.options;
+                console.log(opts[sel.selectedIndex]);
+                if(opts[sel.selectedIndex].value == "FAIL") {
+                        document.getElementById("RESULT").value="FAIL";
+                        document.getElementById("RESULT").style.backgroundColor = "yellow";
+                //      alert("fail");
+                }
+                }
+
+        }
+        </script>
 
 '''
 sys.path.append("../../PixelDB")
@@ -32,7 +73,7 @@ import random
 import ConfigParser
 from pixelwebui import *
 
-def inputField(objName,column, defVal = "") :
+def inputField(objName,column, defVal = "", o=None) :
 	config = ConfigParser.ConfigParser()
 	config.read('/var/www/cgi-bin/writers/editor.ini')
 	#default input string:
@@ -50,6 +91,32 @@ def inputField(objName,column, defVal = "") :
 		for o in cents :
 	        	inputString+="<option>%s</option>" % o
 	   	inputString+=" </select><p>"
+        elif column == "OSCILLOSCOPE_CHANNELS" and o :
+                channels = ["CH1","CH2","CH3","CH4","LV"]
+                tests = ["CLK0","CLK1","CLK2","CLK3","CTR0","CTR1","CTR2","CTR3","SDA0","SDA1","SDA2","SDA3"]
+                lens = [12,12,8,12,4]
+                inputString= "<table cellpadding=0 cellspacing=2 bgcolor=#000000><tr bgcolor=#FFFFFF><td>Test</td>"
+                for c in channels :
+                        inputString+= "<td>%s</td>" % c
+                inputString+= "</tr>"
+                for j in xrange(0,len(tests)) :
+                        inputString+= "<tr bgcolor=#FFFFFF><td>%s</td>"%tests[j]
+                        for i in xrange(0,5) :
+				selpass=""
+				selfail=""
+				val=o.getBit(tests[j],channels[i])
+#				print val
+				if val == 'FAIL' :	
+					selfail='selected'
+				if val == 'PASS' :	
+					selpass='selected'
+                                if lens[i]>j :
+                                        inputString+= "<td><select class=sels onchange=update() name=%s><option value=NULL></option><option value=PASS %s>PASS</option><option value=FAIL %s>FAIL</option></select></td>" % ("OSCILLOSCOPE_CHANNELS_"+channels[i]+"_"+tests[j],selpass,selfail)
+                                else:
+                                        inputString+= "<td bgcolor=#000000></td>"
+                        inputString+= "</tr>"
+                inputString+= "</table><p>"
+                inputString+= "<button onClick=\"setAllPass();\" type=button> Set all to PASS</button> <button onClick=\"setAllEmpty();\" type=button>Reset all to empty</button>"
 
 	elif column == "DATA_ID" :
 	    if defVal == "" :
@@ -104,7 +171,8 @@ if objName != "" :
       objID = cgi.escape(objID)
       filterValue=unicode(objID)  
 
-  filter=eval(objName+"."+ID)
+  filter = eval(objName+"."+ID)
+
 #ilter=objName+"."+ID
 #print "filter ",filter,"=",filterValue, objName,ID
   columns = []
@@ -121,19 +189,23 @@ if objName != "" :
 #       o =eval(objName+"()")
       print "<h1> Create new %s </h1>" % objName 
   else :
-       print "found"	
+#       print "found"	
        o = objects[0]	
        aux = None	
 if action == "Validate" :
    print "to be implemented"
 
+columns.sort()
+
 if action == "Insert" :
   if  aux or first :
      buildString=objName+"("
+     buildDict={}	
      for c in columns:
 #           columnType=type(eval("aux."+c))
            adate=date(2000,1,1)
            columnType2=type(eval(objName+"."+c+".variable_factory()"))
+	   OSCILLOSCOPE_CHANNELS=None
 	   if c == "DATA_ID" and form['DATA_ID_filename'].filename :
   		    fileitem = form['DATA_ID_filename']
          	    fn = objID+"__"+os.path.basename(fileitem.filename)
@@ -144,13 +216,16 @@ if action == "Insert" :
  		    if (insertedData is None):
 	                 print"<br>Error inserting data"
 			 buildString+="DATA_ID=0"
+			 buildDict["DATA_ID"]=0
 		    else:
 			 buildString+="DATA_ID=%s,"%insertedData.DATA_ID
+                         buildDict["DATA_ID"]=insertedData.DATA_ID
 	   elif c == "TRANSFER_ID" and (form.getfirst(c, "empty") == "empty" or form.getfirst(c, "empty") == "" ):
 		print "Creating transfer"
 	        t = pdb.insertTransfer(Transfer(SENDER=form.getfirst("TRANSFER_ID_sender"), RECEIVER=form.getfirst("TRANSFER_ID_receiver"), ISSUED_DATE=datetime.now(), RECEIVED_DATE=datetime.now(), STATUS="ARRIVED", COMMENT="autogen at creation"))
 		pdb.store.commit()
 		buildString+=" "+c+"=int(\"%s\")," % (t.TRANSFER_ID)
+                buildDict[c]=int(t.TRANSFER_ID)
            elif columnType2 == DateVariable :
                 d=form.getfirst(c, "")
 		try: 
@@ -158,6 +233,7 @@ if action == "Insert" :
 		except:
                         dd=date.today()
 		buildString+=" "+c+"=dd,"
+                buildDict[c]=dd
            elif columnType2 == DateTimeVariable :
                 d=form.getfirst(c, "")
                 try:
@@ -165,28 +241,40 @@ if action == "Insert" :
                 except:
 			dd=datetime.now()
                 buildString+=" "+c+"=dd,"
+                buildDict[c]=dd
            elif columnType2 == UnicodeVariable : 
 		buildString+=" "+c+"=\""+form.getfirst(c, "")+"\","
+                buildDict[c]=form.getfirst(c, "")
 	   elif columnType2 == IntVariable :
+		if form.getfirst(c, "") != "" :
+                        buildDict[c]=int(form.getfirst(c, "0"))
+		else:
+			buildDict[c]=int()
 		buildString+=" "+c+"=int("+form.getfirst(c, "")+"),"
 	   elif columnType2 == FloatVariable :
+                if form.getfirst(c, "") != "" :
+                        buildDict[c]=float(form.getfirst(c, ""))
+		else:
+                        buildDict[c]=float()
 		buildString+=" "+c+"=float("+form.getfirst(c, "")+"),"
 	   else :
 		buildString+=" "+c+"=\""+form.getfirst(c, "")+"\","
-
+		buildDict[c]=form.getfirst(c, "")
+	
      buildString+=")"
+     o=objType(**buildDict)
 #     print buildString
-     o=eval(buildString)
+#     o=eval(buildString)
 #     print buildString	 
 #     print eval("o."+ID),objName+"."+ID
 
-     if pdb.store.find(objType,filter==eval("o."+ID)).count() > 0 :
+     if pdb.store.find(objType,filter==getattr(o,ID)).count() > 0 :
 	print "This object ALREADY exists: CANNOT INSERT"	
      else:
         pdb.store.add(o)
 	pdb.store.commit()
 	print " Objected added"
-	pdb.insertHistory(type=0,id=0, target_id=eval("o."+ID), target_type=objName, operation="INSERT", datee=datetime.now(), comment="")
+	pdb.insertHistory(type=0,id=0, target_id=getattr(o,ID), target_type=objName, operation="INSERT", datee=datetime.now(), comment="")
 
   else:     
      print "This object ALREADY exists. You CANNOT INSERT, but you can EDIT ! "
@@ -211,7 +299,7 @@ if action == "Save changes" :
 		field = list[-1] 
 	   columnType=type(eval("o."+c))
            columnType2=type(eval(objName+"."+c+".variable_factory()"))
-	   print c, field, columnType, columnType2
+#	   print c, field, columnType, columnType2
 	   adate=date(2000,1,1)
 	   if columnType == type(adate) or columnType2 == DateVariable:
 		if field == "None":
@@ -225,6 +313,21 @@ if action == "Save changes" :
                 d=field #form.getfirst(c, getattr(o,c))
                 dd=datetime.strptime(d,"%Y-%m-%d %H:%M:%S")
                 setattr(o,c,dd)
+	   elif c == "OSCILLOSCOPE_CHANNELS" :
+                for f in form :
+                        m=re.match('OSCILLOSCOPE_CHANNELS_(.*)_(.*)',f)
+                        if m :
+                                o.setBit(m.group(2),m.group(1),form[f].value)
+           elif columnType2 == IntVariable :
+		if form.getfirst(c, "0") == 'None' :
+			 setattr(o,c,0)
+		else:
+	                 setattr(o,c,int(form.getfirst(c, "0")))
+           elif columnType2 == FloatVariable :
+		if form.getfirst(c, "0") == 'None' :
+                         setattr(o,c,0)
+                else: 
+	                 setattr(o,c,float(form.getfirst(c, "0")))
 	   elif columnType == type(None) :
 #		setattr(o,c,unicode(form.getfirst(c, getattr(o,c))))
 		setattr(o,c,unicode(field))
@@ -249,7 +352,7 @@ if True :
 	    else : 	
 		print "<input type=hidden name=%s value=\"%s\">" % (ID,objID)
                 print "<tr><td>",ID.lower().capitalize()," (main ID)</td><td>"
-                print inputField(objName,ID,getattr(o,ID))
+                print inputField(objName,ID,getattr(o,ID),o)
 	else :
                 print "<tr><td>",ID.lower().capitalize()," (main ID)</td><td>"
                 print inputField(objName,ID)
@@ -262,7 +365,7 @@ if True :
 	   if o :
   		   print "<tr><td>",c.lower().capitalize(),"</td><td>"
 #d><input type=input name=\"%s\" value=\"%s\">"%(c,getattr(o,c))
-		   print inputField(objName,c,getattr(o,c))
+		   print inputField(objName,c,getattr(o,c),o)
 	   else :
                    print "<tr><td>",c.lower().capitalize(),"</td><td>"
 #<input type=input name=\"%s\" value=\"%s\">"%(c,"")

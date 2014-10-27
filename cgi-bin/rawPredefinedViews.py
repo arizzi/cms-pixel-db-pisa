@@ -29,26 +29,34 @@ countqueries.append("select COUNT(1) from inventory_sensor as Sensor, test_iv as
 
 ### HDI Views
 
-
+def hdiTbmGlue(o) :
+	 if  o['Test_Hdi_TbmGluing_RESULT'] :
+		return o['Test_Hdi_TbmGluing_RESULT']
+	 elif o['Hdi_TBM1_ID'] == "":
+		return '<a href=/cgi-bin/writers/edit.cgi?objName=Hdi&HDI_ID=%s>add TBM to HDI</a>'%o['Hdi_HDI_ID']
+	 else :
+		return '<a href=/cgi-bin/writers/newTest.cgi?objName=Test_Hdi_TbmGluing&HDI_ID=%s>add test</a>'%o['Hdi_HDI_ID']
+			
 columns.append([
 	("HDI ID","Hdi.HDI_ID",""),
         ("Center","Transfer.RECEIVER","o['Transfer_RECEIVER'] if o['Transfer_STATUS']=='ARRIVED' else  o['Transfer_SENDER'] "),
-	("Reception","Test_Hdi_Reception.RESULT","coloredResult(o['Test_Hdi_Reception_RESULT']) if o['Test_Hdi_Reception_RESULT'] else '<a href=newhdireception>add test</a>'"),
+	("TBM 1","Hdi.TBM1_ID",""),
+	("TBM 2","Hdi.TBM2_ID",""),
+	("Reception","Test_Hdi_Reception.RESULT","coloredResult(o['Test_Hdi_Reception_RESULT']) if o['Test_Hdi_Reception_RESULT'] else '<a href=/cgi-bin/writers/newTest.cgi?objName=Test_Hdi_Reception&HDI_ID=%s>add test</a>'%o['Hdi_HDI_ID']"),
 	("Bonding","Test_Hdi_Bonding.RESULT","o['Test_Hdi_Bonding_RESULT'] if o['Test_Hdi_Bonding_RESULT'] else '<a href=/cgi-bin/writers/newTest.cgi?objName=Test_Hdi_Bonding&HDI_ID=%s>add test</a>'%o['Hdi_HDI_ID']"),
-	("TBM Gluing","Test_Hdi_TbmGluing.RESULT","o['Test_Hdi_TbmGluing_RESULT'] if o['Test_Hdi_TbmGluing_RESULT'] else '<a href=newhdibonding>add test</a>'"),
-	("Electric","Test_Hdi_Electric.RESULT","o['Test_Hdi_Electric_RESULT'] if o['Test_Hdi_Electric_RESULT'] else '<a href=newhdibonding>add test</a>'"),
-	("Validation","Test_Hdi_Validation.RESULT","o['Test_Hdi_Validation_RESULT'] if o['Test_Hdi_Validation_RESULT'] else '<a href=newhdibonding>add test</a>'"),
+	("TBM Gluing","Test_Hdi_TbmGluing.RESULT","hdiTbmGlue(o)"),
+	("Electric","Test_Hdi_Electric.RESULT","o['Test_Hdi_Electric.RESULT'] if o['Test_Hdi_Electric_RESULT'] else '<a href=/cgi-bin/writers/newTest.cgi?objName=Test_Hdi_Electric&HDI_ID=%s>add test</a>'%o['Hdi_HDI_ID']"),
+	("Validation","Test_Hdi_Validation.RESULT","o['Test_Hdi_Validation_RESULT'] if o['Test_Hdi_Validation_RESULT'] else '<a href=/cgi-bin/writers/newTest.cgi?objName=Test_Hdi_Validation&HDI_ID=%s>add test</a>'%o['Hdi_HDI_ID']"),
 ])
 rowkeys.append("Hdi_HDI_ID") #not obvious
 queries.append("select %s,Transfer.STATUS as Transfer_STATUS, Transfer.SENDER as Transfer_SENDER from inventory_hdi as Hdi join transfers as Transfer on Hdi.TRANSFER_ID=Transfer.TRANSFER_ID "
-		"left outer join test_hdi_reception as Test_Hdi_Reception on Hdi.HDI_ID=Test_Hdi_Reception.HDI_ID "
-		"left outer join test_hdi_bonding as Test_Hdi_Bonding on Hdi.HDI_ID=Test_Hdi_Bonding.HDI_ID "
-		"left outer join test_hdi_tbmgluing as Test_Hdi_TbmGluing on Hdi.HDI_ID=Test_Hdi_TbmGluing.HDI_ID "
-		"left outer join test_hdi_electric as Test_Hdi_Electric on Hdi.HDI_ID=Test_Hdi_Electric.HDI_ID "
-		"left outer join test_hdi_validation as Test_Hdi_Validation on Hdi.HDI_ID=Test_Hdi_Validation.HDI_ID "
+		"left outer join test_hdi_reception as Test_Hdi_Reception on Hdi.LASTTEST_HDI_RECEPTION=Test_Hdi_Reception.TEST_ID "
+		"left outer join test_hdi_bonding as Test_Hdi_Bonding on Hdi.LASTTEST_HDI_BONDING=Test_Hdi_Bonding.TEST_ID "
+		"left outer join test_hdi_tbmgluing as Test_Hdi_TbmGluing on Hdi.LASTTEST_HDI_TBMGLUING=Test_Hdi_TbmGluing.TEST_ID "
+		"left outer join test_hdi_electric as Test_Hdi_Electric on Hdi.LASTTEST_HDI_ELECTRIC=Test_Hdi_Electric.TEST_ID "
+		"left outer join test_hdi_validation as Test_Hdi_Validation on Hdi.LASTTEST_HDI_VALIDATION=Test_Hdi_Validation.TEST_ID "
 		" WHERE 1 ")
 countqueries.append("select COUNT(1)  from inventory_hdi")
-
 
 
 ### tools

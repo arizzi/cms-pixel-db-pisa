@@ -8,7 +8,16 @@ from math import *
 import re
 import cgi
 from  rawPredefinedViews import *
+import Cookie
+setcookies = Cookie.SimpleCookie()
+if 'HTTP_COOKIE' in os.environ:
+    cookie_string=os.environ.get('HTTP_COOKIE')
+    setcookies.load(cookie_string)
+setcookies["lastview"]= os.environ['REQUEST_URI']
+
+
 print "Content-Type: text/html"
+print setcookies
 print
 form = cgi.FieldStorage() # instantiate only once!
 toprint=[]
@@ -46,6 +55,8 @@ $(document).ready(function() {
 
 		var table =          $('#example').DataTable( {
 			"bStateSave": true,
+			 "aLengthMenu": [   [25, 50, 100, 200, -1],
+				        [25, 50, 100, 200, "All"]],
 			"iDisplayLength" : 25,
 			"bProcessing": true,
 			"bServerSide": true,
