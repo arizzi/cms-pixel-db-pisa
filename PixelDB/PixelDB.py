@@ -705,7 +705,7 @@ class PixelDBInterface(object) :
             self.store.commit()
 
             h = self.getHdi(test.HDI_ID)
-            last= self.store.find(Test_Hdi_Electric, Test_Hdi_TbmElectric.TEST_ID==h.LASTTEST_HDI_ELECTRIC).one()
+            last= self.store.find(Test_Hdi_Electric, Test_Hdi_Electric.TEST_ID==h.LASTTEST_HDI_ELECTRIC).one()
             if last is not None and last.session.DATE > test.session.DATE :
                         print "LASTTEST NOT UPDATED BECAUSE OF EXISTING NEWER TEST<br>"
             else :
