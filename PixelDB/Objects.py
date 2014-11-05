@@ -269,10 +269,8 @@ class Hdi(object):
   TRANSFER_ID = Int()
   transfer = Reference(TRANSFER_ID, Transfer.TRANSFER_ID)
   BATCH_ID=Unicode()
-  TBM1_ID=Unicode()
-  TBM2_ID=Unicode()
-  tbm1 = Reference(TBM1_ID, Tbm.TBM_ID)
-  tbm2 = Reference(TBM2_ID, Tbm.TBM_ID)
+  TBM1_VERSION=Unicode()
+  TBM2_VERSION=Unicode()
   COMMENT = Unicode()
   TYPE = Unicode()
   STATUS=Unicode()
@@ -282,14 +280,14 @@ class Hdi(object):
   LASTTEST_HDI_ELECTRIC=Int()
   LASTTEST_HDI_VALIDATION=Int()
 
-  def __init__(self,HDI_ID, TRANSFER_ID, COMMENT="", LASTTEST_HDI_RECEPTION=0,LASTTEST_HDI_TBMGLUING=0,LASTTEST_HDI_BONDING=0,LASTTEST_HDI_ELECTRIC=0, LASTTEST_HDI_VALIDATION=0, STATUS="",TYPE="", TBM1_ID="", TBM2_ID="",BATCH_ID=""):
+  def __init__(self,HDI_ID, TRANSFER_ID, COMMENT="", LASTTEST_HDI_RECEPTION=0,LASTTEST_HDI_TBMGLUING=0,LASTTEST_HDI_BONDING=0,LASTTEST_HDI_ELECTRIC=0, LASTTEST_HDI_VALIDATION=0, STATUS="",TYPE="", TBM1_VERSION="", TBM2_VERSION="",BATCH_ID=""):
     self.HDI_ID=unicode(HDI_ID)
     self.TRANSFER_ID=TRANSFER_ID
     self.COMMENT=unicode(COMMENT)
     self.STATUS=unicode(STATUS)
     self.TYPE=unicode(TYPE)
-    self.TBM1_ID=unicode(TBM1_ID)
-    self.TBM2_ID=unicode(TBM2_ID)
+    self.TBM1_VERSION=unicode(TBM1_VERSION)
+    self.TBM2_VERSION=unicode(TBM2_VERSION)
     self.BATCH_ID=unicode(BATCH_ID)
     self.LASTTEST_HDI_RECEPTION=LASTTEST_HDI_RECEPTION
     self.LASTTEST_HDI_TBMGLUING=LASTTEST_HDI_TBMGLUING
@@ -610,15 +608,15 @@ class Test_Hdi_TbmGluing(object):
       HDI_ID =  Unicode()
       hdi=Reference(HDI_ID, Hdi.HDI_ID)
       RESULT=Unicode()
-      COMMENT=Unicode()
+      NOTES=Unicode()
       DATA_ID=Int()
       data=Reference(DATA_ID,Data.DATA_ID)
-      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID, COMMENT):
+      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID, NOTES):
           self.SESSION_ID=SESSION_ID
           self.HDI_ID=unicode(HDI_ID)
           self.RESULT=unicode(RESULT)
           self.DATA_ID=DATA_ID
-          self.COMMENT=unicode(COMMENT)
+          self.NOTES=unicode(NOTES)
 
 
 class Test_Hdi_Bonding(object):
@@ -630,19 +628,18 @@ class Test_Hdi_Bonding(object):
       hdi=Reference(HDI_ID, Hdi.HDI_ID)
       RESULT=Unicode()
       DATA_ID=Int()
-      TBM_ID = Unicode()
-      tbm=Reference(TBM_ID, Tbm.TBM_ID)
-      HUB_ADDRESS = Unicode()
+      TBM_BONDS = Unicode()
+      HUB_ADDRESS_BONDS = Unicode()
       N_TEST_BONDS=Int()
       AVG_PULL_FORCE_G=Float()
       data=Reference(DATA_ID,Data.DATA_ID)
-      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,TBM_ID,HUB_ADDRESS, N_TEST_BONDS, AVG_PULL_FORCE_G ):
+      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,TBM_BONDS,HUB_ADDRESS_BONDS, N_TEST_BONDS, AVG_PULL_FORCE_G ):
           self.SESSION_ID=SESSION_ID
           self.HDI_ID=unicode(HDI_ID)
           self.RESULT=unicode(RESULT)
           self.DATA_ID=DATA_ID
-          self.TBM_ID = unicode(TBM_ID)
-          self.HUB_ADDRESS=unicode(HUB_ADDRESS)
+          self.TBM_BONDS = unicode(TBM_BONDS)
+          self.HUB_ADDRESS_BONDS=unicode(HUB_ADDRESS_BONDS)
           self.N_TEST_BONDS=N_TEST_BONDS
           self.AVG_PULL_FORCE_G=float(AVG_PULL_FORCE_G)
 
@@ -735,14 +732,14 @@ class Test_Hdi_Validation(object):
       DATA_ID=Int()
       data=Reference(DATA_ID,Data.DATA_ID)
       VISUAL_INSPECTION=Unicode()
-      OTHER=Unicode()
-      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,VISUAL_INSPECTION, OTHER="" ):
+      NOTES=Unicode()
+      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,VISUAL_INSPECTION, NOTES="" ):
           self.SESSION_ID=SESSION_ID
           self.HDI_ID=unicode(HDI_ID)
           self.RESULT=unicode(RESULT)
           self.DATA_ID=DATA_ID
           self.VISUAL_INSPECTION = unicode(VISUAL_INSPECTION)
-          self.OTHER=uniceode(OTHER)
+          self.NOTES=uniceode(NOTES)
 
 
 class Test_Roc(object):

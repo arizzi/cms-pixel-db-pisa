@@ -631,7 +631,13 @@ class PixelDBInterface(object) :
                   return None
             self.store.add(test)
             self.store.commit()
-            (self.getHdi(test.HDI_ID)).LASTTEST_HDI_RECEPTION =  test.TEST_ID
+	    h = self.getHdi(test.HDI_ID)
+	    last= self.store.find(Test_Hdi_Reception, Test_Hdi_Reception.TEST_ID==h.LASTTEST_HDI_RECEPTION).one()
+	    if last is not None and last.session.DATE > test.session.DATE :
+			print "LASTTEST NOT UPDATED BECAUSE OF EXISTING NEWER TEST<br>"
+ 	    else :
+            		(self.getHdi(test.HDI_ID)).LASTTEST_HDI_RECEPTION =  test.TEST_ID
+
             self.store.commit()
             # log in history
             self.insertHistory(type="TEST_HDI_RECEPTION", id=test.TEST_ID, target_type="HDI", target_id=test.HDI_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
@@ -647,7 +653,13 @@ class PixelDBInterface(object) :
                   return None
             self.store.add(test)
             self.store.commit()
-            (self.getHdi(test.HDI_ID)).LASTTEST_HDI_TBMGLUING =  test.TEST_ID
+            h = self.getHdi(test.HDI_ID)
+            last= self.store.find(Test_Hdi_TbmGluing, Test_Hdi_TbmGluing.TEST_ID==h.LASTTEST_HDI_TBMGLUING).one()
+            if last is not None and last.session.DATE > test.session.DATE :
+                        print "LASTTEST NOT UPDATED BECAUSE OF EXISTING NEWER TEST<br>"
+            else :
+                        (self.getHdi(test.HDI_ID)).LASTTEST_HDI_TBMGLUING =  test.TEST_ID
+
             self.store.commit()
             # log in history
             self.insertHistory(type="TEST_HDI_GLUING", id=test.TEST_ID, target_type="HDI", target_id=test.HDI_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
@@ -663,7 +675,13 @@ class PixelDBInterface(object) :
                   return None
             self.store.add(test)
             self.store.commit()
-            (self.getHdi(test.HDI_ID)).LASTTEST_HDI_BONDING =  test.TEST_ID
+            h = self.getHdi(test.HDI_ID)
+            last= self.store.find(Test_Hdi_Bonding, Test_Hdi_Bonding.TEST_ID==h.LASTTEST_HDI_BONDING).one()
+            if last is not None and last.session.DATE > test.session.DATE :
+                        print "LASTTEST NOT UPDATED BECAUSE OF EXISTING NEWER TEST<br>"
+            else :
+                        (self.getHdi(test.HDI_ID)).LASTTEST_HDI_BONDING =  test.TEST_ID
+
             self.store.commit()
             # log in history
             self.insertHistory(type="TEST_HDI_BONDING", id=test.TEST_ID, target_type="HDI", target_id=test.HDI_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
@@ -685,7 +703,16 @@ class PixelDBInterface(object) :
                   return None
             self.store.add(test)
             self.store.commit()
-            (self.getHdi(test.HDI_ID)).LASTTEST_HDI_ELECTRIC =  test.TEST_ID
+
+            h = self.getHdi(test.HDI_ID)
+            last= self.store.find(Test_Hdi_Electric, Test_Hdi_TbmElectric.TEST_ID==h.LASTTEST_HDI_ELECTRIC).one()
+            if last is not None and last.session.DATE > test.session.DATE :
+                        print "LASTTEST NOT UPDATED BECAUSE OF EXISTING NEWER TEST<br>"
+            else :
+                        (self.getHdi(test.HDI_ID)).LASTTEST_HDI_ELECTRIC =  test.TEST_ID
+
+
+
             self.store.commit()
             # log in history
             self.insertHistory(type="TEST_HDI_ELECTRIC", id=test.TEST_ID, target_type="HDI", target_id=test.HDI_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
@@ -701,7 +728,14 @@ class PixelDBInterface(object) :
                   return None
             self.store.add(test)
             self.store.commit()
-            (self.getHdi(test.HDI_ID)).LASTTEST_HDI_VALIDATION =  test.TEST_ID
+
+            h = self.getHdi(test.HDI_ID)
+            last= self.store.find(Test_Hdi_Validation, Test_Hdi_Validation.TEST_ID==h.LASTTEST_HDI_VALIDATION).one()
+            if last is not None and last.session.DATE > test.session.DATE :
+                        print "LASTTEST NOT UPDATED BECAUSE OF EXISTING NEWER TEST<br>"
+            else :
+                        (self.getHdi(test.HDI_ID)).LASTTEST_HDI_VALIDATION =  test.TEST_ID
+
             self.store.commit()
             # log in history
             self.insertHistory(type="TEST_HDI_VALIDATION", id=test.TEST_ID, target_type="HDI", target_id=test.HDI_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
@@ -1006,7 +1040,7 @@ class PixelDBInterface(object) :
 
             PHCalibration = Row['PHCalibration']
 #caveat missing + unit of measurement
-            I150 = Row['CurrentAtVoltage150']
+            I150 = Row['CurrentAtVoltage150V']
             I1502 = -10
             Current = Row['initialCurrent']
 #caveat missing
