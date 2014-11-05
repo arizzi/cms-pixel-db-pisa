@@ -22,6 +22,22 @@ userCenters={}
 userCenters["andrea"]="PISA"
 userCenters["andrei"]="ETH"
 addrCenters={}
+
+sortedCols={}
+sortedCols["Test_Hdi_Reception"]=["HDI_ID","RESULT","INSPECTION_FRONT","INSPECTION_BACK" ]
+sortedCols["Test_Hdi_TbmGluing"]=["HDI_ID","RESULT","NOTES"] #notes
+sortedCols["Test_Hdi_Bonding"]=["HDI_ID","RESULT","TBM_BONDS","HUB_ADDRESS_BONDS","N_TEST_BONDS","AVG_PULL_FORCE_G","NOTES"]
+sortedCols["Test_Hdi_Electric"]=["HDI_ID","RESULT","GRADE","NUM_TBM","DIGITAL_CURRENT_mA","OSCILLOSCOPE_CHANNELS","HV_TEST_uA","NOTES"]
+sortedCols["Test_Hdi_Validation"]=["HDI_ID","RESULT","VISUAL_INSPECTION","NOTES"]
+
+
+sortedInputCols={}
+sortedInputCols["Test_Hdi_Reception"]=["TEST_ID","HDI_ID","SESSION_ID","INSPECTION_FRONT","INSPECTION_BACK","DATA_ID","RESULT"]
+sortedInputCols["Test_Hdi_TbmGluing"]=["TEST_ID","HDI_ID","SESSION_ID","DATA_ID","RESULT"]
+sortedInputCols["Test_Hdi_Bonding"]=["TEST_ID","HDI_ID","SESSION_ID","TBM_BONDS","HUB_ADDRESS_BONDS","N_TEST_BONDS","AVG_PULL_FORCE_G","NOTES","DATA_ID","RESULT"]
+sortedInputCols["Test_Hdi_Electric"]=["TEST_ID","HDI_ID","SESSION_ID","NUM_TBM","DIGITAL_CURRENT_mA","OSCILLOSCOPE_CHANNELS","HV_TEST_uA","NOTES","DATA_ID","RESULT","GRADE"]
+sortedInputCols["Test_Hdi_Validation"]=["TEST_ID","HDI_ID","SESSION_ID","VISUAL_INSPECTION","NOTES","DATA_ID","RESULT"]
+
 def defaultCenter() :
 	user=os.environ['REMOTE_USER']
 	host=os.environ['REMOTE_ADDR']
@@ -87,9 +103,12 @@ def onlyColumns(objName):
  objType = eval(parseObjName(objName))
  keys=objType.__dict__.keys()
  columns=[]
+ if objName in sortedInputCols:
+	columns = sortedInputCols[objName]
  for attr in keys:
   if  type(eval(objName+"."+attr)) is properties.PropertyColumn or  type(eval(objName+"."+attr)).__name__ == "date"  or  type(eval(objName+"."+attr)).__name__ == "datetime":
-         columns.append(attr)
+	if attr not in columns :
+	         columns.append(attr)
  # columns.sort()
  return columns
 

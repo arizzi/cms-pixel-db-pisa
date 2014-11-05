@@ -11,7 +11,8 @@ from PixelDB import *
 import csv
 pdb = PixelDBInterface(operator="webfrontend",center="cern")
 pdb.connectToDB()
-filename="/home/cmsweb/First_batch_KIT_Oct14.csv"
+#filename="/home/cmsweb/First_batch_KIT_Oct14.csv"
+filename="/home/cmsweb/unihh.csv"
 os.path.isfile(filename)
 t= None
 i=0
@@ -25,9 +26,9 @@ with open(filename, 'rb') as csvfile:
 		CENTER=row[2]
 		TYPE=row[3]
 		COMMENT=row[4]
-		if not t or t.RECEIVER != CENTER :
+		if not t or t.RECEIVER != CENTER.upper() :
 			print "New transfer to " , CENTER
-		        t = pdb.insertTransfer(Transfer("FACTORY",CENTER))
+		        t = pdb.insertTransfer(Transfer("FACTORY",CENTER.upper()))
 		h = pdb.getHdi(unicode(HDI_ID))
 		if not h:
 	        	  print "HDI %s is new, inserting it..." % HDI_ID

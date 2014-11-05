@@ -31,6 +31,7 @@ if objName == 'empty' :
 	else:
 		toprint = columns[viewNumber]
 		topush='"name" : "viewNumber", "value" : "%s"' % viewNumber
+		print header[viewNumber]
 else:
 	objName = parseObjName(cgi.escape(objName))
 	id,toprint,query,count = fromObjectName(objName)
@@ -73,6 +74,11 @@ $(document).ready(function() {
 				}
 			  },
 			"fnServerParams": function ( aoData ) {
+			if( $('#exact').is(':checked')) {
+			aoData.push( { "name": "exact", "value":  "1"});
+			} else {
+			aoData.push( { "name": "exact", "value":  "0"});
+			}
 			aoData.push( { %s } );
 			}
 			} );
@@ -105,15 +111,17 @@ pdb = PixelDBInterface(operator="webfrontend",center="cern")
 pdb.connectToDB()
 
 
+print "<input type=checkbox id=exact onclick=\"var table = $('#example').DataTable(); table.ajax.reload();\"> Exact per column search"
 print "<p id=filterPH></p>"
-
 print "<table id=example class=display width=100%>"
 print " <thead> <tr>"
 for (c,s,e) in toprint :
- print "<th>", c,"</th>"
+ if e!= "NOPRINT":
+	 print "<th>", c,"</th>"
 print "</thead></tr>"
 print " <tfoot> <tr>"
 for (c,s,e) in toprint :
- print "<th>", c,"</th>"
+ if e!= "NOPRINT":
+	 print "<th>", c,"</th>"
 print "</tfoot></tr><tbody></tbody>"
 

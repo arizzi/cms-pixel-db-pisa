@@ -72,6 +72,13 @@ from PixelDB import *
 import random
 import ConfigParser
 from pixelwebui import *
+import Cookie
+
+setcookies = Cookie.SimpleCookie()
+if 'HTTP_COOKIE' in os.environ:
+    cookie_string=os.environ.get('HTTP_COOKIE')
+    setcookies.load(cookie_string)
+
 
 def inputField(objName,column, defVal = "", o=None) :
 	config = ConfigParser.ConfigParser()
@@ -119,8 +126,9 @@ def inputField(objName,column, defVal = "", o=None) :
                 inputString+= "<button onClick=\"setAllPass();\" type=button> Set all to PASS</button> <button onClick=\"setAllEmpty();\" type=button>Reset all to empty</button>"
 
 	elif column == "DATA_ID" :
-	    if defVal == "" :
-	 	inputString="<input type=\"file\" name=\"DATA_ID_filename\" />"
+	    if defVal != "" and defVal != 0 :
+		inputString+=" |  add more files: "
+	    inputString+="<input type=\"file\" name=\"DATA_ID_filename\" />"
 	elif config.has_section(objName+"/"+column) :
  	    type = config.get(objName+"/"+column,"type")
  	    if type == "select" :
@@ -291,7 +299,7 @@ if action == "Insert" :
 #           return sensor
 
 
-if action == "Save changes" :
+if action == "Save changes" or  action == "Save and Close":
    for c in columns:
 	   field =  getattr(o,c)
 	   list = form.getlist(c)
@@ -301,13 +309,30 @@ if action == "Save changes" :
            columnType2=type(eval(objName+"."+c+".variable_factory()"))
 #	   print c, field, columnType, columnType2
 	   adate=date(2000,1,1)
-	   if columnType == type(adate) or columnType2 == DateVariable:
+           if c == "DATA_ID" and form['DATA_ID_filename'].filename :
+                    fileitem = form['DATA_ID_filename']
+                    fn = objID+"__"+os.path.basename(fileitem.filename)
+                    open('/data/pixels/uploads/'+objName+'/' + fn, 'wb').write(fileitem.file.read())
+                    pfn='file:/data/pixels/uploads/'+objName+'/' + fn
+		    if field == 0 :
+	                   data = Data(PFNs=pfn)
+        	           insertedData = pdb.insertData(data)
+	                   if (insertedData is None):
+        	                print"<br>Error inserting data"
+                        	o.DATA_ID=0
+	                   else:
+				print insertedData.DATA_ID
+                	        setattr(o,c,insertedData.DATA_ID)
+		    else :
+			   d=pdb.getData(int(field))
+			   d.PFNs+=","+pfn
+	   elif columnType == type(adate) or columnType2 == DateVariable:
 		if field == "None":
 			field = "1970-01-01" 
    	        d=field #form.getfirst(c, getattr(o,c))
 	        dd=datetime.strptime(d,"%Y-%m-%d")
 		setattr(o,c,dd)
-	   if columnType2 ==  DateTimeVariable :
+	   elif columnType2 ==  DateTimeVariable :
                 if field == "None":
                         field = "1970-01-01 00:00:00"   
                 d=field #form.getfirst(c, getattr(o,c))
@@ -336,8 +361,9 @@ if action == "Save changes" :
 		setattr(o,c,columnType(field))
    pdb.store.commit()
    print "Saved"
+   print o.DATA_ID
 
-if True :
+if action != "Save and Close" :
 	print "<table id=example cellspacing=10 >"
 	print "<form enctype=\"multipart/form-data\" method=\"post\" action=edit.cgi>"
 	print "<input type=hidden name=objName value=\"%s\">" % objName
@@ -377,8 +403,10 @@ if True :
 	print "</tbody><tfoot></tfoot></table><br>"
 #	print "<input type=\"submit\" name=\"submit\" value=\"Validate\" />"
 	if o : 
- 		print "<input type=\"submit\" name=\"submit\" value=\"Save changes\" /></form>"
-		print "<br><br><a href=/> Back to DB home page</a>"
+ 		print "<input type=\"submit\" name=\"submit\" value=\"Save changes\" />"
+ 		print "<input type=\"submit\" name=\"submit\" value=\"Save and Close\" /></form>"
+#	print "<br><br><a href=/> Back to DB home page</a>"
 	else :
  		print "<input type=\"submit\" name=\"submit\" value=\"Insert\" /></form>"
+print "<br> <a href=/>back home</a> | <a href=%s>back to last list view </a>" % (setcookies["lastview"].value if "lastview" in setcookies else "")
 

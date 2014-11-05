@@ -35,7 +35,14 @@ def printHeaders(setcookies):
 	print
 	print "<html>\n        <head>\n         "      
 	print '''
-	<script>
+	 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+	 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	 <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+	 <link rel="stylesheet" href="/resources/demos/style.css">
+	 <script>
+	 $(function() {
+	    $( "#datepicker" ).datepicker({ dateFormat: "dd/mm/yy" });
+	  });
 	function setAllPass(){
 		var val = "PASS";
 		var sels = document.getElementsByClassName("sels");
@@ -125,15 +132,16 @@ def inputField(objName,column, cookies, defVal = "") :
         elif column == "SESSION_ID" :
             if defVal == "" :  
 		if "center" in cookies :
-			inputString=" Operator: <input type=input  name=\"SESSION_OPERATOR\" value=\"%s\"/>" % cookies["center"].value
+			inputString=" Operator: <input type=input  name=\"SESSION_OPERATOR\" value=\"%s\"/>" % cookies["operator"].value
 		else :
 			inputString=" Operator: <input type=input  name=\"SESSION_OPERATOR\" />" 
 
 		if "operator" in cookies :
-			inputString+=" Center: <input type=input  name=\"SESSION_CENTER\" value=\"%s\"/>" % cookies["operator"].value
+			inputString+=" Center: <input type=input  name=\"SESSION_CENTER\" value=\"%s\"/>" % cookies["center"].value
 		else:
 			inputString+=" Center: <input type=input  name=\"SESSION_CENTER\" />" 
 		inputString+=" Comment: <input type=input  name=\"SESSION_COMMENT\"/>" 
+		inputString+=" Date: <input type=text id=\"datepicker\"  name=\"SESSION_DATE\" value=today />" 
 	elif config.has_section(objName+"/"+column) :
  	    type = config.get(objName+"/"+column,"type")
  	    if defVal == "" and config.has_option(objName+"/"+column,"default"):
@@ -199,7 +207,6 @@ if action == "Insert" :
      setcookies["center"]=form.getfirst("SESSION_CENTER","")
      setcookies["operator"]=form.getfirst("SESSION_OPERATOR","")
      printHeaders(setcookies)
-
      buildDict={}
      OSCILLOSCOPE_CHANNELS = None
      for c in columns:
@@ -237,7 +244,10 @@ if action == "Insert" :
 		pdb.store.commit()
 		buildDict[c]=int(t.TRANSFER_ID)
 	   elif c == "SESSION_ID" :
-		t = pdb.insertSession(Session(OPERATOR=form.getfirst("SESSION_OPERATOR"), CENTER=form.getfirst("SESSION_CENTER"), DATE=datetime.now(), TYPE=objName,  COMMENT=form.getfirst("SESSION_COMMENT")))
+		dd=datetime.now()
+		if form.getfirst("SESSION_DATE") and form.getfirst("SESSION_DATE") != "today" :
+			dd=datetime.strptime(form.getfirst("SESSION_DATE"),"%d/%m/%Y")
+		t = pdb.insertSession(Session(OPERATOR=form.getfirst("SESSION_OPERATOR"), CENTER=form.getfirst("SESSION_CENTER"), DATE=dd, TYPE=objName,  COMMENT=form.getfirst("SESSION_COMMENT")))
                 pdb.store.commit()
 		buildDict[c]=int(t.SESSION_ID)
            elif columnType2 == DateVariable :
@@ -291,6 +301,7 @@ if action == "Insert" :
 
 else :
         printHeaders(setcookies)
+        print "<H1>Inserting %s </H1>" %(objName)	
 	print "<table id=example cellspacing=10 >"
 	print "<form enctype=\"multipart/form-data\" method=\"post\" action=newTest.cgi>"
 	print "<input type=hidden name=objName value=\"%s\">" % objName

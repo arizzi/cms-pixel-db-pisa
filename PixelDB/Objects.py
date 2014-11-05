@@ -665,13 +665,14 @@ class Test_Hdi_Electric(object):
       CHANNEL_MAP={}
       VALUE_MAP = {}
       TOT_SIZE = 0
+      NOTES=Unicode()
       def init_maps(self):
           self.TEST_MAP={'CLK0' : 0,'CLK1' : 1,'CLK2' : 2,'CLK3' : 3,'CTR0' : 4,'CTR1' : 5,'CTR2' : 6,'CTR3' : 7,'SDA0' : 8,'SDA1' : 9,'SDA2' : 10,'SDA3' : 11}
           self.CHANNEL_MAP={'CH1' : 0,'CH2' : 1,'CH3' : 2,'CH4' : 3,'LV' : 4}
           self.VALUE_MAP = {'NULL' : 0, 'PASS' : 1, 'FAIL' : 2}
           self.TOT_SIZE = len(self.TEST_MAP)*len(self.CHANNEL_MAP)
 
-      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,   GRADE, HV_TEST_uA, DIGITAL_CURRENT_mA, NUM_TBM, OSCILLOSCOPE_CHANNELS=""):
+      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,   GRADE, HV_TEST_uA, DIGITAL_CURRENT_mA, NUM_TBM, OSCILLOSCOPE_CHANNELS="",NOTES=""):
 	  self.init_maps()
           nullOsc = "0"*(self.TOT_SIZE)
 

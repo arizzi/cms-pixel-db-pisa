@@ -28,6 +28,7 @@ else:
         objName = parseObjName(cgi.escape(objName))
         rowkey,cols,query,countquery = fromObjectName(objName)
 
+exactSearch = form.getfirst('exact',0)
 
 
 import json
@@ -40,6 +41,8 @@ from storm import *
 from PixelDB import *
 import random
 
+
+debug = form.getfirst("debug", "0")
 
 first = form.getfirst("iDisplayStart", "0")
 llast = form.getfirst("iDisplayLength", "-1")
@@ -108,7 +111,10 @@ for  i in range (0,int(form.getfirst('iColumns'))) :
                   escapedSearch = escape_string(searchcol)
                   if percol!= "" :
                         percol += " AND "
-                  percol+="%s like '%%%s%%'" % (colname,escapedSearch)                   
+		  if exactSearch == "1":
+	                 percol+="%s = '%s'" % (colname,escapedSearch)                   
+		  else:
+	                 percol+="%s like '%%%s%%'" % (colname,escapedSearch)                   
 
                  
 if sWhere != "" and percol!= "":
@@ -126,7 +132,12 @@ for c in colNames :
 		colString+=","
 	colString+="%s as %s"%( c,re.sub('\.','_',c))
 
+if debug == "1" :
+	print "%s %s %s"% ((query%colString),sWhere,sOrder)
 countdisplay=cur.execute("%s %s %s "% ((query%colString),sWhere,sOrder))
+
+if debug == "1" :
+	print "%s %s %s %s"% ((query%colString),sWhere,sOrder,sLimit)
 cur.execute("%s %s %s %s"% ((query%colString),sWhere,sOrder,sLimit))
 
 output = {}
@@ -138,6 +149,7 @@ for o in cur.fetchall() :
    i=0
    row = {}
    for c,rn,ev in cols :
+      if ev != "NOPRINT":
         rn=re.sub('\.','_',rn)
 	if ev == '' :
 		row[i]="%s"%o[rn]

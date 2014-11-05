@@ -22,23 +22,21 @@ print '''
                 </style>
                 <script type="text/javascript" language="javascript" src="../media/js/jquery.js"></script>
                 <script type="text/javascript" language="javascript" src="../media/js/jquery.dataTables.js"></script>
-                <script type="text/javascript" language="javascript" src="../media/js/ColVis.min.js"></script>
                 <script type="text/javascript" charset="utf-8">
                         $(document).ready(function() {
                                 $('#example').dataTable( {
+					 "bSort" : false,
 					"sDom": 'C<"clear">lfrtip',
                				 "bLengthChange": false,
 					  "bPaginate": false,
-					"bStateSave": true
+					 "bStateSave" : false,
 				} );
                         } );
 function fnShowHide( iCol )
 {
     /* Get the DataTables object again - this is not a recreation, just a get of the object */
-    var oTable = $('#example').dataTable();
+    var oTable = $('#example2').dataTable();
      
-    var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
-    oTable.fnSetColumnVis( iCol, bVis ? false : true );
 }
                 </script>
 
@@ -104,6 +102,9 @@ else :
 	 objName=r.__class__.__name__
 	  
 	columns = []
+	if objName in sortedCols:
+        	columns = sortedCols[objName]
+
 	refs = []
 	refsets = []
 	i =0 
@@ -113,7 +114,8 @@ else :
 	#    print attr,type(eval(objName+"."+attr)).__name__,"<br>"
 	#    print attr,type(eval(objName+"."+attr)).__name__," || " 
 	    if  type(eval(objName+"."+attr)) is properties.PropertyColumn or  type(eval(objName+"."+attr)).__name__ == "date"  or  type(eval(objName+"."+attr)).__name__ == "datetime":
-	        columns.append(attr) 
+		if attr not in columns :
+		        columns.append(attr) 
 
 	    if  type(eval(objName+"."+attr)) is references.ReferenceSet :
                  refsets.append(attr)
@@ -124,7 +126,7 @@ else :
 
  
 
-	print "<table id=example width=\"100%\">"
+	print "<table  id=example width=\"100%\">"
 
 	print " <thead> <tr>"
 	print "<th> Field </th>"

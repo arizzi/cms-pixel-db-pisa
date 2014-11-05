@@ -70,6 +70,6 @@ python Controller.py
 exstatus=$?
 echo EXIT STATUS $exstatus
 cd /tmp
-rm -rf $TEMPDIR
+#rm -rf $TEMPDIR
 exit  $exstatus
 #

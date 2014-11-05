@@ -88,6 +88,8 @@ $(document).ready(function() {
 
                 var table =          $('#example').DataTable( {
                         "bStateSave": true,
+                         "aLengthMenu": [   [25, 50, 100, 200, -1],
+                                        [25, 50, 100, 200, "All"]],
                         "iDisplayLength" : 10,
                         "bProcessing": true,
                         "bServerSide": true,

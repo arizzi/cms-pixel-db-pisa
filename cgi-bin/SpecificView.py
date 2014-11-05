@@ -1,7 +1,7 @@
 from time import *
 import sys
 sys.path.append("../PixelDB")
-
+import operator
 
 from PixelDB import *
 import cgi
@@ -45,6 +45,14 @@ def specificView(objName,form,pdb) :
 	 if m :
 		print "<h1> Input file %s </h1>" % m.group(2)
 		print "<a href=/data/pixels/centerinputs/%s/%s>Download file </a>" %(m.group(1),m.group(2))
+         else: 
+		files=re.split(",",data.PFNs)
+		for f in files:
+   		 	m=re.match("file:(/data/pixels/.*png)",f)
+			if m :
+			     print f+"<br><img src=%s><hr>" % m.group(1)	
+			
+			
    if objName == "Sensor" :
          sensorid=cgi.escape(form.getfirst('SENSOR_ID', 'empty'))
          tl = ""
@@ -103,6 +111,27 @@ def specificView(objName,form,pdb) :
 	  path=re.sub("file:","",ana.data.PFNs)
           print "<a href=%s>output results</a>" % path
           #>M0178T-10a.gif"
+
+
+   if objName == "Test_Hdi_Electric" :
+	 ele =  pdb.store.find(Test_Hdi_Electric,Test_Hdi_Electric.TEST_ID==int(cgi.escape(form.getfirst('TEST_ID', 'empty')))).one()
+         if ele :
+		ele.init_maps()
+		print "<table border=1><tr><td></td>"
+		for ch,i in sorted(ele.CHANNEL_MAP.items(), key=operator.itemgetter(1),reverse=True) :
+			print "<td>%s</td>" % ch
+		print "</tr>"
+		for test,i in sorted(ele.TEST_MAP.items(), key=operator.itemgetter(1)) :
+			print "<tr><td>%s</td>"%(test)
+			for ch,j in sorted(ele.CHANNEL_MAP.items(), key=operator.itemgetter(1)):
+				if ele.getBit(test,ch) == 'NULL' :
+					print "<td bgcolor=yellow>n/a</td>"
+				if ele.getBit(test,ch) == 'PASS' :
+					print "<td bgcolor=green>OK</td>"
+				if ele.getBit(test,ch) == 'FAIL' :
+					print "<td bgcolor=red>FAIL</td>"
+				
+			print "</tr>"
 
 
 
