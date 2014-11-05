@@ -632,8 +632,9 @@ class Test_Hdi_Bonding(object):
       HUB_ADDRESS_BONDS = Unicode()
       N_TEST_BONDS=Int()
       AVG_PULL_FORCE_G=Float()
+      NOTES = Unicode()
       data=Reference(DATA_ID,Data.DATA_ID)
-      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,TBM_BONDS,HUB_ADDRESS_BONDS, N_TEST_BONDS, AVG_PULL_FORCE_G ):
+      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,TBM_BONDS,HUB_ADDRESS_BONDS, N_TEST_BONDS, AVG_PULL_FORCE_G, NOTES ):
           self.SESSION_ID=SESSION_ID
           self.HDI_ID=unicode(HDI_ID)
           self.RESULT=unicode(RESULT)
@@ -642,6 +643,7 @@ class Test_Hdi_Bonding(object):
           self.HUB_ADDRESS_BONDS=unicode(HUB_ADDRESS_BONDS)
           self.N_TEST_BONDS=N_TEST_BONDS
           self.AVG_PULL_FORCE_G=float(AVG_PULL_FORCE_G)
+	  self.NOTES=unicode(NOTES)
 
 
 class Test_Hdi_Electric(object):
