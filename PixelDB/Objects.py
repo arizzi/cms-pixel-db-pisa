@@ -742,7 +742,7 @@ class Test_Hdi_Validation(object):
           self.RESULT=unicode(RESULT)
           self.DATA_ID=DATA_ID
           self.VISUAL_INSPECTION = unicode(VISUAL_INSPECTION)
-          self.NOTES=uniceode(NOTES)
+          self.NOTES=unicode(NOTES)
 
 
 class Test_Roc(object):
