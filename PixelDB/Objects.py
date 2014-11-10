@@ -656,9 +656,9 @@ class Test_Hdi_Electric(object):
       RESULT=Unicode()
       DATA_ID=Int()
       data=Reference(DATA_ID,Data.DATA_ID)
-      OSCILLOSCOPE_CHANNELS=Unicode()
+      SIGNALS_AND_LVS=Unicode()
       GRADE=Int()
-      HV_TEST_uA=Float()
+      HV600_CURRENT_uA=Float()
       DIGITAL_CURRENT_mA=Float()
       NUM_TBM=Int()
       TEST_MAP={}
@@ -672,7 +672,7 @@ class Test_Hdi_Electric(object):
           self.VALUE_MAP = {'NULL' : 0, 'PASS' : 1, 'FAIL' : 2}
           self.TOT_SIZE = len(self.TEST_MAP)*len(self.CHANNEL_MAP)
 
-      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,   GRADE, HV_TEST_uA, DIGITAL_CURRENT_mA, NUM_TBM, OSCILLOSCOPE_CHANNELS="",NOTES=""):
+      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,   GRADE, HV600_CURRENT_uA, DIGITAL_CURRENT_mA, NUM_TBM, SIGNALS_AND_LVS="",NOTES=""):
 	  self.init_maps()
           nullOsc = "0"*(self.TOT_SIZE)
 
@@ -680,12 +680,12 @@ class Test_Hdi_Electric(object):
           self.HDI_ID=unicode(HDI_ID)
           self.RESULT=unicode(RESULT)
           self.DATA_ID=DATA_ID
-          if (OSCILLOSCOPE_CHANNELS == ""):
-              self.OSCILLOSCOPE_CHANNELS = unicode(nullOsc)
+          if (SIGNALS_AND_LVS == ""):
+              self.SIGNALS_AND_LVS = unicode(nullOsc)
           else:
-              self.OSCILLOSCOPE_CHANNELS =unicode(OSCILLOSCOPE_CHANNELS)
+              self.SIGNALS_AND_LVS =unicode(SIGNALS_AND_LVS)
           self.GRADE =GRADE   
-          self.HV_TEST_uA =   HV_TEST_uA
+          self.HV600_CURRENT_uA =   HV600_CURRENT_uA
           self.DIGITAL_CURRENT_mA =DIGITAL_CURRENT_mA   
           self.NUM_TBM = NUM_TBM  
 #
@@ -697,7 +697,7 @@ class Test_Hdi_Electric(object):
               return None
           if not channel in self.CHANNEL_MAP:
               return None
-          if len(self.OSCILLOSCOPE_CHANNELS) != self.TOT_SIZE:
+          if len(self.SIGNALS_AND_LVS) != self.TOT_SIZE:
               return None
           if not value in self.VALUE_MAP:
               return None
@@ -705,23 +705,23 @@ class Test_Hdi_Electric(object):
           t = self.TEST_MAP[test]          
           c = self.CHANNEL_MAP[channel]
           offset = t*len(self.CHANNEL_MAP)+c
-          s = list(self.OSCILLOSCOPE_CHANNELS)
+          s = list(self.SIGNALS_AND_LVS)
           s[offset] = "%s"%v
-          self.OSCILLOSCOPE_CHANNELS = "".join(s)
-          return self.OSCILLOSCOPE_CHANNELS
+          self.SIGNALS_AND_LVS = "".join(s)
+          return self.SIGNALS_AND_LVS
       def getBit(self,test, channel):
           self.init_maps()
           if not test in self.TEST_MAP:
               return None
           if not channel in self.CHANNEL_MAP:
               return None
-          if len(self.OSCILLOSCOPE_CHANNELS) != self.TOT_SIZE:
+          if len(self.SIGNALS_AND_LVS) != self.TOT_SIZE:
               return None
           t = self.TEST_MAP[test]          
           c = self.CHANNEL_MAP[channel]
           offset = t*len(self.CHANNEL_MAP)+c
           inv = dict(map(reversed, self.VALUE_MAP.iteritems()))
-          return inv[int((self.OSCILLOSCOPE_CHANNELS.encode('utf8'))[offset])]
+          return inv[int((self.SIGNALS_AND_LVS.encode('utf8'))[offset])]
 
 
 class Test_Hdi_Validation(object):

@@ -698,8 +698,8 @@ class PixelDBInterface(object) :
             #
             # check on SIZES etc
             #
-            if (len(test.OSCILLOSCOPE_CHANNELS) != test.TOT_SIZE):
-                  print "Cannot insert Test HDI ELECTRIC: OSCILLOSCOPE_CHANNELS not correct size"
+            if (len(test.SIGNALS_AND_LVS) != test.TOT_SIZE):
+                  print "Cannot insert Test HDI ELECTRIC: SIGNALS_AND_LVS not correct size"
                   return None
             self.store.add(test)
             self.store.commit()
