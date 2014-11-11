@@ -391,6 +391,108 @@ class Test_BareModule(object):
       DATA_ID=Int()
       data=Reference(DATA_ID,Data.DATA_ID)
 
+class test_BareModule_QA (object):
+      __storm_table__ = "test_baremodule_qa"
+      TEST_ID = Int(primary=True)
+      SESSION_ID=Int()
+      session = Reference (SESSION_ID,Session.SESSION_ID)
+      BAREMODULE_ID =  Unicode()
+      baremodule=Reference(BAREMODULE_ID, BareModule.BAREMODULE_ID)
+      DATA_ID=Int()
+      data=Reference(DATA_ID,Data.DATA_ID)
+      TYPE = Unicode()
+      TOTAL_FAILURES = Unicode()
+      TEMPERATURE = Float()
+      HUMIDITY = Float()
+#
+# supposed to be a JSON of the form '{"ROC1": [[2, 3], [4, 5]]}'
+#
+      FAILURES = Unicode()
+      def __init__ (self,DATA_ID,SESSION_ID,BAREMODULE_ID, TYPE, TEMPERATURE, HUMIDITY, TOTAL_FAILURES, FAILURES="" ):
+         self.DATA_ID = DATA_ID
+         self.SESSION_ID= SESSION_ID
+         self.TYPE= unicode(TYPE)
+         self.TEMPERATURE = unicode(TEMPERATURE)
+         self.HUMIDITY   =  unicode(HUMIDITY)
+         self.FAILURES= unicode(FAILURES)
+         self.BAREMODULE_ID= unicode(BAREMODULE_ID)
+         self.TOTAL_FAILURES = unicode(TOTAL_FAILURES)
+      def splitObjects(self,pippo, i):
+          result =((unicode(pippo)).split(","))[i]
+          return result
+      def joinObjects(self, arrayofrocids):
+            if len (arrayofrocids) !=6 :
+                return None
+            return unicode(string.join(arrayofrocids,","))
+
+class Test_BareModule_Grading(object):
+      __storm_table__ = "test_baremodule_grading"
+      TEST_ID = Int(primary=True)
+      SESSION_ID=Int()
+      session = Reference (SESSION_ID,Session.SESSION_ID)
+      BAREMODULE_ID =  Unicode()
+      baremodule=Reference(BAREMODULE_ID, BareModule.BAREMODULE_ID)
+      DATA_ID=Int()
+      data=Reference(DATA_ID,Data.DATA_ID)
+
+      GLOBAL_GRADING = Unicode()
+      GLOBAL_GRADING_1 = Unicode()
+      GLOBAL_GRADING_2 = Unicode()
+      GLOBAL_GRADING_3 = Unicode()
+      GLOBAL_GRADING_4 = Unicode()
+      GLOBAL_GRADING_5 = Unicode()
+      GLOBAL_GRADING_6 = Unicode()
+      GLOBAL_GRADING_7 = Unicode()
+      GLOBAL_GRADING_8 = Unicode()
+      GLOBAL_GRADING_9 = Unicode()
+      GLOBAL_GRADING_10 = Unicode()
+
+      def __init__ (self, SESSION_ID, BAREMODULE_ID , DATA_ID , GLOBAL_GRADING, 
+          GLOBAL_GRADING_1, 
+          GLOBAL_GRADING_2, 
+          GLOBAL_GRADING_3, 
+          GLOBAL_GRADING_4,   
+          GLOBAL_GRADING_5, 
+          GLOBAL_GRADING_6, 
+          GLOBAL_GRADING_7, 
+          GLOBAL_GRADING_8, 
+          GLOBAL_GRADING_9, 
+          GLOBAL_GRADING_10):
+          
+          self.DATA_ID = DATA_ID
+          self.SESSION_ID= SESSION_ID
+          self.BAREMODULE_ID= unicode(BAREMODULE_ID)
+          self.GLOBAL_GRADING  = unicode(GLOBAL_GRADING)
+          self.GLOBAL_GRADING_1 = unicode (GLOBAL_GRADING_1 )
+          self.GLOBAL_GRADING_2 = unicode (GLOBAL_GRADING_2 )
+          self.GLOBAL_GRADING_3 = unicode (GLOBAL_GRADING_3 )
+          self.GLOBAL_GRADING_4 = unicode (GLOBAL_GRADING_4 )
+          self.GLOBAL_GRADING_5 = unicode (GLOBAL_GRADING_5 )
+          self.GLOBAL_GRADING_6 = unicode (GLOBAL_GRADING_6 )
+          self.GLOBAL_GRADING_7 = unicode (GLOBAL_GRADING_7 )
+          self.GLOBAL_GRADING_8 = unicode (GLOBAL_GRADING_8 )
+          self.GLOBAL_GRADING_9 = unicode (GLOBAL_GRADING_9 )
+          self.GLOBAL_GRADING_10 = unicode (GLOBAL_GRADING_10 )
+
+
+
+'''
+
+class Test_BareModule_DaqParameters(object):
+      __storm_table__ = "test_baremodule_grading"
+      TEST_ID = Int(primary=True)
+      SESSION_ID=Int()
+      session = Reference (SESSION_ID,Session.SESSION_ID)
+      BAREMODULE_ID =  Unicode()
+      baremodule=Reference(BAREMODULE_ID, BareModule.BAREMODULE_ID)
+      DATA_ID=Int()
+      data=Reference(DATA_ID,Data.DATA_ID)
+
+
+
+'''
+
+
 class Test_FullModuleSession(object):
       __storm_table__ = "test_fullmodulesession"
       TEST_ID = Int(primary=True)
@@ -787,6 +889,113 @@ class Test_Roc(object):
           self.THRESHOLDPIXELS=int(THRESHOLDPIXELS)
           self.PHFAIL=int(PHFAIL)
           self.COMMENT=unicode(COMMENT)
+
+
+
+class Test_Roc_Setup(object):
+    __storm_table__ = "test_roc_setup"
+    TEST_ID = Int(primary=True)
+    SESSION_ID=Int()
+    session = Reference (SESSION_ID,Session.SESSION_ID)
+    ROC_ID =  Unicode()
+    roc=Reference(ROC_ID, Roc.ROC_ID)
+    DATA_ID=Int()
+    data=Reference(DATA_ID,Data.DATA_ID)
+
+    TEMPERATURE =Float()
+    HUMIDITY =Float()
+    IDIG  = Int()
+    CLK   = Int()
+    DESER   = Int()
+    VDIG  = Int()
+    VANA  = Int()
+    VSH  = Int()
+    VCOMP  = Int()
+    VWLLPR  = Int()
+    VWLLSH  = Int()
+    VHLDDEL  = Int()
+    VTRIM  = Int()
+    VTHRCOMP  = Int()
+    VIBIAS_BUS  = Int()
+    VBIAS_SF  = Int()
+    VOFFSETOP  = Int()
+    PHOFFSET  = Int()
+    VION  = Int()
+    VCOMP_ADC  = Int()
+    PHSCALE  = Int()
+    VICOLOR  = Int() 
+    VCAL  = Int()
+    CALDEL  = Int()
+    VD  = Int()	
+    VA  = Int()
+    CTRLREG  = Int()
+    WBC  = Int()
+    RBREG  = Int()
+     
+    def __init__(self, SESSION_ID, DATA_ID, ROC_ID,
+                 TEMPERATURE, 
+                 HUMIDITY,
+                 IDIG,	
+                 CLK,
+                 DESER  ,
+                 VDIG ,
+                 VANA ,
+                 VSH ,
+                 VCOMP ,
+                 VWLLPR ,
+                 VWLLSH ,
+                 VHLDDEL ,
+                 VTRIM ,
+                 VTHRCOMP ,
+                 VIBIAS_BUS ,
+                 VBIAS_SF ,
+                 VOFFSETOP ,
+                 PHOFFSET ,
+                 VION ,
+                 VCOMP_ADC ,
+                 PHSCALE ,
+                 VICOLOR , 
+                 VCAL ,
+                 CALDEL ,
+                 VD ,	
+                 VA ,
+                 CTRLREG ,
+                 WBC ,
+                 RBREG):
+        
+       self.TEMPERATURE = float(TEMPERATURE)
+       self.HUMIDITY = float(HUMIDITY)
+       self.IDIG=int(           IDIG )	    	
+       self.CLK =int( 		 CLK  )	    
+       self.DESER =int( 	 DESER  )   
+       self.VDIG =int( 	 VDIG )	    
+       self.VANA =int( 	 VANA )	    
+       self.VSH =int( 		 VSH )	    
+       self.VCOMP =int( 	 VCOMP )    
+       self.VWLLPR =int( 	 VWLLPR )   
+       self.VWLLSH =int( 	 VWLLSH )   
+       self.VHLDDEL =int( 	 VHLDDEL )  
+       self.VTRIM =int( 	 VTRIM )    
+       self.VTHRCOMP =int( 	 VTHRCOMP ) 
+       self.VIBIAS_BUS =int( 	 VIBIAS_BUS )
+       self.VBIAS_SF =int(VBIAS_SF)
+       self.VOFFSETOP =int( 	 VOFFSETOP )
+       self.PHOFFSET =int( 	 PHOFFSET ) 
+       self.VION =int( 	 VION )	    
+       self.VCOMP_ADC =int( 	 VCOMP_ADC )
+       self.PHSCALE =int( 	 PHSCALE )  
+       self.VICOLOR =int( 	 VICOLOR )  
+       self.VCAL =int( 	 VCAL )	    
+       self.CALDEL =int( 	 CALDEL )   
+       self.VD =int( 		 VD )	    
+       self.VA =int( 		 VA )	    
+       self.CTRLREG =int( 	 CTRLREG )  
+       self.WBC =int(		 WBC )	    
+       self.RBREG =int(	 RBREG )    
+       
+
+          
+
 
 class Test_IV(object): # e' il vecchio test_sensor
       __storm_table__ = "test_iv"
