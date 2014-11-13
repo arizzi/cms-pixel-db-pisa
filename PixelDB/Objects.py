@@ -391,7 +391,7 @@ class Test_BareModule(object):
       DATA_ID=Int()
       data=Reference(DATA_ID,Data.DATA_ID)
 
-class test_BareModule_QA (object):
+class Test_BareModule_QA (object):
       __storm_table__ = "test_baremodule_qa"
       TEST_ID = Int(primary=True)
       SESSION_ID=Int()
@@ -759,7 +759,6 @@ class Test_Hdi_Electric(object):
       DATA_ID=Int()
       data=Reference(DATA_ID,Data.DATA_ID)
       SIGNALS_AND_LVS=Unicode()
-      GRADE=Int()
       HV600_CURRENT_uA=Float()
       DIGITAL_CURRENT_mA=Float()
       NUM_TBM=Int()
@@ -774,7 +773,7 @@ class Test_Hdi_Electric(object):
           self.VALUE_MAP = {'NULL' : 0, 'PASS' : 1, 'FAIL' : 2}
           self.TOT_SIZE = len(self.TEST_MAP)*len(self.CHANNEL_MAP)
 
-      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,   GRADE, HV600_CURRENT_uA, DIGITAL_CURRENT_mA, NUM_TBM, SIGNALS_AND_LVS="",NOTES=""):
+      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,  HV600_CURRENT_uA, DIGITAL_CURRENT_mA, NUM_TBM, SIGNALS_AND_LVS="",NOTES=""):
 	  self.init_maps()
           nullOsc = "0"*(self.TOT_SIZE)
 
@@ -786,7 +785,6 @@ class Test_Hdi_Electric(object):
               self.SIGNALS_AND_LVS = unicode(nullOsc)
           else:
               self.SIGNALS_AND_LVS =unicode(SIGNALS_AND_LVS)
-          self.GRADE =GRADE   
           self.HV600_CURRENT_uA =   HV600_CURRENT_uA
           self.DIGITAL_CURRENT_mA =DIGITAL_CURRENT_mA   
           self.NUM_TBM = NUM_TBM  

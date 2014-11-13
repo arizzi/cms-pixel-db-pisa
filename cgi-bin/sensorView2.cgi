@@ -58,7 +58,10 @@ print '''
 	        		for(var i=0;i<rows.length;i++)
 			        {
 				  $(rows[i]).addClass('selected');
-				  id=rows[i].childNodes[14].innerHTML;
+				  id=$(rows[i]).attr('id');
+//		  id=rows[i].childNodes[14].innerHTML;
+//				  console.log(id)
+//				  console.log($(rows[i]).attr('id'))
                                   var index = $.inArray(id, selected);
 				  if ( index === -1 ) {
                                         selected.push( id );
@@ -68,9 +71,51 @@ print '''
 				update();
 			}
 
+              function draw()
+                {
+                        selString="";
+                 console.log($.param(    $("#example").DataTable().ajax.params()))
+
+                          var el=document.getElementById("sel");
+                          var xmin=document.getElementById("xmin").value;
+                          var xmax=document.getElementById("xmax").value;
+                          var nbins=document.getElementById("nbins").value;
+                          var log=0;
+                          if( $('#logy').is(':checked')) {
+                                log=1
+                          }
+                          var options="xmin="+xmin+"&xmax="+xmax+"&nbins="+nbins+"&log="+log;
+                          var j = el.selectedIndex;
+                          var rows = $("#example").dataTable().fnGetNodes();
+                          for(var i=0;i<rows.length;i++) {
+                                  id=$(rows[i]).attr('id');
+                                  var index = $.inArray(id, selected);
+                                  if(index!= -1) {
+                                        selString+="dtid="+rows[i].childNodes[j].innerText+"&";
+                                  }
+
+                        
+                          }
+                          
+                          $("#plotPH").text("");
+                          var rows = $("#example").dataTable().fnGetNodes();
+                          if( selected.length != rows.length &&  selected.length  != 0) {
+                          $("#plotPH").append("<img id='theImg' src='/cgi-bin/draw.cgi?"+selString+options+"'/>");
+                         }else{
+                          $("#plotPH").append("<img id='theImg' src='/cgi-bin/draw.cgi?coltoDraw="+j+"&"+options+"&"+$.param(    $("#example").DataTable().ajax.params())+"'/>");
+                        }
+                        
+                }
+
+
+
 $(document).ready(function() {
                                 $('#example tbody').on( 'click', 'tr', function () {
-                                        var id = this.childNodes[14].innerHTML;
+                                        var id = $(this).attr('id');
+//                                        var id = this.childNodes[14].innerHTML;
+//					console.log(id);
+//					console.log($(this).attr('id'));
+
                                         var index = $.inArray(id, selected);
 
                                         if ( index === -1 ) {
@@ -150,6 +195,20 @@ print "<p>"
 if True :
  print "<button onclick='selectAll()'>Select all</button>"
  print "<button onclick='selectNone()'>Unselect all</button>"
+
+if True :
+        print "<button onclick='draw()'>Draw</button><select id=sel>"
+        i=0
+        for (c,s,e) in toprint :
+                if e!= "NOPRINT":
+                        print "<option value=%d>%s</option>"% (i,c)
+                i+=1
+        print "</select>"
+        print "Xmin: <input type=text id=xmin name=xmin> Xmax: <input type=text id=xmax name=xmax> Nbins: <input type=text id=nbins name=nbins> LogY: <input type=checkbox id=logy> "
+
+print "<div id=plotPH></div>"
+
+
 # print " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <button>Plot all IVs for selected sensors</button> <button>Plot selected IVs</button>"
 print "<hr>"
 print "<table id=example class='display compact' >"

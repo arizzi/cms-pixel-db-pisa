@@ -33,6 +33,7 @@ if objName == 'empty' :
 		topush='"name" : "viewNumber", "value" : "%s"' % viewNumber
 		print header[viewNumber]
 else:
+	viewNumber=-1
 	objName = parseObjName(cgi.escape(objName))
 	id,toprint,query,count = fromObjectName(objName)
 	topush='"name" : "objName", "value" : "%s"' % objName
@@ -45,9 +46,19 @@ print '''
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.2/js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="http://jquery-datatables-column-filter.googlecode.com/svn/trunk/media/js/jquery.dataTables.columnFilter.js"></script>
 <script>
+                var selected = [];
+
 $(document).ready(function() {
 		$('#example tbody').on( 'click', 'tr', function () {
-		        $(this).toggleClass('selected');
+                                        var id = $(this).attr('id');
+                                        var index = $.inArray(id, selected);
+                                        if ( index === -1 ) {
+                                        selected.push( id );
+                                        } else {
+                                        selected.splice( index, 1 );
+                                        }
+                                        $(this).toggleClass('selected');
+                                        update();
 		} );
 		$('#example thead th').each( function () {
 			var title = $('#example thead th').eq( $(this).index() ).text();
@@ -95,9 +106,82 @@ $(document).ready(function() {
 //.columnFilter({ sPlaceHolder: "filterPH"});
 				});
 
+	      function update()
+		{
+		//	console.log(	$("#example").DataTable().ajax.json())
+		}
+              function draw()
+		{
+			selString="";
+		 console.log($.param(    $("#example").DataTable().ajax.params()))
+
+/*			for (var i = 0; i < selected.length; i++) {
+                                selString+="dtid="+selected[i]+"&";
+                        }*/
+			  var el=document.getElementById("sel");
+			  var xmin=document.getElementById("xmin").value;
+			  var xmax=document.getElementById("xmax").value;
+			  var nbins=document.getElementById("nbins").value;
+			  var log=0;
+			  if( $('#logy').is(':checked')) {
+				log=1
+			  }
+			  var options="xmin="+xmin+"&xmax="+xmax+"&nbins="+nbins+"&log="+log;
+			  var j = el.selectedIndex;
+	                  var rows = $("#example").dataTable().fnGetNodes();
+                          for(var i=0;i<rows.length;i++) {
+				  id=$(rows[i]).attr('id');
+                                  var index = $.inArray(id, selected);
+				  if(index!= -1) {
+					selString+="dtid="+rows[i].childNodes[j].innerText+"&";
+				  }
+
+			
+			  }
+			  
+			  $("#plotPH").text("");
+			  var rows = $("#example").dataTable().fnGetNodes();
+	  		  if( selected.length != rows.length &&  selected.length  != 0) {
+	                  $("#plotPH").append("<img id='theImg' src='/cgi-bin/draw.cgi?viewNumber=%d&objName=%s&"+selString+options+"'/>");
+			 }else{
+			  $("#plotPH").append("<img id='theImg' src='/cgi-bin/draw.cgi?coltoDraw="+j+"&"+options+"&"+$.param(    $("#example").DataTable().ajax.params())+"'/>");
+			}
+//			$.get( "test.php", function( data ) {
+//			  alert( "Data Loaded: " + data );
+//			});
+			
+		}
+
+              function selectNone()
+                        {
+                                var rows = $("#example").dataTable().fnGetNodes();
+                                for(var i=0;i<rows.length;i++)
+                                {
+                                  $(rows[i]).removeClass('selected');
+                                }
+                                selected = [];
+                                update();
+                        }
+
+              function selectAll()
+                        {
+                                var rows = $("#example").dataTable().fnGetNodes();
+                                for(var i=0;i<rows.length;i++)
+                                {
+                                  $(rows[i]).addClass('selected');
+                                  id=$(rows[i]).attr('id');
+                                  var index = $.inArray(id, selected);
+                                  if ( index === -1 ) {
+                                        selected.push( id );
+                                  }
+
+                                }
+                                update();
+                        }
+
 	                </script>
 
-''' %(topush)
+''' %(topush,viewNumber,objName)
 sys.path.append("../PixelDB")
 
 from storm import *
@@ -110,8 +194,25 @@ from pixelwebui import *
 pdb = PixelDBInterface(operator="webfrontend",center="cern")
 pdb.connectToDB()
 
+if True :
+ print "<button onclick='selectAll()'>Select all</button>"
+ print "<button onclick='selectNone()'>Unselect all</button>"
 
-print "<input type=checkbox id=exact onclick=\"var table = $('#example').DataTable(); table.ajax.reload();\"> Exact per column search"
+if True :
+	print "<button onclick='draw()'>Draw</button><select id=sel>"
+	i=0
+	for (c,s,e) in toprint :
+		if e!= "NOPRINT":
+			print "<option value=%d>%s</option>"% (i,c)
+		i+=1
+	print "</select>"
+        print "Xmin: <input type=text id=xmin name=xmin> Xmax: <input type=text id=xmax name=xmax> Nbins: <input type=text id=nbins name=nbins> LogY: <input type=checkbox id=logy> "
+		
+
+print "<div id=plotPH></div>"
+
+
+print "<br><input type=checkbox id=exact onclick=\"var table = $('#example').DataTable(); table.ajax.reload();\"> Exact per column search"
 print "<p id=filterPH></p>"
 print "<table id=example class=display width=100%>"
 print " <thead> <tr>"

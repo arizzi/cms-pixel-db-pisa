@@ -24,7 +24,7 @@ def findFileFromTestID(id) :
          return None 
 
 def readIVFile(ff,temp,correct):
-	f = open(ff, "r")
+	f = open(ff, "rU")
 	lines = f.readlines()
 	i=[]
 	v=[]

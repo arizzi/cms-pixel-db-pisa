@@ -36,13 +36,22 @@ header.append('''<h1>HDI Tests summary  view</h1>
 ''')
 
 
+def testNotes(o,testname) :
+         note=""
+         nk=testname+'_NOTES'
+	 if nk in o :
+	    note=o[nk]
+	 if note and note != "" :
+		return "<br>%s"%note
+	 return "" 	
+	   
 def testDetails(o,testname) :
    return "&nbsp;<a href=/cgi-bin/viewdetails.cgi?objName="+testname+"&TEST_ID=%s><img src=/icons/viewmag.png width=16></a>"%(o[testname+'_TEST_ID'] )
 
 
 def hdiTbmGlue(o) :
 	 if  o['Test_Hdi_TbmGluing_RESULT'] :
-		return coloredResult(o['Test_Hdi_TbmGluing_RESULT'])+ testDetails(o,'Test_Hdi_TbmGluing')+' <a href=/cgi-bin/writers/newTest.cgi?objName=Test_Hdi_TbmGluing&HDI_ID=%s><img src=/icons/add.png width=16></a>'%o['Hdi_HDI_ID']
+		return coloredResult(o['Test_Hdi_TbmGluing_RESULT'])+ testDetails(o,'Test_Hdi_TbmGluing')+' <a href=/cgi-bin/writers/newTest.cgi?objName=Test_Hdi_TbmGluing&HDI_ID=%s><img src=/icons/add.png width=16></a>'%o['Hdi_HDI_ID']+testNotes(o,'Test_Hdi_TbmGluing')
 	 elif o['Hdi_TBM1_VERSION'] == "":
 		return '<a href=/cgi-bin/writers/edit.cgi?objName=Hdi&HDI_ID=%s>add TBM to HDI</a>'%o['Hdi_HDI_ID']
 	 else :
@@ -55,6 +64,7 @@ def testEntry(o,testname):
 #"<a href=/cgi-bin/viewdetails.cgi?objName="+testname+"&TEST_ID=%s>.</a><br>"%(o[testname+'_TEST_ID'] )
 #		ret=coloredResult(o[testname+'_RESULT'])+"<br>"
 	 ret+=' <a href=/cgi-bin/writers/newTest.cgi?objName='+testname+'&HDI_ID=%s><img src=/icons/add.png width=16></a>'%o['Hdi_HDI_ID']
+	 ret+=testNotes(o,testname)
 	 return ret
 			
 columns.append([
@@ -73,7 +83,7 @@ columns.append([
 	("TBM Gluing","Test_Hdi_TbmGluing.RESULT","hdiTbmGlue(o)"),
 	("Bonding","Test_Hdi_Bonding.RESULT","testEntry(o,'Test_Hdi_Bonding')"),
 #	("Electric","Test_Hdi_Electric.RESULT","testEntry(o,'Test_Hdi_Electric')"),
-	("Electric","Test_Hdi_Electric.RESULT","('%s %s(<a href=/cgi-bin/writers/edit.cgi?objName=Test_Hdi_Electric&TEST_ID=%s>edit</a>)'%(coloredResult(o['Test_Hdi_Electric_RESULT']),testDetails(o,'Test_Hdi_Electric'),o['Hdi_LASTTEST_HDI_ELECTRIC']) if o['Test_Hdi_Electric_RESULT'] else 'n/a')+' <a href=/cgi-bin/writers/newTest.cgi?objName=Test_Hdi_Electric&HDI_ID=%s><img src=/icons/add.png width=16></a>'%o['Hdi_HDI_ID']"),
+	("Electric","Test_Hdi_Electric.RESULT","('%s %s(<a href=/cgi-bin/writers/edit.cgi?objName=Test_Hdi_Electric&TEST_ID=%s>edit</a>)%s'%(coloredResult(o['Test_Hdi_Electric_RESULT']),testDetails(o,'Test_Hdi_Electric'),o['Hdi_LASTTEST_HDI_ELECTRIC'],testNotes(o,'Test_Hdi_Electric')) if o['Test_Hdi_Electric_RESULT'] else 'n/a')+' <a href=/cgi-bin/writers/newTest.cgi?objName=Test_Hdi_Electric&HDI_ID=%s><img src=/icons/add.png width=16></a>'%o['Hdi_HDI_ID']"),
 	("Validation","Test_Hdi_Validation.RESULT","testEntry(o,'Test_Hdi_Validation')"),
 	("","Hdi.LASTTEST_HDI_ELECTRIC","NOPRINT"),
 	("","Hdi.LASTTEST_HDI_BONDING","NOPRINT"),
@@ -85,6 +95,10 @@ columns.append([
 	("","Test_Hdi_TbmGluing.TEST_ID","NOPRINT"),
 	("","Test_Hdi_Validation.TEST_ID","NOPRINT"),
 	("","Test_Hdi_Bonding.TEST_ID","NOPRINT"),
+	("","Test_Hdi_Electric.NOTES","NOPRINT"),
+	("","Test_Hdi_TbmGluing.NOTES","NOPRINT"),
+	("","Test_Hdi_Validation.NOTES","NOPRINT"),
+	("","Test_Hdi_Bonding.NOTES","NOPRINT"),
 
 ])
 rowkeys.append("Hdi_HDI_ID") #not obvious
@@ -97,13 +111,41 @@ queries.append("select %s,Transfer.STATUS as Transfer_STATUS, Transfer.SENDER as
 		" WHERE 1 ")
 countqueries.append("select COUNT(1)  from inventory_hdi")
 
+################################################ ROC Views ########################################
+header.append('''<h1>Overview of ROCs</h1>''')
+#<img src=/icons/viewmag.png width=16> = view test details <p>
+#<img src=/icons/add.png width=16> = add new test <p>
+#''')
 
-### tools
+def rocColors(o) :
+	res=o['Test_Roc_RESULT']
+ 	return "%d"% o['Test_Roc_RESULT']
+
+columns.append([
+        ("ROC ID","Roc.ROC_ID","'<a href=/cgi-bin/viewdetails.cgi?objName=Roc&ROC_ID=%s>%s</a>'%(o['Roc_ROC_ID'],o['Roc_ROC_ID'])"),
+        ("Center","Transfer.RECEIVER","o['Transfer_RECEIVER'] if o['Transfer_STATUS']=='ARRIVED' else  o['Transfer_SENDER'] "),
+        ("Status","Roc.STATUS",""),
+        ("Grade","Test_Roc.RESULT","rocColors(o)"),
+        ("Pos on wafer","Roc.ROC_POSITION",""),
+        ("","Roc.LASTTEST_ROC","NOPRINT"),
+
+])
+rowkeys.append("Roc_ROC_ID") #not obvious
+queries.append("select %s,Transfer.STATUS as Transfer_STATUS, Transfer.SENDER as Transfer_SENDER from inventory_roc as Roc left outer join transfers as Transfer on Roc.TRANSFER_ID=Transfer.TRANSFER_ID "
+                "left outer join test_roc as Test_Roc on Roc.LASTTEST_ROC=Test_Roc.TEST_ID "
+                " WHERE 1 ")
+countqueries.append("select COUNT(1)  from inventory_roc")
+
+
+############################################## tools#####################################################
 def coloredResult(res) :
 	if res=="OK" :
 		return "<font color =green>OK</font>"
 	else:
 		return "<font color =red>"+res+"</font>"
+
+
+
 
 ##################################### Automatic object views ######################################
 from pixelwebui import *

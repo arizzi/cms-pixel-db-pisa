@@ -77,7 +77,7 @@ class InputTar (object):
     CKSUM = Unicode()
     CKSUMTYPE = Unicode()
     TESTNAME=Unicode()
-    DATE = datetime(1970,1,1)
+    DATE = DateTime()
     STATUS = Unicode()
     CENTER = Unicode()
     def __init__ (self, NAME,    LOCATION,    CKSUM   ,CKSUMTYPE,  DATE, STATUS, CENTER, TESTNAME):
@@ -94,7 +94,7 @@ class ProcessedDir (object):
     __storm_table__ = "outputdir"
     DIR_ID = Int(primary=True)
     NAME = Unicode()
-    DATE = datetime(1970,1,1)
+    DATE = DateTime()
     STATUS = Unicode()
     UPLOAD_TYPE = Unicode()
     UPLOAD_STATUS = Unicode()
@@ -121,7 +121,7 @@ class ProcessingRun (object):
     UPLOADMETHOD=Unicode()
     EXIT_CODE = Int()
     STATUS = Unicode()
-    DATE = datetime(1970,1,1)
+    DATE = DateTime()
     PROCESSED_DIR_ID = Int()
     def __init__(self, MACRO_VERSION, EXECUTED_COMMAND, EXIT_CODE, DATE, STATUS, TAR_ID, PROCESSEDPREFIX,UPLOADMETHOD,PROCESSED_DIR_ID=0):
         self.TAR_ID = TAR_ID

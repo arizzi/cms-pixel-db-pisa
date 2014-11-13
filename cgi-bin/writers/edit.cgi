@@ -98,7 +98,9 @@ def inputField(objName,column, defVal = "", o=None) :
 		for o in cents :
 	        	inputString+="<option>%s</option>" % o
 	   	inputString+=" </select><p>"
-        elif column == "OSCILLOSCOPE_CHANNELS" and o :
+        elif column == "SESSION_ID" and defVal != "" and defVal != 0 and objName!="Session":
+		inputString+=" (edit <a href=edit.cgi?objName=Session&SESSION_ID=%s  target=\"_blank\">this session</a> in new window)"%defVal
+        elif column == "SIGNALS_AND_LVS" and o :
                 channels = ["CH1","CH2","CH3","CH4","LV"]
                 tests = ["CLK0","CLK1","CLK2","CLK3","CTR0","CTR1","CTR2","CTR3","SDA0","SDA1","SDA2","SDA3"]
                 lens = [12,12,8,12,4]
@@ -118,7 +120,7 @@ def inputField(objName,column, defVal = "", o=None) :
 				if val == 'PASS' :	
 					selpass='selected'
                                 if lens[i]>j :
-                                        inputString+= "<td><select class=sels onchange=update() name=%s><option value=NULL></option><option value=PASS %s>PASS</option><option value=FAIL %s>FAIL</option></select></td>" % ("OSCILLOSCOPE_CHANNELS_"+channels[i]+"_"+tests[j],selpass,selfail)
+                                        inputString+= "<td><select class=sels onchange=update() name=%s><option value=NULL></option><option value=PASS %s>PASS</option><option value=FAIL %s>FAIL</option></select></td>" % ("SIGNALS_AND_LVS_"+channels[i]+"_"+tests[j],selpass,selfail)
                                 else:
                                         inputString+= "<td bgcolor=#000000></td>"
                         inputString+= "</tr>"
@@ -204,6 +206,7 @@ if action == "Validate" :
    print "to be implemented"
 
 columns.sort()
+columns=onlyColumns(objName)
 
 if action == "Insert" :
   if  aux or first :
@@ -213,7 +216,7 @@ if action == "Insert" :
 #           columnType=type(eval("aux."+c))
            adate=date(2000,1,1)
            columnType2=type(eval(objName+"."+c+".variable_factory()"))
-	   OSCILLOSCOPE_CHANNELS=None
+	   SIGNALS_AND_LVS=None
 	   if c == "DATA_ID" and form['DATA_ID_filename'].filename :
   		    fileitem = form['DATA_ID_filename']
          	    fn = objID+"__"+os.path.basename(fileitem.filename)
@@ -338,9 +341,9 @@ if action == "Save changes" or  action == "Save and Close":
                 d=field #form.getfirst(c, getattr(o,c))
                 dd=datetime.strptime(d,"%Y-%m-%d %H:%M:%S")
                 setattr(o,c,dd)
-	   elif c == "OSCILLOSCOPE_CHANNELS" :
+	   elif c == "SIGNALS_AND_LVS" :
                 for f in form :
-                        m=re.match('OSCILLOSCOPE_CHANNELS_(.*)_(.*)',f)
+                        m=re.match('SIGNALS_AND_LVS_(.*)_(.*)',f)
                         if m :
                                 o.setBit(m.group(2),m.group(1),form[f].value)
            elif columnType2 == IntVariable :
@@ -361,9 +364,9 @@ if action == "Save changes" or  action == "Save and Close":
 		setattr(o,c,columnType(field))
    pdb.store.commit()
    print "Saved"
-   print o.DATA_ID
 
 if action != "Save and Close" :
+        print "<H1>Editing %s %s </H1>" %(objName,objID)
 	print "<table id=example cellspacing=10 >"
 	print "<form enctype=\"multipart/form-data\" method=\"post\" action=edit.cgi>"
 	print "<input type=hidden name=objName value=\"%s\">" % objName

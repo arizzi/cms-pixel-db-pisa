@@ -104,7 +104,7 @@ def inputField(objName,column, cookies, defVal = "") :
 		for o in cents :
 	        	inputString+="<option>%s</option>" % o
 	   	inputString+=" </select><p>"
-	elif column == "OSCILLOSCOPE_CHANNELS" :
+	elif column == "SIGNALS_AND_LVS" :
 		channels = ["CH1","CH2","CH3","CH4","LV"]
 		tests = ["CLK0","CLK1","CLK2","CLK3","CTR0","CTR1","CTR2","CTR3","SDA0","SDA1","SDA2","SDA3"]
 		lens = [12,12,8,12,4]
@@ -116,7 +116,7 @@ def inputField(objName,column, cookies, defVal = "") :
 			inputString+= "<tr bgcolor=#FFFFFF><td>%s</td>"%tests[j]
 			for i in xrange(0,5) :
 				if lens[i]>j :	
-					inputString+= "<td><select class=sels onchange=update() name=%s><option value=NULL></option><option value=PASS>PASS</option><option value=FAIL>FAIL</option></select></td>" % ("OSCILLOSCOPE_CHANNELS_"+channels[i]+"_"+tests[j])
+					inputString+= "<td><select class=sels onchange=update() name=%s><option value=NULL></option><option value=PASS>PASS</option><option value=FAIL>FAIL</option></select></td>" % ("SIGNALS_AND_LVS_"+channels[i]+"_"+tests[j])
 				else:
 					inputString+= "<td bgcolor=#000000></td>"
 			inputString+= "</tr>"	
@@ -208,7 +208,7 @@ if action == "Insert" :
      setcookies["operator"]=form.getfirst("SESSION_OPERATOR","")
      printHeaders(setcookies)
      buildDict={}
-     OSCILLOSCOPE_CHANNELS = None
+     SIGNALS_AND_LVS = None
      for c in columns:
            adate=date(2000,1,1)
            columnType2=type(eval(objName+"."+c+".variable_factory()"))
@@ -228,16 +228,16 @@ if action == "Insert" :
 			 buildDict["DATA_ID"]=0
 		    else:
 			 buildDict["DATA_ID"]=insertedData.DATA_ID
-	   elif c == "OSCILLOSCOPE_CHANNELS" :
-		OSCILLOSCOPE_CHANNELS={}
+	   elif c == "SIGNALS_AND_LVS" :
+		SIGNALS_AND_LVS={}
 		for f in form :
-			m=re.match('OSCILLOSCOPE_CHANNELS_(.*)_(.*)',f) 
+			m=re.match('SIGNALS_AND_LVS_(.*)_(.*)',f) 
 			if m :
 #				print m.group(1),m.group(2)
-				if not m.group(1) in OSCILLOSCOPE_CHANNELS :
-					OSCILLOSCOPE_CHANNELS[m.group(1)]={}
-				OSCILLOSCOPE_CHANNELS[m.group(1)][m.group(2)]=form[f]
-#		print  form,form.getlist("OSCILLOSCOPE_CHANNELS[]")
+				if not m.group(1) in SIGNALS_AND_LVS :
+					SIGNALS_AND_LVS[m.group(1)]={}
+				SIGNALS_AND_LVS[m.group(1)][m.group(2)]=form[f]
+#		print  form,form.getlist("SIGNALS_AND_LVS[]")
 	   elif c == "TRANSFER_ID" and (form.getfirst(c, "empty") == "empty" or form.getfirst(c, "empty") == "" ):
 		print "Creating transfer"
 	        t = pdb.insertTransfer(Transfer(SENDER=form.getfirst("TRANSFER_ID_sender"), RECEIVER=form.getfirst("TRANSFER_ID_receiver"), ISSUED_DATE=datetime.now(), RECEIVED_DATE=datetime.now(), STATUS="ARRIVED", COMMENT="autogen at creation"))
@@ -282,8 +282,8 @@ if action == "Insert" :
 
 #    print "DICT: ",buildDict
      o=objType(**buildDict)
-     if OSCILLOSCOPE_CHANNELS  :
-		channels = OSCILLOSCOPE_CHANNELS
+     if SIGNALS_AND_LVS  :
+		channels = SIGNALS_AND_LVS
 		for ch in channels :
 			for t in channels[ch] :
 				o.setBit(t,ch,channels[ch][t].value)	
