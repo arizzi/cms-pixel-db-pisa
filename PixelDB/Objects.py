@@ -1168,14 +1168,111 @@ class Test_CV(object):
           self.SLOPE= float(SLOPE)
           self.TEMPERATURE = TEMPERATURE
 
+class Test_PerformanceParameters(object):
+    __storm_table__ = "test_performanceparameters"
+    TEST_ID = Int(primary=True)
+    ROC_POS = Int()
+    FULLMODULEANALYSISTEST_ID = Int()
+    Total = Int()
+    nDeadPixel  = Int()
+    nMaskDefect  = Int()
+    nDeadBumps  = Int()
+    nDeadTrimbits  = Int()
+    nAddressProblems  = Int()
+    nNoisy1Pixel  = Int()
+    nNoisy2Pixel  = Int()
+    nThrDefect  = Int()
+    nGainDefect  = Int()
+    nPedDefect  = Int()
+    nPar1Defect  = Int()
+    PixelDefectsGrade  = Int()
+    SCurveWidth_mu= Float()
+    SCurveWidth_sigma= Float()
+    ThresholdTrimmed_mu= Float()
+    ThresholdTrimmed_sigma= Float()
+    BumpBonding_mu= Float()
+    BumpBonding_sigma= Float()
+    BumpBonding_threshold= Float()
+    PHCalibrationGain_mu= Float()
+    PHCalibrationGain_sigma= Float()
+    PHCalibrationPar1_mu= Float()
+    PHCalibrationPar1_sigma= Float()
+    PHCalibrationPedestal_mu= Float()
+    PHCalibrationPedestal_sigma= Float()
+    TrimBits_mu= Float()
+    TrimBits_sigma= Float()
+    def __init__( self, 
+                  ROC_POS,
+                  FULLMODULEANALYSISTEST_ID,
+                  Total , 
+                  nDeadPixel  ,
+                  nMaskDefect  ,
+                  nDeadBumps  ,
+                  nDeadTrimbits  ,
+                  nAddressProblems  ,
+                  nNoisy1Pixel  ,
+                  nNoisy2Pixel  ,
+                  nThrDefect  ,
+                  nGainDefect  ,
+                  nPedDefect  ,
+                  nPar1Defect  ,
+                  PixelDefectsGrade  ,
+                  SCurveWidth_mu , 
+                  SCurveWidth_sigma,
+                  ThresholdTrimmed_mu,
+                  ThresholdTrimmed_sigma,
+                  BumpBonding_mu,
+                  BumpBonding_sigma,
+                  BumpBonding_threshold,
+                  PHCalibrationGain_mu,
+                  PHCalibrationGain_sigma,
+                  PHCalibrationPar1_mu,
+                  PHCalibrationPar1_sigma,
+                  PHCalibrationPedestal_mu,
+                  PHCalibrationPedestal_sigma,
+                  TrimBits_mu,
+                  TrimBits_sigma):  
+        self.FULLMODULEANALYSISTEST_ID  = FULLMODULEANALYSISTEST_ID
+        self.ROC_POS =                   int(      ROC_POS )
+        self.Total =                        int(      Total  )                        
+        self.nDeadPixel  =                     int(   nDeadPixel )                    
+        self.nMaskDefect  =                     int(  nMaskDefect  )                  
+        self.nDeadBumps  =                      int(  nDeadBumps     )                
+        self.nDeadTrimbits  =                   int(  nDeadTrimbits    )              
+        self.nAddressProblems  =                int(  nAddressProblems   )            
+        self.nNoisy1Pixel  =                    int(  nNoisy1Pixel         )          
+        self.nNoisy2Pixel  =                    int(  nNoisy2Pixel           )        
+        self.nThrDefect  =                      int(  nThrDefect               )      
+        self.nGainDefect  =                      int( nGainDefect                )    
+        self.nPedDefect  =                  int(      nPedDefect                   )  
+        self.nPar1Defect  =                    int(   nPar1Defect                    )
+        self.PixelDefectsGrade  =               int(  PixelDefectsGrade              )
+        self.SCurveWidth_mu =                  float( SCurveWidth_mu                  )
+        self.SCurveWidth_sigma=                float( SCurveWidth_sigma              )
+        self.ThresholdTrimmed_mu=              float( ThresholdTrimmed_mu            )
+        self.ThresholdTrimmed_sigma=            float(ThresholdTrimmed_sigma         )
+        self.BumpBonding_mu=                    float(BumpBonding_mu                 )
+        self.BumpBonding_sigma=                 float(BumpBonding_sigma             )
+        self.BumpBonding_threshold=             float(BumpBonding_threshold          )
+        self.PHCalibrationGain_mu=              float(PHCalibrationGain_mu           )
+        self.PHCalibrationGain_sigma=           float(PHCalibrationGain_sigma        )
+        self.PHCalibrationPar1_mu=              float(PHCalibrationPar1_mu           )
+        self.PHCalibrationPar1_sigma=           float(PHCalibrationPar1_sigma        )
+        self.PHCalibrationPedestal_mu=          float(PHCalibrationPedestal_mu       )
+        self.PHCalibrationPedestal_sigma=       float(PHCalibrationPedestal_sigma    )
+        self.TrimBits_mu=                       float(TrimBits_mu                    )
+        self.TrimBits_sigma=                    float(TrimBits_sigma)
+
+
 class Test_DacParameters(object):
       __storm_table__ = "test_dacparameters"
       TEST_ID = Int(primary=True)
-      ROC_POS=Int()
-      FULLMODULETEST_ID = Int()
+      TRIM_VALUE = Unicode()
+      ROC_POS = Int()
+      FULLMODULEANALYSISTEST_ID = Int()
       VDIG=Int()
       VANA=Int()
-      VSF=Int()
+      VSH=Int()
       VCOMP=Int()
       VWLLPR=Int()
       VWLLSH=Int()
@@ -1183,19 +1280,20 @@ class Test_DacParameters(object):
       VTHRCOMP=Int()
       VHLDDEL=Int()
       VIBIAS_BUS=Int()
-      VOFFSET_R0=Int()
-      VIBIAS_PH=Int()
-      VIREF_ADC=Int()
+      PHOFFSET=Int()
+      VCOMP_ADC=Int()
+      PHSCALE=Int()
       VICOLOR=Int()
       CALDEL=Int()
       CTRLREG=Int()
       WBC=Int()
       def __init__(self, 
                    ROC_POS,
-                   FULLMODULETEST_ID,
+                   TRIM_VALUE,
+                   FULLMODULEANALYSISTEST_ID,
                    VDIG,
                    VANA,
-                   VSF,
+                   VSH,
                    VCOMP,
                    VWLLPR,
                    VWLLSH,
@@ -1203,18 +1301,22 @@ class Test_DacParameters(object):
                    VTHRCOMP,
                    VHLDDEL,
                    VIBIAS_BUS,
-                   VOFFSET_R0,
-                   VIBIAS_PH,
-                   VIREF_ADC,
+		   PHOFFSET,
+                   VCOMP_ADC,
+                   PHSCALE,
+#                   VOFFSET_R0,
+#                   VIBIAS_PH,
+#                   VIREF_ADC,
                    VICOLOR,
                    CALDEL,
                    CTRLREG,
                    WBC):       
+           self.TRIM_VALUE = unicode(TRIM_VALUE)
            self.ROC_POS=int(ROC_POS)
-           self.FULLMODULETEST_ID=int(  FULLMODULETEST_ID)
+           self.FULLMODULEANALYSISTEST_ID=int(  FULLMODULEANALYSISTEST_ID)
            self.VDIG=int(                VDIG)     
            self.VANA=int(                VANA)       
-           self.VSF=int(                 VSF)        
+           self.VSH=int(                 VSH)        
            self.VCOMP=int(               VCOMP)      
            self.VWLLPR=int(              VWLLPR)     
            self.VWLLSH=int(              VWLLSH)     
@@ -1222,9 +1324,9 @@ class Test_DacParameters(object):
            self.VTHRCOMP=int(            VTHRCOMP)   
            self.VHLDDEL=int(             VHLDDEL)    
            self.VIBIAS_BUS=int(          VIBIAS_BUS) 
-           self.VOFFSET_R0=int(          VOFFSET_R0) 
-           self.VIBIAS_PH=int(           VIBIAS_PH)  
-           self.VIREF_ADC=int(           VIREF_ADC)  
+           self.PHOFFSET=int(          PHOFFSET) 
+           self.VCOMP_ADC=int(           VCOMP_ADC)  
+           self.PHSCALE=int(           PHSCALE)  
            self.VICOLOR=int(             VICOLOR)    
            self.CALDEL=int(              CALDEL)     
            self.CTRLREG=int(             CTRLREG   )
@@ -1274,6 +1376,10 @@ Tbm.lasttest_tbm = Reference(  Tbm.LASTTEST_TBM, Test_Tbm.TEST_ID)
 #FullModule.lasttest_fullmodule = Reference(  FullModule.LASTTEST_FULLMODULE, Test_FullModule.TEST_ID)
 
 Logbook.adddata = Reference(Logbook.ADDDATA_ID,Data.DATA_ID)
+
+Test_DacParameters.fullmoduleanalysistest = Reference(  Test_DacParameters.FULLMODULEANALYSISTEST_ID,Test_FullModuleAnalysis.TEST_ID)
+Test_PerformanceParameters.fullmoduleanalysistest = Reference(  Test_PerformanceParameters.FULLMODULEANALYSISTEST_ID,Test_FullModuleAnalysis.TEST_ID)
+
 
 #
 # ne mancano ...

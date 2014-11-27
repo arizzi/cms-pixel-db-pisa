@@ -142,6 +142,16 @@ class PixelDBInterface(object) :
                  print"<br>Error inserting BAREMODULE"
             return bm
             
+      def insertTestDac(self, test):
+            self.store.add(test)
+            self.store.commit()
+            return test
+
+      def insertTestPerformance(self, test):
+            self.store.add(test)
+            self.store.commit()
+            return test
+            
             
       def insertHistory(self, type, id, target_type, target_id, operation, datee=datetime.now(), comment=""):
             newHist=History(type, id, target_type, target_id, operation, datee, comment)
@@ -909,11 +919,14 @@ class PixelDBInterface(object) :
             retval = ppp.wait()
             if (retval != 0):
                   print "no files *.inf.txt in ",str(dir)
-                  return (0,0,0,0,0,0,0,0,0,0,0,0,0,False)
+#                  return (0,0,0,0,0,0,0,0,0,0,0,0,0,False)
+                  (batch, wafer, sensor, step, v1, i1, v2, i2, slope, temperature, date, grade, centre, comment, ok) = (0,0,0,0,0,0,0,0,0,0,0,0,0,0,False)
+		  return None
             lines = ppp.stdout.readlines()
             if ( len (lines) > 1):
                   print "too many *.inf.txt in ",str(dir)
-                  return (0,0,0,0,0,0,0,0,0,0,0,0,0,False)
+                  (batch, wafer, sensor, step, v1, i1, v2, i2, slope, temperature, date, grade, centre, comment, ok) = (0,0,0,0,0,0,0,0,0,0,0,0,0,0,False)
+		  return None
                   
             filename= lines[0]
             
@@ -1120,7 +1133,7 @@ class PixelDBInterface(object) :
                   print "ERRORE FMSESSION", fmsession.TEST_ID
                   
 
-            print "session inserted"
+            print "session inserted",InputTarFile
 
             # step #2 : create a test
             data2 = Data(PFNs = "file:"+InputTarFile)

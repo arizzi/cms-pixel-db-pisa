@@ -13,7 +13,7 @@ from PixelDB import *
 
 class PixelTier0 (object):
       def __init__(self) :
-            self.date = date.today()
+            self.date = datetime.now()
             self.MACRO_VERSION='null'
             self.MACRO_PROCESSEDPREFIX=None
             self.UPLOAD_METHOD = ""
@@ -84,7 +84,7 @@ class PixelTier0 (object):
             self.database = create_database(string)
             self.store = Store(self.database)            
 
-      def insertHistoryTier0(self, TYPE, TAR_ID, DIR_ID, RUN_ID,  COMMENT,DATE=date.today()):
+      def insertHistoryTier0(self, TYPE, TAR_ID, DIR_ID, RUN_ID,  COMMENT,DATE=datetime.now()):
             newHist=HistoryTier0(TYPE, TAR_ID, DIR_ID, RUN_ID,  DATE, COMMENT)
             self.store.add(newHist)
             self.store.commit()
@@ -104,7 +104,7 @@ class PixelTier0 (object):
             
             self.store.add(tar)
             self.store.commit()
-            self.insertHistoryTier0(TYPE = 'insert', TAR_ID=tar.TAR_ID, DIR_ID=0, RUN_ID=0,  DATE=date.today(), COMMENT='new tar insertion')
+            self.insertHistoryTier0(TYPE = 'insert', TAR_ID=tar.TAR_ID, DIR_ID=0, RUN_ID=0,  DATE=datetime.now(), COMMENT='new tar insertion')
             return tar
 
 
@@ -135,13 +135,13 @@ class PixelTier0 (object):
             if (pr is None) :
                   print 'Failed to inject a ProcessingRun for tar_id=', tar.TAR_ID, ' name=',tar.NAME
                   return None
-            self.insertHistoryTier0(TYPE = 'insert', TAR_ID=0, DIR_ID=0, RUN_ID=pr.RUN_ID,  DATE=date.today(), COMMENT='new processing insertion')
+            self.insertHistoryTier0(TYPE = 'insert', TAR_ID=0, DIR_ID=0, RUN_ID=pr.RUN_ID,  DATE=datetime.now(), COMMENT='new processing insertion')
             
             return pr
 
 
       def injectProcessingRunFromInputTar (self,tar):
-            pr = ProcessingRun(MACRO_VERSION = self.MACRO_VERSION, EXECUTED_COMMAND = self.EXE, EXIT_CODE = -1,  STATUS="injected", DATE=date.today(), TAR_ID=tar.TAR_ID,PROCESSED_DIR_ID = 0, PROCESSEDPREFIX=self.PROCESSEDPREFIX,UPLOADMETHOD=self.UPLOAD_METHOD)
+            pr = ProcessingRun(MACRO_VERSION = self.MACRO_VERSION, EXECUTED_COMMAND = self.EXE, EXIT_CODE = -1,  STATUS="injected", DATE=datetime.now(), TAR_ID=tar.TAR_ID,PROCESSED_DIR_ID = 0, PROCESSEDPREFIX=self.PROCESSEDPREFIX,UPLOADMETHOD=self.UPLOAD_METHOD)
             self.store.add(pr)
             self.store.commit()
             return pr
@@ -154,7 +154,7 @@ class PixelTier0 (object):
                              UPLOAD_TYPE,
                              UPLOAD_STATUS,
                              UPLOAD_ID,
-                             DATE = date.today()):
+                             DATE = datetime.now()):
             if (run.STATUS != "done" and run.STATUS != "failed"):
                   print "Cannot insert a dir from a processing still in state=",run.STATUS
                   return None
@@ -173,7 +173,7 @@ class PixelTier0 (object):
             
             self.store.add(pd)
             self.store.commit()
-            self.insertHistoryTier0(TYPE = 'insert', TAR_ID=0, DIR_ID=pd.DIR_ID, RUN_ID=0,  DATE=date.today(), COMMENT='inserted processeddir')
+            self.insertHistoryTier0(TYPE = 'insert', TAR_ID=0, DIR_ID=pd.DIR_ID, RUN_ID=0,  DATE=datetime.now(), COMMENT='inserted processeddir')
             return pd
 
       def startProcessing(self,pr, DEBUG=False):
@@ -214,23 +214,23 @@ class PixelTier0 (object):
 
       def setProcessingStatus(self,pr,status):
             pr.STATUS=unicode(status)
-            self.insertHistoryTier0(TYPE = 'changestatus', TAR_ID=0, DIR_ID=0, RUN_ID=pr.RUN_ID,  DATE=date.today(), COMMENT='status set to '+status)
+            self.insertHistoryTier0(TYPE = 'changestatus', TAR_ID=0, DIR_ID=0, RUN_ID=pr.RUN_ID,  DATE=datetime.now(), COMMENT='status set to '+status)
             self.store.commit()
 
       def setProcessingExitCode(self,pr,status):
             pr.EXIT_CODE=status
-            self.insertHistoryTier0(TYPE = 'changeexitcode', TAR_ID=0, DIR_ID=0, RUN_ID=pr.RUN_ID,  DATE=date.today(), COMMENT='status set to '+str(status))
+            self.insertHistoryTier0(TYPE = 'changeexitcode', TAR_ID=0, DIR_ID=0, RUN_ID=pr.RUN_ID,  DATE=datetime.now(), COMMENT='status set to '+str(status))
             self.store.commit()
 
 
       def setInputStatus(self,tar,status):
             tar.STATUS=unicode(status)
-            self.insertHistoryTier0(TYPE = 'changestatus', TAR_ID=tar.TAR_ID, DIR_ID=0, RUN_ID=0,  DATE=date.today(), COMMENT='status set to '+status)
+            self.insertHistoryTier0(TYPE = 'changestatus', TAR_ID=tar.TAR_ID, DIR_ID=0, RUN_ID=0,  DATE=datetime.now(), COMMENT='status set to '+status)
             self.store.commit()
 
       def setDirStatus(self,dir,status):
             dir.STATUS=unicode(status)
-            self.insertHistoryTier0(TYPE = 'changestatus', TAR_ID=0, DIR_ID=dir.DIR_ID, RUN_ID=0,  DATE=date.today(), COMMENT='status set to '+status)
+            self.insertHistoryTier0(TYPE = 'changestatus', TAR_ID=0, DIR_ID=dir.DIR_ID, RUN_ID=0,  DATE=datetime.now(), COMMENT='status set to '+status)
             self.store.commit()
 
       def setAllDone(self,RUN, DIR, TAR,  STATUSDIR, STATUSTAR, STATUSRUN):
