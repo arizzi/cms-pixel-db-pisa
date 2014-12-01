@@ -194,12 +194,9 @@ from pixelwebui import *
 pdb = PixelDBInterface(operator="webfrontend",center="cern")
 pdb.connectToDB()
 
-if True :
- print "<button onclick='selectAll()'>Select all</button>"
- print "<button onclick='selectNone()'>Unselect all</button>"
 
 if True :
-	print "<button onclick='draw()'>Draw</button><select id=sel>"
+	print "<button onclick='draw()'>Draw histogram</button>&nbsp;<select id=sel>"
 	i=0
 	for (c,s,e) in toprint :
 		if e!= "NOPRINT":
@@ -209,7 +206,11 @@ if True :
         print "Xmin: <input type=text id=xmin name=xmin> Xmax: <input type=text id=xmax name=xmax> Nbins: <input type=text id=nbins name=nbins> LogY: <input type=checkbox id=logy> "
 		
 
-print "<div id=plotPH></div>"
+print "<div id=plotPH></div><hr>"
+
+if True :
+ print "<button onclick='selectAll()'>Select all</button>"
+ print "<button onclick='selectNone()'>Unselect all</button>"
 
 
 print "<br><input type=checkbox id=exact onclick=\"var table = $('#example').DataTable(); table.ajax.reload();\"> Exact per column search"

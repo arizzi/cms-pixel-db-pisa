@@ -17,7 +17,7 @@ import cgi
 import os
 transferObjects=['FullModule','BareModule','Sensor','Roc','Hdi','Tbm','Wafer','Batch','ShippingBox']
 centers=['CIS','FACTORY','ETH','PSI','CERN','BARI','CATANIA','PERUGIA','PISA','HAMBURG','AACHEN','HELSINKI','DESY','KIT']
-legalNames = ["Transfer","Data","Session","Roc","Batch","Wafer","Sensor","BareModule","Hdi","Tbm","FullModule","Logbook","Test_BareModule","Test_FullModuleSession","Test_FullModuleSummary","Test_FullModule","Test_FullModuleAnalysis","Test_Tbm","Test_Hdi_Reception","Test_Hdi_TbmGluing","Test_Hdi_Bonding","Test_Hdi_Electric","Test_Hdi_Validation","Test_Roc","Test_IV","Test_IT","Test_SensorInspection","Test_BareModuleInspection","Test_BareModule_Chip","Test_CV","History","ShippingBox","Test_DacParameters", "Test_Roc_Setup", "Test_BareModule_QA", "Test_BareModule_Grading"]
+legalNames = ["Transfer","Data","Session","Roc","Batch","Wafer","Sensor","BareModule","Hdi","Tbm","FullModule","Logbook","Test_BareModule","Test_FullModuleSession","Test_FullModuleSummary","Test_FullModule","Test_FullModuleAnalysis","Test_Tbm","Test_Hdi_Reception","Test_Hdi_TbmGluing","Test_Hdi_Bonding","Test_Hdi_Electric","Test_Hdi_Validation","Test_Roc","Test_IV","Test_IT","Test_SensorInspection","Test_BareModuleInspection","Test_BareModule_Chip","Test_CV","History","ShippingBox","Test_DacParameters", "Test_Roc_Setup", "Test_BareModule_QA", "Test_BareModule_Grading","Test_PerformanceParameters"]
 userCenters={}
 addrCenters={}
 
@@ -28,6 +28,8 @@ sortedCols["Test_Hdi_Bonding"]=["HDI_ID","RESULT","TBM_BONDS","HUB_ADDRESS_BONDS
 sortedCols["Test_Hdi_Electric"]=["HDI_ID","RESULT","NUM_TBM","DIGITAL_CURRENT_mA","SIGNALS_AND_LVS","HV600_CURRENT_uA","NOTES"]
 sortedCols["Test_Hdi_Validation"]=["HDI_ID","RESULT","VISUAL_INSPECTION","NOTES"]
 sortedCols["Hdi"]=["HDI_ID","STATUS","TBM1_VERSION","TBM2_VERSION","BATCH_ID","TYPE","COMMENT"]
+sortedCols["Test_DacParameters"]=["ROC_POS","VDIG","VANA","VSH","VCOMP","VWLLPR","VWLLSH","VHLDDEL","VTRIM","VTHRCOMP","VIBIAS_BUS","PHOFFSET","VCOMP_ADC","PHSCALE","VICOLOR","VCAL","CALDEL","CTRLREG","WBC"]
+sortedCols["Test_PerformanceParameters"]=["ROC_POS"]
 # HDI_ID > center > status (assumendo questo sara' lo stato globale
 # dell' oggetto: OK or BAD o missing tests) >  TBM1_version > TBM2_Version >
 # Lasttest_hdi_Reception > Lasttest_hdi_TBM Gluing > Lasttest_hdi_Bonding >
@@ -39,7 +41,7 @@ sortedInputCols={}
 sortedInputCols["Test_Hdi_Reception"]=["TEST_ID","HDI_ID","SESSION_ID","INSPECTION_FRONT","INSPECTION_BACK","DATA_ID","RESULT"]
 sortedInputCols["Test_Hdi_TbmGluing"]=["TEST_ID","HDI_ID","SESSION_ID","DATA_ID","RESULT"]
 sortedInputCols["Test_Hdi_Bonding"]=["TEST_ID","HDI_ID","SESSION_ID","TBM_BONDS","HUB_ADDRESS_BONDS","N_TEST_BONDS","AVG_PULL_FORCE_G","NOTES","DATA_ID","RESULT"]
-sortedInputCols["Test_Hdi_Electric"]=["TEST_ID","HDI_ID","SESSION_ID","NUM_TBM","DIGITAL_CURRENT_mA","SIGNALS_AND_LVS","HV600_CURRENT_uA","NOTES","DATA_ID","RESULT","GRADE"]
+sortedInputCols["Test_Hdi_Electric"]=["TEST_ID","HDI_ID","SESSION_ID","NUM_TBM","DIGITAL_CURRENT_mA","SIGNALS_AND_LVS","HV600_CURRENT_uA","NOTES","DATA_ID","RESULT"]
 sortedInputCols["Test_Hdi_Validation"]=["TEST_ID","HDI_ID","SESSION_ID","VISUAL_INSPECTION","NOTES","DATA_ID","RESULT"]
 sortedInputCols["Hdi"]=sortedCols["Hdi"]
 

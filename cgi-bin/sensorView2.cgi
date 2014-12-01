@@ -135,7 +135,8 @@ $(document).ready(function() {
                         "bStateSave": true,
                          "aLengthMenu": [   [25, 50, 100, 200, -1],
                                         [25, 50, 100, 200, "All"]],
-                        "iDisplayLength" : 10,
+                        "order": [[ 3, "desc" ]],
+			"iDisplayLength" : 25,
                         "bProcessing": true,
                         "bServerSide": true,
                         "sAjaxSource": "/cgi-bin/rawPredefinedView-backend.cgi",
@@ -192,12 +193,9 @@ toprint = columns[0]
 print "<h2> Sensors view </h2>"
 
 print "<p>"
-if True :
- print "<button onclick='selectAll()'>Select all</button>"
- print "<button onclick='selectNone()'>Unselect all</button>"
 
 if True :
-        print "<button onclick='draw()'>Draw</button><select id=sel>"
+        print "<button onclick='draw()'>Draw histogram</button>&nbsp;<select id=sel>"
         i=0
         for (c,s,e) in toprint :
                 if e!= "NOPRINT":
@@ -207,6 +205,10 @@ if True :
         print "Xmin: <input type=text id=xmin name=xmin> Xmax: <input type=text id=xmax name=xmax> Nbins: <input type=text id=nbins name=nbins> LogY: <input type=checkbox id=logy> "
 
 print "<div id=plotPH></div>"
+print "<hr>"
+if True :
+ print "<button onclick='selectAll()'>Select all</button>"
+ print "<button onclick='selectNone()'>Unselect all</button>"
 
 
 # print " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <button>Plot all IVs for selected sensors</button> <button>Plot selected IVs</button>"

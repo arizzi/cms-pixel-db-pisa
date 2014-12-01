@@ -380,8 +380,11 @@ class PixelTier0 (object):
             return n
 
 
-      def injectsProcessingJobs(self,mycenter=""):
-            tars = self.store.find(InputTar,InputTar.STATUS==unicode('new'))
+      def injectsProcessingJobs(self,mycenter="",tarlist=None):
+	    if tarlist :
+		    tars= map(lambda x: self.store.find(InputTar,InputTar.TAR_ID==x)[0], tarlist)
+	    else :
+	            tars = self.store.find(InputTar,InputTar.STATUS==unicode('new'))
             n=0
 	    print "len of tars", tars	
             for job in tars:
@@ -411,15 +414,6 @@ class PixelTier0 (object):
                   self.startProcessing(job)
             return n
 
-
-      def injectsProcessingJobs(self,mycenter=""):
-            tars = self.store.find(InputTar,InputTar.STATUS==unicode('new'))
-            n=0
-            print "len of tars", tars
-            for job in tars:
-                  n=n+1
-                  self.processInputTar(job,mycenter)
-            return n
 
 
 

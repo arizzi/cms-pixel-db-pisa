@@ -1,4 +1,71 @@
 
+##################################### Automatic object views ######################################
+from pixelwebui import *
+import sys
+sys.path.append("../PixelDB")
+from storm.properties import *
+from storm.references import *
+from storm import *
+from PixelDB import *
+
+def fromObjectName(objName):
+	cols = []
+	if objName in  sortedCols :
+		cols = sortedCols[objName]
+	refs = []
+	i =0
+	objType = eval(parseObjName(objName))
+	ID=idField(objName)
+	table=objType.__storm_table__
+	keys=objType.__dict__.keys()
+	hasTrans=False
+	hasSession=False
+	for attr in keys:
+	    if attr == "TRANSFER_ID" and table!="transfers" :
+                hasTrans=True
+	    if attr == "SESSION_ID" and table!="sessions" :
+                hasSession=True
+
+	#    print attr #,type(eval(objName+"."+attr)).__name__,"<br>"
+	    if  type(eval(objName+"."+attr)) is properties.PropertyColumn or  type(eval(objName+"."+attr)).__name__ == "date"  or  type(eval(objName+"."+attr)).__name__ == "datetime":
+	#    if  type(eval(objName+"."+attr)) is properties.PropertyColumn :
+		 if attr not in cols :
+		         cols.append(attr)
+	    if  type(eval(objName+"."+attr)) is references.Reference :
+	         refs.append(attr)
+	cformat=[]
+	IDF=table+"."+ID
+	IDF2=table+"_"+ID
+	#cformat.append((ID,"",'"%s"%(o[ID])+"(<a href=\"viewdetails.cgi?objName="+objName+"&"+ID+"="+"%s"%(o[ID])+"\">details</a>|<a href=\"writers/edit.cgi?objName="+objName+"&"+ID+"="+"%s"%(o[ID])+"\">edit</a>)'")
+
+	#cformat.append((ID,ID,'"%s"%(o["'+ID+'"])+" (<a href=\\\"viewdetails.cgi?objName='+objName+'&'+ID+'="+"%s"%(o["'+ID+'"])+"\\\">details</a>|<a href=\\\"writers/edit.cgi?objName='+objName+'&'+ID+'="+"%s"%(o["'+ID+'"])+"\\\">edit</a>)"'))
+	cformat.append((ID,IDF,'"%s"%(o["'+IDF2+'"])+" (<a href=\\\"viewdetails.cgi?objName='+objName+'&'+ID+'="+"%s"%(o["'+IDF2+'"])+"\\\">details</a>|<a href=\\\"writers/edit.cgi?objName='+objName+'&'+ID+'="+"%s"%(o["'+IDF2+'"])+"\\\">edit</a>)"'))
+	if hasTrans:
+	    cformat.append(("Center","Transfer.RECEIVER","o['Transfer_RECEIVER'] if o['Transfer_STATUS']=='ARRIVED' else  '%s=>%s'%(o['Transfer_SENDER'],o['Transfer_RECEIVER']) "))
+ #       if o["TSTATUS"] == "ARRIVED" :
+ #               row.append(o["RECEIVER"])
+  #      else:
+   #             row.append("%s to %s"%(o["SENDER"],o["RECEIVER"]))
+
+	for c in cols:
+	    cformat.append((c.lower().capitalize(),table+"."+c,''))
+	for r in refs:
+	    cformat.append((r.lower().capitalize(),'','"<a href=\\\"viewdetails.cgi?objName='+objName+'&'+ID+'="+"%s"%(o["'+IDF2+'"])+"&ref='+r+'\\\"> details</a></td>"'))
+
+	     	
+	
+
+	# rowkey,cols,query,countquery
+	if hasTrans :
+		return 	IDF2,cformat,("select %s,Transfer.STATUS as Transfer_STATUS, Transfer.SENDER as Transfer_SENDER from %s left join transfers as Transfer on %s.TRANSFER_ID=Transfer.TRANSFER_ID WHERE  1 "%('%s',table,table)), ("select COUNT(1) from %s"%table)
+	elif hasSession :
+		cformat.insert(1,("Date","Session.DATE",""))
+		return 	IDF2,cformat,("select %s from %s  left outer join sessions as Session on Session.SESSION_ID=%s.SESSION_ID WHERE 1"%('%s',table,table)), ("select COUNT(1) from %s"%table)
+	else:
+		return 	IDF2,cformat,("select %s from %s WHERE 1"%('%s',table)), ("select COUNT(1) from %s"%table)
+
+
+############################################### Sepcific views ############################################
 columns=[]
 queries=[]
 countqueries=[]
@@ -136,6 +203,45 @@ queries.append("select %s,Transfer.STATUS as Transfer_STATUS, Transfer.SENDER as
                 " WHERE 1 ")
 countqueries.append("select COUNT(1)  from inventory_roc")
 
+################################################ TestParams View ########################################
+header.append('''<h1>Overview of PerformanceParamters</h1>''')
+(i,c,q,cq)=fromObjectName("Test_PerformanceParameters")
+#for i in xrange(0,len(c)):
+#    e=c[i]
+#    if e[1] != "":
+#c[i]=(e[0],"Main.%s"%e[1],e[2])
+#print c
+c.append(("Macro Version","FMA.MACRO_VERSION",""))
+c.insert(2,("Center","Session.CENTER",""))
+c.insert(2,("Date","Session.DATE",""))
+c.insert(2,("Temperature","FMT.TEMPNOMINAL",""))
+c.insert(1,("Full Module","FMT.FULLMODULE_ID",""))
+rowkeys.append(i)
+queries.append("select %s from test_performanceparameters left outer join test_fullmoduleanalysis as FMA on FMA.TEST_ID=FULLMODULEANALYSISTEST_ID left outer join test_fullmodule as FMT on FMT.TEST_ID=FMA.FULLMODULETEST_ID left join test_fullmodulesession as s1 on s1.TEST_ID=FMT.SESSION_ID left join sessions as Session on s1.SESSION_ID=Session.SESSION_ID WHERE 1")
+countqueries.append("select COUNT(1)from test_performanceparameters left outer join test_fullmoduleanalysis as FMA on FMA.TEST_ID=FULLMODULEANALYSISTEST_ID left outer join test_fullmodule as FMT on FMT.TEST_ID=FMA.FULLMODULETEST_ID  left join test_fullmodulesession as s1 on s1.TEST_ID=FMT.SESSION_ID left join sessions as Session on s1.SESSION_ID=Session.SESSION_ID WHERE 1")
+#countqueries.append(cq)
+columns.append(c)
+
+################################################ DacParams View ########################################
+header.append('''<h1>Overview of DACParamters</h1>''')
+(i,c,q,cq)=fromObjectName("Test_DacParameters")
+#for i in xrange(0,len(c)):
+#    e=c[i]
+#    if e[1] != "":
+#c[i]=(e[0],"Main.%s"%e[1],e[2])
+#print c
+c.append(("Macro Version","FMA.MACRO_VERSION",""))
+c.insert(2,("Center","Session.CENTER",""))
+c.insert(2,("Date","Session.DATE",""))
+c.insert(2,("Temperature","FMT.TEMPNOMINAL",""))
+c.insert(1,("Full Module ID","FMT.FULLMODULE_ID",""))
+rowkeys.append(i)
+queries.append("select %s from test_dacparameters left outer join test_fullmoduleanalysis as FMA on FMA.TEST_ID=FULLMODULEANALYSISTEST_ID left outer join test_fullmodule as FMT on FMT.TEST_ID=FMA.FULLMODULETEST_ID left join test_fullmodulesession as s1 on s1.TEST_ID=FMT.SESSION_ID left join sessions as Session on s1.SESSION_ID=Session.SESSION_ID WHERE 1")
+countqueries.append("select COUNT(1)from test_dacparameters left outer join test_fullmoduleanalysis as FMA on FMA.TEST_ID=FULLMODULEANALYSISTEST_ID left outer join test_fullmodule as FMT on FMT.TEST_ID=FMA.FULLMODULETEST_ID  left join test_fullmodulesession as s1 on s1.TEST_ID=FMT.SESSION_ID left join sessions as Session on s1.SESSION_ID=Session.SESSION_ID WHERE 1")
+#countqueries.append(cq)
+columns.append(c)
+
+
 
 ############################################## tools#####################################################
 def coloredResult(res) :
@@ -146,66 +252,4 @@ def coloredResult(res) :
 
 
 
-
-##################################### Automatic object views ######################################
-from pixelwebui import *
-import sys
-sys.path.append("../PixelDB")
-from storm.properties import *
-from storm.references import *
-from storm import *
-from PixelDB import *
-
-def fromObjectName(objName):
-	cols = []
-	if objName in  sortedCols :
-		cols = sortedCols[objName]
-	refs = []
-	i =0
-	objType = eval(parseObjName(objName))
-	ID=idField(objName)
-	table=objType.__storm_table__
-	keys=objType.__dict__.keys()
-	hasTrans=False
-	hasSession=False
-	for attr in keys:
-	    if attr == "TRANSFER_ID" and table!="transfers" :
-                hasTrans=True
-	    if attr == "SESSION_ID" and table!="sessions" :
-                hasSession=True
-
-	#    print attr #,type(eval(objName+"."+attr)).__name__,"<br>"
-	    if  type(eval(objName+"."+attr)) is properties.PropertyColumn or  type(eval(objName+"."+attr)).__name__ == "date"  or  type(eval(objName+"."+attr)).__name__ == "datetime":
-	#    if  type(eval(objName+"."+attr)) is properties.PropertyColumn :
-		 if attr not in cols :
-		         cols.append(attr)
-	    if  type(eval(objName+"."+attr)) is references.Reference :
-	         refs.append(attr)
-	cformat=[]
-	#cformat.append((ID,"",'"%s"%(o[ID])+"(<a href=\"viewdetails.cgi?objName="+objName+"&"+ID+"="+"%s"%(o[ID])+"\">details</a>|<a href=\"writers/edit.cgi?objName="+objName+"&"+ID+"="+"%s"%(o[ID])+"\">edit</a>)'")
-
-	cformat.append((ID,ID,'"%s"%(o["'+ID+'"])+" (<a href=\\\"viewdetails.cgi?objName='+objName+'&'+ID+'="+"%s"%(o["'+ID+'"])+"\\\">details</a>|<a href=\\\"writers/edit.cgi?objName='+objName+'&'+ID+'="+"%s"%(o["'+ID+'"])+"\\\">edit</a>)"'))
-	if hasTrans:
-	    cformat.append(("Center","Transfer.RECEIVER","o['Transfer_RECEIVER'] if o['Transfer_STATUS']=='ARRIVED' else  '%s=>%s'%(o['Transfer_SENDER'],o['Transfer_RECEIVER']) "))
- #       if o["TSTATUS"] == "ARRIVED" :
- #               row.append(o["RECEIVER"])
-  #      else:
-   #             row.append("%s to %s"%(o["SENDER"],o["RECEIVER"]))
-
-	for c in cols:
-	    cformat.append((c.lower().capitalize(),table+"."+c,''))
-	for r in refs:
-	    cformat.append((r.lower().capitalize(),'','"<a href=\\\"viewdetails.cgi?objName='+objName+'&'+ID+'="+"%s"%(o["'+ID+'"])+"&ref='+r+'\\\"> details</a></td>"'))
-
-	     	
-	
-
-	# rowkey,cols,query,countquery
-	if hasTrans :
-		return 	ID,cformat,("select %s,Transfer.STATUS as Transfer_STATUS, Transfer.SENDER as Transfer_SENDER from %s left join transfers as Transfer on %s.TRANSFER_ID=Transfer.TRANSFER_ID WHERE  1 "%('%s',table,table)), ("select COUNT(1) from %s"%table)
-	elif hasSession :
-		cformat.insert(1,("Date","Session.DATE",""))
-		return 	ID,cformat,("select %s from %s  left outer join sessions as Session on Session.SESSION_ID=%s.SESSION_ID WHERE 1"%('%s',table,table)), ("select COUNT(1) from %s"%table)
-	else:
-		return 	ID,cformat,("select %s from %s WHERE 1"%('%s',table)), ("select COUNT(1) from %s"%table)
 

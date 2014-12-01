@@ -88,6 +88,7 @@ pdb.connectToDB()
 
 analysisToUse = "analyses.order_by(\"MACRO_VERSION\").last()"
 evals = ["\"<a href=ModuleQualificationView.cgi?ModuleID=%s>%s</a>\"%( o.FULLMODULE_ID,o.FULLMODULE_ID)"
+#	,"\"%d\"%o.fullmoduletests.any().TEST_ID"
 	,"o.fullmoduletests.any().session.session.CENTER"
 #	,"\"%d\" %o.fullmoduletests.count()"
 	,"datetime.fromtimestamp(float(o.fullmoduletests.any().TIMESTAMP)).isoformat()","o.QUALIFICATIONTYPE","findMax(o,analysisToUse,\"GRADE\")"

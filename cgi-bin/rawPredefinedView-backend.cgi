@@ -55,6 +55,10 @@ colNames=[]
 for c in cols :
 	colNames.append(c[1])
 
+if debug == "1":
+	print cols
+	print "COLNAMESSSSSSSSSSSSSSS",colNames
+
 if sortCol != "empty" :
 		sOrder = "ORDER BY  "
 	        dosort=0

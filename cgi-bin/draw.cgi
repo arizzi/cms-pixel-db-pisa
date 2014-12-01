@@ -21,15 +21,26 @@ pdb = PixelDBInterface(operator="webfrontend",center="cern")
 pdb.connectToDB()
 
 def makeHistoFromData(data,out,bins,xmin,xmax):
-#   ROOT.gStyle.SetPadRightMargin(0.32)
+   ROOT.gStyle.SetPadRightMargin(0.32)
    canvas= ROOT.TCanvas("plot","plot",900,400)
+   text=False
    try:
 	  data=map(lambda x : float(x),data)
 	  dmin=float(min(data))
 	  dmax=float(max(data))
+	  if dmax > 0 :
+		dmax*=1.1
+	  else:
+		dmax*=0.9
+	  if dmin > 0 :
+		dmin*=0.9
+	  else:
+		dmin*=1.1
+
 #	  print dmin,dmax
 	  nbins=100
    except ValueError:
+	  text=True
 	  dmin=0
 	  dmax=1
 	  d=map(lambda x : re.sub('<[^<]+?>', '',x),data)
@@ -48,9 +59,9 @@ def makeHistoFromData(data,out,bins,xmin,xmax):
    di={}
    j=0
    for i in data :
-	try:
+	if not text :
 	  v=float(i)
-	except ValueError:
+	else : #except ValueError:
 	  v=re.sub('<[^<]+?>', '', i)
 	  v=re.sub('\([^\(]+?\)', '',v)
 	  v=re.sub('&nbsp;', ' ',v)

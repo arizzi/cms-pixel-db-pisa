@@ -146,7 +146,7 @@ if (insert==1):
     
         (ret, ck) = commands.getstatusoutput('cksum '+line+" | awk \'{print $1}\'")
     
-        tar = InputTar (NAME=os.path.basename(line), LOCATION=os.path.dirname(line),    CKSUMTYPE='cksum', CKSUM=ck,         STATUS='new', CENTER = CENTER, DATE = date.today(),TESTNAME=TESTNAME)
+        tar = InputTar (NAME=os.path.basename(line), LOCATION=os.path.dirname(line),    CKSUMTYPE='cksum', CKSUM=ck,         STATUS='new', CENTER = CENTER, DATE = datetime.now(),TESTNAME=TESTNAME)
         pp = pdb.insertNewTar(tar)
         if(pp is None):
             print "ERROR inserting Tar, skipping ...."
@@ -166,7 +166,7 @@ if (insert==1):
         INSERTED=INSERTED+1
         pdb.store.commit()
 	
-    numinjected = pdb.injectsProcessingJobs()
+    numinjected = pdb.injectsProcessingJobs(tarlist=listinserted)
         
 
 
