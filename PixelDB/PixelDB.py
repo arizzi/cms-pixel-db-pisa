@@ -781,6 +781,80 @@ class PixelDBInterface(object) :
             # log in history
             self.insertHistory(type="TEST_ROC", id=test.TEST_ID, target_type="ROC", target_id=test.ROC_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
             return test
+
+#BM tests
+#      
+      def insertBareModuleTest_Chip(self, test):
+            #
+            # first check that the module exists
+            #
+
+            if (self.isBareModuleInserted(test.BAREMODULE_ID) == False):
+                  print " Cannot insert a test on a not existing BareModule "
+                  return None
+            self.store.add(test)
+            self.store.commit()
+            h = self.getBareModule(test.BAREMODULE_ID)
+            last= self.store.find(Test_BareModule_Chip, Test_BareModule_Chip.TEST_ID==h.LASTTEST_CHIPS).one()
+            if last is not None and last.session.DATE > test.session.DATE :
+                        print "LASTTEST NOT UPDATED BECAUSE OF EXISTING NEWER TEST<br>"
+            else :
+                        (self.getBareModule(test.BAREMODULE_ID)).LASTTEST_CHIPS =  test.TEST_ID
+
+            self.store.commit()
+            # log in history
+            self.insertHistory(type="TEST_BAREMODULE_CHIPS", id=test.TEST_ID, target_type="BAREMODULE", target_id=test.BAREMODULE_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
+            return test
+
+
+      def insertBareModuleTest_Inspection(self, test):
+            #
+            # first check that the module exists
+            #
+
+            if (self.isBareModuleInserted(test.BAREMODULE_ID) == False):
+                  print " Cannot insert a test on a not existing BareModule "
+                  return None
+            self.store.add(test)
+            self.store.commit()
+            h = self.getBareModule(test.BAREMODULE_ID)
+            last= self.store.find(Test_BareModule_Inspection, Test_BareModule_Inspection.TEST_ID==h.LASTTEST_BAREMODULE_INSPECTION).one()
+            if last is not None and last.session.DATE > test.session.DATE :
+                        print "LASTTEST NOT UPDATED BECAUSE OF EXISTING NEWER TEST<br>"
+            else :
+                        (self.getBareModule(test.BAREMODULE_ID)).LASTTEST_BAREMODULE_INSPECTION =  test.TEST_ID
+
+            self.store.commit()
+            # log in history
+            self.insertHistory(type="TEST_BAREMODULE_INSPECTION", id=test.TEST_ID, target_type="BAREMODULE", target_id=test.BAREMODULE_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
+            return test
+
+
+      def insertBareModuleTest_QA(self, test):
+            #
+            # first check that the module exists
+            #
+
+            if (self.isBareModuleInserted(test.BAREMODULE_ID) == False):
+                  print " Cannot insert a test on a not existing BareModule "
+                  return None
+            self.store.add(test)
+            self.store.commit()
+            h = self.getBareModule(test.BAREMODULE_ID)
+            last= self.store.find(Test_BareModule_Qa, Test_BareModule_QA.TEST_ID==h.LASTTEST_BAREMODULE_QA).one()
+            if last is not None and last.session.DATE > test.session.DATE :
+                        print "LASTTEST NOT UPDATED BECAUSE OF EXISTING NEWER TEST<br>"
+            else :
+                        (self.getBareModule(test.BAREMODULE_ID)).LASTTEST_BAREMODULE_QA =  test.TEST_ID
+
+            self.store.commit()
+            # log in history
+            self.insertHistory(type="TEST_BAREMODULE_QA", id=test.TEST_ID, target_type="BAREMODULE", target_id=test.BAREMODULE_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
+            return test
+
+
+
+
 #
 # loads IV curves
 #
