@@ -219,16 +219,34 @@ class BareModule(object):
   TYPE=Unicode()
   LASTTEST_BAREMODULE_INSPECTION =Int()
   LASTTEST_CHIPS = Unicode()
+  LASTTEST_BAREMODULE_QA = Int()
+  LASTTEST_BAREMODULE_GRADING = Int()
   def getRoc(self,i):
       #
       # parse ROC_IDs to extract field # N
       #
       result =(self.ROC_ID.split(","))[i]
       return result
+  def checkChip(self):
+      if self.LASTTEST_CHIPS is None or self.LASTTEST_CHIPS == "" :
+          for i in range(15):
+              self.LASTTEST_CHIPS = self.LASTTEST_CHIPS + ","
+      results = (self.LASTTEST_CHIPS.split(","))
+      if len(results) != 16:
+          print " ERROR : LASTTEST_CHIPS has wrong format: ", self.LASTTEST_CHIPS
+          return None
+  
+  def setChipTest(self, test,number):
+      self.checkChip()
+      results = (self.LASTTEST_CHIPS.split(","))
+      results[test.CHIP_N] = test.TEST_ID
+      self.LASTTEST_CHIPS = ",".join(results )
+
   def getChipTest(self,i):
+      self.checkChip()
       result =(self.LASTTEST_CHIPS.split(","))[i]
       return int(result)
-  def __init__(self,BAREMODULE_ID,ROC_ID,SENSOR_ID,TRANSFER_ID,  BUILTBY, BUILTON=datetime.now(),COMMENT="", LASTTEST_CHIPS = "",LASTTEST_BAREMODULE_INSPECTION=0, STATUS="",LABEL2D="",POWERCABLE="", SIGNALCABLE="", TYPE="" ):
+  def __init__(self,BAREMODULE_ID,ROC_ID,SENSOR_ID,TRANSFER_ID,  BUILTBY, BUILTON=datetime.now(),COMMENT="", LASTTEST_CHIPS = "",LASTTEST_BAREMODULE_INSPECTION=0, LASTTEST_BAREMODULE_QA = 0, LASTTEST_BAREMODULE_GRADING=0,  STATUS="",LABEL2D="",POWERCABLE="", SIGNALCABLE="", TYPE="" ):
       self.BAREMODULE_ID=unicode(BAREMODULE_ID)
       self.ROC_ID=unicode(ROC_ID)
       self.SENSOR_ID=unicode(SENSOR_ID)
@@ -236,7 +254,9 @@ class BareModule(object):
       self.BUILTON=BUILTON
       self.BUILTBY=unicode(BUILTBY)
       self.COMMENT=unicode(COMMENT)
-      self.LASTTEST_BAREMODULE_INSPECTION=LASTTEST_BAREMODULE_INSPECTION
+      self.LASTTEST_BAREMODULE_INSPECTION=int(LASTTEST_BAREMODULE_INSPECTION)
+      self.LASTTEST_BAREMODULE_GRADING=int(LASTTEST_BAREMODULE_GRADING)
+      self.LASTTEST_BAREMODULE_QA=int(LASTTEST_BAREMODULE_QA)
       self.LASTTEST_CHIPS=unicode(LASTTEST_CHIPS)
       self.STATUS=unicode(STATUS)
       self.LABEL2D=unicode(LABEL2D)

@@ -795,11 +795,12 @@ class PixelDBInterface(object) :
             self.store.add(test)
             self.store.commit()
             h = self.getBareModule(test.BAREMODULE_ID)
-            last= self.store.find(Test_BareModule_Chip, Test_BareModule_Chip.TEST_ID==h.LASTTEST_CHIPS).one()
+            last= self.store.find(Test_BareModule_Chip, Test_BareModule_Chip.TEST_ID==h.getChipTest(test.CHIP_N)).one()
             if last is not None and last.session.DATE > test.session.DATE :
                         print "LASTTEST NOT UPDATED BECAUSE OF EXISTING NEWER TEST<br>"
             else :
-                        (self.getBareModule(test.BAREMODULE_ID)).LASTTEST_CHIPS =  test.TEST_ID
+                        # here the logic is cmplicated by the fact that we need to set the specific test
+                        (self.getBareModule(test.BAREMODULE_ID)).setChipTest(test, test.CHIP_N)
 
             self.store.commit()
             # log in history
@@ -869,7 +870,7 @@ class PixelDBInterface(object) :
             COMMENT_CHAR = '#'
             OPTION_CHAR =  ' '
             options = {}
-            f = open(filename)
+            f = open(filename,'U')
             for line in f:
                   if (debug == True):
                         print "line ...",line

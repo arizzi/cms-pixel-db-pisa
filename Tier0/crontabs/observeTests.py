@@ -125,7 +125,7 @@ if (insert==1):
     basedir=INPUTDIR
     print "FILE", tmpfile
     pattern = PATTERN
-    os.system("find "+basedir+" -name "+pattern+" > "+tmpfile)
+    os.system("find "+basedir+" -name "+pattern+" -amin +2 > "+tmpfile)
     
     f=open(tmpfile)
     for line in f:
@@ -158,17 +158,11 @@ if (insert==1):
         #
 # I can ge the tar_ids in a vector!
 #
-
-        
-
-
         print "Inserted new tar = ", tar.TAR_ID
         INSERTED=INSERTED+1
         pdb.store.commit()
 	
     numinjected = pdb.injectsProcessingJobs(tarlist=listinserted)
-        
-
 
 print "INSERTED ", INSERTED, " TAR FILES"
 print "TARS are ",listinserted
