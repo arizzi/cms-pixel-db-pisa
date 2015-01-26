@@ -831,6 +831,30 @@ class PixelDBInterface(object) :
             return test
 
 
+
+      def insertBareModuleTest_Grading(self, test):
+            #
+            # first check that the module exists
+            #
+
+            if (self.isBareModuleInserted(test.BAREMODULE_ID) == False):
+                  print " Cannot insert a test on a not existing BareModule "
+                  return None
+            self.store.add(test)
+            self.store.commit()
+            h = self.getBareModule(test.BAREMODULE_ID)
+            last= self.store.find(Test_BareModule_Grading, Test_BareModule_Grading.TEST_ID==h.LASTTEST_BAREMODULE_GRADING).one()
+            if last is not None and last.session.DATE > test.session.DATE :
+                        print "LASTTEST NOT UPDATED BECAUSE OF EXISTING NEWER TEST<br>"
+            else :
+                        (self.getBareModule(test.BAREMODULE_ID)).LASTTEST_BAREMODULE_GRADING =  test.TEST_ID
+
+            self.store.commit()
+            # log in history
+            self.insertHistory(type="TEST_BAREMODULE_GRADING", id=test.TEST_ID, target_type="BAREMODULE", target_id=test.BAREMODULE_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
+            return test
+
+
       def insertBareModuleTest_QA(self, test):
             #
             # first check that the module exists
@@ -842,7 +866,7 @@ class PixelDBInterface(object) :
             self.store.add(test)
             self.store.commit()
             h = self.getBareModule(test.BAREMODULE_ID)
-            last= self.store.find(Test_BareModule_Qa, Test_BareModule_QA.TEST_ID==h.LASTTEST_BAREMODULE_QA).one()
+            last= self.store.find(Test_BareModule_QA, Test_BareModule_QA.TEST_ID==h.LASTTEST_BAREMODULE_QA).one()
             if last is not None and last.session.DATE > test.session.DATE :
                         print "LASTTEST NOT UPDATED BECAUSE OF EXISTING NEWER TEST<br>"
             else :

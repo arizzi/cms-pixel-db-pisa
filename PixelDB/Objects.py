@@ -432,8 +432,8 @@ class Test_BareModule_QA (object):
          self.DATA_ID = DATA_ID
          self.SESSION_ID= SESSION_ID
          self.TYPE= unicode(TYPE)
-         self.TEMPERATURE = unicode(TEMPERATURE)
-         self.HUMIDITY   =  unicode(HUMIDITY)
+         self.TEMPERATURE = TEMPERATURE
+         self.HUMIDITY   =  HUMIDITY
          self.FAILURES= unicode(FAILURES)
          self.BAREMODULE_ID= unicode(BAREMODULE_ID)
          self.TOTAL_FAILURES = unicode(TOTAL_FAILURES)
@@ -1110,7 +1110,7 @@ class Test_SensorInspection(object):
           self.RESULT=unicode(RESULT)
           self.COMMENT=unicode(COMMENT)
 
-class Test_BareModuleInspection(object):
+class Test_BareModule_Inspection(object):
       __storm_table__ = "test_baremodule_inspection"
       TEST_ID = Int(primary=True)
       SESSION_ID=Int()
@@ -1384,7 +1384,7 @@ Sensor.lasttest_sensor_cv          = Reference(  Sensor.LASTTEST_SENSOR_CV, Test
 Sensor.lasttest_sensor_it          = Reference(  Sensor.LASTTEST_SENSOR_IT, Test_IT.TEST_ID)
 Sensor.lasttest_sensor_inspection  = Reference(  Sensor.LASTTEST_SENSOR_INSPECTION, Test_SensorInspection.TEST_ID)
 
-BareModule.lasttest_baremodule_inspection = Reference(  BareModule.LASTTEST_BAREMODULE_INSPECTION, Test_BareModuleInspection.TEST_ID)
+BareModule.lasttest_baremodule_inspection = Reference(  BareModule.LASTTEST_BAREMODULE_INSPECTION, Test_BareModule_Inspection.TEST_ID)
 Hdi.lasttest_hdi_reception = Reference(  Hdi.LASTTEST_HDI_RECEPTION, Test_Hdi_Reception.TEST_ID)
 Hdi.lasttest_hdi_tbmgluing = Reference(  Hdi.LASTTEST_HDI_TBMGLUING, Test_Hdi_TbmGluing.TEST_ID)
 Hdi.lasttest_hdi_bonding = Reference(  Hdi.LASTTEST_HDI_BONDING, Test_Hdi_Bonding.TEST_ID)
@@ -1415,3 +1415,7 @@ FullModule.summaries = ReferenceSet(FullModule.FULLMODULE_ID, Test_FullModuleSum
 FullModule.tests = ReferenceSet(FullModule.FULLMODULE_ID, Test_FullModule.FULLMODULE_ID)
 Test_FullModule.analyses = ReferenceSet(Test_FullModule.TEST_ID, Test_FullModuleAnalysis.FULLMODULETEST_ID
 )
+
+BareModule.test_inspection =  Reference(BareModule.LASTTEST_BAREMODULE_INSPECTION, Test_BareModule_Inspection.TEST_ID )
+BareModule.test_qa =  Reference(BareModule.LASTTEST_BAREMODULE_QA, Test_BareModule_QA.TEST_ID )
+BareModule.test_grading =  Reference(BareModule.LASTTEST_BAREMODULE_GRADING, Test_BareModule_Grading.TEST_ID )
