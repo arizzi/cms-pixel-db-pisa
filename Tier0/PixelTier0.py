@@ -135,6 +135,8 @@ class PixelTier0 (object):
             if (pr is None) :
                   print 'Failed to inject a ProcessingRun for tar_id=', tar.TAR_ID, ' name=',tar.NAME
                   return None
+            else:
+		print "Inserted PR from IT",pr.RUN_ID, tar.TAR_ID
             self.insertHistoryTier0(TYPE = 'insert', TAR_ID=0, DIR_ID=0, RUN_ID=pr.RUN_ID,  DATE=datetime.now(), COMMENT='new processing insertion')
             
             return pr
@@ -381,15 +383,19 @@ class PixelTier0 (object):
 
 
       def injectsProcessingJobs(self,mycenter="",tarlist=None):
-	    if tarlist :
+	    if tarlist is not None :
 		    tars= map(lambda x: self.store.find(InputTar,InputTar.TAR_ID==x)[0], tarlist)
 	    else :
 	            tars = self.store.find(InputTar,InputTar.STATUS==unicode('new'))
             n=0
 	    print "len of tars", tars	
             for job in tars:
-                  n=n+1
-                  self.processInputTar(job,mycenter)
+                  pr=self.processInputTar(job,mycenter)
+		  if pr is None:
+			print " failed inserting processing run for tar",job.TAR_ID
+		  else:
+                   print "Injected Processing ",pr.RUN_ID,"for tar",job.TAR_ID
+                   n=n+1
             return n
 
 
