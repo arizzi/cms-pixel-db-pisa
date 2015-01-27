@@ -860,21 +860,42 @@ class PixelDBInterface(object) :
             # first check that the module exists
             #
 
+            if (test.TYPE == "PixelAlive"):
+                  myType = "+_PIXELALIVE"
+                  intType=1
+            elif (test.TYPE == "BumpBonding"):
+                  myType = "+_BONDING"
+                  intType=2
+            else:
+                  print " ERROR: QA test of type ",test.TYPE, " not allowed!"
+                  return None
             if (self.isBareModuleInserted(test.BAREMODULE_ID) == False):
                   print " Cannot insert a test on a not existing BareModule "
                   return None
             self.store.add(test)
             self.store.commit()
+
+            
+            
             h = self.getBareModule(test.BAREMODULE_ID)
-            last= self.store.find(Test_BareModule_QA, Test_BareModule_QA.TEST_ID==h.LASTTEST_BAREMODULE_QA).one()
-            if last is not None and last.session.DATE > test.session.DATE :
+            if (intType==1):
+                  last= self.store.find(Test_BareModule_QA, Test_BareModule_QA.TEST_ID==h.LASTTEST_BAREMODULE_QA_PIXELALIVE).one()
+                  if last is not None and last.session.DATE > test.session.DATE :
                         print "LASTTEST NOT UPDATED BECAUSE OF EXISTING NEWER TEST<br>"
-            else :
-                        (self.getBareModule(test.BAREMODULE_ID)).LASTTEST_BAREMODULE_QA =  test.TEST_ID
+                  else :
+                        (self.getBareModule(test.BAREMODULE_ID)).LASTTEST_BAREMODULE_QA_PIXELALIVE =  test.TEST_ID
+            else:
+                  last= self.store.find(Test_BareModule_QA, Test_BareModule_QA.TEST_ID==h.LASTTEST_BAREMODULE_QA_BONDING).one()
+                  if last is not None and last.session.DATE > test.session.DATE :
+                        print "LASTTEST NOT UPDATED BECAUSE OF EXISTING NEWER TEST<br>"
+                  else :
+                        (self.getBareModule(test.BAREMODULE_ID)).LASTTEST_BAREMODULE_QA_BONDING =  test.TEST_ID
+                        
+
 
             self.store.commit()
             # log in history
-            self.insertHistory(type="TEST_BAREMODULE_QA", id=test.TEST_ID, target_type="BAREMODULE", target_id=test.BAREMODULE_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
+            self.insertHistory(type=str("TEST_BAREMODULE_QA"+myType), id=test.TEST_ID, target_type="BAREMODULE", target_id=test.BAREMODULE_ID, operation="TEST", datee=datetime.now(), comment="NO COMMENT")
             return test
 
 

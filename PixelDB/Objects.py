@@ -219,7 +219,8 @@ class BareModule(object):
   TYPE=Unicode()
   LASTTEST_BAREMODULE_INSPECTION =Int()
   LASTTEST_CHIPS = Unicode()
-  LASTTEST_BAREMODULE_QA = Int()
+  LASTTEST_BAREMODULE_QA_BONDING = Int()
+  LASTTEST_BAREMODULE_QA_PIXELALIVE = Int()
   LASTTEST_BAREMODULE_GRADING = Int()
   def getRoc(self,i):
       #
@@ -246,7 +247,7 @@ class BareModule(object):
       self.checkChip()
       result =(self.LASTTEST_CHIPS.split(","))[i]
       return int(result)
-  def __init__(self,BAREMODULE_ID,ROC_ID,SENSOR_ID,TRANSFER_ID,  BUILTBY, BUILTON=datetime.now(),COMMENT="", LASTTEST_CHIPS = "",LASTTEST_BAREMODULE_INSPECTION=0, LASTTEST_BAREMODULE_QA = 0, LASTTEST_BAREMODULE_GRADING=0,  STATUS="",LABEL2D="",POWERCABLE="", SIGNALCABLE="", TYPE="" ):
+  def __init__(self,BAREMODULE_ID,ROC_ID,SENSOR_ID,TRANSFER_ID,  BUILTBY, BUILTON=datetime.now(),COMMENT="", LASTTEST_CHIPS = "",LASTTEST_BAREMODULE_INSPECTION=0, LASTTEST_BAREMODULE_QA_PIXELALIVE = 0,LASTTEST_BAREMODULE_QA_BONDING = 0, LASTTEST_BAREMODULE_GRADING=0,  STATUS="",LABEL2D="",POWERCABLE="", SIGNALCABLE="", TYPE="" ):
       self.BAREMODULE_ID=unicode(BAREMODULE_ID)
       self.ROC_ID=unicode(ROC_ID)
       self.SENSOR_ID=unicode(SENSOR_ID)
@@ -256,7 +257,8 @@ class BareModule(object):
       self.COMMENT=unicode(COMMENT)
       self.LASTTEST_BAREMODULE_INSPECTION=int(LASTTEST_BAREMODULE_INSPECTION)
       self.LASTTEST_BAREMODULE_GRADING=int(LASTTEST_BAREMODULE_GRADING)
-      self.LASTTEST_BAREMODULE_QA=int(LASTTEST_BAREMODULE_QA)
+      self.LASTTEST_BAREMODULE_QA_BONDING=int(LASTTEST_BAREMODULE_QA_BONDING)
+      self.LASTTEST_BAREMODULE_QA_PIXELALIVE=int(LASTTEST_BAREMODULE_QA_PIXELALIVE)
       self.LASTTEST_CHIPS=unicode(LASTTEST_CHIPS)
       self.STATUS=unicode(STATUS)
       self.LABEL2D=unicode(LABEL2D)
@@ -444,6 +446,34 @@ class Test_BareModule_QA (object):
             if len (arrayofrocids) !=6 :
                 return None
             return unicode(string.join(arrayofrocids,","))
+
+'''
+      def dictToString(self, dictionary):
+          returnString=""
+          for i in dictionary:
+            roc = i
+            listOfFailures=dictionary[i]
+            for j in listOfFailures:
+               row = j[0]
+               column = j[1]
+               returnString+=str(","+roc+",",row+",'+column)
+           return returnString
+
+      def stringToDict(self, aString):
+          myDict={}
+          result =((unicode(aString)).split(","))
+          number = len(result)/3
+          index=0
+          for i in range(number):
+             roc = result[i*3]
+             row = result[i*3+1]
+             column = result[i*3+2]
+             pairTemp = [row,column]
+             myDict[roc].append(pairTemp)
+          return myDict
+            
+'''
+
 
 class Test_BareModule_Grading(object):
       __storm_table__ = "test_baremodule_grading"
@@ -1417,5 +1447,6 @@ Test_FullModule.analyses = ReferenceSet(Test_FullModule.TEST_ID, Test_FullModule
 )
 
 BareModule.test_inspection =  Reference(BareModule.LASTTEST_BAREMODULE_INSPECTION, Test_BareModule_Inspection.TEST_ID )
-BareModule.test_qa =  Reference(BareModule.LASTTEST_BAREMODULE_QA, Test_BareModule_QA.TEST_ID )
+BareModule.test_qa_bonding =  Reference(BareModule.LASTTEST_BAREMODULE_QA_BONDING, Test_BareModule_QA.TEST_ID )
+BareModule.test_qa_pixelalive =  Reference(BareModule.LASTTEST_BAREMODULE_QA_PIXELALIVE, Test_BareModule_QA.TEST_ID )
 BareModule.test_grading =  Reference(BareModule.LASTTEST_BAREMODULE_GRADING, Test_BareModule_Grading.TEST_ID )
