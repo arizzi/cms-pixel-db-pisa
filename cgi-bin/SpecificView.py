@@ -118,7 +118,7 @@ def specificView(objName,form,pdb) :
          if ele :
 		ele.init_maps()
 		print "<table border=1><tr><td></td>"
-		for ch,i in sorted(ele.CHANNEL_MAP.items(), key=operator.itemgetter(1),reverse=True) :
+		for ch,i in sorted(ele.CHANNEL_MAP.items(), key=operator.itemgetter(1)) :
 			print "<td>%s</td>" % ch
 		print "</tr>"
 		for test,i in sorted(ele.TEST_MAP.items(), key=operator.itemgetter(1)) :

@@ -241,6 +241,49 @@ countqueries.append("select COUNT(1)from test_dacparameters left outer join test
 #countqueries.append(cq)
 columns.append(c)
 
+################################################ BareModule tests View ########################################
+
+header.append('''<h1>BareModule Tests summary  view</h1>
+<img src=/icons/viewmag.png width=16> = view test details <p>
+<img src=/icons/add.png width=16> = add new test <p>
+''')
+
+def testEntryBM(o,testname,res="_RESULT"):
+	 testnameObj=testname
+	 typestr=""
+	 m=re.match('Test_BareModule_QA_(.*)',testname )
+	 if  m :
+		testnameObj="Test_BareModule_QA"
+		typestr="&TYPE="+m.group(1)	
+         ret="n/a"
+         if  o[testname+res] :
+                ret=(o[testname+res])+testDetails(o,testname)+" "
+         ret+=' <a href=/cgi-bin/writers/newTest.cgi?objName='+testnameObj+'&BAREMODULE_ID=%s%s><img src=/icons/add.png width=16></a>'%(o['BareModule_BAREMODULE_ID'],typestr)
+         ret+=testNotes(o,testname)
+         return ret
+
+
+columns.append([
+	("BARE MODULE  ID","BareModule.BAREMODULE_ID","'<a href=/cgi-bin/viewdetails.cgi?objName=BareModule&BAREMODULE_ID=%s>%s</a>'%(o['BareModule_BAREMODULE_ID'],o['BareModule_BAREMODULE_ID'])"),
+        ("Center","Transfer.RECEIVER","o['Transfer_RECEIVER'] if o['Transfer_STATUS']=='ARRIVED' else  o['Transfer_SENDER'] "),
+	("Inspection","Test_BareModule_Inspection.RESULT","testEntryBM(o,'Test_BareModule_Inspection')"),
+	("BumpBonding Tot failures","Test_BareModule_QA_BumpBonding.TOTAL_FAILURES","testEntryBM(o,'Test_BareModule_QA_BumpBonding','_TOTAL_FAILURES')"),
+	("PixelAlive Tot failures","Test_BareModule_QA_PixelAlive.TOTAL_FAILURES","testEntryBM(o,'Test_BareModule_QA_PixelAlive','_TOTAL_FAILURES')"),
+	("Global Grade","Test_BareModule_Grading.GLOBAL_GRADING","testEntryBM(o,'Test_BareModule_Grading','_GLOBAL_GRADING')"),
+        ("","Test_BareModule_Inspection.TEST_ID","NOPRINT"),
+        ("","Test_BareModule_QA_BumpBonding.TEST_ID","NOPRINT"),
+        ("","Test_BareModule_QA_PixelAlive.TEST_ID","NOPRINT"),
+        ("","Test_BareModule_Grading.TEST_ID","NOPRINT"),
+
+])
+rowkeys.append("BareModule_BAREMODULE_ID") #not obvious
+queries.append("select %s,Transfer.STATUS as Transfer_STATUS, Transfer.SENDER as Transfer_SENDER from inventory_baremodule as BareModule join transfers as Transfer on BareModule.TRANSFER_ID=Transfer.TRANSFER_ID "
+		"left outer join test_baremodule_qa as Test_BareModule_QA_PixelAlive on BareModule.LASTTEST_BAREMODULE_QA_PIXELALIVE=Test_BareModule_QA_PixelAlive.TEST_ID "
+		"left outer join test_baremodule_qa as Test_BareModule_QA_BumpBonding on BareModule.LASTTEST_BAREMODULE_QA_BONDING=Test_BareModule_QA_BumpBonding.TEST_ID "
+		"left outer join test_baremodule_grading as Test_BareModule_Grading on BareModule.LASTTEST_BAREMODULE_GRADING=Test_BareModule_Grading.TEST_ID "
+		"left outer join test_baremodule_inspection as Test_BareModule_Inspection on BareModule.LASTTEST_BAREMODULE_INSPECTION=Test_BareModule_Inspection.TEST_ID "
+		" WHERE 1 ")
+countqueries.append("select COUNT(1)  from inventory_hdi")
 
 
 ############################################## tools#####################################################
