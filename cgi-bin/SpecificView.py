@@ -51,6 +51,10 @@ def specificView(objName,form,pdb) :
    		 	m=re.match("file:(/data/pixels/.*(jpg|png|gif|bmp))",f)
 			if m :
 			     print f+"<br><img src=%s><hr>" % m.group(1)	
+			else:
+	 		     print "<a href=%s>%s </a><br>" %(f,f)
+
+		
 			
 			
    if objName == "Sensor" :
@@ -112,6 +116,12 @@ def specificView(objName,form,pdb) :
           print "<a href=%s>output results</a>" % path
           #>M0178T-10a.gif"
 
+   if objName == "Test_BareModule_QA" :
+          ana = pdb.store.find(Test_BareModule_QA, Test_BareModule_QA.TEST_ID==int(cgi.escape(form.getfirst('TEST_ID', 'empty')))).one()
+          path=re.sub(",","",ana.data.PFNs)
+          print "<img src=%s/bareModuleQA.png>" % path
+          #>M0178T-10a.gif"
+	
 
    if objName == "Test_Hdi_Electric" :
 	 ele =  pdb.store.find(Test_Hdi_Electric,Test_Hdi_Electric.TEST_ID==int(cgi.escape(form.getfirst('TEST_ID', 'empty')))).one()

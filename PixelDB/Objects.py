@@ -247,6 +247,7 @@ class BareModule(object):
       self.checkChip()
       result =(self.LASTTEST_CHIPS.split(","))[i]
       return int(result)
+  
   def __init__(self,BAREMODULE_ID,ROC_ID,SENSOR_ID,TRANSFER_ID,  BUILTBY, BUILTON=datetime.now(),COMMENT="", LASTTEST_CHIPS = "",LASTTEST_BAREMODULE_INSPECTION=0, LASTTEST_BAREMODULE_QA_PIXELALIVE = 0,LASTTEST_BAREMODULE_QA_BONDING = 0, LASTTEST_BAREMODULE_GRADING=0,  STATUS="",LABEL2D="",POWERCABLE="", SIGNALCABLE="", TYPE="" ):
       self.BAREMODULE_ID=unicode(BAREMODULE_ID)
       self.ROC_ID=unicode(ROC_ID)
@@ -1383,7 +1384,109 @@ class Test_DacParameters(object):
            self.WBC=int(                 WBC)
       
     
-          
+class Test_BM_ROC_DacParameters(object):
+      __storm_table__ = "test_bm_roc_dacparameters"
+      TEST_ID = Int(primary=True)
+      ROC_POS = Int()
+      BAREMODULE_ID = Unicode()
+      DATA_ID=Int()
+      SESSION_ID = Int()
+      IDIG  = Int() 
+      CLK  = Int() 
+      DESER  = Int() 
+      VDIG  = Int() 
+      VANA  = Int() 
+      VSH  = Int()
+      VCOMP  = Int() 
+      VWLLPR  = Int() 
+      VWLLSH  = Int() 
+      VHLDDEL  = Int() 
+      VTRIM  = Int() 
+      VTHRCOMP  = Int() 
+      VIBIAS_BUS  = Int() 
+      VIBIAS_SF  = Int() 
+      VOFFSETOP  = Int() 
+      PHOFFSET  = Int()
+      VION  = Int()
+      VCOMP_ADC  = Int()
+      PHSCALE  = Int()
+      VICOLOR  = Int() 
+      VCAL  = Int() 
+      CALDEL  = Int() 
+      VD  = Int() 
+      VA  = Int() 
+      CTRLREG  = Int() 
+      WBC  = Int() 
+      RBREG  = Int() 
+      TEMPERATURE = Float()
+      HUMIDITY= Float()
+      def __init__(self, 
+                   ROC_POS,
+                   BAREMODULE_ID,
+                   DATA_ID ,
+                   IDIG  ,
+                   CLK  ,
+                   DESER , 
+                   VDIG  ,
+                   VANA  ,
+                   VSH,
+                   VCOMP,  
+                   VWLLPR , 
+                   VWLLSH  ,
+                   VHLDDEL  ,
+                   VTRIM  ,
+                   VTHRCOMP , 
+                   VIBIAS_BUS,  
+                   VIBIAS_SF  ,
+                   VOFFSETOP  ,
+                   PHOFFSET ,
+                   VION ,
+                   VCOMP_ADC ,
+                   PHSCALE ,
+                   VICOLOR ,
+                   VCAL  ,
+                   CALDEL , 
+                   VD  ,
+                   VA  ,
+                   CTRLREG,  
+                   WBC  ,
+                   RBREG  ,
+                   SESSION_ID,
+                   TEMPERATURE,
+                   HUMIDITY                   ):
+          self.ROC_POS = int(ROC_POS)      
+          self.BAREMODULE_ID= unicode(BAREMODULE_ID)
+          self.SESSION_ID = int(  SESSION_ID)   
+          self.DATA_ID = int(    DATA_ID)
+          self.IDIG  = int(       IDIG )        
+          self.CLK  = int(        CLK )         
+          self.DESER  = int(      DESER )       
+          self.VDIG  = int(       VDIG )        
+          self.VANA  = int(       VANA )        
+          self.VSH  = int(        VSH )         
+          self.VCOMP  = int(      VCOMP )       
+          self.VWLLPR  = int(     VWLLPR )      
+          self.VWLLSH  = int(     VWLLSH )      
+          self.VHLDDEL  = int(    VHLDDEL )     
+          self.VTRIM  = int(      VTRIM )       
+          self.VTHRCOMP  = int(   VTHRCOMP )    
+          self.VIBIAS_BUS  = int( VIBIAS_BUS )  
+          self.VIBIAS_SF  = int(  VIBIAS_SF )   
+          self.VOFFSETOP  = int(  VOFFSETOP )    
+          self.PHOFFSET  = int(   PHOFFSET )    
+          self.VION  = int(       VION )        
+          self.VCOMP_ADC  = int(  VCOMP_ADC )   
+          self.PHSCALE  = int(    PHSCALE )     
+          self.VICOLOR  = int(    VICOLOR )     
+          self.VCAL  = int(       VCAL )        
+          self.CALDEL  = int(     CALDEL )      
+          self.VD  = int(         VD )          
+          self.VA  = int(         VA )          
+          self.CTRLREG  = int(    CTRLREG )     
+          self.WBC  = int(        WBC )         
+          self.RBREG = int(       RBREG)
+          self.TEMPERATURE = float(TEMPERATURE)
+          self.HUMIDITY = float(HUMIDITY)
 
 #history
  

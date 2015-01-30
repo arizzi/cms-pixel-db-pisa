@@ -145,8 +145,8 @@ If you see any error, please report by mail to Andrea and Tommaso.
 <br>
 Example Format:
 <pre>
-Sensor_id: S322310-08-01
-Bare_module_ID: B322310-08-01
+Sensor_id: S322310-08-1
+Bare_module_ID: B322310-08-1
 BB_company: DESY
 Comment: test bare module
 Builton: 2015-01-27_14h15m_1422364542

@@ -113,7 +113,14 @@ def testNotes(o,testname) :
 	 return "" 	
 	   
 def testDetails(o,testname) :
-   return "&nbsp;<a href=/cgi-bin/viewdetails.cgi?objName="+testname+"&TEST_ID=%s><img src=/icons/viewmag.png width=16></a>"%(o[testname+'_TEST_ID'] )
+   testnameObj=testname
+   typestr=""
+   m=re.match('Test_BareModule_QA_(.*)',testname )
+   if  m :
+                testnameObj="Test_BareModule_QA"
+                typestr="&TYPE="+m.group(1)
+
+   return "&nbsp;<a href=/cgi-bin/viewdetails.cgi?objName="+testnameObj+"&TEST_ID=%s><img src=/icons/viewmag.png width=16></a>"%(o[testname+'_TEST_ID'] )
 
 
 def hdiTbmGlue(o) :
@@ -270,6 +277,12 @@ columns.append([
 	("BumpBonding Tot failures","Test_BareModule_QA_BumpBonding.TOTAL_FAILURES","testEntryBM(o,'Test_BareModule_QA_BumpBonding','_TOTAL_FAILURES')"),
 	("PixelAlive Tot failures","Test_BareModule_QA_PixelAlive.TOTAL_FAILURES","testEntryBM(o,'Test_BareModule_QA_PixelAlive','_TOTAL_FAILURES')"),
 	("Global Grade","Test_BareModule_Grading.GLOBAL_GRADING","testEntryBM(o,'Test_BareModule_Grading','_GLOBAL_GRADING')"),
+        ("i1","Test_IV.I1","'%6g'%o['Test_IV_I1'] if o['Test_IV_I1'] is not None else 'n/a'"),
+        ("i2","Test_IV.I2","'%6g'%o['Test_IV_I2'] if o['Test_IV_I2'] is not None else 'n/a'"),
+        ("Slope","Test_IV.SLOPE",''),
+        ("i1@CIS","Test_IVCIS.I1","'%6g'%o['Test_IVCIS_I1'] if o['Test_IVCIS_I1'] is not None else 'n/a'"),
+        ("i2@CIS","Test_IVCIS.I2","'%6g'%o['Test_IVCIS_I2'] if o['Test_IVCIS_I2'] is not None else 'n/a'"),
+        ("Slope@CIS","Test_IVCIS.SLOPE",''),
         ("","Test_BareModule_Inspection.TEST_ID","NOPRINT"),
         ("","Test_BareModule_QA_BumpBonding.TEST_ID","NOPRINT"),
         ("","Test_BareModule_QA_PixelAlive.TEST_ID","NOPRINT"),
@@ -282,6 +295,8 @@ queries.append("select %s,Transfer.STATUS as Transfer_STATUS, Transfer.SENDER as
 		"left outer join test_baremodule_qa as Test_BareModule_QA_BumpBonding on BareModule.LASTTEST_BAREMODULE_QA_BONDING=Test_BareModule_QA_BumpBonding.TEST_ID "
 		"left outer join test_baremodule_grading as Test_BareModule_Grading on BareModule.LASTTEST_BAREMODULE_GRADING=Test_BareModule_Grading.TEST_ID "
 		"left outer join test_baremodule_inspection as Test_BareModule_Inspection on BareModule.LASTTEST_BAREMODULE_INSPECTION=Test_BareModule_Inspection.TEST_ID "
+		"left outer join test_iv as Test_IVCIS on Test_IVCIS.SENSOR_ID=BareModule.SENSOR_ID and Test_IVCIS.TYPE='CIS' "
+		"left outer join test_iv as Test_IV on Test_IV.SENSOR_ID=BareModule.SENSOR_ID and Test_IV.TYPE='BAM' "
 		" WHERE 1 ")
 countqueries.append("select COUNT(1)  from inventory_hdi")
 

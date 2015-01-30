@@ -465,8 +465,8 @@ class PixelTier0 (object):
                       continue
                 res = self.uploadGenericTest(od,s)
                 if (res is None):
-                      print" Stopped uploadAllTests due to error with ",od.NAME
-                      return None
+                      print" FAILED uploadAllTests due to error with ",od.NAME
+#                     return None
           return aa
 
 
@@ -475,8 +475,9 @@ class PixelTier0 (object):
 #
 # uses the field 
 # ProcessedDir.UPLOAD_TYPE to decide which to use            
-            print "USING UPLOAD = ",pd.UPLOAD_TYPE
+            print "USING UPLOAD = ",pd.UPLOAD_TYPE,"self.upload"+pd.UPLOAD_TYPE+"(pd,session)"
             ppp = eval ("self.upload"+pd.UPLOAD_TYPE+"(pd,session)")
+	    print "ppp",ppp
             return ppp
 
       def uploadNull(self,pd, session):
@@ -486,13 +487,30 @@ class PixelTier0 (object):
             self.store.commit()      
 
             return pd
+      def uploadBareModuleMultiTest(self, pd, session):
+            print "uploadBareModuleMultiTest"
+            dir = pd.NAME
+            aaa = self.PixelDB.insertBareModuleMultiTestDir(dir,session)
+	    if aaa is None or not hasattr(aaa,"TEST_ID") :
+	          print "Failed upload BMTest from DIR ",dir
+                  pd.STATUS=unicode("upload-failed")
+                  pd.UPLOAD_ID = 0
+                  pd.UPLOAD_STATUS=unicode('failed')
+                  self.store.commit()
+                  return None
+
+            pd.STATUS=unicode("uploaded")
+            pd.UPLOAD_ID = aaa.TEST_ID
+            pd.UPLOAD_STATUS=unicode("ok")
+            self.store.commit()      
+	    return aaa
 
       def uploadIVTest(self,pd, session):
             #
             # simply extract the dir from the pd, and use it to run 
             # pixeldb.insertTestSensorDir(self,dir,session)
             #
-	    print "PPPPPIIIPPO"
+	    print "uploadIVTest"
             dir = pd.NAME
             aaa = self.PixelDB.insertIVTestDir(dir,session)
             if (aaa is None):
