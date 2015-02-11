@@ -242,6 +242,7 @@ if action == "Insert" :
 		try: 
 		        dd=datetime.strptime(d,"%Y-%m-%d")
 		except:
+			print "Cannot parse the date, using today, was (#%s#)"%d
                         dd=date.today()
 		buildString+=" "+c+"=dd,"
                 buildDict[c]=dd
@@ -249,8 +250,13 @@ if action == "Insert" :
                 d=form.getfirst(c, "")
                 try:
                         dd=datetime.strptime(d,"%Y-%m-%d")
-                except:
-			dd=datetime.now()
+                except :
+			print "using date and time<br>"
+			try : 
+			 	dd=datetime.strptime(d,"%Y-%m-%d %H:%M:%S")
+		        except:
+				print "Cannot parse the datetime, using today, was (#%s#)"%d
+				dd=datetime.now()
                 buildString+=" "+c+"=dd,"
                 buildDict[c]=dd
            elif columnType2 == UnicodeVariable : 
@@ -310,7 +316,7 @@ if action == "Save changes" or  action == "Save and Close":
 		field = list[-1] 
 	   columnType=type(eval("o."+c))
            columnType2=type(eval(objName+"."+c+".variable_factory()"))
-#	   print c, field, columnType, columnType2
+	   print c, field, columnType, columnType2
 	   adate=date(2000,1,1)
            if c == "DATA_ID" and form['DATA_ID_filename'].filename :
                     fileitem = form['DATA_ID_filename']
@@ -339,8 +345,11 @@ if action == "Save changes" or  action == "Save and Close":
                 if field == "None":
                         field = "1970-01-01 00:00:00"   
                 d=field #form.getfirst(c, getattr(o,c))
-                dd=datetime.strptime(d,"%Y-%m-%d %H:%M:%S")
-                setattr(o,c,dd)
+           	try:
+		     dd=datetime.strptime(d,"%Y-%m-%d %H:%M:%S")
+               	     setattr(o,c,dd)
+		except :
+		     print "Cannot parse date %s<br>"%d
 	   elif c == "SIGNALS_AND_LVS" :
                 for f in form :
                         m=re.match('SIGNALS_AND_LVS_(.*)_(.*)',f)

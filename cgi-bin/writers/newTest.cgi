@@ -90,7 +90,7 @@ def inputField(objName,column, cookies, defVal = "") :
 	config = ConfigParser.ConfigParser()
 	config.read('/var/www/cgi-bin/writers/editor.ini')
 	#default input string:
-	inputString = "<input id=%s type=input name=\"%s\" value=\"%s\">" % (column,column,defVal)
+	inputString = "<input size=40 id=%s type=input name=\"%s\" value=\"%s\">" % (column,column,defVal)
 	if column == "TRANSFER_ID" and defVal == "":
 		inputString+=" <b>or</b> create transfer..."
 # FROM: <input type=\"input\" name=\"TRANSFER_ID_from\" /> TO: <input type=\"input\" name=\"TRANSFER_ID_to\" /> "

@@ -17,7 +17,7 @@ import cgi
 import os
 transferObjects=['FullModule','BareModule','Sensor','Roc','Hdi','Tbm','Wafer','Batch','ShippingBox']
 centers=['CIS','FACTORY','ETH','PSI','CERN','BARI','CATANIA','PERUGIA','PISA','HAMBURG','AACHEN','HELSINKI','DESY','KIT']
-legalNames = ["Transfer","Data","Session","Roc","Batch","Wafer","Sensor","BareModule","Hdi","Tbm","FullModule","Logbook","Test_BareModule","Test_FullModuleSession","Test_FullModuleSummary","Test_FullModule","Test_FullModuleAnalysis","Test_Tbm","Test_Hdi_Reception","Test_Hdi_TbmGluing","Test_Hdi_Bonding","Test_Hdi_Electric","Test_Hdi_Validation","Test_Roc","Test_IV","Test_IT","Test_SensorInspection","Test_BareModule_Inspection","Test_BareModule_Chip","Test_CV","History","ShippingBox","Test_DacParameters", "Test_Roc_Setup", "Test_BareModule_QA", "Test_BareModule_Grading","Test_PerformanceParameters","Test_BM_ROC_DacParameters"]
+legalNames = ["Transfer","Data","Session","Roc","Batch","Wafer","Sensor","BareModule","Hdi","Tbm","FullModule","Logbook","Test_BareModule","Test_FullModuleSession","Test_FullModuleSummary","Test_FullModule","Test_FullModuleAnalysis","Test_Tbm","Test_Hdi_Reception","Test_Hdi_TbmGluing","Test_Hdi_Bonding","Test_Hdi_Electric","Test_Hdi_Validation","Test_Roc","Test_IV","Test_IT","Test_SensorInspection","Test_BareModule_Inspection","Test_BareModule_Chip","Test_CV","History","ShippingBox","Test_DacParameters", "Test_Roc_Setup", "Test_BareModule_QA", "Test_BareModule_Grading","Test_PerformanceParameters","Test_BM_ROC_DacParameters","RocWafer","Test_FullModule_XRay_Vcal_Roc_Analysis","Test_FullModule_XRay_Vcal","Test_FullModule_XRay_Vcal_Module_Analysis"]
 userCenters={}
 addrCenters={}
 
@@ -36,10 +36,15 @@ sortedCols["Test_PerformanceParameters"]=["ROC_POS"]
 # Lasttest_hdi_Electric > Lasttest_hdi_Validation > Transfer (o Transfer_Id
 # clickabile) > Batch_id (o Lot_id se rinominata)> Type )o Version se
 # rinominata) > Comment
+#* nella Gluing table input I/F: Reorder more logically:
+#Test_id > HDI_id > Session_id > Notes > Data_id > Result (currently Notes is at the end)
+
+#* nella Inventory overview: Reorder more logically the test-related columns:
+#Lasttest_hdi_Reception > Lasttest_hdi_TBM Gluing > Lasttest_hdi_Bonding > Lasttest_hdi_Electric > Lasttest_hdi_Validation 
 
 sortedInputCols={}
 sortedInputCols["Test_Hdi_Reception"]=["TEST_ID","HDI_ID","SESSION_ID","INSPECTION_FRONT","INSPECTION_BACK","DATA_ID","RESULT"]
-sortedInputCols["Test_Hdi_TbmGluing"]=["TEST_ID","HDI_ID","SESSION_ID","DATA_ID","RESULT"]
+sortedInputCols["Test_Hdi_TbmGluing"]=["TEST_ID","HDI_ID","SESSION_ID","NOTES","DATA_ID","RESULT"]
 sortedInputCols["Test_Hdi_Bonding"]=["TEST_ID","HDI_ID","SESSION_ID","TBM_BONDS","HUB_ADDRESS_BONDS","N_TEST_BONDS","AVG_PULL_FORCE_G","NOTES","DATA_ID","RESULT"]
 sortedInputCols["Test_Hdi_Electric"]=["TEST_ID","HDI_ID","SESSION_ID","NUM_TBM","DIGITAL_CURRENT_mA","SIGNALS_AND_LVS","HV600_CURRENT_uA","NOTES","DATA_ID","RESULT"]
 sortedInputCols["Test_Hdi_Validation"]=["TEST_ID","HDI_ID","SESSION_ID","VISUAL_INSPECTION","NOTES","DATA_ID","RESULT"]

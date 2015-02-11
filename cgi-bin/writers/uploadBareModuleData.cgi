@@ -75,15 +75,20 @@ if action == "Upload" :
 		rocs={}
 	        for l in f:
 		#	print l
-			m=re.match("^(.*):\s*([^\s]*)\s*$",l)
-			if m :
+			m=re.match("^(.*?):\s*([^\s]*)\s*$",l)
+			m2=re.match("^Comment:(.*)$",l)
+			if m or m2 :
+			    if m:
 				dic[m.group(1).upper()]=m.group(2)	
+			    else :
+				dic["COMMENT"]=m2.group(1)	
+
 			else :
-		                m1=re.match("^(.*),([0-1][0-9])$",l)
+			        m1=re.match("^(.*),([0-1][0-9])\s*$",l)
 				if m1 :
 					i=int(m1.group(2))
 					rocs[i]=m1.group(1)
-
+		print dic
                 sensorid = dic["SENSOR_ID"]
                 baremoduleid = dic["BARE_MODULE_ID"]
 		buildDate=dic["BUILTON"]
@@ -114,7 +119,15 @@ if action == "Upload" :
 	        if s :
                     bm  = pdb.getBareModule(baremoduleid)
 		    if not bm :
-		         bm = BareModule(baremoduleid,rocids,sensorid,t.TRANSFER_ID,sender,TYPE=dic["TYPE"])
+			 try :
+				 mm=re.match("(.*-.*-.*_.*h.*m).*_.*",dic["BUILTON"])
+				 d=mm.group(1)
+				 dd=datetime.strptime(d,"%Y-%m-%d_%Hh%Mm")
+			 except :
+				 print "Cannot parse datetime<br>"
+				 dd=datetime.now()
+			 print "Build date used %s<br>"%dd
+		         bm = BareModule(baremoduleid,rocids,sensorid,t.TRANSFER_ID,sender,TYPE=dic["TYPE"],COMMENT=dic["COMMENT"],BUILTON=dd)
 		         if pdb.insertBareModule(bm)  :
                 	    print "<br><b> Bare module %s  inserted </b>" % baremoduleid
 			 else :
