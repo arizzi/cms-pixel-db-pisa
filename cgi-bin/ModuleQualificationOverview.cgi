@@ -43,6 +43,7 @@ objName = parseObjName(cgi.escape(objName))
 print "Content-Type: text/html"
 print
 print "<html>\n        <head>\n         "      
+print '<link rel="stylesheet" type="text/css" href="/frames.css" />'
 print '''
                 <style type="text/css" title="currentStyle">
                         @import "../media/css/demo_page.css";
@@ -71,7 +72,7 @@ print '''
 			    oTable.fnSetColumnVis( iCol, bVis ? false : true );
 			}
 	                </script>
-
+<body><main>
 '''
 sys.path.append("../PixelDB")
 
@@ -121,4 +122,5 @@ for o in objects :
     print "<td>"+eval(e)+"</td>"
    print "</tr>"
 
-print "</tbody><tfoot></tfoot>"
+print "</tbody><tfoot></tfoot></table>"
+printFooter()

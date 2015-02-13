@@ -14,6 +14,7 @@ from pixelwebui import *
 print "Content-Type: text/html"
 print
 print "<html>\n        <head>\n         "
+print '<link rel="stylesheet" type="text/css" href="/frames.css" />'
 print '''
                 <style type="text/css" title="currentStyle">
                         @import "../../media/css/demo_page.css";
@@ -39,7 +40,7 @@ if(s!=a) alert("Wrong barcode!!");
 return (s==a);
 }
                         </script>
-
+<body><main>
 '''
 
 from storm.properties import *
@@ -293,7 +294,7 @@ if action == "empty" :
    for o in transfers :
      print "<tr>"
      print "<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td><a href=transfers.cgi?submit=receive&TRANSFER_ID=%s onClick=\"return verify(%s);\" >receive</a> | <a href=transfers.cgi?submit=cancel&TRANSFER_ID=%s onClick=\"return verify(%s);\" >cancel</a> |  <a href=transfers.cgi?submit=details&TRANSFER_ID=%s >details</a> " %(o.SENDER,o.RECEIVER,o.COMMENT,o.STATUS,o.ISSUED_DATE, o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID)
-   print "</tbody><tfoot></tfoot>"
+   print "</tbody><tfoot></tfoot></table>"
 
    if False:
     print "<h2> List of received transfers </h2><p>"
@@ -305,7 +306,7 @@ if action == "empty" :
     for o in transfers :
       print "<tr>"
       print "<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td>" %(o.SENDER,o.RECEIVER,o.COMMENT,o.STATUS,o.ISSUED_DATE )
-    print "</tbody><tfoot></tfoot>"
+    print "</tbody><tfoot></tfoot></table>"
   
  
 if action == "newTransferForm" :
@@ -339,6 +340,5 @@ if action == "newTransferForm" :
    <input type="submit" name="submit" value="Transfer with children" /></p>
 
    </form>
-</body>
-</html> 
 '''
+printFooter()

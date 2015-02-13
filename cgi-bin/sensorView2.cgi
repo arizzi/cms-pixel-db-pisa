@@ -13,6 +13,7 @@ form = cgi.FieldStorage() # instantiate only once!
 print "Content-Type: text/html"
 print
 print "<html>\n        <head>\n         "      
+print '<link rel="stylesheet" type="text/css" href="/frames.css" />'
 print '''
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.2/css/jquery.dataTables.css">
 
@@ -174,7 +175,7 @@ $(document).ready(function() {
                                 });
 
                         </script>
-
+<body><main>
 '''
 sys.path.append("../PixelDB")
 
@@ -225,3 +226,4 @@ print '<img id=theimg src="" width=900 h=0><p><b>Plot options:</b><p>'
 print '<input id=log type="checkbox" checked onclick=update()> Log Scale<p>'
 print '<input id=zoom type="checkbox" disabled onclick=update()> Zoom<p>'
 print '<input id=correct type="checkbox" checked onclick=update()> Correct to T=20'
+printFooter()

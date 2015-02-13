@@ -31,7 +31,6 @@ if objName == 'empty' :
 	else:
 		toprint = columns[viewNumber]
 		topush='"name" : "viewNumber", "value" : "%s"' % viewNumber
-		print header[viewNumber]
 else:
 	viewNumber=-1
 	objName = parseObjName(cgi.escape(objName))
@@ -196,6 +195,9 @@ from pixelwebui import *
 pdb = PixelDBInterface(operator="webfrontend",center="cern")
 pdb.connectToDB()
 
+if objName == 'empty' :
+
+		print header[viewNumber]
 
 if True :
 	print "<button onclick='draw()'>Draw histogram</button>&nbsp;<select id=sel>"

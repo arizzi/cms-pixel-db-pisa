@@ -31,6 +31,9 @@ sortedCols["Hdi"]=["HDI_ID","STATUS","TBM1_VERSION","TBM2_VERSION","BATCH_ID","T
 sortedCols["Test_DacParameters"]=["ROC_POS","VDIG","VANA","VSH","VCOMP","VWLLPR","VWLLSH","VHLDDEL","VTRIM","VTHRCOMP","VIBIAS_BUS","PHOFFSET","VCOMP_ADC","PHSCALE","VICOLOR","VCAL","CALDEL","CTRLREG","WBC"]
 sortedCols["Test_PerformanceParameters"]=["ROC_POS"]
 sortedCols["BareModule"]=["BUILTBY","BUILTON","COMMENT"]
+sortedCols["RocWafer"]=["ROCWAFER_ID","LOT","TYPE","N_ROC","N_GOOD","YIELD","TEST","PRODCENTER", "NOM_THICKNESS", "COMMENT"]
+
+
 # HDI_ID > center > status (assumendo questo sara' lo stato globale
 # dell' oggetto: OK or BAD o missing tests) >  TBM1_version > TBM2_Version >
 # Lasttest_hdi_Reception > Lasttest_hdi_TBM Gluing > Lasttest_hdi_Bonding >
@@ -54,6 +57,8 @@ sortedInputCols["Hdi"]=sortedCols["Hdi"]
 renderStrings={}
 renderStrings["BareModule/ROC_ID"]='"<div style=\\\"white-space: nowrap; font-size: 70%% \\\">%s<br>%s</div>"%(o[rn][:100],o[rn][100:])'# "%s"%o["BareModule_ROC_ID"]'
 renderStrings["BareModule/COMMENT"]='"<div style=\\\"white-space: nowrap; font-size: 80%% \\\">%s</div>"%(o[rn])'
+renderStrings["RocWafer/YIELD"]='"%2.1f"%(o[rn])'
+renderStrings["RocWafer/NOM_THICKNESS"]='"%d"%(o[rn])'
 
 def defaultCenter() :
 	user=os.environ['REMOTE_USER']
