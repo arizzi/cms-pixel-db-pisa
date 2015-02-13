@@ -1,0 +1,165 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="/frames.css" />
+
+<!--
+<style type="text/css">
+ a:link {
+    font: bold 11px Arial;
+    text-decoration: none;
+    background-color: #EEEEEE;
+    color: #333333;
+    padding: 2px 6px 2px 6px;
+    border-top: 1px solid #CCCCCC;
+    border-right: 1px solid #333333;
+    border-bottom: 1px solid #333333;
+    border-left: 1px solid #CCCCCC;
+   }
+</style-->
+</head>
+<body>
+<main>
+<h2> Module Test Overview: </h2>
+<ul>
+<li> <a href=cgi-bin/ModuleQualificationOverview.cgi> All tests </a>
+<li> <a href=cgi-bin/ModuleQualificationOverviewLast.cgi> Last test (priority for FullQualifications)</a>
+</ul>
+
+<h2> Transfer Interface: </h2>
+<A HREF=https://cmspixelprod.pi.infn.it/cgi-bin/writers/transfers.cgi> Transfers </a>
+
+<h2> Tools: </h2>
+<A HREF=http://cmspixelprod.pi.infn.it/cgi-bin/ivcompare.cgi>IV comparison </a><p>
+<A HREF=http://cmspixelprod.pi.infn.it/cgi-bin/sensorView2.cgi>Sensor summary view </a><p>
+
+<h2> Components: </h2>
+<table border=1 border-width=0 cellspacing=10 cellpadding=5>
+<tr>
+<td bgcolor=#CCCCAA valign = top colspan=2>
+Batch (Sensors):<br>
+<ul>
+<li><a href=cgi-bin/view.cgi?objName=Batch> inventory </a>  
+<li><a href=cgi-bin/writers/edit.cgi?objName=Batch> add new </a>  
+</td>
+
+ <td bgcolor=#AAFFCC rowspan=4 valign=top>
+ HDI:<br><ul><li>
+<a href=cgi-bin/view.cgi?objName=Hdi> inventory </a>
+<li><a href=cgi-bin/writers/edit.cgi?objName=Hdi> add new </a>  
+<li> <a href=cgi-bin/rawPredefinedView.cgi?viewNumber=1> tests overview page </a>
+<li> <a href=cgi-bin/view.cgi?objName=Test_Hdi_Reception> reception test </a>
+<li> <a href=cgi-bin/view.cgi?objName=Test_Hdi_TbmGluing> gluing test </a>
+<li> <a href=cgi-bin/view.cgi?objName=Test_Hdi_Bonding> bonding test </a>
+<li> <a href=cgi-bin/view.cgi?objName=Test_Hdi_Electric> electric test </a>
+<li> <a href=cgi-bin/view.cgi?objName=Test_Hdi_Validation> validation test </a>
+</td>
+
+ <td bgcolor=#AAEECC rowspan=4 valign=top>
+ TBM:<br><ul><li>
+<a href=cgi-bin/view.cgi?objName=Tbm> inventory </a>
+<li><a href=cgi-bin/writers/edit.cgi?objName=Tbm> add new </a>  
+<!--<li> <a href=cgi-bin/view.cgi?objName=Test_Tbm> tests </a>-->
+</td>
+<tr>
+<td bgcolor=#AAAA88 valign = top colspan=1>
+Wafer (Sensors):<br>
+<ul>
+<li><a href=cgi-bin/view.cgi?objName=Wafer> inventory </a>
+<li><a href=cgi-bin/writers/edit.cgi?objName=Wafer> add new </a>
+</td>
+<td bgcolor=#AAAA88 valign = top colspan=1>
+Wafer (ROCs):<br>
+<ul>
+<li><a href=cgi-bin/view.cgi?objName=RocWafer> inventory </a>
+<li><a href=cgi-bin/writers/edit.cgi?objName=RocWafer> add new </a>
+</td>
+</tr>
+<td bgcolor=#AACCFF valign = top>
+Sensors:<br>
+<ul>
+<li><a href=cgi-bin/sensorView2.cgi> summary view </a>
+<li><a href=cgi-bin/view.cgi?objName=Sensor> inventory </a>
+<li><a href=cgi-bin/writers/edit.cgi?objName=Sensor> add new </a>
+<li> Tests: <a href=cgi-bin/view.cgi?objName=Test_IV>IV</a>, <a href=cgi-bin/view.cgi?objName=Test_CV>CV</a>,<a href=cgi-bin/view.cgi?objName=Test_IT>IT</a>
+</td>
+<td bgcolor=#FFCCCC valign = top rowspan=1> 
+ROC:<br><ul><li>
+<a href=cgi-bin/view.cgi?objName=Roc> inventory </a>
+<li> <a href=cgi-bin/rawPredefinedView.cgi?viewNumber=2> overview page </a>
+<li><a href=cgi-bin/writers/edit.cgi?objName=Roc> add new </a>
+<li><a href=cgi-bin/view.cgi?objName=Test_Roc> tests </a>
+</td>
+</tr>
+
+<tr> <td bgcolor=#EECCFF colspan=2> 
+Bare Module:<br><ul><li>
+ <a href=cgi-bin/view.cgi?objName=BareModule> inventory </a>
+<li> <a href=cgi-bin/rawPredefinedView.cgi?viewNumber=5> test overview </a>
+<li> <a href=cgi-bin/writers/uploadBareModuleData.cgi> Add new from CSV file </a>
+<li><a href=cgi-bin/writers/edit.cgi?objName=BareModule> add new (raw DB interface)</a>  
+<li> <a href=cgi-bin/view.cgi?objName=Test_BareModule> tests </a></td>
+</tr>
+<tr><td bgcolor=#DDFFFF colspan=4>
+Full Module:
+<br><ul><li>
+<a href=cgi-bin/view.cgi?objName=FullModule> inventory </a>
+<li><a href=cgi-bin/writers/edit.cgi?objName=FullModule> add new </a>  
+<li> <a href=cgi-bin/view.cgi?objName=Test_FullModule> tests </a>
+<li> <a href=cgi-bin/rawPredefinedView.cgi?viewNumber=3> Performance parameters summary view </a>
+<li> <a href=cgi-bin/rawPredefinedView.cgi?viewNumber=4> DAC parameters summary view </a>
+
+</td>
+</table>
+<h2> Other objects: </h2>
+<li> Shipping Box <a href=cgi-bin/view.cgi?objName=ShippingBox> inventory </a> | <a href=cgi-bin/writers/edit.cgi?objName=ShippingBox>new </a>
+ 
+<h2> Other tables: </h2>
+<table border=1>
+<tr> <td> <a href=cgi-bin/view.cgi?objName=Session>List of test sessions</a></td>
+ <td> <a href=cgi-bin/view-slow.cgi?objName=Transfer>List of transfers</a></td>
+ <td> <a href=cgi-bin/view.cgi?objName=Batch>List of Batches</a></td>
+ <td> <a href=cgi-bin/view.cgi?objName=Wafer>List of Wafers</a></td>
+
+</table>
+
+</main>
+<nav>
+               <ul>
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="#">Inventory</a>
+                        <ul>
+                                <li><a href="/cgi-bin/view.cgi?objName=Batch">Batches</a></li>
+                                <li><a href="/cgi-bin/view.cgi?objName=Wafer">Wafers</a></li>
+                                <li><a href="/cgi-bin/view.cgi?objName=RocWafer">ROC Wafers</a></li>
+                                <li><a href="/cgi-bin/view.cgi?objName=Sensor">Sensors</a></li>
+                                <li><a href="/cgi-bin/view.cgi?objName=Roc">Rocs</a></li>
+                                <li><a href="/cgi-bin/view.cgi?objName=Hdi">Hdi</a></li>
+                                <li><a href="/cgi-bin/view.cgi?objName=BareModule">BareModule</a></li>
+                                <li><a href="/cgi-bin/view.cgi?objName=FullModule">FullModule</a></li>
+                        </ul>
+                </li>
+                <li><a href="/cgi-bin/writers/transfers.cgi">Transfer</a></li>
+                <li><a href="#">Sensors</a>
+                        <ul>
+                                <li><a href=/cgi-bin/sensorView2.cgi> overview </a>
+                                <li><a href=/cgi-bin/view.cgi?objName=Sensor> inventory </a>
+                                <li><a href=/cgi-bin/writers/edit.cgi?objName=Sensor> add new </a>
+                                <li> <a href="#">Tests:</a> <ul>
+                                                        <li><a href=/cgi-bin/view.cgi?objName=Test_IV>IV</a></li>
+                                                        <li><a href=/cgi-bin/view.cgi?objName=Test_CV>CV</a></li>
+                                                        <li><a href=/cgi-bin/view.cgi?objName=Test_IT>IT</a></li>
+                                </ul></li>
+                        </ul>
+                </li>
+
+        </ul>
+</nav>
+
+
+                <footer id="footer">
+                        <a href="/index.html">Home</a>
+                        <div class="innertube">
+                                CMS Pixel Barrel Upgrade DB - Contact A.Rizzi and T.Boccali for any problem you find</p>
+                        </div>
+                </footer>
+

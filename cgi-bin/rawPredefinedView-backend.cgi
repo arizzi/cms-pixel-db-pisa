@@ -155,6 +155,7 @@ for o in cur.fetchall() :
    for c,rn,ev in cols :
       if ev != "NOPRINT":
         rn=re.sub('\.','_',rn)
+	#oo=o[rn]
 	if ev == '' :
 		row[i]="%s"%o[rn]
 	else :

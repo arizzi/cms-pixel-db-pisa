@@ -10,11 +10,12 @@ cgitb.enable()
 import re
 import cgi
 
-
-print "Content-Type: text/html"
-print
-print "<html>\n        <head>\n         "      
-print '''
+def printHeaders() :
+  print "Content-Type: text/html"
+  print
+  print "<html>\n        <head>\n         "      
+  print '<link rel="stylesheet" type="text/css" href="/frames.css" />'
+  print '''
                 <style type="text/css" title="currentStyle">
                         @import "../media/css/demo_page.css";
                         @import "../media/css/jquery.dataTables.css";
@@ -39,8 +40,9 @@ function fnShowHide( iCol )
      
 }
                 </script>
-
+<body><main>
 '''
+
 sys.path.append("../PixelDB")
 
 from storm.properties import *
@@ -61,8 +63,6 @@ objName = form.getfirst('objName', 'empty')
 objName = cgi.escape(parseObjName(objName))
 objType = eval(objName)
 refToShow = form.getfirst("ref", 'empty')
-if cgi.escape(form.getfirst("spec", "1")) == "1" and refToShow=="empty":
-  specificView(objName,form,pdb)
 
 if re.match("test",objName,flags=re.IGNORECASE) : 
   ID="TEST_ID"
@@ -87,8 +87,19 @@ objects = pdb.store.find(objType,filter==filterValue)
 
 #print  "count: ", objects.count()
 if objects.count() == 0 : 
+  printHeaders()
   print "NOT FOUND"
 else :
+	if refToShow != "empty":
+ 	 	   r=getattr(objects[0],refToShow)
+		   idn=idField(r.__class__.__name__)
+		   newlocation="viewdetails.cgi?objName=%s&%s=%s"%(r.__class__.__name__,idn,getattr(r,idn))
+		   print "Location: %s" % newlocation
+		   print
+
+  	printHeaders()
+        if cgi.escape(form.getfirst("spec", "1")) == "1" and refToShow=="empty":
+	  specificView(objName,form,pdb)
 #if reference details were requested, show the details for it rather than the original object
 	if refToShow != "empty" :
  	 r=getattr(objects[0],refToShow)
@@ -101,7 +112,8 @@ else :
   	  objects.append(r)
 	  objType=r.__class__
 	  objName=r.__class__.__name__
-	  
+#  specificView(objName,form,pdb)idField(objName) 
+
 	columns = []
 	if objName in sortedCols:
         	columns = sortedCols[objName]
@@ -194,6 +206,7 @@ else :
 	#    print "<td><a href=ref>", r,"</a></td>"
 	#    help(getattr(o,r))
 	print "</tbody><tfoot></tfoot></table><br>"
-
+	
 	if summary != "" :
 	   print "<img src="+summary+">"
+	printFooter()

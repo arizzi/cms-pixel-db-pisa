@@ -15,8 +15,8 @@ from PixelDB import *
 import re
 import cgi
 import os
-transferObjects=['FullModule','BareModule','Sensor','Roc','Hdi','Tbm','Wafer','Batch','ShippingBox']
-centers=['CIS','FACTORY','ETH','PSI','CERN','BARI','CATANIA','PERUGIA','PISA','HAMBURG','AACHEN','HELSINKI','DESY','KIT']
+transferObjects=['FullModule','BareModule','Sensor','Roc','Hdi','Tbm','Wafer','Batch','ShippingBox','RocWafer']
+centers=['CIS','FACTORY','ETH','PSI','CERN','BARI','CATANIA','PERUGIA','PISA','HAMBURG','AACHEN','HELSINKI','DESY','KIT','Dectris']
 legalNames = ["Transfer","Data","Session","Roc","Batch","Wafer","Sensor","BareModule","Hdi","Tbm","FullModule","Logbook","Test_BareModule","Test_FullModuleSession","Test_FullModuleSummary","Test_FullModule","Test_FullModuleAnalysis","Test_Tbm","Test_Hdi_Reception","Test_Hdi_TbmGluing","Test_Hdi_Bonding","Test_Hdi_Electric","Test_Hdi_Validation","Test_Roc","Test_IV","Test_IT","Test_SensorInspection","Test_BareModule_Inspection","Test_BareModule_Chip","Test_CV","History","ShippingBox","Test_DacParameters", "Test_Roc_Setup", "Test_BareModule_QA", "Test_BareModule_Grading","Test_PerformanceParameters","Test_BM_ROC_DacParameters","RocWafer","Test_FullModule_XRay_Vcal_Roc_Analysis","Test_FullModule_XRay_Vcal","Test_FullModule_XRay_Vcal_Module_Analysis"]
 userCenters={}
 addrCenters={}
@@ -30,6 +30,7 @@ sortedCols["Test_Hdi_Validation"]=["HDI_ID","RESULT","VISUAL_INSPECTION","NOTES"
 sortedCols["Hdi"]=["HDI_ID","STATUS","TBM1_VERSION","TBM2_VERSION","BATCH_ID","TYPE","COMMENT"]
 sortedCols["Test_DacParameters"]=["ROC_POS","VDIG","VANA","VSH","VCOMP","VWLLPR","VWLLSH","VHLDDEL","VTRIM","VTHRCOMP","VIBIAS_BUS","PHOFFSET","VCOMP_ADC","PHSCALE","VICOLOR","VCAL","CALDEL","CTRLREG","WBC"]
 sortedCols["Test_PerformanceParameters"]=["ROC_POS"]
+sortedCols["BareModule"]=["BUILTBY","BUILTON","COMMENT"]
 # HDI_ID > center > status (assumendo questo sara' lo stato globale
 # dell' oggetto: OK or BAD o missing tests) >  TBM1_version > TBM2_Version >
 # Lasttest_hdi_Reception > Lasttest_hdi_TBM Gluing > Lasttest_hdi_Bonding >
@@ -49,6 +50,10 @@ sortedInputCols["Test_Hdi_Bonding"]=["TEST_ID","HDI_ID","SESSION_ID","TBM_BONDS"
 sortedInputCols["Test_Hdi_Electric"]=["TEST_ID","HDI_ID","SESSION_ID","NUM_TBM","DIGITAL_CURRENT_mA","SIGNALS_AND_LVS","HV600_CURRENT_uA","NOTES","DATA_ID","RESULT"]
 sortedInputCols["Test_Hdi_Validation"]=["TEST_ID","HDI_ID","SESSION_ID","VISUAL_INSPECTION","NOTES","DATA_ID","RESULT"]
 sortedInputCols["Hdi"]=sortedCols["Hdi"]
+
+renderStrings={}
+renderStrings["BareModule/ROC_ID"]='"<div style=\\\"white-space: nowrap; font-size: 70%% \\\">%s<br>%s</div>"%(o[rn][:100],o[rn][100:])'# "%s"%o["BareModule_ROC_ID"]'
+renderStrings["BareModule/COMMENT"]='"<div style=\\\"white-space: nowrap; font-size: 80%% \\\">%s</div>"%(o[rn])'
 
 def defaultCenter() :
 	user=os.environ['REMOTE_USER']
@@ -131,4 +136,10 @@ def corTemp(I,T) :
 	T+=273.
         return I*(293.15/T)**2 * exp(-eg/(2*kb)*(1./293.15-1./T))
 
+
+def printFooter() :
+  ff = file("/var/www/html/nav.html")
+  print "</main>"
+  print ff.read()
+  print "</body></html>"
  

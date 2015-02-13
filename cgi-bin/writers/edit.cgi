@@ -12,6 +12,7 @@ import cgi
 print "Content-Type: text/html"
 print
 print "<html>\n        <head>\n         "      
+print '<link rel="stylesheet" type="text/css" href="/frames.css" />'
 print '''
     <script>
         function setAllPass(){
@@ -54,7 +55,7 @@ print '''
 
         }
         </script>
-
+<body><main>
 '''
 sys.path.append("../../PixelDB")
 sys.path.append("..")
@@ -421,4 +422,4 @@ if action != "Save and Close" :
 	else :
  		print "<input type=\"submit\" name=\"submit\" value=\"Insert\" /></form>"
 print "<br> <a href=/>back home</a> | <a href=%s>back to last list view </a>" % (setcookies["lastview"].value if "lastview" in setcookies else "")
-
+printFooter()

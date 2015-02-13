@@ -73,7 +73,17 @@ class PixelDBInterface(object) :
             # log in history
             self.insertHistory(type="NULL", id=0, target_type="HDI", target_id=hdi.HDI_ID, operation="INSERT", datee=datetime.now(), comment="NO COMMENT")
             return hdi      
-      
+
+      def insertRocWafer (self, rocwafer):
+            if (self.isRocWaferInserted(rocwafer.ROCWAFER_ID) == True):
+                  print "ERROR: rocwafer already inserted", rocwafer.ROCWAFER_ID
+                  return None
+            self.store.add(rocwafer)
+            self.store.commit()
+            # log in history
+            self.insertHistory(type="NULL", id=0, target_type="ROCWAFER", target_id=rocwafer.ROCWAFER_ID, operation="INSERT", datee=datetime.now(), comment="NO COMMENT")
+            return rocwafer
+ 
 
       def insertBatch (self, batch):
             if (self.isBatchInserted(batch.BATCH_ID) == True):
@@ -241,6 +251,10 @@ class PixelDBInterface(object) :
             aa = self.store.find(Hdi, Hdi.HDI_ID==hdi_id).one()
             return aa is not None
 
+      def isRocWaferInserted(self, id):
+            aa = self.store.find(RocWafer, RocWafer.ROCWAFER_ID==id).one()
+            return aa is not None
+
       def isBareModuleInserted(self, BareModule_id):
             temp=unicode(BareModule_id)
             aa = self.store.find(BareModule, BareModule.BAREMODULE_ID==temp).one()
@@ -399,6 +413,11 @@ class PixelDBInterface(object) :
       def getSensor(self, sensor_id):
             temp=unicode(sensor_id)
             aa = self.store.find(Sensor, Sensor.SENSOR_ID==temp).one()
+            return aa
+
+      def getRocWafer(self, roc_id):
+            temp=unicode(roc_id)
+            aa = self.store.find(RocWafer, RocWafer.ROCWAFER_ID==temp).one()
             return aa
 
       def getRoc(self, roc_id):

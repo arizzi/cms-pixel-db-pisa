@@ -111,6 +111,19 @@ def getChildren(objName,ids,sender) :
                        notAtRightcenter.append(("Sensor",s.SENSOR_ID))
                   else :
                        objects.append(("Sensor",s.SENSOR_ID))
+   elif objName == "RocWafer" :
+        for id in ids:
+                value=idFieldTypedValue(objName,id)
+                if not checkCenter("RocWafer",value,sender) :
+                        notAtRightcenter.append(("RocWafer",value))
+                else :
+                        objects.append(("RocWafer",value))
+                rocs = pdb.store.find(Roc,Roc.WAFER_ID==value)
+                for s in rocs :
+                  if not checkCenter("Roc",s.ROC_ID,sender) :
+                       notAtRightcenter.append(("Roc",s.ROC_ID))
+                  else :
+                       objects.append(("Roc",s.ROC_ID))
 
    else:
 	print "Transfer with children not yet implemented for this type. please use normal transfer"
@@ -302,7 +315,7 @@ if action == "newTransferForm" :
    <form >
 '''
    print "<p>Sender:   <select name=sender>"
-   for o in centers :
+   for o in centers+["any"] :
         print "<option>%s</option>" % o
    print" </select><p>"
    print "<p>Receiver:   <select name=receiver>"

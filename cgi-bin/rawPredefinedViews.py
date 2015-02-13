@@ -7,6 +7,11 @@ from storm.properties import *
 from storm.references import *
 from storm import *
 from PixelDB import *
+def renderString(column,objName):
+	k="%s/%s" %(objName,column)
+	if k in renderStrings :
+		return renderStrings[k]
+	return ''
 
 def fromObjectName(objName):
 	cols = []
@@ -48,7 +53,8 @@ def fromObjectName(objName):
    #             row.append("%s to %s"%(o["SENDER"],o["RECEIVER"]))
 
 	for c in cols:
-	    cformat.append((c.lower().capitalize(),table+"."+c,''))
+	  if c.upper() != ID.upper() :
+	    cformat.append((c.lower().capitalize(),table+"."+c,renderString(c,objName)))
 	for r in refs:
 	    cformat.append((r.lower().capitalize(),'','"<a href=\\\"viewdetails.cgi?objName='+objName+'&'+ID+'="+"%s"%(o["'+IDF2+'"])+"&ref='+r+'\\\"> details</a></td>"'))
 

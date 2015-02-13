@@ -125,18 +125,24 @@ class RocWafer (object):
     data=Reference(DATA_ID,Data.DATA_ID)
     NOM_THICKNESS= Float()
     N_GOOD=Int()
+    N_ROC=Int()
     YIELD = Float()
     TYPE = Unicode() 
-    def __init__(self,BATCH_ID, TRANSFER_ID, PRODCENTER, NUM_THICKNESS, YIELD, TYPE, N_GOOD, COMMENT=""):
+    TEST = Unicode() 
+    LOT = Unicode() 
+    def __init__(self,ROCWAFER_ID, TRANSFER_ID, PRODCENTER, NOM_THICKNESS, YIELD, TYPE, N_GOOD, DATA_ID, N_ROC,LOT,TEST,COMMENT=""):
          self.ROCWAFER_ID=unicode(ROCWAFER_ID)
          self.TRANSFER_ID=TRANSFER_ID
          self.PRODCENTER=unicode(PRODCENTER)
          self.COMMENT=unicode(COMMENT)
          self.TYPE=unicode(TYPE)
+         self.TEST=unicode(TEST)
+         self.LOT=unicode(LOT)
          self.DATA_ID=DATA_ID
          self.NOM_THICKNESS=float(NOM_THICKNESS)
          self.YIELD=float(YIELD)
          self.N_GOOD=int(N_GOOD)
+         self.N_ROC=int(N_ROC)
 
 class Batch(object):
      __storm_table__ = "inventory_batch"

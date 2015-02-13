@@ -39,6 +39,7 @@ else:
 	topush='"name" : "objName", "value" : "%s"' % objName
 
 print "<html>\n        <head>\n         "      
+print '<link rel="stylesheet" type="text/css" href="/frames.css" />'
 print '''
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.2/css/jquery.dataTables.css">
 
@@ -180,7 +181,8 @@ $(document).ready(function() {
                         }
 
 	                </script>
-
+<body>
+<main>
 ''' %(topush,viewNumber,objName)
 sys.path.append("../PixelDB")
 
@@ -225,5 +227,8 @@ print " <tfoot> <tr>"
 for (c,s,e) in toprint :
  if e!= "NOPRINT":
 	 print "<th>", c,"</th>"
-print "</tfoot></tr><tbody></tbody>"
+print "</tfoot></tr><tbody></tbody></table>"
+
+printFooter()
+
 
