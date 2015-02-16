@@ -13,7 +13,24 @@
                                 <li><a href="/cgi-bin/view.cgi?objName=FullModule">FullModule</a></li>
                         </ul>
                 </li>
-                <li><a href="/cgi-bin/writers/transfers.cgi">Transfer</a></li>
+                <li><a href="/cgi-bin/writers/transfers.cgi">Transfers</a></li>
+                <li><a href="#">Batches&Wafers</a>
+                        <ul>
+	                <li><a href="#">SensorBatches</a><ul>
+				<li><a href=/cgi-bin/view.cgi?objName=Batch>inventory </a>
+				<li><a href=/cgi-bin/writers/edit.cgi?objName=Batch>add new </a>
+			</ul></li>
+	                <li><a href="#">SensorWafers</a><ul>
+				<li><a href=/cgi-bin/view.cgi?objName=Wafer>inventory </a>
+				<li><a href=/cgi-bin/writers/edit.cgi?objName=Wafer>add new </a>
+			</ul></li>
+	                <li><a href="#">RocWafers</a><ul>
+				<li><a href=/cgi-bin/view.cgi?objName=RocWafer>inventory </a>
+				<li><a href=/cgi-bin/writers/edit.cgi?objName=RocWafer>add new </a>
+			</ul></li>
+			</ul>
+		</li>
+
   	 	<li><a href="#">Sensors</a>
                         <ul>
 				<li><a href=/cgi-bin/sensorView2.cgi> overview </a>
@@ -26,6 +43,49 @@
 				</ul></li>
 			</ul>
 		</li>
+                <li><a href="#">HDI</a>
+                        <ul>
+				<li><a href=/cgi-bin/view.cgi?objName=Hdi> inventory </a>
+				<li><a href=/cgi-bin/writers/edit.cgi?objName=Hdi> add new </a>  
+                                <li> <a href="#">Tests:</a> <ul>
+	 				<li> <a href=/cgi-bin/rawPredefinedView.cgi?viewNumber=1> Overview </a>
+   					 <li> <a href=/cgi-bin/view.cgi?objName=Test_Hdi_Reception> reception</a>
+					 <li> <a href=/cgi-bin/view.cgi?objName=Test_Hdi_TbmGluing> gluing</a>
+					 <li> <a href=/cgi-bin/view.cgi?objName=Test_Hdi_Bonding> bonding  </a>
+					 <li> <a href=/cgi-bin/view.cgi?objName=Test_Hdi_Electric> electric </a>
+					 <li> <a href=/cgi-bin/view.cgi?objName=Test_Hdi_Validation> validation </a>
+				</ul></li>
+		</ul></li>
+	
+	       	<li><a href="#">Roc</a><ul>
+				<li><a href=/cgi-bin/view.cgi?objName=Roc> inventory </a>
+				<li> <a href=/cgi-bin/rawPredefinedView.cgi?viewNumber=2> overview </a>
+				<li><a href=/cgi-bin/writers/edit.cgi?objName=Roc> add new </a>
+				<li><a href=/cgi-bin/view.cgi?objName=Test_Roc> tests </a>
+
+		</ul></li>
+                <li><a href="#">BareModules</a><ul>
+			<li> <a href=cgi-bin/view.cgi?objName=BareModule> inventory </a>
+			<li> <a href=cgi-bin/rawPredefinedView.cgi?viewNumber=5> test overview </a>
+			<li> <a href=cgi-bin/writers/uploadBareModuleData.cgi> Add new from CSV file </a>
+			<li><a href=cgi-bin/writers/edit.cgi?objName=BareModule> add new (raw DB interface)</a>
+			<li> <a href=cgi-bin/view.cgi?objName=Test_BareModule> tests </a>
+
+                </ul></li>
+                <li><a href="#">FullModules</a><ul>
+			<li><a href=cgi-bin/writers/edit.cgi?objName=FullModule> add new </a>
+			<li><a href="#">Tests:</a><ul>
+				<li> <a href=cgi-bin/ModuleQualificationOverview.cgi> All&nbsp;tests </a>
+				<li> <a href=cgi-bin/ModuleQualificationOverviewLast.cgi> Last&nbsp;test</a>
+				<li><a href="#">---experts&nbsp;only---</a
+				<li> <a href=cgi-bin/view.cgi?objName=Test_FullModule> fm test </a>
+				<li> <a href=cgi-bin/view.cgi?objName=Test_FullModuleAnalysis> fm&nbsp;test&nbsp;analysis </a>
+				<li> <a href=cgi-bin/view.cgi?objName=Test_FullSummary> fm&nbsp;test&nbsp;summary </a>
+			</ul></li>
+			<li> <a href=cgi-bin/rawPredefinedView.cgi?viewNumber=3> Perf. params.</a>
+			<li> <a href=cgi-bin/rawPredefinedView.cgi?viewNumber=4> DAC params.  </a>
+                </ul></li>
+
 
         </ul>
 </nav>
