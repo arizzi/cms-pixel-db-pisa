@@ -1053,9 +1053,21 @@ class Test_Roc(object):
       VDAC = Float()
       V24 = Float()
       PHFAIL = Int()
-      
+      VDCAP = Int()
+      VDIGU_ADC = Int()
+      VANAU_ADC = Int()
+      VANAR_ADC = Int()
+      VBG_ADC = Int()
+      IANA_ADC = Int()
+      VDIGU_VOLTS = Float()
+      VANAU_VOLTS = Float()
+      IANA_MILLIAMPS = Float()
+      VANASCAN = Unicode()	
+
+       
       COMMENT = Unicode()
-      def __init__(self,SESSION_ID, ROC_ID, RESULT,  V24, IANA, IDIGI, VDAC, DEFECTPIXELS, ADDRPIXELS, TRIMPIXELS, MASKPIXELS, NSIGPIXELS, NOISEPIXELS, THRESHOLDPIXELS, PHFAIL, COMMENT="",DATA_ID=0):
+      def __init__(self,SESSION_ID, ROC_ID, RESULT,  V24, IANA, IDIGI, VDAC, DEFECTPIXELS, ADDRPIXELS, TRIMPIXELS, MASKPIXELS, NSIGPIXELS, NOISEPIXELS, THRESHOLDPIXELS, PHFAIL, 
+			VDCAP,VDIGU_ADC,VANAU_ADC,VANAR_ADC,VBG_ADC,IANA_ADC,VDIGU_VOLTS,VANAU_VOLTS,IANA_MILLIAMPS,VANASCAN,COMMENT="",DATA_ID=0):
           self.SESSION_ID=SESSION_ID 
           self.ROC_ID=unicode(ROC_ID)
           self.RESULT=int(RESULT)
@@ -1073,6 +1085,16 @@ class Test_Roc(object):
           self.THRESHOLDPIXELS=int(THRESHOLDPIXELS)
           self.PHFAIL=int(PHFAIL)
           self.COMMENT=unicode(COMMENT)
+	  self.VDCAP = int(VDCAP)
+          self.VDIGU_ADC = int(VDIGU_ADC)
+          self.VANAU_ADC = int(VANAU_ADC)
+          self.VANAR_ADC = int(VANAR_ADC)
+          self.VBG_ADC = int(VBG_ADC)
+          self.IANA_ADC = int(IANA_ADC)
+          self.VDIGU_VOLTS = float(VDIGU_VOLTS)
+          self.VANAU_VOLTS = float(VANAU_VOLTS)
+          self.IANA_MILLIAMPS = float(IANA_MILLIAMPS)
+          self.VANASCAN = unicode(VANASCAN)
 
 
 
@@ -1144,7 +1166,7 @@ class Test_Roc_Setup(object):
                  VD ,	
                  VA ,
                  CTRLREG ,
-                 WBC ,
+		 WBC ,
                  RBREG):
         
        self.TEMPERATURE = float(TEMPERATURE)
@@ -1206,7 +1228,7 @@ class Test_IV(object): # e' il vecchio test_sensor
           self.TYPE=unicode(TYPE)
           self.GRADE=unicode(GRADE)
           self.DATA_ID=DATA_ID
-          self.V1=float(V1)
+	  self.V1=float(V1)
           self.GRADE=unicode(GRADE)
           self.COMMENT=unicode(COMMENT)
           self.V2=float(V2)
