@@ -66,12 +66,14 @@ pdb.connectToDB()
 
 listinserted=[]
 
+dryrun=False
 
+if len(sys.argv) > 4 :
 
-if len(sys.argv) > 3 :
-
-    tars = pdb.store.find(InputTar, InputTar.TESTNAME.like(u"%s"%sys.argv[2]), InputTar.CENTER.like(u"%s"%sys.argv[3]))
+    tars = pdb.store.find(InputTar, InputTar.TESTNAME.like(u"%s"%sys.argv[2]), InputTar.CENTER.like(u"%s"%sys.argv[3]), InputTar.DATE > datetime.strptime(sys.argv[4],"%d-%m-%y"))
     for tar in tars :
+      print tar.CENTER,tar.DATE,tar.NAME	
+      if not dryrun :
 	tar.STATUS=u'new'
 	listinserted.append(tar.TAR_ID)
         if (INSERTED>MAX):
@@ -80,8 +82,9 @@ if len(sys.argv) > 3 :
 	INSERTED+=1  	
         print "Reprocess tar = ", tar.TAR_ID, tar.CENTER, tar.TESTNAME
         pdb.store.commit()
-	
-    numinjected = pdb.injectsProcessingJobs(tarlist=listinserted)
+
+    if not dryrun :
+	   numinjected = pdb.injectsProcessingJobs(tarlist=listinserted)
         
 else :
 	print "Syntax: reprocess.py ini-file testname center-expr"

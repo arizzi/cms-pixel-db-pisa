@@ -206,6 +206,16 @@ columns.append([
         ("Center","Transfer.RECEIVER","o['Transfer_RECEIVER'] if o['Transfer_STATUS']=='ARRIVED' else  o['Transfer_SENDER'] "),
         ("Status","Roc.STATUS",""),
         ("Grade","Test_Roc.RESULT","rocColors(o)"),
+        ("Type","Roc_Wafer.TYPE",""),
+        ("TRIMPIXELS","Test_Roc.TRIMPIXELS",""),
+        ("MASKPIXELS","Test_Roc.MASKPIXELS",""),
+        ("IANA","Test_Roc.IANA",""),
+        ("IDIGI","Test_Roc.IDIGI",""),
+        ("DEFECTPIXELS","Test_Roc.DEFECTPIXELS",""),
+        ("THRESHOLDPIXELS","Test_Roc.THRESHOLDPIXELS",""),
+        ("ADDRPIXELS","Test_Roc.ADDRPIXELS",""),
+        ("NSIGPIXELS","Test_Roc.NSIGPIXELS",""),
+        ("NOISEPIXELS","Test_Roc.NOISEPIXELS",""),
         ("Pos on wafer","Roc.ROC_POSITION",""),
         ("","Roc.LASTTEST_ROC","NOPRINT"),
 
@@ -213,6 +223,7 @@ columns.append([
 rowkeys.append("Roc_ROC_ID") #not obvious
 queries.append("select %s,Transfer.STATUS as Transfer_STATUS, Transfer.SENDER as Transfer_SENDER from inventory_roc as Roc left outer join transfers as Transfer on Roc.TRANSFER_ID=Transfer.TRANSFER_ID "
                 "left outer join test_roc as Test_Roc on Roc.LASTTEST_ROC=Test_Roc.TEST_ID "
+                "left outer join inventory_roc_wafer as Roc_Wafer on Roc.WAFER_ID=Roc_Wafer.ROCWAFER_ID "
                 " WHERE 1 ")
 countqueries.append("select COUNT(1)  from inventory_roc")
 

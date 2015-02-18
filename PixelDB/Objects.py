@@ -1480,6 +1480,7 @@ class Test_DacParameters(object):
       FULLMODULEANALYSISTEST_ID = Int()
       VDIG=Int()
       VANA=Int()
+      VCAL=Int()
       VSH=Int()
       VCOMP=Int()
       VWLLPR=Int()
@@ -1502,6 +1503,7 @@ class Test_DacParameters(object):
                    VDIG,
                    VANA,
                    VSH,
+                   VCAL,
                    VCOMP,
                    VWLLPR,
                    VWLLSH,
@@ -1534,6 +1536,7 @@ class Test_DacParameters(object):
            self.VIBIAS_BUS=int(          VIBIAS_BUS) 
            self.PHOFFSET=int(          PHOFFSET) 
            self.VCOMP_ADC=int(           VCOMP_ADC)  
+           self.VCAL=int(           VCAL)  
            self.PHSCALE=int(           PHSCALE)  
            self.VICOLOR=int(             VICOLOR)    
            self.CALDEL=int(              CALDEL)     

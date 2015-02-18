@@ -12,13 +12,18 @@ pdb = PixelDBInterface(operator="webfrontend",center="cern")
 pdb.connectToDB()
 #filename="/home/cmsweb/First_batch_KIT_Oct14.csv"
 filename="test.json"
+dirname="wafertest_json_psi_Feb15"
+#dirname="test"
 os.path.isfile(filename)
 t= None
 i=0
 import json
-with open(filename, 'rb') as f:
+for filename in os.listdir(dirname):
+   print filename
+   f=open(dirname+"/"+filename, 'rU')
    i+=1
    for row in f :
+      if re.match(".*ROC.*",row):
 	 wj=json.loads(row	)
 	 if True :
 		CENTER=wj["TEST_CENTER"]
@@ -29,6 +34,10 @@ with open(filename, 'rb') as f:
 		if not h:
 			  fields=re.split("-",rocid)
 			  waferid=fields[0]
+			  w = pdb.getRocWafer(unicode(waferid))
+			  if w is None :
+				print "ERROR: no wafer",waferid
+			        continue	
 			  position=fields[1]
 	        	  print "Roc %s is new, inserting it...with waferid %s" % (rocid,waferid)
 			  t = pdb.insertTransfer(Transfer("FACTORY",CENTER.upper()))

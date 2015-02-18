@@ -153,6 +153,13 @@ class PixelDBInterface(object) :
             return bm
             
       def insertTestDac(self, test):
+#
+# I add some smartness here: if the test refers to a fullmoduleanalysis whise fullmodule test already exists (which means the tar file has been already analyzed), refuse to add
+#
+#            fmtid = test.fullmoduleanalysistest.fullmoduletest.TEST_ID
+            # search in the existing TestDacParameters a test which
+            # point to the same fullmoduletest
+
             self.store.add(test)
             self.store.commit()
             return test
@@ -1962,7 +1969,11 @@ class PixelDBInterface(object) :
 
 #            summ = self.searchFullModuleTestSummaryByDirName(path)
             summ = self.searchFullModuleTestSummaryByDirName(matchstring)
-                  
+	    print t.SUMMARY_ID
+            if summ is None and t.SUMMARY_ID is not 0:
+		     print "AIUTO IL SUMMARY ERA VUOTO MA FULLMODULE GIA NE AVEVA UNO, USO QUELLO"
+		     summ=self.store.find(Test_FullModuleSummary,Test_FullModuleSummary.TEST_ID==t.SUMMARY_ID).one()
+		     print "CHE TRA L'ALTRO e':",summ
             if (summ is None):
                   print "create new FMSummary"
                   dataS = Data(PFNs = 'file:'+InputTarFile)
