@@ -414,6 +414,7 @@ class PixelTier0 (object):
                   return 0
             n=0
             for job in jobs:
+		  print "starting ",job.TAR_ID
                   if (initcenter != "" and initcenter != job.tar_id.CENTER):
                         continue
                   n=n+1

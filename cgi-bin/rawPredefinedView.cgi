@@ -110,7 +110,7 @@ $(document).ready(function() {
 		{
 		//	console.log(	$("#example").DataTable().ajax.json())
 		}
-              function draw()
+              function draw(all)
 		{
 			selString="";
 		 console.log($.param(    $("#example").DataTable().ajax.params()))
@@ -139,13 +139,17 @@ $(document).ready(function() {
 			
 			  }
 			  
-			  $("#plotPH").text("");
+			  $("#plotPH").text("")
 			  var rows = $("#example").dataTable().fnGetNodes();
-	  		  if( selected.length != rows.length &&  selected.length  != 0) {
-	                  $("#plotPH").append("<img id='theImg' src='/cgi-bin/draw.cgi?viewNumber=%d&objName=%s&"+selString+options+"'/>");
+	  		  if(all != 1 && selected.length != rows.length &&  selected.length  != 0) {
+	                  $("#plotPH").append("<img id='theImg'  src='/cgi-bin/draw.cgi?viewNumber=%d&objName=%s&"+selString+options+"'/>");
 			 }else{
-			  $("#plotPH").append("<img id='theImg' src='/cgi-bin/draw.cgi?coltoDraw="+j+"&"+options+"&"+$.param(    $("#example").DataTable().ajax.params())+"'/>");
+			  $("#plotPH").append("<img id='theImg'  src='/cgi-bin/draw.cgi?all="+all+"&coltoDraw="+j+"&"+options+"&"+$.param(    $("#example").DataTable().ajax.params())+"'/>");
 			}
+			  $("#plotPH").append("<img id='spinner' src='/spinner.gif'/>");
+			$('#theImg').load(function() {
+			  $('#spinner').fadeOut();
+			});
 //			$.get( "test.php", function( data ) {
 //			  alert( "Data Loaded: " + data );
 //			});
@@ -178,7 +182,6 @@ $(document).ready(function() {
                                 }
                                 update();
                         }
-
 	                </script>
 <body>
 <main>
@@ -200,7 +203,7 @@ if objName == 'empty' :
 		print header[viewNumber]
 
 if True :
-	print "<button onclick='draw()'>Draw histogram</button>&nbsp;<select id=sel>"
+	print "<button onclick='draw(0)'>Draw histogram</button><button onclick='draw(1)'>Draw for all</button>&nbsp;<select id=sel>"
 	i=0
 	for (c,s,e) in toprint :
 		if e!= "NOPRINT":
@@ -219,7 +222,7 @@ if True :
 
 print "<br><input type=checkbox id=exact onclick=\"var table = $('#example').DataTable(); table.ajax.reload();\"> Exact per column search"
 print "<p id=filterPH></p>"
-print "<table id=example class=display width=100%>"
+print "<table id=example class=\"display cell-border compact\"  width=100%>"
 print " <thead> <tr>"
 for (c,s,e) in toprint :
  if e!= "NOPRINT":

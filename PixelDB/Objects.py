@@ -741,7 +741,7 @@ class Test_FullModuleAnalysis(object):
 
 class Test_FullModule_XRay_Vcal(object):
     __storm_table__ = "Test_FullModule_XRay_Vcal"
-    TEST_ID = Int()
+    TEST_ID = Int(primary=True)
     SESSION_ID=Int()
     session = Reference (SESSION_ID,Session.SESSION_ID)
     FULLMODULE_ID =  Unicode()
@@ -755,8 +755,8 @@ class Test_FullModule_XRay_Vcal(object):
     TEMPNOMINAL = Float()
     TIMESTAMP = Unicode()
     COMMENT = Unicode()
-    def __init__(SESSION_ID, TARGET, DATA_ID, LAST_PROCESSING_ID,  FULLMODULE_ID, XRAY_SLOT,HITRATENOMINAL, TEMPNOMINAL, TIMESTAMP,
-                 RESULT="", COMMENT="", MACRO_VERSION = ""):
+    def __init__(self,SESSION_ID, TARGET, DATA_ID, LAST_PROCESSING_ID,  FULLMODULE_ID, XRAY_SLOT,HITRATENOMINAL, TEMPNOMINAL, TIMESTAMP,
+                 RESULT="", COMMENT=""):
         self.SESSION_ID = int(SESSION_ID)
         self.TARGET = unicode(TARGET)
         self.DATA_ID = int(DATA_ID)
@@ -767,16 +767,15 @@ class Test_FullModule_XRay_Vcal(object):
         self.TEMPNOMINAL = float(TEMPNOMINAL)
         self.TIMESTAMP = unicode(TIMESTAMP)
         self.COMMENT = unicode(COMMENT)
-        self.MACRO_VERSION = unicode(MACRO_VERSION)
         self.FULLMODULE_ID = unicode(FULLMODULE_ID)
         
 class Test_FullModule_XRay_Vcal_Module_Analysis(object):
     __storm_table__ = "Test_FullModule_XRay_Vcal_Module_Analysis"
-    TEST_ID = Int()
+    TEST_ID = Int(primary=True)
     SESSION_ID=Int()
     session = Reference (SESSION_ID,Session.SESSION_ID)
     FULLMODULETEST_ID =  Int()
-    fullmoduletest=Reference(FULLMODULETEST_ID, Test_FullModule_XRay_Vcal.TEST_ID)
+    xrayvcaltest=Reference(FULLMODULETEST_ID, Test_FullModule_XRay_Vcal.TEST_ID)
     SESSION_ID=Int()
     session = Reference (SESSION_ID,Session.SESSION_ID)
     DATA_ID=Int()
@@ -784,34 +783,33 @@ class Test_FullModule_XRay_Vcal_Module_Analysis(object):
     TARGET = Unicode()
     PROCESSING_ID = Int()
     MACRO_VERSION = Unicode()
-    COMMENT = Unicode()
     SLOPE  =Float()
     OFFSET = Float()
-    CHI2NDF  = Float()
     TARGET_HIT_RATE = Float()
-    GRADE = Float()
-    def __init__(self, SESSION_ID, FULLMODULETEST_ID, DATA_ID, TARGET, PROCESSING_ID, MACRO_VERSION, SLOPE, OFFSET, CHi2NDF, TARGET_HIT_RATE, GRADE, COMMENT=""):
+    GRADE = Unicode()
+    def __init__(self, SESSION_ID, FULLMODULETEST_ID, DATA_ID, TARGET, PROCESSING_ID, MACRO_VERSION, SLOPE, OFFSET,  TARGET_HIT_RATE, GRADE):
         self.SESSION_ID = int(SESSION_ID)
-        self.TARGET = unicode(TARGET)
+        self.FULLMODULETEST_ID = int(FULLMODULETEST_ID)
         self.DATA_ID = int(DATA_ID)
+        self.TARGET = unicode(TARGET)
         self.PROCESSING_ID  = int(PROCESSING_ID )
-        self.TARGET_HIT_RATE = float(TARGET_HIT_RATE)
-        self.COMMENT = unicode(COMMENT)
         self.MACRO_VERSION = unicode(MACRO_VERSION)
-        self.FULLMODULETEST_ID = unicode(FULLMODULETEST_ID)
-        self.GRADE = float(GRADE)
+        self.SLOPE = float(SLOPE)
+        self.OFFSET = float(OFFSET)
+        self.TARGET_HIT_RATE = float(TARGET_HIT_RATE)
+        self.GRADE = unicode(GRADE)
 
 
 
 
 class  Test_FullModule_XRay_Vcal_Roc_Analysis (object):
     __storm_table__ = "Test_FullModule_XRay_Vcal_Roc_Analysis"
-    TEST_ID = Int()
+    TEST_ID = Int(primary=True)
     ROC_POS = Int()
     TEST_XRAY_VCAL_MODULE_ID = Int()
-    testxraymodule = Reference(TEST_XRAY_VCAL_MODULE_ID, Test_FullModule_XRay_Vcal_Module_Analysis.TEST_ID)
+    xrayvcalanalysis = Reference(TEST_XRAY_VCAL_MODULE_ID, Test_FullModule_XRay_Vcal_Module_Analysis.TEST_ID)
     FULLMODULETEST_ID = Int()
-    fullmoduletest=Reference(FULLMODULETEST_ID, Test_FullModule_XRay_Vcal.TEST_ID)
+    xrayvcaltest=Reference(FULLMODULETEST_ID, Test_FullModule_XRay_Vcal.TEST_ID)
     SESSION_ID=Int()
     session = Reference (SESSION_ID,Session.SESSION_ID)
     DATA_ID=Int()
@@ -824,22 +822,22 @@ class  Test_FullModule_XRay_Vcal_Roc_Analysis (object):
     CHI2NDF  = Float()
     TARGET_HIT_RATE = Float()
     TARGET_PEAK_ENERGY = Float()
-    GRADE = Float()
+    GRADE = Unicode()
+    COMMENT = Unicode()
     def __init__(self, SESSION_ID, FULLMODULETEST_ID, DATA_ID, TARGET, PROCESSING_ID, MACRO_VERSION, SLOPE, OFFSET, CHi2NDF, TARGET_HIT_RATE, TARGET_PEAK_ENERGY, 
-                 TEST_XRAY_VCAL_MODULE_ID, ROC_POS, GRADE, COMMENT=""):
+                 TEST_XRAY_VCAL_MODULE_ID, ROC_POS, GRADE, COMMENT=""  ):
         self.SESSION_ID = int(SESSION_ID)
         self.TARGET = unicode(TARGET)
         self.DATA_ID = int(DATA_ID)
         self.PROCESSING_ID  = int(PROCESSING_ID )
         self.TARGET_HIT_RATE = float(TARGET_HIT_RATE)
-        self.COMMENT = unicode(COMMENT)
         self.MACRO_VERSION = unicode(MACRO_VERSION)
-        self.FULLMODULETEST_ID = unicode(FULLMODULETEST_ID)
-        self.GRADE = float(GRADE)
+        self.FULLMODULETEST_ID = int(FULLMODULETEST_ID)
+        self.GRADE = unicode(GRADE)
         self.ROC_POS = int(ROC_POS)
         self.TARGET_PEAK_ENERGY = float(TARGET_PEAK_ENERGY)
         self.TEST_XRAY_VCAL_MODULE_ID = int(TEST_XRAY_VCAL_MODULE_ID)
-
+        self.COMMENT = unicode(COMMENT)
 
 
 
@@ -1547,6 +1545,7 @@ class Test_DacParameters(object):
 class Test_BM_ROC_DacParameters(object):
       __storm_table__ = "test_bm_roc_dacparameters"
       TEST_ID = Int(primary=True)
+      QATEST_ID = Int()
       ROC_POS = Int()
       BAREMODULE_ID = Unicode()
       baremodule = Reference(BAREMODULE_ID, BareModule.BAREMODULE_ID)
@@ -1615,6 +1614,7 @@ class Test_BM_ROC_DacParameters(object):
                    RBREG  ,
                    SESSION_ID,
                    TEMPERATURE,
+		   QATEST_ID,
                    HUMIDITY                   ):
           self.ROC_POS = int(ROC_POS)      
           self.BAREMODULE_ID= unicode(BAREMODULE_ID)
@@ -1648,6 +1648,7 @@ class Test_BM_ROC_DacParameters(object):
           self.WBC  = int(        WBC )         
           self.RBREG = int(       RBREG)
           self.TEMPERATURE = float(TEMPERATURE)
+          self.QATEST_ID = int(QATEST_ID)
           self.HUMIDITY = float(HUMIDITY)
 
 #history

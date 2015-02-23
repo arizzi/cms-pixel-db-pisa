@@ -68,9 +68,9 @@ listinserted=[]
 
 dryrun=False
 
-if len(sys.argv) > 4 :
+if len(sys.argv) > 5 :
 
-    tars = pdb.store.find(InputTar, InputTar.TESTNAME.like(u"%s"%sys.argv[2]), InputTar.CENTER.like(u"%s"%sys.argv[3]), InputTar.DATE > datetime.strptime(sys.argv[4],"%d-%m-%y"))
+    tars = pdb.store.find(InputTar, InputTar.TESTNAME.like(u"%s"%sys.argv[2]), InputTar.CENTER.like(u"%s"%sys.argv[3]), InputTar.DATE > datetime.strptime(sys.argv[4],"%d-%m-%y"),InputTar.NAME.like(u"%s"%sys.argv[5]))
     for tar in tars :
       print tar.CENTER,tar.DATE,tar.NAME	
       if not dryrun :

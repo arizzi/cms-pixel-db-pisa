@@ -88,7 +88,7 @@ if "coltoDraw" in form :
  opener = urllib2.build_opener()
  url = os.environ["REQUEST_URI"] 
  parsed = urlparse.urlparse(url) 
- f = opener.open("http://localhost/cgi-bin/rawPredefinedView-backend.cgi?%s"%parsed.query)
+ f = opener.open("http://localhost/cgi-bin/rawPredefinedView-backend.cgi?all=%s&%s"%(form.getfirst('all','0'),parsed.query))
  rawdata=f.read()
  js = json.loads(rawdata)['aaData']
  dtids=map(operator.itemgetter(unicode(form.getfirst('coltoDraw'))),js)

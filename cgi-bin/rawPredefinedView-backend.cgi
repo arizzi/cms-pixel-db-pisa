@@ -42,13 +42,16 @@ from PixelDB import *
 import random
 
 
-debug = form.getfirst("debug", "0")
 
+debug = form.getfirst("debug", "0")
+all = form.getfirst("all", "0")
 first = form.getfirst("iDisplayStart", "0")
 llast = form.getfirst("iDisplayLength", "-1")
 first = int(cgi.escape(first))
 llast= int(cgi.escape(llast))
-
+if all == "1" :
+	first = 0
+	llast = -1
 
 sortCol = form.getfirst("iSortCol_0","empty")
 colNames=[]

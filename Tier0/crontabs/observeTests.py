@@ -145,7 +145,11 @@ if (insert==1):
         #
     
         (ret, ck) = commands.getstatusoutput('cksum '+line+" | awk \'{print $1}\'")
-    
+   	if CENTER == "unknown" :
+		m=re.match("/home/(.*)/dropbox",os.path.dirname(line)) 
+		if m :
+			CENTER=m.group(1).upper()
+
         tar = InputTar (NAME=os.path.basename(line), LOCATION=os.path.dirname(line),    CKSUMTYPE='cksum', CKSUM=ck,         STATUS='new', CENTER = CENTER, DATE = datetime.now(),TESTNAME=TESTNAME)
         pp = pdb.insertNewTar(tar)
         if(pp is None):

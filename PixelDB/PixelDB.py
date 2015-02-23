@@ -169,6 +169,10 @@ class PixelDBInterface(object) :
             self.store.commit()
             return test
 
+      def insertObject(self,o):
+            self.store.add(o)
+            self.store.commit()
+            return o
 
       def insertTestPerformance(self, test):
             self.store.add(test)
@@ -462,6 +466,10 @@ class PixelDBInterface(object) :
 #
 # get test
 #
+
+      def getXrayVcalTestWithTimestamp(self, FullModule_id, TIMESTAMP):
+            aa = self.store.find(Test_FullModule_XRay_Vcal, Test_FullModule_XRay_Vcal.FULLMODULE_ID == unicode(FullModule_id), Test_FullModule_XRay_Vcal.TIMESTAMP==unicode(TIMESTAMP)).one()
+            return aa
 
       def getFullModuleTestWithCkSumAndTimestampAndType(self, FullModule_id, CKSUM, TEMPNOMINAL,TIMESTAMP,TYPE):
             aa = self.store.find(Test_FullModule, Test_FullModule.FULLMODULE_ID == unicode(FullModule_id), Test_FullModule.CKSUM == unicode(CKSUM), Test_FullModule.TEMPNOMINAL == unicode(TEMPNOMINAL),Test_FullModule.TIMESTAMP==unicode(TIMESTAMP),Test_FullModule.TYPE==unicode(TYPE)).one()
@@ -1361,13 +1369,16 @@ class PixelDBInterface(object) :
                 continue
                 # i can create the test and attach
             # create a data id
-            if self.DEBUG != True:
+            if True:
                 data_id = Data(PFNs = filename)
                 pp = self.insertData(data_id)
+		
                 if (pp is None):
                     print "Cannot insert data"
                     continue
-
+		qatestid=0
+		if result is not None :
+			qatestid=result.TEST_ID
                 dactest = Test_BM_ROC_DacParameters(
                     ROC_POS       =   ROC_POS         ,
                     BAREMODULE_ID =   BAREMODULE_ID    ,
@@ -1401,6 +1412,7 @@ class PixelDBInterface(object) :
                     RBREG         =   RBREG           ,
                     SESSION_ID    =   session.SESSION_ID      ,
                     TEMPERATURE   =   TEMPERATURE     ,
+                    QATEST_ID  =   qatestid     ,
                     HUMIDITY      =   HUMIDITY             )
                 
                 ppp = self.insertBareModuleTest_Roc_DacParameters(dactest)
@@ -1726,8 +1738,74 @@ class PixelDBInterface(object) :
         return (bmid, lab, op, temp, rh, dead, bbcut, ok)
 
 
+#INSERTING XRAY INTO DB /tmp/xray/out/REV001/R001/M0000_XRayVcalCalibration_2015-02-01_12h34m_1422794101 None {'ROCsMoreThanOnePercent': None, 'minSlope': 48.171999999999997, 'QualificationType': 'XRayVcalCalibration', 'InputTarFile': None, 'minOffset': -1681.7429999999999, 'IVSlope': None, 'CycleTempLow': None, 'PHCalibration': None, 'Temperature': None, 'Hostname': 'UNKNOWN', 'CycleTempHigh': None, 'Comments': None, 'nCycles': None, 'Operator': 'UNKNOWN', 'Noise': None, 'Trimming': None, 'Vcal_Offset_Module': 55.472000000000001, 'Vcal_Slope_Module': 55.472000000000001, 'Slopes': [53.566000000000003, 60.165999999999997, 51.061, 59.375, 57.948, 57.463000000000001, 50.793999999999997, 52.689, 48.171999999999997, 55.966999999999999, 58.633000000000003, 58.619999999999997, 53.923000000000002, 50.662999999999997, 68.081999999999994, 50.426000000000002], 'AbsFulltestSubfolder': '/tmp/xray/out/REV001/R001/M0000_XRayVcalCalibration_2015-02-01_12h34m_1422794101/QualificationGroup/XrayCalibrationSpectrum_1', 'maxOffset': 127.083, 'ModuleID': 'M0000', 'TestCenter': 'UNKNOWN', 'maxSlope': 68.081999999999994, 'initialCurrent': None, 'Offsets': [-475.48700000000002, -790.88900000000001, 5.5330000000000004, -802.52099999999996, -484.28899999999999, -425.40300000000002, -188.99700000000001, -141.07300000000001, 127.083, -457.90600000000001, -632.15999999999997, -766.46100000000001, -616.27700000000004, -108.502, -1681.7429999999999, -276.50299999999999], 'Grade': None, 'AbsModuleFulltestStoragePath': '/tmp/xray/out/REV001/R001/M0000_XRayVcalCalibration_2015-02-01_12h34m_1422794101', 'avrgSlope': 55.471750000000007, 'FulltestSubfolder': 'QualificationGroup/XrayCalibrationSpectrum_1', 'CurrentAtVoltage150V': None, 'RelativeModuleFinalResultsPath': 'out/REV001/R001/M0000_XRayVcalCalibration_2015-02-01_12h34m_1422794101', 'PixelDefects': None, 'TestDate': '1422794101', 'MacroVersion': None, 'avrgOffset': -482.22468750000002, 'TestType': 'XrayCalibration_Spectrum'}
 
+      def insertTestXRayVCal(self,sessionid,Row,overwritemodid=0):
+            print "*Xray Vcal DB insert*************************"
+            print "ROW XRAY", Row
+            modulename = unicode(Row['ModuleID'])
+	    module = self.getFullModule(modulename)
+	    if module is None :
+		  print "Cannot insert on non existing module",modulename
+		  return None
+            timestamp = Row['TestDate']
+     #       TestType = Row['TestType']
+	    temperature = -99
+	    try :	
+		temperature = float(Row['Temperature'])
+	    except :
+		print "Cannot converte temperature " , Row['Temperature']
+            print "asking for a module test with" ,modulename ,timestamp
+            ttt = self.getXrayVcalTestWithTimestamp(modulename,timestamp)
+	    if (ttt is None):
+                  print "CREATE XRAY VCAL Test"
+	          data2 = Data(PFNs = "file:"+Row['InputTarFile'])
+	          data2i = self.insertData(data2)
+        	  if (data2i is None):
+                	  print"<br>Error inserting data"
+	                  return None
+		  t = Test_FullModule_XRay_Vcal(SESSION_ID=sessionid, TARGET="", DATA_ID=data2i.DATA_ID, LAST_PROCESSING_ID=0,  FULLMODULE_ID=module.FULLMODULE_ID,
+				 XRAY_SLOT=0,#fixme
+				 HITRATENOMINAL=0,
+				 TEMPNOMINAL=temperature,
+				 TIMESTAMP=timestamp,
+		                 RESULT="", COMMENT=Row["Comments"])
+                  pp=self.insertObject(t)
+                  if pp is None:
+                        print "ERRORE XRAYVCALTEST"
+                        return None
+                  print "...DONE creating the XRAY VCAL TEST"
+                  ttt=pp
+	    else:
+		print "Test Vcal Module found, reusing it incrementing LASTPROC"
+	    ttt.LAST_PROCESSING_ID+=1
+	    self.store.commit()
+            print "Now doing the analysis"
+	    FullAnalysisPath = Row['AbsFulltestSubfolder']
+            pf = str('file:'+FullAnalysisPath)
+	    data = Data(PFNs=pf)
+	    datai = self.insertData(data)
+            if (datai is None):
+                     print"<br>Error inserting data"
+                     return None
+	    print "Creating ana"
+	    #print sessionid,ttt.TEST_ID,datai.DATA_ID,"",ttt.LAST_PROCESSING_ID,Row["MacroVersion"],Row["avrgSlope"],Row["avrgOffset"]
 
+	    ana=Test_FullModule_XRay_Vcal_Module_Analysis(SESSION_ID=sessionid,
+			 FULLMODULETEST_ID=ttt.TEST_ID,
+			 DATA_ID=datai.DATA_ID,
+			 TARGET="", #fixme
+			 PROCESSING_ID=ttt.LAST_PROCESSING_ID,
+			 MACRO_VERSION=Row["MacroVersion"],
+			 SLOPE=Row["avrgSlope"],
+			 OFFSET=Row["avrgOffset"],
+			 TARGET_HIT_RATE=-1, #fixme 
+			 GRADE="" #fixme
+			)
+	    print "Done with ana"
+	    anai = self.insertObject(ana)
+  	    return anai
+	
 
 
 #
@@ -1738,11 +1816,9 @@ class PixelDBInterface(object) :
 # ROW  {'QualificationType': 'FullQualification', 'Temperature': '-10', 'PHCalibration': '0', 'CycleTempHigh': None, 'Comments': '', 'nCycles': None, 'CurrentAtVoltage150': 0, 'initialCurrent': 0, 'Noise': '0', 'nTrimDefects': '5', 'nMaskDefects': '0', 'nDeadPixels': '1', 'nBumpDefects': '3', 'nGainDefPixels': '0', 'Trimming': '5', 'TestType': 'm10_1', 'ROCsMoreThanOnePercent': '0', 'IVSlope': 0, 'CycleTempLow': None, 'nPedDefPixels': '0', 'StorageFolder': '../../../../../../data/pixels/FTTEST/OUT/M0823/1.1/M0823_FullQualification_2013-05-31_14h38m_1370003934/M0823_FullQualification_2013-05-31_14h38m_1370003934', 'nNoisyPixels': '0', 'RelativeModuleFulltestStoragePath': 'FinalResults/QualificationGroup/ModuleFulltest_m10_1', 'ModuleID': 'M0823', 'Grade': 'B', 'nPar1DefPixels': '0', 'PixelDefects': '1', 'TestDate': '1370003934'}
              
       
-
+      
 
       def insertTestFullModuleDirPlusMapv96Plus(self,sessionid,Row,overwritemodid=0):
-
-
             #
             # tries to open a standard dir, as in the previous above
             # searches for summaryTest.txt inside + tars the dir in add_data
@@ -1751,10 +1827,7 @@ class PixelDBInterface(object) :
             #
             # tryng to get if I already have this
             #
-
-
             print "ROOOW", Row
-            
             modulename = Row['ModuleID']
             print "***************************"
             tempnominal2 = Row['Temperature']
@@ -1764,11 +1837,7 @@ class PixelDBInterface(object) :
             timestamp = Row['TestDate']
             TestType = Row['TestType']
             QualificationType = Row['QualificationType']
-
-            
-
             print "asking for a module test with" ,modulename, ck, TestType,timestamp,QualificationType
-
             ttt = self.getFullModuleTestWithCkSumAndTimestampAndType(modulename, ck, TestType,timestamp,QualificationType)
 
             if (ttt is None) :

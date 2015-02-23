@@ -157,7 +157,7 @@ ProcessedDir.processing_run_id = Reference (ProcessedDir.PROCESSING_RUN_ID, Proc
 ProcessingRun.processed_dir_id = Reference( ProcessingRun.PROCESSED_DIR_ID, ProcessedDir.DIR_ID)
 ProcessingRun.tar_id = Reference( ProcessingRun.TAR_ID, InputTar.TAR_ID)
 ProcessedDir.tar_id = Reference (ProcessedDir.TAR_ID, InputTar.TAR_ID)
-
+InputTar.processes = ReferenceSet(InputTar.TAR_ID,ProcessingRun.TAR_ID)
 
 HistoryTier0.tar_id = Reference (HistoryTier0.TAR_ID, InputTar.TAR_ID)
 HistoryTier0.dir_id = Reference (HistoryTier0.DIR_ID, ProcessedDir.DIR_ID)

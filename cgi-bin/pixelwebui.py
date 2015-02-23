@@ -59,6 +59,7 @@ renderStrings["BareModule/ROC_ID"]='"<div style=\\\"white-space: nowrap; font-si
 renderStrings["BareModule/COMMENT"]='"<div style=\\\"white-space: nowrap; font-size: 80%% \\\">%s</div>"%(o[rn])'
 renderStrings["RocWafer/YIELD"]='"%2.1f"%(o[rn])'
 renderStrings["RocWafer/NOM_THICKNESS"]='"%d"%(o[rn])'
+renderStrings["Test_BareModule_QA/FAILURES"]=' ("<div title=\\\"%s\\\">%s</div>"%(cgi.escape(o[rn],True),o[rn][:100])+"......") if len(o[rn])>100 else "%s"%(o[rn]) '
 
 def defaultCenter() :
 	user=os.environ['REMOTE_USER']
