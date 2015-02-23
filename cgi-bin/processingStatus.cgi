@@ -70,6 +70,14 @@ pdb = PixelTier0()
 #pdb.initProcessing(CONFIG=MACRO_INIT, DEBUG=False)
 pdb.connectToDB()
 
+def logs(x):
+        last= o.processes.order_by("RUN_ID").last()
+        if last is not None :
+	    if last.OUTLOG is not None:
+		a="<a href=%s>log1</a>"%last.OUTLOG
+		a+="|<a href=%s_upload>log2</a>"%last.OUTLOG
+		return a
+	return "n/a"
 
 def lastProc(x):
 	last= o.processes.order_by("RUN_ID").last()
@@ -83,7 +91,7 @@ def lastProc(x):
 	 
 	return "n/a"	
 
-evals = ["o.NAME","\"%s\"%o.DATE","o.CENTER","o.STATUS","o.TESTNAME","lastProc(o.processes)"]
+evals = ["o.NAME","\"%s\"%o.DATE","o.CENTER","o.STATUS","o.TESTNAME","lastProc(o.processes)","logs(o.processes)"]
 
 a=["\"<a href=ModuleQualificationView.cgi?ModuleID=%s>%s</a>\"%( o.FULLMODULE_ID,o.FULLMODULE_ID)"
 	,"o.fullmoduletests.any().session.session.CENTER"
@@ -97,7 +105,7 @@ a=["\"<a href=ModuleQualificationView.cgi?ModuleID=%s>%s</a>\"%( o.FULLMODULE_ID
 
 	]
 
-headers = ["NAME","Date","Center","Status","TestName","LastProcessing(code),macro"]
+headers = ["NAME","Date","Center","Status","TestName","LastProcessing(code),macro","logs"]
 i =0 
 #objName = "Test_FullModule"
 

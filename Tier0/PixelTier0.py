@@ -184,6 +184,10 @@ class PixelTier0 (object):
                         print" I refuse to start a new processing, already running=",self.RUNNING," and max allowed is ",self.MAXEXE
                   return None
             self.setProcessingStatus(pr,'running')
+	    basedir="/data/pixels/t0logs/%s/"%datetime.now().strftime("%Y-%m-%d")
+	    os.makedirs(basedir)
+	    filename="%s/%s"%(basedir,pr.RUN_ID)
+	    pr.OUTLOG=unicode(filename)
             self.store.commit()
             #
             # execute the command
@@ -204,7 +208,10 @@ class PixelTier0 (object):
             # 1 - tar name
             # 2 - expected directory with the results (which is NOT supposed to be changed by the script
 ##
-            procevd = subprocess.Popen(pr.EXECUTED_COMMAND+" "+tar.LOCATION+"/"+tar.NAME+" "+fulldir+" "+pr.MACRO_VERSION, stdin=None, stdout=None, stderr=subprocess.STDOUT, shell=True, env=my_env) 
+	   
+	    outlog=file(filename,"w")
+            procevd = subprocess.Popen(pr.EXECUTED_COMMAND+" "+tar.LOCATION+"/"+tar.NAME+" "+fulldir+" "+pr.MACRO_VERSION, stdin=None, stdout=outlog, stderr=subprocess.STDOUT, shell=True, env=my_env) 
+	    outlog.close()
             self.RUNNING=self.RUNNING+1
             self.RUNNINGINSTANCES.append([procevd,pr.RUN_ID])
             return procevd
@@ -477,7 +484,16 @@ class PixelTier0 (object):
 # uses the field 
 # ProcessedDir.UPLOAD_TYPE to decide which to use            
             print "USING UPLOAD = ",pd.UPLOAD_TYPE,"self.upload"+pd.UPLOAD_TYPE+"(pd,session)"
+	    savestout = sys.stdout
+	    ff = None
+	    if pd.processing_run_id.OUTLOG != "" :
+		    filename=pd.processing_run_id.OUTLOG+"_upload"
+		    ff = open(filename, 'w')
+ 		    sys.stdout = ff
             ppp = eval ("self.upload"+pd.UPLOAD_TYPE+"(pd,session)")
+	    if ff is not None :
+		ff.close()
+	    sys.stdout = savestout
 	    print "ppp",ppp
             return ppp
 

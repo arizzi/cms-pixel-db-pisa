@@ -190,13 +190,15 @@ sys.path.append("../PixelDB")
 
 from storm import *
 from PixelDB import *
-
 from pixelwebui import *
-
-
-
-pdb = PixelDBInterface(operator="webfrontend",center="cern")
-pdb.connectToDB()
+if form.getfirst('t0', '0') == "1" :  
+  sys.path.append("/home/robot/cms-pixel-db-pisa/Tier0")
+  from  PixelTier0 import *
+  pdb = PixelTier0()
+  pdb.connectToDB()
+else :
+  pdb = PixelDBInterface(operator="webfrontend",center="cern")
+  pdb.connectToDB()
 
 if objName == 'empty' :
 
