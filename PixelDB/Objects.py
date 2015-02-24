@@ -410,22 +410,19 @@ class ShippingBox(object):
 #
 # logbook
 #
-class Logbook(object):
+class Test_Logbook(object):
       __storm_table__ = "logbook"
-      ENTRY_ID = Int(primary=True)
+      TEST_ID = Int(primary=True)
       SESSION_ID=Int()
       session = Reference(SESSION_ID, Session.SESSION_ID)
-      TEST_ROCS = Unicode()
-      TEST_WAFERS = Unicode()      
-      TEST_BATCHES = Unicode()
-      TEST_TBMS = Unicode()
-      TEST_HDIS = Unicode()
-      TEST_SENSORS = Unicode()
-      TEST_BAREMODULES = Unicode()
-      TEST_FULLMODULES = Unicode()
+      IDS = Unicode()
       COMMENT=Unicode()
-      ADDDATA_ID = Int()
-
+      DATA_ID = Int()
+      def __init__ (self,SESSION_ID, IDS,COMMENT,DATA_ID) :
+		self.SESSION_ID=int(SESSION_ID)
+		self.IDS=unicode(IDS)
+		self.COMMENT=unicode(COMMENT)
+		self.DATA_ID=int(DATA_ID)
 #
 # Data
 
@@ -1691,7 +1688,7 @@ Hdi.lasttest_hdi_validation = Reference(  Hdi.LASTTEST_HDI_VALIDATION, Test_Hdi_
 Tbm.lasttest_tbm = Reference(  Tbm.LASTTEST_TBM, Test_Tbm.TEST_ID)
 #FullModule.lasttest_fullmodule = Reference(  FullModule.LASTTEST_FULLMODULE, Test_FullModule.TEST_ID)
 
-Logbook.adddata = Reference(Logbook.ADDDATA_ID,Data.DATA_ID)
+Test_Logbook.adddata = Reference(Test_Logbook.DATA_ID,Data.DATA_ID)
 
 Test_DacParameters.fullmoduleanalysistest = Reference(  Test_DacParameters.FULLMODULEANALYSISTEST_ID,Test_FullModuleAnalysis.TEST_ID)
 Test_PerformanceParameters.fullmoduleanalysistest = Reference(  Test_PerformanceParameters.FULLMODULEANALYSISTEST_ID,Test_FullModuleAnalysis.TEST_ID)

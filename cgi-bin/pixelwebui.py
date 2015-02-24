@@ -17,7 +17,7 @@ import cgi
 import os
 transferObjects=['FullModule','BareModule','Sensor','Roc','Hdi','Tbm','Wafer','Batch','ShippingBox','RocWafer']
 centers=['CIS','FACTORY','ETH','PSI','CERN','BARI','CATANIA','PERUGIA','PISA','HAMBURG','AACHEN','HELSINKI','DESY','KIT','Dectris']
-legalNames = ["Transfer","Data","Session","Roc","Batch","Wafer","Sensor","BareModule","Hdi","Tbm","FullModule","Logbook","Test_BareModule","Test_FullModuleSession","Test_FullModuleSummary","Test_FullModule","Test_FullModuleAnalysis","Test_Tbm","Test_Hdi_Reception","Test_Hdi_TbmGluing","Test_Hdi_Bonding","Test_Hdi_Electric","Test_Hdi_Validation","Test_Roc","Test_IV","Test_IT","Test_SensorInspection","Test_BareModule_Inspection","Test_BareModule_Chip","Test_CV","History","ShippingBox","Test_DacParameters", "Test_Roc_Setup", "Test_BareModule_QA", "Test_BareModule_Grading","Test_PerformanceParameters","Test_BM_ROC_DacParameters","RocWafer","Test_FullModule_XRay_Vcal_Roc_Analysis","Test_FullModule_XRay_Vcal","Test_FullModule_XRay_Vcal_Module_Analysis"]
+legalNames = ["Transfer","Data","Session","Roc","Batch","Wafer","Sensor","BareModule","Hdi","Tbm","FullModule","Test_Logbook","Test_BareModule","Test_FullModuleSession","Test_FullModuleSummary","Test_FullModule","Test_FullModuleAnalysis","Test_Tbm","Test_Hdi_Reception","Test_Hdi_TbmGluing","Test_Hdi_Bonding","Test_Hdi_Electric","Test_Hdi_Validation","Test_Roc","Test_IV","Test_IT","Test_SensorInspection","Test_BareModule_Inspection","Test_BareModule_Chip","Test_CV","History","ShippingBox","Test_DacParameters", "Test_Roc_Setup", "Test_BareModule_QA", "Test_BareModule_Grading","Test_PerformanceParameters","Test_BM_ROC_DacParameters","RocWafer","Test_FullModule_XRay_Vcal_Roc_Analysis","Test_FullModule_XRay_Vcal","Test_FullModule_XRay_Vcal_Module_Analysis"]
 userCenters={}
 addrCenters={}
 
@@ -32,6 +32,8 @@ sortedCols["Test_DacParameters"]=["ROC_POS","VDIG","VANA","VSH","VCOMP","VWLLPR"
 sortedCols["Test_PerformanceParameters"]=["ROC_POS"]
 sortedCols["BareModule"]=["BUILTBY","BUILTON","COMMENT"]
 sortedCols["RocWafer"]=["ROCWAFER_ID","LOT","TYPE","N_ROC","N_GOOD","YIELD","TEST","PRODCENTER", "NOM_THICKNESS", "COMMENT"]
+
+letterToObjName={"B":"BareModule","M":"FullModule","S":"Sensor"}
 
 
 # HDI_ID > center > status (assumendo questo sara' lo stato globale
@@ -148,4 +150,13 @@ def printFooter() :
   print "</main>"
   print ff.read()
   print "</body></html>"
+
+def idlink(x):
+  url="<a href=/cgi-bin/id.cgi?id=\\1>\\1</a>"	
+#  x=re.sub("([A-Za-z]*[0-9]+-[0-9]+-*[0-9]*)",url,x)
+#  x=re.sub("(M[0-9]+)(([^-0-9])+|$)",url+"\\2",x)
+#  x=re.sub("([A-Z0-9]+-[0-9][0-9][A-D])",url,x)
+  x=re.sub("([A-Z]*[0-9]+[A-Z0-9-]+)",url,x)
+	
+  return x
  

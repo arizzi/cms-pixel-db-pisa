@@ -101,6 +101,8 @@ def inputField(objName,column, defVal = "", o=None) :
 	   	inputString+=" </select><p>"
         elif column == "SESSION_ID" and defVal != "" and defVal != 0 and objName!="Session":
 		inputString+=" (edit <a href=edit.cgi?objName=Session&SESSION_ID=%s  target=\"_blank\">this session</a> in new window)"%defVal
+        elif column == "COMMENT":
+                inputString = "<textarea id='%s' name=%s cols='80' rows='10'>%s</textarea>"%(column,column,defVal)
         elif column == "SIGNALS_AND_LVS" and o :
                 channels = ["CH1","CH2","CH3","CH4","LV"]
                 tests = ["CLK0","CLK1","CLK2","CLK3","CTR0","CTR1","CTR2","CTR3","SDA0","SDA1","SDA2","SDA3"]
@@ -134,6 +136,9 @@ def inputField(objName,column, defVal = "", o=None) :
 	    inputString+="<input type=\"file\" name=\"DATA_ID_filename\" />"
 	elif config.has_section(objName+"/"+column) :
  	    type = config.get(objName+"/"+column,"type")
+            if type  == "textarea":
+                inputString = "<textarea id='%s' name=%s cols='80' rows='10'>%s</textarea>"%(column,column,defVal)
+
  	    if type == "select" :
 		   options = re.split(',',config.get(objName+"/"+column,"options"))
 		   inputString="<select name=\"%s\">" % column
@@ -317,14 +322,14 @@ if action == "Save changes" or  action == "Save and Close":
 		field = list[-1] 
 	   columnType=type(eval("o."+c))
            columnType2=type(eval(objName+"."+c+".variable_factory()"))
-	   print c, field, columnType, columnType2
+#	   print c, field, columnType, columnType2
 	   adate=date(2000,1,1)
            if c == "DATA_ID" and form['DATA_ID_filename'].filename :
                     fileitem = form['DATA_ID_filename']
                     fn = objID+"__"+os.path.basename(fileitem.filename)
                     open('/data/pixels/uploads/'+objName+'/' + fn, 'wb').write(fileitem.file.read())
                     pfn='file:/data/pixels/uploads/'+objName+'/' + fn
-		    if field == 0 :
+		    if field == '0' :
 	                   data = Data(PFNs=pfn)
         	           insertedData = pdb.insertData(data)
 	                   if (insertedData is None):
@@ -373,7 +378,7 @@ if action == "Save changes" or  action == "Save and Close":
 #		setattr(o,c,columnType(form.getfirst(c, getattr(o,c))))
 		setattr(o,c,columnType(field))
    pdb.store.commit()
-   print "Saved"
+   print "<b>Saved!!!!!!</b>"
 
 if action != "Save and Close" :
         print "<H1>Editing %s %s </H1>" %(objName,objID)

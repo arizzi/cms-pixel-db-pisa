@@ -185,7 +185,8 @@ class PixelTier0 (object):
                   return None
             self.setProcessingStatus(pr,'running')
 	    basedir="/data/pixels/t0logs/%s/"%datetime.now().strftime("%Y-%m-%d")
-	    os.makedirs(basedir)
+	    if not os.path.isdir(basedir):
+		    os.makedirs(basedir)
 	    filename="%s/%s"%(basedir,pr.RUN_ID)
 	    pr.OUTLOG=unicode(filename)
             self.store.commit()

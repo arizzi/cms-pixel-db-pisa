@@ -317,6 +317,38 @@ queries.append("select %s,Transfer.STATUS as Transfer_STATUS, Transfer.SENDER as
 		" WHERE 1 ")
 countqueries.append("select COUNT(1)  from inventory_hdi")
 
+################################################ LogBook View ########################################
+header.append('''<h1>Logbook</h1><a href=/cgi-bin/writers/newTest.cgi?objName=Test_Logbook>Add Entry</a><br><p>''')
+(i,c,q,cq)=fromObjectName("Test_Logbook")
+c=c[:1]
+#for i in xrange(0,len(c)):
+#    e=c[i]
+#    if e[1] != "":
+#c[i]=(e[0],"Main.%s"%e[1],e[2])
+#print c
+def inlineLinks(x):
+	res=""
+	if x is not None : 
+  	    for l in x.split(",") :	
+		url=re.sub("file:","",l)
+		n=os.path.split(l)[1]
+		n=re.sub("[0-9\.]+__","",n)
+		res+="<a href=%s>%s</a>,"%(url,n)
+	return res	
+c.append(("Date","Session.DATE",""))
+c.append(("Center","Session.CENTER",""))
+c.append(("Operator","Session.OPERATOR",""))
+c.append(("Comment&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;","logbook.COMMENT","idlink(o[rn])"))
+c.append(("Files","Data.PFNs",'inlineLinks(o[rn])'))
+c.append(("IDs","logbook.IDS",""))
+#c.insert(2,("Date","Session.DATE",""))
+
+rowkeys.append(i)
+queries.append("select %s from logbook  left outer join sessions as Session on logbook.SESSION_ID=Session.SESSION_ID left outer join test_data as Data on logbook.DATA_ID=Data.DATA_ID WHERE 1")
+countqueries.append("select COUNT(1) from logbook  left outer join sessions as Session on logbook.SESSION_ID=Session.SESSION_ID WHERE 1")
+#countqueries.append(cq)
+columns.append(c)
+
 
 ############################################## tools#####################################################
 def coloredResult(res) :

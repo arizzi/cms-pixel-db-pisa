@@ -98,6 +98,7 @@ else :
 		   print
 
   	printHeaders()
+	print "<h2> Details for %s  %s </h2>"%(objName,objID) 
         if cgi.escape(form.getfirst("spec", "1")) == "1" and refToShow=="empty":
 	  specificView(objName,form,pdb)
 #if reference details were requested, show the details for it rather than the original object
@@ -137,7 +138,6 @@ else :
 	    if  type(eval(objName+"."+attr)) is references.Reference  :
 	         refs.append(attr)
 
- 
 
 	print "<table  id=example width=\"100%\">"
 

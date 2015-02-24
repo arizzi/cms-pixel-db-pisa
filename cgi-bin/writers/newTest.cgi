@@ -104,6 +104,8 @@ def inputField(objName,column, cookies, defVal = "") :
 		for o in cents :
 	        	inputString+="<option>%s</option>" % o
 	   	inputString+=" </select><p>"
+	elif column == "COMMENT":
+		inputString = "<textarea id='%s' name=%s cols='80' rows='10'>%s</textarea>"%(column,column,defVal)
 	elif column == "SIGNALS_AND_LVS" :
 		channels = ["CH1","CH2","CH3","CH4","LV"]
 		tests = ["CLK0","CLK1","CLK2","CLK3","CTR0","CTR1","CTR2","CTR3","SDA0","SDA1","SDA2","SDA3"]
@@ -172,6 +174,8 @@ def inputField(objName,column, cookies, defVal = "") :
 
 #		   inputString+="</select>"
 		   inputString+="</datalist>"
+            if type  == "textarea":
+                inputString = "<textarea id='%s' name=%s cols='80' rows='10'>%s</textarea>"%(column,column,defVal)
   	    if config.has_option(objName+"/"+column,"comment") :
 		inputString+="&nbsp;&nbsp;&nbsp;(<i>"+config.get(objName+"/"+column,"comment")+"</i>)"
 	return inputString	
@@ -201,7 +205,7 @@ if objName != "" :
   objType = eval(objName)
   ID=idField(objName)
   m=re.match("Test_([A-Za-z]+)(_*.*)",objName)
-  insertFunction = getattr(pdb,"insert%sTest%s"%(m.group(1),m.group(2)))
+  insertFunction = getattr(pdb,"insert%sTest%s"%(m.group(1),m.group(2)),pdb.insertObject)
 
 if action == "Insert" :
      setcookies["center"]=form.getfirst("SESSION_CENTER","")

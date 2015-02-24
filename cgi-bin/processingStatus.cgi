@@ -41,7 +41,7 @@ $(document).ready(function() {
                         } );
 
                 var table =          $('#example').DataTable( {
-//                        "bStateSave": true,
+                        "bStateSave": true,
                          "aLengthMenu": [   [25, 50, 100, 200, -1],
                                         [25, 50, 100, 200, "All"]],
                         "iDisplayLength" : 25,
@@ -82,10 +82,10 @@ def logs(x):
 def lastProc(x):
 	last= o.processes.order_by("RUN_ID").last()
 	if last is not None :
-	      if last.EXIT_CODE > 0 or (last.processed_dir_id.UPLOAD_STATUS != None and last.processed_dir_id.UPLOAD_STATUS != "ok") :
+	      if last.EXIT_CODE > 0 or (last.processed_dir_id is not None and last.processed_dir_id.UPLOAD_STATUS != None and last.processed_dir_id.UPLOAD_STATUS != "ok") :
 		return "<font color=red>%s(%s), %s, %s</font>"%(last.STATUS,last.EXIT_CODE,last.MACRO_VERSION,last.processed_dir_id.UPLOAD_STATUS)
 	      elif last.EXIT_CODE == -1 :
-		return "<font color=blue>%s(%s), %s, %s</font>"%(last.STATUS,last.EXIT_CODE,last.MACRO_VERSION,last.processed_dir_id.UPLOAD_STATUS)
+		return "<font color=blue>%s(%s), %s</font>"%(last.STATUS,last.EXIT_CODE,last.MACRO_VERSION)
 	      else:
 		return "%s(%s), %s, %s"%(last.STATUS,last.EXIT_CODE,last.MACRO_VERSION,last.processed_dir_id.UPLOAD_STATUS)
 	 
