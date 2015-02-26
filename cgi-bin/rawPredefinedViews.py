@@ -351,6 +351,91 @@ countqueries.append("select COUNT(1) from logbook  left outer join sessions as S
 columns.append(c)
 
 
+################################################ XRay tests View ########################################
+
+header.append('''<h1>XRay Tests summary  view</h1>
+''')
+def vcalAna(o):
+   path=o['DataVcal_PFNs']
+   m=re.match("file:(/data/pixels.*)",path) 
+   if m :
+	  return '%s(<a href=%s/TestResult.html>results</a>)'%(o['Test_FullModule_XRay_Vcal_Module_Analysis_TEST_ID'],m.group(1))
+   return ""
+
+
+def rocLink(o) :
+   return "<a href=/cgi-bin/rawPredefinedView.cgi?viewNumber=8&exact=1&PROCESSING_ID=%s&FULLMODULETEST_ID=%s>per roc</a>"%(o['Test_FullModule_XRay_Vcal_LAST_PROCESSING_ID'],o['Test_FullModule_XRay_Vcal_TEST_ID'])
+
+columns.append([
+        ("FULL MODULE  ID","FullModule.FULLMODULE_ID","'%s<br><a href=/cgi-bin/viewdetails.cgi?objName=FullModule&FULLMODULE_ID=%s>mod details</a> | %s'%(o['FullModule_FULLMODULE_ID'],o['FullModule_FULLMODULE_ID'],rocLink(o))"),
+        ("Center","Transfer.RECEIVER","o['Transfer_RECEIVER'] if o['Transfer_STATUS']=='ARRIVED' else  o['Transfer_SENDER'] "),
+	("Analysis ID","Test_FullModule_XRay_Vcal_Module_Analysis.TEST_ID","vcalAna(o)"),
+	("Slope","Test_FullModule_XRay_Vcal_Module_Analysis.SLOPE",""),
+	("Offset","Test_FullModule_XRay_Vcal_Module_Analysis.OFFSET",""),
+	("Grade","Test_FullModule_XRay_Vcal_Module_Analysis.GRADE",""),
+        ("","DataVcal.PFNs","NOPRINT"),
+        ("","Test_FullModule_XRay_Vcal.LAST_PROCESSING_ID","NOPRINT"),
+        ("","Test_FullModule_XRay_Vcal.TEST_ID","NOPRINT"),
+
+#        ("Inspection","Test_BareModule_Inspection.RESULT","testEntryBM(o,'Test_BareModule_Inspection')"),
+#       ("BumpBonding Tot failures","Test_BareModule_QA_BumpBonding.TOTAL_FAILURES","testEntryBM(o,'Test_BareModule_QA_BumpBonding','_TOTAL_FAILURES')"),
+#        ("PixelAlive Tot failures","Test_BareModule_QA_PixelAlive.TOTAL_FAILURES","testEntryBM(o,'Test_BareModule_QA_PixelAlive','_TOTAL_FAILURES')"),
+#        ("Global Grade","Test_BareModule_Grading.GLOBAL_GRADING","testEntryBM(o,'Test_BareModule_Grading','_GLOBAL_GRADING')"),
+#        ("i1","Test_IV.I1","'%6g'%o['Test_IV_I1'] if o['Test_IV_I1'] is not None else 'n/a'"),
+#        ("i2","Test_IV.I2","'%6g'%o['Test_IV_I2'] if o['Test_IV_I2'] is not None else 'n/a'"),
+#        ("Slope","Test_IV.SLOPE",''),
+#        ("i1@CIS","Test_IVCIS.I1","'%6g'%o['Test_IVCIS_I1'] if o['Test_IVCIS_I1'] is not None else 'n/a'"),
+#        ("i2@CIS","Test_IVCIS.I2","'%6g'%o['Test_IVCIS_I2'] if o['Test_IVCIS_I2'] is not None else 'n/a'"),
+#        ("Slope@CIS","Test_IVCIS.SLOPE",''),
+#        ("","Test_BareModule_Inspection.TEST_ID","NOPRINT"),
+#        ("","Test_BareModule_QA_BumpBonding.TEST_ID","NOPRINT"),
+#        ("","Test_BareModule_QA_PixelAlive.TEST_ID","NOPRINT"),
+
+])
+rowkeys.append("FullModule_FULLMODULE_ID") #not obvious
+queries.append("select %s,Transfer.STATUS as Transfer_STATUS, Transfer.SENDER as Transfer_SENDER from inventory_fullmodule as FullModule left outer join transfers as Transfer on FullModule.TRANSFER_ID=Transfer.TRANSFER_ID "
+                "left outer join Test_FullModule_XRay_Vcal as Test_FullModule_XRay_Vcal on FullModule.LASTTEST_XRAY_VCAL=Test_FullModule_XRay_Vcal.TEST_ID "
+                "left outer join Test_FullModule_XRay_Vcal_Module_Analysis as Test_FullModule_XRay_Vcal_Module_Analysis on Test_FullModule_XRay_Vcal_Module_Analysis.FULLMODULETEST_ID=Test_FullModule_XRay_Vcal.TEST_ID and Test_FullModule_XRay_Vcal_Module_Analysis.PROCESSING_ID=Test_FullModule_XRay_Vcal.LAST_PROCESSING_ID "
+		"left outer join test_data as DataVcal on Test_FullModule_XRay_Vcal_Module_Analysis.DATA_ID=DataVcal.DATA_ID "
+                " WHERE (Test_FullModule_XRay_Vcal.TEST_ID <> 0 )")#add here OR Test_FullModule_XRay_HR.TEST_ID <> 0
+countqueries.append("select COUNT(1)  from inventory_hdi")
+
+################################################ XRay ROC View ########################################
+header.append('''<h1>Overview of XRay ROC results</h1>''')
+(i,c,q,cq)=fromObjectName("Test_FullModule_XRay_Vcal_Roc_Analysis")
+#for i in xrange(0,len(c)):
+#    e=c[i]
+#    if e[1] != "":
+#c[i]=(e[0],"Main.%s"%e[1],e[2])
+#print c
+#.append(("Macro Version","FMA.MACRO_VERSION",""))
+def rocAna(o):
+   path=o['DataVcal_PFNs']
+   m=re.match("file:(/data/pixels.*)",path) 
+   if m :
+	  return '<a href=%s/Chips_Xray/Chip_Xray%s/TestResult.html>results</a>'%(m.group(1),o['Test_FullModule_XRay_Vcal_Roc_Analysis_ROC_POS'])
+   return ""
+
+c.insert(2,("Center","Session.CENTER",""))
+#c.insert(2,("Date","Session.DATE",""))
+c.insert(2,("Temperature","FMT.TEMPNOMINAL",""))
+c.insert(1,("Full Module ID","FMT.FULLMODULE_ID",""))
+c.insert(5,("Analysis","DataVcal.PFNs","rocAna(o)") )
+
+rowkeys.append(i)
+queries.append("select %s from Test_FullModule_XRay_Vcal_Roc_Analysis "
+	       "left outer join Test_FullModule_XRay_Vcal as FMT on FMT.TEST_ID=Test_FullModule_XRay_Vcal_Roc_Analysis.FULLMODULETEST_ID "
+	       "left outer join Test_FullModule_XRay_Vcal_Module_Analysis as FMA on FMA.TEST_ID=Test_FullModule_XRay_Vcal_Roc_Analysis.TEST_XRAY_VCAL_MODULE_ID "
+               "left outer join test_data as DataVcal on FMA.DATA_ID=DataVcal.DATA_ID "
+               "left join sessions as Session on FMT.SESSION_ID=Session.SESSION_ID WHERE 1")
+countqueries.append("select COUNT(1) from Test_FullModule_XRay_Vcal_Roc_Analysis "
+               "left outer join test_fullmodule as FMT on FMT.TEST_ID=Test_FullModule_XRay_Vcal_Roc_Analysis.FULLMODULETEST_ID "
+               "left join sessions as Session on FMT.SESSION_ID=Session.SESSION_ID WHERE 1")
+#countqueries.append(cq)
+columns.append(c)
+
+
+
 ############################################## tools#####################################################
 def coloredResult(res) :
 	if res=="OK" :

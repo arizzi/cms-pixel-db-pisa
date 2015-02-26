@@ -119,7 +119,7 @@ for  i in range (0,int(form.getfirst('iColumns'))) :
                   if percol!= "" :
                         percol += " AND "
 		  if exactSearch == "1":
-	                 percol+="%s = '%s'" % (colname,escapedSearch)                   
+	                 percol+="%s like '%s'" % (colname,escapedSearch)                   
 		  else:
 	                 percol+="%s like '%%%s%%'" % (colname,escapedSearch)                   
 

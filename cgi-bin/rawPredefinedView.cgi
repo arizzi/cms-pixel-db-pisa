@@ -24,6 +24,11 @@ toprint=[]
 
 
 objName = form.getfirst('objName', 'empty')
+checked = form.getfirst('exact', "")
+if checked == "1" :
+	checked="checked"
+	
+searchar=[]
 if objName == 'empty' :
 	viewNumber = int(form.getfirst('viewNumber', '0'))
 	if viewNumber >= len(columns) :
@@ -36,6 +41,19 @@ else:
 	objName = parseObjName(cgi.escape(objName))
 	id,toprint,query,count = fromObjectName(objName)
 	topush='"name" : "objName", "value" : "%s"' % objName
+
+
+for p in toprint :
+	ur = form.getfirst((p[0]).upper(), None)
+	if ur is not None :
+	   searchar.append(ur)	
+	else:
+	   searchar.append("")
+
+searcharray='%s'%searchar
+		
+
+#topush+=",%s"%(form.getfirst('topush', ''))
 
 print "<html>\n        <head>\n         "      
 print '<link rel="stylesheet" type="text/css" href="/frames.css" />'
@@ -65,6 +83,7 @@ $(document).ready(function() {
 			$(this).html(title+'<br><input size=10 type="text" onclick="event.stopPropagation();"/>' );
 			} );
 
+		var urlSearch = %s;
 		var table =          $('#example').DataTable( {
 			"bStateSave": true,
 			 "aLengthMenu": [   [25, 50, 100, 200, -1],
@@ -77,11 +96,17 @@ $(document).ready(function() {
 				var jqInputs = $('thead input');
 				for ( var i=0 ; i<oSettings.aoPreSearchCols.length ; i++ )
 				{
+				if(urlSearch.length > i && urlSearch[i]!='')
+					{
+						oSettings.aoPreSearchCols[i].sSearch = urlSearch[i];
+					}
 				console.log(oSettings.aoPreSearchCols[i].sSearch);
 				if(oSettings.aoPreSearchCols[i].sSearch!='')
 					{
 						jqInputs[i].value = oSettings.aoPreSearchCols[i].sSearch;
 					}
+				console.log(urlSearch.length);
+				
 				}
 			  },
 			"fnServerParams": function ( aoData ) {
@@ -93,6 +118,17 @@ $(document).ready(function() {
 			aoData.push( { %s } );
 			}
 			} );
+	         var jqInputs = $('thead input');
+                 for ( var i=0 ; i<jqInputs.length ; i++ )
+                                {
+                                if(urlSearch.length > i && urlSearch[i]!='')
+                                        {
+                                            jqInputs[i].value = urlSearch[i];
+					    table.column(i).search( urlSearch[i] ).draw();
+
+                                        }
+		}
+		//	
 		// Apply the search
 		table.columns().eq( 0 ).each( function ( colIdx ) {
 			$( 'input', table.column( colIdx ).header() ).on( 'keyup change', function () {
@@ -185,7 +221,7 @@ $(document).ready(function() {
 	                </script>
 <body>
 <main>
-''' %(topush,viewNumber,objName)
+''' %(searcharray,topush,viewNumber,objName)
 sys.path.append("../PixelDB")
 
 from storm import *
@@ -222,7 +258,7 @@ if True :
  print "<button onclick='selectNone()'>Unselect all</button>"
 
 
-print "<br><input type=checkbox id=exact onclick=\"var table = $('#example').DataTable(); table.ajax.reload();\"> Exact per column search"
+print "<br><input type=checkbox id=exact %s  onclick=\"var table = $('#example').DataTable(); table.ajax.reload();\"> Exact per column search (you can still add the %% yourself)"%(checked) 
 print "<p id=filterPH></p>"
 print "<table id=example class=\"display cell-border compact\"  width=100%>"
 print " <thead> <tr>"
