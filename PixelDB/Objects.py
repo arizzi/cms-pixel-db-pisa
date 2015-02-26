@@ -370,8 +370,10 @@ class FullModule(object):
   BUILTBY = Unicode()
   COMMENT = Unicode()
   LASTTEST_FULLMODULE=Int()
+  LASTTEST_XRAY_HR=Int()
+  LASTTEST_XRAY_VCAL=Int()
 
-  def __init__(self,FULLMODULE_ID, BAREMODULE_ID, HDI_ID, TBM_ID, TRANSFER_ID, BUILTBY, BUILTON=datetime.now(), COMMENT="", STATUS="",LASTTEST_FULLMODULE=0, CABLEBATCH_ID="", BSBATCH_ID=""):
+  def __init__(self,FULLMODULE_ID, BAREMODULE_ID, HDI_ID, TBM_ID, TRANSFER_ID, BUILTBY, BUILTON=datetime.now(), COMMENT="", STATUS="",LASTTEST_FULLMODULE=0, LASTTEST_XRAY_VCAL=0, LASTTEST_XRAY_HR=0  , CABLEBATCH_ID="", BSBATCH_ID=""):
       self.TBM_ID=unicode(TBM_ID)
       self.HDI_ID=unicode(HDI_ID)
       self.BAREMODULE_ID=unicode(BAREMODULE_ID)
@@ -383,8 +385,9 @@ class FullModule(object):
       self.BUILTON=BUILTON
       self.BUILTBY=unicode(BUILTBY)
       self.STATUS=unicode(STATUS)
-      self.LASTTEST_FULLMODULE=LASTTEST_FULLMODULE        
-
+      self.LASTTEST_FULLMODULE=int(LASTTEST_FULLMODULE        )
+      self.LASTTEST_XRAY_VCAL=int(LASTTEST_XRAY_VCAL)
+      self.LASTTEST_XRAY_HR=int(LASTTEST_XRAY_HR)
 
 class ShippingBox(object):
     __storm_table__ = "inventory_shippingbox"
@@ -1704,6 +1707,10 @@ Test_PerformanceParameters.fullmoduleanalysistest = Reference(  Test_Performance
 Test_FullModuleSummary.fullmoduletests =  ReferenceSet(Test_FullModuleSummary.TEST_ID,Test_FullModule.SUMMARY_ID)
 
 FullModule.lasttest = Reference(FullModule.LASTTEST_FULLMODULE, Test_FullModuleSummary.TEST_ID)
+
+FullModule.lasttest_xray_vcal = Reference(FullModule.LASTTEST_XRAY_VCAL, Test_FullModule_XRay_Vcal.TEST_ID)
+
+
 FullModule.summaries = ReferenceSet(FullModule.FULLMODULE_ID, Test_FullModuleSummary.FULLMODULE_ID)
 FullModule.tests = ReferenceSet(FullModule.FULLMODULE_ID, Test_FullModule.FULLMODULE_ID)
 Test_FullModule.analyses = ReferenceSet(Test_FullModule.TEST_ID, Test_FullModuleAnalysis.FULLMODULETEST_ID

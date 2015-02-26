@@ -97,9 +97,11 @@ class PixelTier0 (object):
             #
             # check if it can be inserted
             #
-            othertar = self.getInputTarByName(tar.NAME,tar.LOCATION)
+#            othertar = self.getInputTarByName(tar.NAME,tar.LOCATION)
+#            othertar = self.getInputTarByNameAndCksum(tar.NAME,tar.CKSUM)
+            othertar = self.getInputTarByNameOnly(tar.NAME)
             if (othertar is not None):
-                  print " An Input Tar with same name: ",tar.NAME, " is already present - exiting"
+                  print " An Input Tar with same name: ",tar.NAME, "and same CKSUM", tar.CKSUM, " is already present - exiting"
                   return None
             
             self.store.add(tar)
@@ -339,6 +341,13 @@ class PixelTier0 (object):
             return aa
 
 
+      def getInputTarByNameOnly(self, tar_name):
+            n = unicode(tar_name)
+            aa = self.store.find(InputTar, InputTar.NAME == n).one()
+            return aa
+
+            
+
       def getInputTarByName(self, tar_name, loc_name):
             n = unicode(tar_name)
             l = unicode(loc_name)
@@ -486,15 +495,18 @@ class PixelTier0 (object):
 # ProcessedDir.UPLOAD_TYPE to decide which to use            
             print "USING UPLOAD = ",pd.UPLOAD_TYPE,"self.upload"+pd.UPLOAD_TYPE+"(pd,session)"
 	    savestout = sys.stdout
+	    savesterr = sys.stderr
 	    ff = None
 	    if pd.processing_run_id.OUTLOG != "" :
 		    filename=pd.processing_run_id.OUTLOG+"_upload"
 		    ff = open(filename, 'w')
  		    sys.stdout = ff
+		    sys.stderr=sys.stdout
             ppp = eval ("self.upload"+pd.UPLOAD_TYPE+"(pd,session)")
 	    if ff is not None :
 		ff.close()
 	    sys.stdout = savestout
+	    sys.stderr = savesterr
 	    print "ppp",ppp
             return ppp
 

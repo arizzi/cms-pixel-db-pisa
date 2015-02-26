@@ -134,9 +134,15 @@ if (insert==1):
             continue
     
         line= line.rstrip(os.linesep)
-        print " working on Tar file: ",line    
+        (ret, ck) = commands.getstatusoutput('cksum '+line+" | awk \'{print $1}\'")
+        print " working on Tar file: ",line,' CKSUM: ', ck    
 
-        if (pdb.getInputTarByName(os.path.basename(line),os.path.dirname(line)) is not None):
+
+#        if (pdb.getInputTarByName(os.path.basename(line),os.path.dirname(line)) is not None):
+#            print " ALREADY PROCESSED"
+#            continue    
+#        if (pdb.getInputTarByNameAndCksum(os.path.basename(line),ck) is not None):
+        if (pdb.getInputTarByNameOnly(os.path.basename(line)) is not None):
             print " ALREADY PROCESSED"
             continue    
     
@@ -144,7 +150,7 @@ if (insert==1):
         # get cksum
         #
     
-        (ret, ck) = commands.getstatusoutput('cksum '+line+" | awk \'{print $1}\'")
+#        (ret, ck) = commands.getstatusoutput('cksum '+line+" | awk \'{print $1}\'")
    	if CENTER == "unknown" :
 		m=re.match("/home/(.*)/dropbox",os.path.dirname(line)) 
 		if m :
@@ -156,7 +162,8 @@ if (insert==1):
             print "ERROR inserting Tar, skipping ...."
             continue
 	print "tar status",tar.STATUS,pp.STATUS
-
+	os.system("chmod 440 %s"%(line))
+	print "doing os.system chmod 440 %s"%(line)
         listinserted.append(pp.TAR_ID)
 
         #

@@ -975,6 +975,8 @@ class PixelDBInterface(object) :
                         options[option] = value
                         if (debug == True):
                               print "SAVED ",option,"=", value
+		  else:
+			options[line]="" #for empty values with no delimiter
             f.close()
             return options
  
@@ -991,6 +993,8 @@ class PixelDBInterface(object) :
             mylist = re.split("[_-]",filename1)
             if (debug == True):
                   print "LIST ",mylist
+            if (mylist[0] == "SensorTest"):
+                  del mylist[0]
             if (len(mylist) <4 ):
                   print "Filename "+filename+" not well formed."
                   return (None, None, None, None)
@@ -1036,21 +1040,25 @@ class PixelDBInterface(object) :
             #
             if (debug == True):
                   print " ECCO",results
-            batch1 = results['BATCH']
-            centre1 = results['CENTRE']
-            step1= results['STEP'].upper()
-            wafer1 = results['BATCH']+'-'+results['WAFER']
-            sensor1 = "S"+results['BATCH']+'-'+results['WAFER']+'-'+results['SENSOR']
-            v1 = results['V1']
-            v2 = results['V2']
-            i1 = results['I1']
-            i2 = results['I2']
-            temperature =  results['TEMPERATURE']
-            slope = results['SLOPE']
-            grade = results['GRADE']
-            date = results['DATE']
-            comment = results['COMMENT']
-
+	    try :
+              batch1 = results['BATCH']
+              centre1 = results['CENTRE']
+              step1= results['STEP'].upper()
+              wafer1 = results['BATCH']+'-'+results['WAFER']
+              sensor1 = "S"+results['BATCH']+'-'+results['WAFER']+'-'+results['SENSOR']
+              v1 = results['V1']
+              v2 = results['V2']
+              i1 = results['I1']
+              i2 = results['I2']
+              temperature =  results['TEMPERATURE']
+              slope = results['SLOPE']
+              grade = results['GRADE']
+              date = results['DATE']
+              comment = results.get('COMMENT',"")
+	    except Exception,err:
+	      print "Error in parsing due to missing fields",Exception, err
+    	      return (0,0,0,0,0,0,0,0,0,0,0,0,0,0,False)
+	
             if (debug == True):
                   print "batch", batch1,batch,"wafer", wafer1,wafer,"sensor", sensor1,sensor,"step",step,step1
             
@@ -1058,6 +1066,7 @@ class PixelDBInterface(object) :
                   print "Error in the content of "+filename
                   return (0,0,0,0,0,0,0,0,0,0,0,0,0,0,False)
             if (batch1 != batch or wafer1 != wafer or sensor1 != sensor or step != step1):
+                  print "batch", batch1,batch,"wafer", wafer1,wafer,"sensor", sensor1,sensor,"step",step,step1
                   print " File content and name are not consistent "+filename
 		  return (0,0,0,0,0,0,0,0,0,0,0,0,0,0,False)
 
@@ -1097,7 +1106,7 @@ class PixelDBInterface(object) :
 
             (batch, wafer, sensor, step, v1, i1, v2, i2, slope, temperature, date, grade, centre, comment, ok) = self.extractorTestSensorFile(filename)
 #            (moduleid, i150v, i150100, rootpnfs,preresult, result, timestamp, temperature,ok) = self.extractorTestSensorDir(dir)
-            if (ok is None):
+            if (ok is None or ok == False):
                   print "InsertSensorTest Extractor returned False"
                   return None
             
@@ -1738,6 +1747,19 @@ class PixelDBInterface(object) :
         return (bmid, lab, op, temp, rh, dead, bbcut, ok)
 
 
+      def setLastTest_XRay_VCAL(self,t):
+            #
+            # set this as lat test in the inventory only if it is really the last? to be decided....
+            #
+            fm = self.getFullModule(t.FULLMODULE_ID)
+            if fm is None:
+                  print " Error: the FM ", t.FULLMODULE_ID, " does not seem to exist, passing..."
+                  return None
+            fm.LASTTEST_XRAY_VCAL = t.TEST_ID
+            self.store.commit()
+            return t
+
+
 #INSERTING XRAY INTO DB /tmp/xray/out/REV001/R001/M0000_XRayVcalCalibration_2015-02-01_12h34m_1422794101 None {'ROCsMoreThanOnePercent': None, 'minSlope': 48.171999999999997, 'QualificationType': 'XRayVcalCalibration', 'InputTarFile': None, 'minOffset': -1681.7429999999999, 'IVSlope': None, 'CycleTempLow': None, 'PHCalibration': None, 'Temperature': None, 'Hostname': 'UNKNOWN', 'CycleTempHigh': None, 'Comments': None, 'nCycles': None, 'Operator': 'UNKNOWN', 'Noise': None, 'Trimming': None, 'Vcal_Offset_Module': 55.472000000000001, 'Vcal_Slope_Module': 55.472000000000001, 'Slopes': [53.566000000000003, 60.165999999999997, 51.061, 59.375, 57.948, 57.463000000000001, 50.793999999999997, 52.689, 48.171999999999997, 55.966999999999999, 58.633000000000003, 58.619999999999997, 53.923000000000002, 50.662999999999997, 68.081999999999994, 50.426000000000002], 'AbsFulltestSubfolder': '/tmp/xray/out/REV001/R001/M0000_XRayVcalCalibration_2015-02-01_12h34m_1422794101/QualificationGroup/XrayCalibrationSpectrum_1', 'maxOffset': 127.083, 'ModuleID': 'M0000', 'TestCenter': 'UNKNOWN', 'maxSlope': 68.081999999999994, 'initialCurrent': None, 'Offsets': [-475.48700000000002, -790.88900000000001, 5.5330000000000004, -802.52099999999996, -484.28899999999999, -425.40300000000002, -188.99700000000001, -141.07300000000001, 127.083, -457.90600000000001, -632.15999999999997, -766.46100000000001, -616.27700000000004, -108.502, -1681.7429999999999, -276.50299999999999], 'Grade': None, 'AbsModuleFulltestStoragePath': '/tmp/xray/out/REV001/R001/M0000_XRayVcalCalibration_2015-02-01_12h34m_1422794101', 'avrgSlope': 55.471750000000007, 'FulltestSubfolder': 'QualificationGroup/XrayCalibrationSpectrum_1', 'CurrentAtVoltage150V': None, 'RelativeModuleFinalResultsPath': 'out/REV001/R001/M0000_XRayVcalCalibration_2015-02-01_12h34m_1422794101', 'PixelDefects': None, 'TestDate': '1422794101', 'MacroVersion': None, 'avrgOffset': -482.22468750000002, 'TestType': 'XrayCalibration_Spectrum'}
 
       def insertTestXRayVCal(self,sessionid,Row,overwritemodid=0):
@@ -1771,9 +1793,17 @@ class PixelDBInterface(object) :
 				 TIMESTAMP=timestamp,
 		                 RESULT="", COMMENT=Row["Comments"])
                   pp=self.insertObject(t)
+
                   if pp is None:
                         print "ERRORE XRAYVCALTEST"
                         return None
+
+#
+# set lasttest_xray_vcal in the inventory
+#
+                  self.setLastTest_XRay_VCAL(t)
+#
+
                   print "...DONE creating the XRAY VCAL TEST"
                   ttt=pp
 	    else:
