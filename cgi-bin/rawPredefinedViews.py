@@ -320,6 +320,7 @@ countqueries.append("select COUNT(1)  from inventory_hdi")
 ################################################ LogBook View ########################################
 header.append('''<h1>Logbook</h1><a href=/cgi-bin/writers/newTest.cgi?objName=Test_Logbook>Add Entry</a><br><p>''')
 (i,c,q,cq)=fromObjectName("Test_Logbook")
+c[0]=("Entry #",c[0][1],c[0][2])
 c=c[:1]
 #for i in xrange(0,len(c)):
 #    e=c[i]
@@ -333,14 +334,14 @@ def inlineLinks(x):
 		url=re.sub("file:","",l)
 		n=os.path.split(l)[1]
 		n=re.sub("[0-9\.]+__","",n)
-		res+="<a href=%s>%s</a>,"%(url,n)
+		res+="<a href=\"%s\">%s</a>, "%(url,n)
 	return res	
 c.append(("Date","Session.DATE",""))
 c.append(("Center","Session.CENTER",""))
 c.append(("Operator","Session.OPERATOR",""))
 c.append(("Comment&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;","logbook.COMMENT","idlink(o[rn])"))
 c.append(("Files","Data.PFNs",'inlineLinks(o[rn])'))
-c.append(("IDs","logbook.IDS",""))
+c.append(("IDs","logbook.IDS",'idlink(o[rn])'))
 #c.insert(2,("Date","Session.DATE",""))
 
 rowkeys.append(i)

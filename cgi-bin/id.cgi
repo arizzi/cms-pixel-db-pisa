@@ -22,7 +22,12 @@ if id is not None :
   newlocation=""
   objName= None
   multiResult={}
-  if id[0] in letterToObjName and id[1] in zeronine :
+  if id[0] == "L" :
+	idd=id[1:]
+        objName="Test_Logbook"
+        idName=idField(objName)
+        newlocation="/cgi-bin/viewdetails.cgi?objName=%s&%s=%s"%(objName,idName,idd)
+  elif id[0] in letterToObjName and id[1] in zeronine :
 	objName=letterToObjName[id[0]]
         idName=idField(objName)
         newlocation="/cgi-bin/viewdetails.cgi?objName=%s&%s=%s"%(objName,idName,id)
@@ -31,14 +36,20 @@ if id is not None :
         idName=idField(objName)
         newlocation="/cgi-bin/viewdetails.cgi?objName=%s&%s=%s"%(objName,idName,id)
   else :
+	objToLetter = dict(zip(letterToObjName.values(), letterToObjName.keys()))
 	for ob in legalNames :
-	  try:	
+	  try:
+	   idd=id
+	   if not idd[0] in zeronine:
+		if ob in objToLetter.keys():
+			idd=objToLetter[ob]+idd	
+
 	   idName=idField(ob)
 	   filter=eval(ob+"."+idName)
-	   filterValue = idFieldTypedValue(ob,id)
+	   filterValue = idFieldTypedValue(ob,idd)
 	   objects = pdb.store.find(eval(ob),filter==filterValue)
 	   for o in objects :
-		multiResult[ob]="/cgi-bin/viewdetails.cgi?objName=%s&%s=%s"%(ob,idName,id)
+		multiResult[ob]="/cgi-bin/viewdetails.cgi?objName=%s&%s=%s"%(ob,idName,idd)
 	 	newlocation=multiResult[ob]	
           except :
 		pass 

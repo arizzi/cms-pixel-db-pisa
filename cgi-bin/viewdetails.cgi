@@ -99,6 +99,10 @@ else :
 
   	printHeaders()
 	print "<h2> Details for %s  %s </h2>"%(objName,objID) 
+	lb = pdb.store.find(Test_Logbook,Test_Logbook.IDS.like(u"%%%s%%"%objID))
+	for l in lb:
+	    if re.match("(,|^)%s(,|$)"%objID,l.IDS):
+		print "<li>Logbook entry about this object <a href=/cgi-bin/viewdetails.cgi?objName=Test_Logbook&TEST_ID=%s>(details)</a>:<br>%s"%(l.TEST_ID,l.COMMENT)
         if cgi.escape(form.getfirst("spec", "1")) == "1" and refToShow=="empty":
 	  specificView(objName,form,pdb)
 #if reference details were requested, show the details for it rather than the original object
@@ -207,6 +211,7 @@ else :
 	#    help(getattr(o,r))
 	print "</tbody><tfoot></tfoot></table><br>"
 	
+
 	if summary != "" :
 	   print "<img src="+summary+">"
 	printFooter()

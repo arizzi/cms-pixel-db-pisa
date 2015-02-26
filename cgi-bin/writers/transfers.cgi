@@ -16,17 +16,26 @@ print
 print "<html>\n        <head>\n         "
 print '<link rel="stylesheet" type="text/css" href="/frames.css" />'
 print '''
-                <style type="text/css" title="currentStyle">
-                        @import "../../media/css/demo_page.css";
-                        @import "../../media/css/jquery.dataTables.css";
-                </style>
-                <script type="text/javascript" language="javascript" src="../../media/js/jquery.js"></script>
-                <script type="text/javascript" language="javascript" src="../../media/js/jquery.dataTables.js"></script>
+
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.2/css/jquery.dataTables.css">
+
+<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.2/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="http://jquery-datatables-column-filter.googlecode.com/svn/trunk/media/js/jquery.dataTables.columnFilter.js"></script>
+<script>
+
+
 		<script type="text/javascript" src="../../media/js/jquery-barcode.js"></script>  
 
                 <script type="text/javascript" charset="utf-8">
                         $(document).ready(function() {
 
+                                $('#transfers2').dataTable( {
+		                        "order": [[ 4,"desc" ]],
+//                                        "sDom": 'C<"clear">lfrtip',
+                                        "iDisplayLength" : 50,
+
+                                        } );
                                 $('#transfers').dataTable( {
                                         "sDom": 'C<"clear">lfrtip',
                                         "iDisplayLength" : 50,
@@ -287,7 +296,7 @@ if action == "empty" :
 
    #show list of open transfers
    transfers = pdb.store.find(Transfer,Transfer.STATUS!=unicode("ARRIVED"))
-   print "<table id=transfers width=\"100%\">"
+   print "<table id=transfers class=display width=\"100%\">"
    print " <thead> <tr>"
    print "<th>Sender</th><th>Receiver</th><th>Comment</th><th>Status</th><th>Date sent</th><th>Actions</th>"
    print "</thead></tr><tbody>"
@@ -296,14 +305,14 @@ if action == "empty" :
      print "<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td><a href=transfers.cgi?submit=receive&TRANSFER_ID=%s onClick=\"return verify(%s);\" >receive</a> | <a href=transfers.cgi?submit=cancel&TRANSFER_ID=%s onClick=\"return verify(%s);\" >cancel</a> |  <a href=transfers.cgi?submit=details&TRANSFER_ID=%s >details</a> " %(o.SENDER,o.RECEIVER,o.COMMENT,o.STATUS,o.ISSUED_DATE, o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID)
    print "</tbody><tfoot></tfoot></table>"
 
-   if False:
-    print "<h2> List of received transfers </h2><p>"
-    transfers = pdb.store.find(Transfer,Transfer.STATUS==unicode("ARRIVED"))
-    print "<table id=transfers2 width=\"100%\">"
+   if True:
+    print "</p><br><h2> Last 20 received transfers (excluding factories, autogen and self-transfer )</h2><p>"
+    transfers = pdb.store.find(Transfer,Transfer.STATUS==unicode("ARRIVED"),Transfer.SENDER!=u"FACTORY",Transfer.SENDER!=u"CIS", Transfer.SENDER!=u"RTI",Transfer.SENDER!=u"IZM",Not(Transfer.COMMENT.like(u"%autogen%")),Transfer.SENDER!=Transfer.RECEIVER,Transfer.SENDER!=u"any")
+    print "<table class=display id=transfers2 width=\"100%\">"
     print " <thead> <tr>"
     print "<th>Sender</th><th>Receiver</th><th>Comment</th><th>Status</th><th>Date sent</th>"
     print "</thead></tr><tbody>"
-    for o in transfers :
+    for o in transfers.order_by(Desc(Transfer.ISSUED_DATE))[:20] :
       print "<tr>"
       print "<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td>" %(o.SENDER,o.RECEIVER,o.COMMENT,o.STATUS,o.ISSUED_DATE )
     print "</tbody><tfoot></tfoot></table>"
