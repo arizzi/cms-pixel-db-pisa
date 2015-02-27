@@ -370,10 +370,11 @@ class FullModule(object):
   BUILTBY = Unicode()
   COMMENT = Unicode()
   LASTTEST_FULLMODULE=Int()
-  LASTTEST_XRAY_HR=Int()
+  LASTTEST_XRAY_HR150=Int()
+  LASTTEST_XRAY_HR50=Int()
   LASTTEST_XRAY_VCAL=Int()
 
-  def __init__(self,FULLMODULE_ID, BAREMODULE_ID, HDI_ID, TBM_ID, TRANSFER_ID, BUILTBY, BUILTON=datetime.now(), COMMENT="", STATUS="",LASTTEST_FULLMODULE=0, LASTTEST_XRAY_VCAL=0, LASTTEST_XRAY_HR=0  , CABLEBATCH_ID="", BSBATCH_ID=""):
+  def __init__(self,FULLMODULE_ID, BAREMODULE_ID, HDI_ID, TBM_ID, TRANSFER_ID, BUILTBY, BUILTON=datetime.now(), COMMENT="", STATUS="",LASTTEST_FULLMODULE=0, LASTTEST_XRAY_VCAL=0, LASTTEST_XRAY_HR50=0,LASTTEST_XRAY_HR150=0  , CABLEBATCH_ID="", BSBATCH_ID=""):
       self.TBM_ID=unicode(TBM_ID)
       self.HDI_ID=unicode(HDI_ID)
       self.BAREMODULE_ID=unicode(BAREMODULE_ID)
@@ -387,7 +388,8 @@ class FullModule(object):
       self.STATUS=unicode(STATUS)
       self.LASTTEST_FULLMODULE=int(LASTTEST_FULLMODULE        )
       self.LASTTEST_XRAY_VCAL=int(LASTTEST_XRAY_VCAL)
-      self.LASTTEST_XRAY_HR=int(LASTTEST_XRAY_HR)
+      self.LASTTEST_XRAY_HR150=int(LASTTEST_XRAY_HR50)
+      self.LASTTEST_XRAY_HR150=int(LASTTEST_XRAY_HR50)
 
 class ShippingBox(object):
     __storm_table__ = "inventory_shippingbox"
@@ -1650,6 +1652,246 @@ class Test_BM_ROC_DacParameters(object):
           self.TEMPERATURE = float(TEMPERATURE)
           self.QATEST_ID = int(QATEST_ID)
           self.HUMIDITY = float(HUMIDITY)
+
+
+class Test_FullModule_XRay_HR_Module(object):
+    __storm_table__ = "Test_FullModule_XRay_HR_Module"
+    TEST_ID = Int(primary=True)
+    SESSION_ID=Int()
+    session = Reference (SESSION_ID,Session.SESSION_ID)
+    FULLMODULE_ID =  Unicode()
+    fullmodule=Reference(FULLMODULE_ID, FullModule.FULLMODULE_ID)
+    DATA_ID=Int()
+    data=Reference(DATA_ID,Data.DATA_ID)
+    LAST_PROCESSING_ID = Int()
+    RESULT = Unicode()
+    XRAY_SLOT = Int()
+    HITRATENOMINAL = Float()
+    TEMPNOMINAL = Float()
+    TIMESTAMP = Unicode()
+    COMMENT = Unicode()
+    
+    
+    MEASURED_EFFICIENCY = Float() 
+    MEASURED_HITRATE_EFF = Float() 
+    N_PIXEL_NO_HIT  = Int() 
+    MEASURED_HITRATE = Float() 
+    MEAN_NOISE_ALLPIXELS = Float() 
+    WIDTH_NOISE_ALLPIXELS = Float() 
+    MEASURED_HITRATE_NOISE = Float() 
+    
+    XRAY_SLOT  = Int() 
+    HITRATENOMINAL = Float() 
+    TEMPNOMINAL = Float() 
+    TIMESTAMP =Unicode() 
+    COMMENT = Unicode()
+    MACRO_VERSION = Unicode()
+
+    def __init__(self, SESSION_ID,  FULLMODULE_ID ,  DATA_ID,   LAST_PROCESSING_ID , RESULT, HITRATENOMINAL, TEMPNOMINAL, TIMESTAMP, MEASURED_EFFICIENCY, MEASURED_HITRATE_EFF, N_PIXEL_NO_HIT  ,
+                 MEASURED_HITRATE,
+                 MEAN_NOISE_ALLPIXELS ,
+                 WIDTH_NOISE_ALLPIXELS,
+                 MEASURED_HITRATE_NOISE,                 
+                 XRAY_SLOT,
+                 MACRO_VERSION,
+                 COMMENT ):
+        self.SESSION_ID = int(SESSION_ID)
+        self.MEASURED_HITRATE_EFF = float(MEASURED_HITRATE_EFF)
+        self.FULLMODULE_ID = unicode(FULLMODULE_ID)
+        self.DATA_ID = int(DATA_ID)
+        self.MEASURED_EFFICIENCY = float(MEASURED_EFFICIENCY)
+        self.RESULT = unicode(RESULT)
+        self.LAST_PROCESSING_ID = int(LAST_PROCESSING_ID)
+        self.TEMPNOMINAL = float(TEMPNOMINAL)
+        self.MACRO_VERSION = unicode(MACRO_VERSION)
+        self.XRAY_SLOT = int(XRAY_SLOT)
+        self.HITRATENOMINAL = float(HITRATENOMINAL)
+        self.TIMESTAMP = unicode(TIMESTAMP)
+        self.N_PIXEL_NO_HIT = int(N_PIXEL_NO_HIT)
+        self.MEASURED_HITRATE = float(MEASURED_HITRATE)
+        self.MEAN_NOISE_ALLPIXELS = float(MEAN_NOISE_ALLPIXELS)
+        self.COMMENT = unicode(COMMENT)
+        self.WIDTH_NOISE_ALLPIXELS = float(WIDTH_NOISE_ALLPIXELS)
+        self.MEASURED_HITRATE_NOISE = float(MEASURED_HITRATE_NOISE)
+        self.HITRATENOMINAL = float(HITRATENOMINAL)
+        self.TEMPNOMINAL = float(TEMPNOMINAL)
+        self.TIMESTAMP = unicode(TIMESTAMP)
+
+class Test_FullModule_XRay_HR_Module_Analysis(object):
+    __storm_table__ = "Test_FullModule_XRay_HR_Module_Analysis"
+    TEST_ID = Int(primary=True)
+    SESSION_ID=Int()
+    session = Reference (SESSION_ID,Session.SESSION_ID)
+#    FULLMODULE_ID =  Unicode()
+#    fullmodule=Reference(FULLMODULE_ID, FullModule.FULLMODULE_ID)
+    DATA_ID=Int()
+    data=Reference(DATA_ID,Data.DATA_ID)
+    PROCESSING_ID = Int()
+    RESULT = Unicode()
+    FULLMODULETEST_ID  = Int()
+    fullmoduletest=Reference(FULLMODULETEST_ID,Test_FullModule_XRay_HR_Module.TEST_ID )
+    MACRO_VERSION = Unicode()
+    GRADE = Unicode()
+    N_PIXELS_EFF_BELOW_CUT = Int() 
+    INTERP_EFF_TESTPOINT = Float() 
+    N_HOT_PIXELS = Int() 
+    N_COL_NONUNIFORM = Int() 
+    N_COL_BELOW_CUT = Int() 
+    N_PIXELS_NOISE_ABOVETH = Int() 
+    
+
+    def __init__(self, SESSION_ID, 
+#		 FULLMODULE_ID , 
+		 DATA_ID, 
+                 PROCESSING_ID , GRADE,RESULT, MACRO_VERSION, FULLMODULETEST_ID,     
+                 N_PIXELS_EFF_BELOW_CUT,    INTERP_EFF_TESTPOINT,    N_HOT_PIXELS,    
+                 N_COL_NONUNIFORM,     N_COL_BELOW_CUT,     N_PIXELS_NOISE_ABOVETH, COMMENT=""):
+        self.SESSION_ID = int(SESSION_ID)
+        self.DATA_ID = int(DATA_ID)
+        self.PROCESSING_ID = int(PROCESSING_ID)
+        self.FULLMODULETEST_ID = int(FULLMODULETEST_ID)
+        self.N_PIXELS_EFF_BELOW_CUT = int(N_PIXELS_EFF_BELOW_CUT)
+        self.N_HOT_PIXELS = int(    N_HOT_PIXELS)
+        self.N_COL_NONUNIFORM = int(N_COL_NONUNIFORM)
+        self.N_COL_BELOW_CUT = int(N_COL_BELOW_CUT)
+        self.N_PIXELS_NOISE_ABOVETH = int(N_PIXELS_NOISE_ABOVETH)
+        self.INTERP_EFF_TESTPOINT = float(INTERP_EFF_TESTPOINT)
+ #       self.FULLMODULE_ID = unicode(FULLMODULE_ID)
+        self.GRADE = unicode(GRADE)
+        self.RESULT = unicode(RESULT)
+        self.MACRO_VERSION = unicode(MACRO_VERSION)
+        self.COMMENT = unicode(COMMENT)
+        
+
+    
+class Test_FullModule_XRay_HR_Roc(object):
+    __storm_table__ = "Test_FullModule_XRay_HR_Roc"
+    TEST_ID = Int(primary=True)
+    ROC_POS = Int()
+    SESSION_ID=Int()
+    session = Reference (SESSION_ID,Session.SESSION_ID)
+    TEST_XRAY_HR_MODULE_ID= Int()
+    fullmodule=Reference(TEST_XRAY_HR_MODULE_ID, Test_FullModule_XRay_HR_Module.TEST_ID)
+    DATA_ID=Int()
+    data=Reference(DATA_ID,Data.DATA_ID)
+    LAST_PROCESSING_ID = Int()
+    COMMENT = Unicode()    
+    
+    MEASURED_EFFICIENCY = Float() 
+    MEASURED_HITRATE_EFF = Float() 
+    N_PIXEL_NO_HIT  = Int() 
+    MEASURED_HITRATE = Float() 
+    MEAN_NOISE_ALLPIXELS = Float() 
+    WIDTH_NOISE_ALLPIXELS = Float() 
+    MEASURED_HITRATE_NOISE = Float() 
+    
+    GRADE = Unicode()
+    MACRO_VERSION= Unicode()
+
+
+    def __init__(self,  ROC_POS,
+                 SESSION_ID,
+                 TEST_XRAY_HR_MODULE_ID,
+                 DATA_ID,
+                 LAST_PROCESSING_ID,MACRO_VERSION,
+                 MEASURED_EFFICIENCY ,
+                 MEASURED_HITRATE_EFF,
+                 N_PIXEL_NO_HIT,
+                 MEASURED_HITRATE,
+                 MEAN_NOISE_ALLPIXELS, 
+                 WIDTH_NOISE_ALLPIXELS,
+                 MEASURED_HITRATE_NOISE,
+                 GRADE,
+                 COMMENT = ""):
+        self.TEST_XRAY_HR_MODULE_ID =                  int(TEST_XRAY_HR_MODULE_ID)
+        self.SESSION_ID = int(SESSION_ID)
+        self.MEASURED_HITRATE_EFF = float(MEASURED_HITRATE_EFF)
+        self.DATA_ID = int(DATA_ID)
+        self.MEASURED_EFFICIENCY = float(MEASURED_EFFICIENCY)
+        self.LAST_PROCESSING_ID = int(LAST_PROCESSING_ID)
+        self.MACRO_VERSION = unicode(MACRO_VERSION)
+        self.N_PIXEL_NO_HIT = int(N_PIXEL_NO_HIT)
+        self.MEASURED_HITRATE = float(MEASURED_HITRATE)
+        self.MEAN_NOISE_ALLPIXELS = float(MEAN_NOISE_ALLPIXELS)
+        self.COMMENT = unicode(COMMENT)
+        self.WIDTH_NOISE_ALLPIXELS = float(WIDTH_NOISE_ALLPIXELS)
+        self.MEASURED_HITRATE_NOISE = float(MEASURED_HITRATE_NOISE)
+
+
+
+
+
+class Test_FullModule_XRay_HR_Roc_Analysis(object):
+    __storm_table__ = "Test_FullModule_XRay_HR_Roc_Analysis"
+    TEST_ID = Int(primary=True)
+    SESSION_ID=Int()
+    session = Reference (SESSION_ID,Session.SESSION_ID)
+    DATA_ID=Int()
+    data=Reference(DATA_ID,Data.DATA_ID)
+    PROCESSING_ID = Int()
+    RESULT = Unicode()
+    TEST_XRAY_HR_ROC_ID = Int()
+    test_xray_hr_roc=Reference(TEST_XRAY_HR_ROC_ID,Test_FullModule_XRay_HR_Roc.TEST_ID )
+    MACRO_VERSION = Unicode()
+    GRADE = Unicode()
+    N_PIXELS_EFF_BELOW_CUT = Int() 
+    N_HOT_PIXELS = Int() 
+    N_COL_BELOW_CUT = Int() 
+    ADDR_PIXELS_BAD = Unicode()
+    INTERP_EFF_TESTPOINT = Float()
+    ADDR_PIXELS_HOT = Unicode()
+    N_COL_NONUNIFORM = Int()
+    N_BINS_LOWHIGH = Int()
+    N_COL_LOWEFF = Int()
+    N_EVENTS_LOWEFF_COL = Int()
+    N_PIXELS_NOISE = Int()
+    ADDR_PIXELS_NOISE = Unicode()
+    COMMENT = Unicode()
+    
+
+    def __init__(self,  SESSION_ID,
+                 DATA_ID,
+                 PROCESSING_ID,
+                 TEST_XRAY_HR_ROC_ID,
+                 MACRO_VERSION,
+                 GRADE,
+                 N_PIXELS_EFF_BELOW_CUT,
+                 N_HOT_PIXELS,
+                 N_COL_BELOW_CUT,
+                 ADDR_PIXELS_BAD,
+                 INTERP_EFF_TESTPOINT,
+                 ADDR_PIXELS_HOT,
+                 N_COL_NONUNIFORM,
+                 N_BINS_LOWHIGH,
+                 N_COL_LOWEFF,
+                 N_EVENTS_LOWEFF_COL,
+                 N_PIXELS_NOISE,
+                 ADDR_PIXELS_NOISE,
+                 COMMENT=""):
+
+
+
+        self.SESSION_ID = int(SESSION_ID)
+        self.DATA_ID = int(DATA_ID)
+        self.PROCESSING_ID = int(PROCESSING_ID)
+        self.TEST_XRAY_HR_ROC_ID = int(TEST_XRAY_HR_ROC_ID)
+        self.MACRO_VERSION = unicode(MACRO_VERSION)
+        self.GRADE = unicode(GRADE)
+        self.N_PIXELS_EFF_BELOW_CUT = int(N_PIXELS_EFF_BELOW_CUT)
+        self.N_COL_NONUNIFORM = int(N_COL_NONUNIFORM)
+        self.N_HOT_PIXELS = int(    N_HOT_PIXELS)
+        self.ADDR_PIXELS_HOT = unicode(                 ADDR_PIXELS_HOT)
+        self.ADDR_PIXELS_NOISE = unicode(                 ADDR_PIXELS_NOISE)
+        self.ADDR_PIXELS_BAD = unicode(                 ADDR_PIXELS_BAD)
+        self.N_BINS_LOWHIGH = int(                 N_BINS_LOWHIGH)
+        self.N_COL_LOWEFF = int(N_COL_LOWEFF)
+        self.N_EVENTS_LOWEFF_COL = int(N_EVENTS_LOWEFF_COL)
+        self.N_PIXELS_NOISE= int(N_PIXELS_NOISE)
+        self.N_COL_BELOW_CUT = int(N_COL_BELOW_CUT)
+        self.N_PIXELS_NOISE_ABOVETH = int(N_PIXELS_NOISE_ABOVETH)
+        self.INTERP_EFF_TESTPOINT = float(INTERP_EFF_TESTPOINT)
+        self.COMMENT = unicode(COMMENT)
+
 
 #history
  

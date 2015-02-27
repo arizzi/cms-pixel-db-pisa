@@ -372,8 +372,16 @@ columns.append([
 	("Analysis ID","Test_FullModule_XRay_Vcal_Module_Analysis.TEST_ID","vcalAna(o)"),
 	("Slope","Test_FullModule_XRay_Vcal_Module_Analysis.SLOPE",""),
 	("Offset","Test_FullModule_XRay_Vcal_Module_Analysis.OFFSET",""),
-	("Grade","Test_FullModule_XRay_Vcal_Module_Analysis.GRADE",""),
+	("Grade Vcal","Test_FullModule_XRay_Vcal_Module_Analysis.GRADE",""),
+	("#Pix w/ low eff","GREATEST(Test_FullModule_XRay_HR_Module50_Analysis.N_PIXELS_EFF_BELOW_CUT,Test_FullModule_XRay_HR_Module150_Analysis.N_PIXELS_EFF_BELOW_CUT)",""),
+	("Eff @50","Test_FullModule_XRay_HR_Module50_Analysis.INTERP_EFF_TESTPOINT",""),
+	("Eff @150","Test_FullModule_XRay_HR_Module150_Analysis.INTERP_EFF_TESTPOINT",""),
+	("#Pix Hot","GREATEST(Test_FullModule_XRay_HR_Module50_Analysis.N_HOT_PIXELS,Test_FullModule_XRay_HR_Module150_Analysis.N_HOT_PIXELS)",""),
+	("#Pix NoHit","GREATEST(Test_FullModule_XRay_HR_Module50.N_PIXEL_NO_HIT,Test_FullModule_XRay_HR_Module150.N_PIXEL_NO_HIT)",""),
+	("Grade HR","GREATEST(Test_FullModule_XRay_HR_Module50_Analysis.GRADE,Test_FullModule_XRay_HR_Module150_Analysis.GRADE)",""),
+	("Grade ","GREATEST(Test_FullModule_XRay_Vcal_Module_Analysis.GRADE,Test_FullModule_XRay_HR_Module50_Analysis.GRADE,Test_FullModule_XRay_HR_Module150_Analysis.GRADE)",""),
         ("","DataVcal.PFNs","NOPRINT"),
+
         ("","Test_FullModule_XRay_Vcal.LAST_PROCESSING_ID","NOPRINT"),
         ("","Test_FullModule_XRay_Vcal.TEST_ID","NOPRINT"),
 
@@ -397,8 +405,24 @@ queries.append("select %s,Transfer.STATUS as Transfer_STATUS, Transfer.SENDER as
                 "left outer join Test_FullModule_XRay_Vcal as Test_FullModule_XRay_Vcal on FullModule.LASTTEST_XRAY_VCAL=Test_FullModule_XRay_Vcal.TEST_ID "
                 "left outer join Test_FullModule_XRay_Vcal_Module_Analysis as Test_FullModule_XRay_Vcal_Module_Analysis on Test_FullModule_XRay_Vcal_Module_Analysis.FULLMODULETEST_ID=Test_FullModule_XRay_Vcal.TEST_ID and Test_FullModule_XRay_Vcal_Module_Analysis.PROCESSING_ID=Test_FullModule_XRay_Vcal.LAST_PROCESSING_ID "
 		"left outer join test_data as DataVcal on Test_FullModule_XRay_Vcal_Module_Analysis.DATA_ID=DataVcal.DATA_ID "
-                " WHERE (Test_FullModule_XRay_Vcal.TEST_ID <> 0 )")#add here OR Test_FullModule_XRay_HR.TEST_ID <> 0
-countqueries.append("select COUNT(1)  from inventory_hdi")
+                "left outer join Test_FullModule_XRay_HR_Module as Test_FullModule_XRay_HR_Module150 on FullModule.LASTTEST_XRAY_HR150=Test_FullModule_XRay_HR_Module150.TEST_ID and Test_FullModule_XRay_HR_Module150.HITRATENOMINAL<>'50'"
+                "left outer join Test_FullModule_XRay_HR_Module_Analysis as Test_FullModule_XRay_HR_Module150_Analysis on Test_FullModule_XRay_HR_Module150_Analysis.FULLMODULETEST_ID=Test_FullModule_XRay_HR_Module150.TEST_ID and Test_FullModule_XRay_HR_Module150_Analysis.PROCESSING_ID=Test_FullModule_XRay_HR_Module150.LAST_PROCESSING_ID "
+		"left outer join test_data as DataHR150 on Test_FullModule_XRay_HR_Module150_Analysis.DATA_ID=DataHR150.DATA_ID "
+                "left outer join Test_FullModule_XRay_HR_Module as Test_FullModule_XRay_HR_Module50 on FullModule.LASTTEST_XRAY_HR50=Test_FullModule_XRay_HR_Module50.TEST_ID and Test_FullModule_XRay_HR_Module50.HITRATENOMINAL='50'"
+                "left outer join Test_FullModule_XRay_HR_Module_Analysis as Test_FullModule_XRay_HR_Module50_Analysis on Test_FullModule_XRay_HR_Module50_Analysis.FULLMODULETEST_ID=Test_FullModule_XRay_HR_Module50.TEST_ID and Test_FullModule_XRay_HR_Module50_Analysis.PROCESSING_ID=Test_FullModule_XRay_HR_Module50.LAST_PROCESSING_ID "
+		"left outer join test_data as DataHR50 on Test_FullModule_XRay_HR_Module50_Analysis.DATA_ID=DataHR50.DATA_ID "
+                " WHERE (Test_FullModule_XRay_Vcal.TEST_ID <> 0  OR Test_FullModule_XRay_HR_Module50.TEST_ID <> 0) ")
+countqueries.append("select COUNT(1) from inventory_fullmodule as FullModule left outer join transfers as Transfer on FullModule.TRANSFER_ID=Transfer.TRANSFER_ID "
+                "left outer join Test_FullModule_XRay_Vcal as Test_FullModule_XRay_Vcal on FullModule.LASTTEST_XRAY_VCAL=Test_FullModule_XRay_Vcal.TEST_ID "
+                "left outer join Test_FullModule_XRay_Vcal_Module_Analysis as Test_FullModule_XRay_Vcal_Module_Analysis on Test_FullModule_XRay_Vcal_Module_Analysis.FULLMODULETEST_ID=Test_FullModule_XRay_Vcal.TEST_ID and Test_FullModule_XRay_Vcal_Module_Analysis.PROCESSING_ID=Test_FullModule_XRay_Vcal.LAST_PROCESSING_ID "
+                "left outer join test_data as DataVcal on Test_FullModule_XRay_Vcal_Module_Analysis.DATA_ID=DataVcal.DATA_ID "
+                "left outer join Test_FullModule_XRay_HR_Module as Test_FullModule_XRay_HR_Module150 on FullModule.LASTTEST_XRAY_HR150=Test_FullModule_XRay_HR_Module150.TEST_ID and Test_FullModule_XRay_HR_Module150.HITRATENOMINAL<>'50'"
+                "left outer join Test_FullModule_XRay_HR_Module_Analysis as Test_FullModule_XRay_HR_Module150_Analysis on Test_FullModule_XRay_HR_Module150_Analysis.FULLMODULETEST_ID=Test_FullModule_XRay_HR_Module150.TEST_ID and Test_FullModule_XRay_HR_Module150_Analysis.PROCESSING_ID=Test_FullModule_XRay_HR_Module150.LAST_PROCESSING_ID "
+                "left outer join test_data as DataHR150 on Test_FullModule_XRay_HR_Module150_Analysis.DATA_ID=DataHR150.DATA_ID "
+                "left outer join Test_FullModule_XRay_HR_Module as Test_FullModule_XRay_HR_Module50 on FullModule.LASTTEST_XRAY_HR50=Test_FullModule_XRay_HR_Module50.TEST_ID and Test_FullModule_XRay_HR_Module50.HITRATENOMINAL='50'"
+                "left outer join Test_FullModule_XRay_HR_Module_Analysis as Test_FullModule_XRay_HR_Module50_Analysis on Test_FullModule_XRay_HR_Module50_Analysis.FULLMODULETEST_ID=Test_FullModule_XRay_HR_Module50.TEST_ID and Test_FullModule_XRay_HR_Module50_Analysis.PROCESSING_ID=Test_FullModule_XRay_HR_Module50.LAST_PROCESSING_ID "
+                "left outer join test_data as DataHR50 on Test_FullModule_XRay_HR_Module50_Analysis.DATA_ID=DataHR50.DATA_ID "
+                " WHERE (Test_FullModule_XRay_Vcal.TEST_ID <> 0  OR Test_FullModule_XRay_HR_Module50.TEST_ID <> 0) ")
 
 ################################################ XRay ROC View ########################################
 header.append('''<h1>Overview of XRay ROC results</h1>''')

@@ -137,7 +137,11 @@ for c in colNames :
      if c!= '' :
 	if colString !="" :
 		colString+=","
-	colString+="%s as %s"%( c,re.sub('\.','_',c))
+	cc=re.sub('\.','_',c)
+	cc=re.sub('\(','_',cc)
+	cc=re.sub(',','_',cc)
+	cc=re.sub('\)','_',cc)
+	colString+="%s as %s"%( c,cc)
 
 if debug == "1" :
 	print "%s %s %s"% ((query%colString),sWhere,sOrder)
@@ -158,6 +162,10 @@ for o in cur.fetchall() :
    for c,rn,ev in cols :
       if ev != "NOPRINT":
         rn=re.sub('\.','_',rn)
+        rn=re.sub('\(','_',rn)
+        rn=re.sub(',','_',rn)
+        rn=re.sub('\)','_',rn)
+
 	#oo=o[rn]
 	if ev == '' :
 		row[i]="%s"%o[rn]
