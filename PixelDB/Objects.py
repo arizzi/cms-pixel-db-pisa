@@ -241,11 +241,10 @@ class BareModule(object):
   sensor = Reference(SENSOR_ID, Sensor.SENSOR_ID)
   transfer = Reference(TRANSFER_ID, Transfer.TRANSFER_ID)
   BUILTON = DateTime()
+  N_REWORKED_ROC = Int()
   BUILTBY = Unicode()
   COMMENT = Unicode()
-  LABEL2D = Unicode()
-  POWERCABLE=Unicode()
-  SIGNALCABLE=Unicode()
+  LABEL = Unicode()
   TYPE=Unicode()
   LASTTEST_BAREMODULE_INSPECTION =Int()
   LASTTEST_CHIPS = Unicode()
@@ -278,12 +277,13 @@ class BareModule(object):
       result =(self.LASTTEST_CHIPS.split(","))[i]
       return int(result)
   
-  def __init__(self,BAREMODULE_ID,ROC_ID,SENSOR_ID,TRANSFER_ID,  BUILTBY, BUILTON=datetime.now(),COMMENT="", LASTTEST_CHIPS = "",LASTTEST_BAREMODULE_INSPECTION=0, LASTTEST_BAREMODULE_QA_PIXELALIVE = 0,LASTTEST_BAREMODULE_QA_BONDING = 0, LASTTEST_BAREMODULE_GRADING=0,  STATUS="",LABEL2D="",POWERCABLE="", SIGNALCABLE="", TYPE="" ):
+  def __init__(self,N_REWORKED_ROC,BAREMODULE_ID,ROC_ID,SENSOR_ID,TRANSFER_ID,  BUILTBY, BUILTON=datetime.now(),COMMENT="", LASTTEST_CHIPS = "",LASTTEST_BAREMODULE_INSPECTION=0, LASTTEST_BAREMODULE_QA_PIXELALIVE = 0,LASTTEST_BAREMODULE_QA_BONDING = 0, LASTTEST_BAREMODULE_GRADING=0,  STATUS="",LABEL="", TYPE="" ):
       self.BAREMODULE_ID=unicode(BAREMODULE_ID)
       self.ROC_ID=unicode(ROC_ID)
       self.SENSOR_ID=unicode(SENSOR_ID)
       self.TRANSFER_ID=TRANSFER_ID
       self.BUILTON=BUILTON
+      self.N_REWORKED_ROC=int(N_REWORKED_ROC)
       self.BUILTBY=unicode(BUILTBY)
       self.COMMENT=unicode(COMMENT)
       self.LASTTEST_BAREMODULE_INSPECTION=int(LASTTEST_BAREMODULE_INSPECTION)
@@ -292,9 +292,7 @@ class BareModule(object):
       self.LASTTEST_BAREMODULE_QA_PIXELALIVE=int(LASTTEST_BAREMODULE_QA_PIXELALIVE)
       self.LASTTEST_CHIPS=unicode(LASTTEST_CHIPS)
       self.STATUS=unicode(STATUS)
-      self.LABEL2D=unicode(LABEL2D)
-      self.POWERCABLE=unicode(POWERCABLE)
-      self.SIGNALCABLE=unicode(SIGNALCABLE)
+      self.LABEL=unicode(LABEL)
       self.TYPE=unicode(TYPE)
 
       
@@ -1314,7 +1312,7 @@ class Test_BareModule_Inspection(object):
           self.SESSION_ID=SESSION_ID
           self.BAREMODULE_ID=unicode(BAREMODULE_ID)
           self.TYPE=unicode(TYPE)
-          self.GRADE=unicode(GRADE)
+  #        self.GRADE=unicode(GRADE)
           self.DATA_ID=DATA_ID
           self.DATE = (DATE)
           self.RESULT=unicode(RESULT)
@@ -1548,6 +1546,7 @@ class Test_BM_ROC_DacParameters(object):
       __storm_table__ = "test_bm_roc_dacparameters"
       TEST_ID = Int(primary=True)
       QATEST_ID = Int()
+      qatest = Reference(QATEST_ID, Test_BareModule_QA.TEST_ID)
       ROC_POS = Int()
       BAREMODULE_ID = Unicode()
       baremodule = Reference(BAREMODULE_ID, BareModule.BAREMODULE_ID)
@@ -1652,7 +1651,6 @@ class Test_BM_ROC_DacParameters(object):
           self.TEMPERATURE = float(TEMPERATURE)
           self.QATEST_ID = int(QATEST_ID)
           self.HUMIDITY = float(HUMIDITY)
-
 
 class Test_FullModule_XRay_HR_Module(object):
     __storm_table__ = "Test_FullModule_XRay_HR_Module"

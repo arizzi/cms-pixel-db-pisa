@@ -98,7 +98,9 @@ else :
 		   print
 
   	printHeaders()
+	print "<a href=/cgi-bin/writers/edit.cgi?objName=%s&%s=%s>EDIT</a>"%(objName,ID,objID)
 	print "<h2> Details for %s  %s </h2>"%(objName,objID) 
+
 	lb = pdb.store.find(Test_Logbook,Test_Logbook.IDS.like(u"%%%s%%"%objID))
 	for l in lb:
 	    if re.match("(,|^)%s(,|$)"%objID,l.IDS):

@@ -10,6 +10,7 @@ from GenericView import *
 
 
 def specificView(objName,form,pdb) :
+   rocMap=[[7,6,5,4,3,2,1,0],[8,9,10,11,12,13,14,15]]
    if objName == "BareModule" :
      bm = pdb.getBareModule(cgi.escape(form.getfirst('BAREMODULE_ID', 'empty')))
      if bm : 
@@ -18,23 +19,18 @@ def specificView(objName,form,pdb) :
        print "<table border=1 cellpadding=2>"
 #       for i in range(0,16) : 
        rocs= bm.ROC_ID.split(",")
-       for roc in rocs :
-  	  columns = defaultSortedColumns("Roc")
-	  print "<tr>"
-          for c,r in columns:
-            v=roc
-	    if v == "" : 
-		v=  "n/a"
-           # help(roc) #getattr(roc,c)
-	    if type(v).__name__ == "unicode" : 
-     	        st = v.encode('utf-8')
-    	    else :
-      		st = v
-
-   	    if r :
-     		 print "<td><a href=\"viewdetails.cgi?objName=Roc&ROC_ID="+str(getattr(o,ID))+"&ref="+r+"\">%s</a></td>" % (st)
-            else :
-                 print "<td>%s</td>" % (st)
+       for row in rocMap :
+	 print "<tr>"
+	 for col in row :
+	    if  len(rocs) > col : 
+               roc=rocs[col]      
+	    else :
+		roc="n/a"
+	    if roc == "" :
+		roc="n/a"
+		
+            print "<td><a href=\"viewdetails.cgi?objName=Roc&ROC_ID=%s\">%s</a>"%(roc,roc)
+	 print "<td>cables here</td></tr>"
             
        print "</table>"		
 

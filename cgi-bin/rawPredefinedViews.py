@@ -272,7 +272,7 @@ header.append('''<h1>BareModule Tests summary  view</h1>
 <img src=/icons/add.png width=16> = add new test <p>
 ''')
 
-def testEntryBM(o,testname,res="_RESULT"):
+def testEntryBM(o,testname,res="_RESULT",edit=False):
 	 testnameObj=testname
 	 typestr=""
 	 m=re.match('Test_BareModule_QA_(.*)',testname )
@@ -282,7 +282,10 @@ def testEntryBM(o,testname,res="_RESULT"):
          ret="n/a"
          if  o[testname+res] :
                 ret=(o[testname+res])+testDetails(o,testname)+" "
-         ret+=' <a href=/cgi-bin/writers/newTest.cgi?objName='+testnameObj+'&BAREMODULE_ID=%s%s><img src=/icons/add.png width=16></a>'%(o['BareModule_BAREMODULE_ID'],typestr)
+	 if ret=="n/a" or  not edit :
+           ret+=' <a href=/cgi-bin/writers/newTest.cgi?objName='+testnameObj+'&BAREMODULE_ID=%s%s><img src=/icons/add.png width=16></a>'%(o['BareModule_BAREMODULE_ID'],typestr)
+	 else:
+           ret+=' <a href=/cgi-bin/writers/edit.cgi?objName='+testnameObj+'&TEST_ID=%s>edit</a>'%(o[testnameObj+'_TEST_ID'])
          ret+=testNotes(o,testname)
          return ret
 
@@ -293,7 +296,7 @@ columns.append([
 	("Inspection","Test_BareModule_Inspection.RESULT","testEntryBM(o,'Test_BareModule_Inspection')"),
 	("BumpBonding Tot failures","Test_BareModule_QA_BumpBonding.TOTAL_FAILURES","testEntryBM(o,'Test_BareModule_QA_BumpBonding','_TOTAL_FAILURES')"),
 	("PixelAlive Tot failures","Test_BareModule_QA_PixelAlive.TOTAL_FAILURES","testEntryBM(o,'Test_BareModule_QA_PixelAlive','_TOTAL_FAILURES')"),
-	("Global Grade","Test_BareModule_Grading.GLOBAL_GRADING","testEntryBM(o,'Test_BareModule_Grading','_GLOBAL_GRADING')"),
+	("Global Grade","Test_BareModule_Grading.GLOBAL_GRADING","testEntryBM(o,'Test_BareModule_Grading','_GLOBAL_GRADING',True)"),
         ("i1","Test_IV.I1","'%6g'%o['Test_IV_I1'] if o['Test_IV_I1'] is not None else 'n/a'"),
         ("i2","Test_IV.I2","'%6g'%o['Test_IV_I2'] if o['Test_IV_I2'] is not None else 'n/a'"),
         ("Slope","Test_IV.SLOPE",''),

@@ -1012,7 +1012,7 @@ class PixelDBInterface(object) :
 #   - look for a *.inf.txt file and parse it
 #   - put in data the relevant stuff
 #
-# I will also add later insertTestWaferDir e insertTestBatchDir
+
 #
 
       def extractorTestSensorFile(self,filename):
@@ -1133,8 +1133,12 @@ class PixelDBInterface(object) :
                   return None
             session = Session(CENTER=centre, OPERATOR='n/a',TYPE="IV",DATE=int(date), COMMENT=comment)
 	    self.insertSession(session)
-            st = Test_IV(SESSION_ID=session.SESSION_ID,SENSOR_ID=sensor,GRADE=grade,DATA_ID = data_id.DATA_ID,I1 = float(i1),I2=float(i2), V1= float(v1), V2 = float(v2),  TEMPERATURE = float(temperature), DATE = int(date), SLOPE =float(slope), COMMENT=comment, TYPE=step)
-            
+            try :
+               st = Test_IV(SESSION_ID=session.SESSION_ID,SENSOR_ID=sensor,GRADE=grade,DATA_ID = data_id.DATA_ID,I1 = float(i1),I2=float(i2), V1= float(v1), V2 = float(v2),  TEMPERATURE = float(temperature), DATE = int(date), SLOPE =float(slope), COMMENT=comment, TYPE=step)
+            except Exception,err:
+		 print Exception,err
+		 return None
+
 
             self.insertIVTest(st)
             if (st is None):
@@ -1507,7 +1511,11 @@ class PixelDBInterface(object) :
                     HUMIDITY = self.safeFloat(value.strip())
                 if (key.upper() == "IDig".upper()):
                     IDIG = self.safeInt(re.split("\s+",value.strip())[0])
-
+                if (key.upper() == "deser".upper()):
+                    DESER = self.safeInt(value.strip())
+                if (key.upper() == "clk".upper()):
+                    CLK = self.safeInt(value.strip())
+                    
             else:
                 
                 # 
@@ -1560,9 +1568,6 @@ class PixelDBInterface(object) :
 
             if (key.upper() =="VoffsetOp".upper()):
                 VOFFSETOP = self.safeInt(value.strip())
-
-
-
 
             if (key.upper() =="VIon".upper()):
                 VION = self.safeInt(value.strip())
