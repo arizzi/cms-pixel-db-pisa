@@ -94,7 +94,7 @@ $(document).ready(function() {
 				        [25, 50, 100, 200, "All"]],
 			"iDisplayLength" : 25,
 			"bProcessing": true,
-                         "order": [[ 1,"desc" ]],
+                         "order": [[ 1,"desc" ],[2,"desc"]],
 
 			"bServerSide": true,
 			 "tableTools": {
