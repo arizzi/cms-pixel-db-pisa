@@ -102,7 +102,8 @@ class Roc(object):
   COMMENT = Unicode()
   STATUS=Unicode()
   LASTTEST_ROC=Int()
-  def __init__(self,ROC_ID, TRANSFER_ID, COMMENT="",LASTTEST_ROC=0, STATUS="",WAFER_ID="",ROC_POSITION="",GRADING_CLASS=""):
+  TYPE=Unicode()
+  def __init__(self,ROC_ID, TRANSFER_ID, COMMENT="",LASTTEST_ROC=0, STATUS="",WAFER_ID="",ROC_POSITION="",GRADING_CLASS="",TYPE=""):
       self.ROC_ID=unicode(ROC_ID)
       self.TRANSFER_ID=(TRANSFER_ID)
       self.COMMENT=unicode(COMMENT)
@@ -111,7 +112,7 @@ class Roc(object):
       self.WAFER_ID=unicode(WAFER_ID)
       self.ROC_POSITION=unicode(ROC_POSITION)
       self.GRADING_CLASS=unicode(GRADING_CLASS)
-
+      self.TYPE=unicode(TYPE)
     
 
 class RocWafer (object):
@@ -277,7 +278,7 @@ class BareModule(object):
       result =(self.LASTTEST_CHIPS.split(","))[i]
       return int(result)
   
-  def __init__(self,N_REWORKED_ROC,BAREMODULE_ID,ROC_ID,SENSOR_ID,TRANSFER_ID,  BUILTBY, BUILTON=datetime.now(),COMMENT="", LASTTEST_CHIPS = "",LASTTEST_BAREMODULE_INSPECTION=0, LASTTEST_BAREMODULE_QA_PIXELALIVE = 0,LASTTEST_BAREMODULE_QA_BONDING = 0, LASTTEST_BAREMODULE_GRADING=0,  STATUS="",LABEL="", TYPE="" ):
+  def __init__(self,BAREMODULE_ID,ROC_ID,SENSOR_ID,TRANSFER_ID,  BUILTBY, BUILTON=datetime.now(),COMMENT="", LASTTEST_CHIPS = "",LASTTEST_BAREMODULE_INSPECTION=0, LASTTEST_BAREMODULE_QA_PIXELALIVE = 0,LASTTEST_BAREMODULE_QA_BONDING = 0, LASTTEST_BAREMODULE_GRADING=0,  STATUS="",LABEL="", TYPE="",N_REWORKED_ROC=0 ):
       self.BAREMODULE_ID=unicode(BAREMODULE_ID)
       self.ROC_ID=unicode(ROC_ID)
       self.SENSOR_ID=unicode(SENSOR_ID)

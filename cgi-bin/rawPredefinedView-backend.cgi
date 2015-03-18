@@ -25,9 +25,13 @@ if objName == 'empty' :
 		countquery=countqueries[viewNumber]
 		rowkey=rowkeys[viewNumber]
 else:
+	viewNumber=-1
         objName = parseObjName(cgi.escape(objName))
         rowkey,cols,query,countquery = fromObjectName(objName)
 
+dbname="prod_pixel"
+if objName in tier0Objects  or viewNumber in tier0Views :
+	dbname="test_tier0"
 exactSearch = form.getfirst('exact',0)
 
 
@@ -83,10 +87,11 @@ if sortCol != "empty" :
 
 import MySQLdb
 
+
 db = MySQLdb.connect(host="localhost", # your host, usually localhost
                      user=secrets.USER, # your username
                       passwd=secrets.PASSWORD, # your password
-                      db="prod_pixel") # name of the data base
+                      db=dbname) # name of the data base
 cur = db.cursor(MySQLdb.cursors.DictCursor) 
 
 sLimit = ""

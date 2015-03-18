@@ -59,9 +59,11 @@ print "<html>\n        <head>\n         "
 print '<link rel="stylesheet" type="text/css" href="/frames.css" />'
 print '''
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.2/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/tabletools/2.2.0/css/dataTables.tableTools.css">
 
 <script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.2/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/tabletools/2.2.0/js/dataTables.tableTools.js"></script>
 <script type="text/javascript" src="http://jquery-datatables-column-filter.googlecode.com/svn/trunk/media/js/jquery.dataTables.columnFilter.js"></script>
 <script>
                 var selected = [];
@@ -85,12 +87,16 @@ $(document).ready(function() {
 
 		var urlSearch = %s;
 		var table =          $('#example').DataTable( {
+			dom: 'T<"clear">lfrtip',
 			"bStateSave": true,
 			 "aLengthMenu": [   [25, 50, 100, 200, -1],
 				        [25, 50, 100, 200, "All"]],
 			"iDisplayLength" : 25,
 			"bProcessing": true,
 			"bServerSide": true,
+			 "tableTools": {
+			            "sSwfPath": "//cdn.datatables.net/tabletools/2.2.0/swf/copy_csv_xls_pdf.swf"
+			   },
 			"sAjaxSource": "/cgi-bin/rawPredefinedView-backend.cgi",
 			"fnStateLoaded": function (oSettings, oData) {
 				var jqInputs = $('thead input');

@@ -120,11 +120,11 @@ if action == "Upload" :
                     bm  = pdb.getBareModule(baremoduleid)
 		    if not bm :
 			 try :
-				 mm=re.match("(.*-.*-.*_.*h.*m).*_.*",dic["BUILTON"])
+				 mm=re.match("(.*-.*-.*_.*h.*m).*",dic["BUILTON"])
 				 d=mm.group(1)
 				 dd=datetime.strptime(d,"%Y-%m-%d_%Hh%Mm")
 			 except :
-				 print "Cannot parse datetime<br>"
+				 print "Cannot parse datetime, using current datetime.... you can later edit this field in the baremodule inventory if you want to change it<br>"
 				 dd=datetime.now()
 			 print "Build date used %s<br>"%dd
 		         bm = BareModule(baremoduleid,rocids,sensorid,t.TRANSFER_ID,sender,TYPE=dic["TYPE"],COMMENT=dic["COMMENT"],BUILTON=dd)

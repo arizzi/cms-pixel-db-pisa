@@ -1,4 +1,4 @@
-
+tier0Views=[]
 ##################################### Automatic object views ######################################
 from pixelwebui import *
 import sys
@@ -206,7 +206,8 @@ columns.append([
         ("Center","Transfer.RECEIVER","o['Transfer_RECEIVER'] if o['Transfer_STATUS']=='ARRIVED' else  o['Transfer_SENDER'] "),
         ("Status","Roc.STATUS",""),
         ("Grade","Test_Roc.RESULT","rocColors(o)"),
-        ("Type","Roc_Wafer.TYPE",""),
+        ("Wafer Type","Roc_Wafer.TYPE",""),
+        ("Roc Type","Roc.TYPE",""),
         ("TRIMPIXELS","Test_Roc.TRIMPIXELS",""),
         ("MASKPIXELS","Test_Roc.MASKPIXELS",""),
         ("IANA","Test_Roc.IANA",""),
@@ -428,6 +429,7 @@ countqueries.append("select COUNT(1) from inventory_fullmodule as FullModule lef
                 " WHERE (Test_FullModule_XRay_Vcal.TEST_ID <> 0  OR Test_FullModule_XRay_HR_Module50.TEST_ID <> 0) ")
 
 ################################################ XRay ROC View ########################################
+#view8
 header.append('''<h1>Overview of XRay ROC results</h1>''')
 (i,c,q,cq)=fromObjectName("Test_FullModule_XRay_Vcal_Roc_Analysis")
 #for i in xrange(0,len(c)):
@@ -460,6 +462,56 @@ countqueries.append("select COUNT(1) from Test_FullModule_XRay_Vcal_Roc_Analysis
                "left join sessions as Session on FMT.SESSION_ID=Session.SESSION_ID WHERE 1")
 #countqueries.append(cq)
 columns.append(c)
+
+############################################# Tier0 View #################################################
+#view 9
+tier0Views.append(9)
+header.append("Test Processing")
+columns.append([
+		("Name","InputTar.NAME",""),
+		("Date","InputTar.DATE",""),
+		("Center","InputTar.CENTER",""),
+		("Status","InputTar.STATUS",""),
+		("TestName","InputTar.TESTNAME",""),
+		("Result1,macro,Result2","ProcessingRun.RUN_ID","procResult(o)"),
+		("Log files","ProcessingRun.OUTLOG","logs(o)"),
+		("","ProcessingRun.MACRO_VERSION","NOPRINT"),
+		("","ProcessingRun.EXIT_CODE","NOPRINT"),
+		("","ProcessingRun.STATUS","NOPRINT"),
+		("","ProcessedDir.UPLOAD_STATUS","NOPRINT"),
+])
+rowkeys.append("ProcessingRun_RUN_ID")
+queries.append("select %s from inputtar as InputTar"
+		" left join processingrun as ProcessingRun on InputTar.TAR_ID=ProcessingRun.TAR_ID"
+		" left join outputdir as ProcessedDir on ProcessedDir.PROCESSING_RUN_ID=ProcessingRun.RUN_ID"
+                "  WHERE 1")
+countqueries.append("select COUNT(1) from inputtar as InputTar"
+                " left join processingrun as ProcessingRun on InputTar.TAR_ID=ProcessingRun.TAR_ID"
+                " left join outputdir as ProcessedDir on ProcessedDir.PROCESSING_RUN_ID=ProcessingRun.RUN_ID"
+                "  WHERE 1")
+
+def logs(o):
+        last= o["ProcessingRun_OUTLOG"]
+        if last is not None :
+                a="<a href=%s>log1</a>"%last
+                a+="|<a href=%s_upload>log2</a>"%last
+                return a
+        return "n/a"
+
+def procResult(o):
+	macro = o["ProcessingRun_MACRO_VERSION"]
+	upload= o["ProcessedDir_UPLOAD_STATUS"]
+	exitcode = o["ProcessingRun_EXIT_CODE"]
+	status = o["ProcessingRun_STATUS"]
+	if exitcode > 0 or (upload is not None and upload != "ok") :
+                return "<font color=red>%s(%s), %s, %s</font>"%(status,exitcode,macro,upload)
+	elif exitcode == -1 :
+                return "<font color=blue>%s(%s), %s</font>"%(status,exitcode,macro)
+        else:
+                return "%s(%s), %s, %s"%(status,exitcode,macro,upload)
+
+
+#headers = ["NAME","Date","Center","Status","TestName","LastProcessing(code),macro","logs"]
 
 
 

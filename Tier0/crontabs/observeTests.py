@@ -134,7 +134,7 @@ if (insert==1):
             continue
     
         line= line.rstrip(os.linesep)
-        (ret, ck) = commands.getstatusoutput('cksum '+line+" | awk \'{print $1}\'")
+        (ret, ck) = commands.getstatusoutput('cksum \"'+line+"\" | awk \'{print $1}\'")
         print " working on Tar file: ",line,' CKSUM: ', ck    
 
 
@@ -162,7 +162,7 @@ if (insert==1):
             print "ERROR inserting Tar, skipping ...."
             continue
 	print "tar status",tar.STATUS,pp.STATUS
-	os.system("chmod 440 %s"%(line))
+	os.system("chmod 440 '%s'"%(line))
 	print "doing os.system chmod 440 %s"%(line)
         listinserted.append(pp.TAR_ID)
 
