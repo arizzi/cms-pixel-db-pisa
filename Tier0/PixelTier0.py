@@ -213,7 +213,7 @@ class PixelTier0 (object):
 ##
 	   
 	    outlog=file(filename,"w")
-            procevd = subprocess.Popen(pr.EXECUTED_COMMAND+" "+tar.LOCATION+"/"+tar.NAME+" "+fulldir+" "+pr.MACRO_VERSION, stdin=None, stdout=outlog, stderr=subprocess.STDOUT, shell=True, env=my_env) 
+            procevd = subprocess.Popen(pr.EXECUTED_COMMAND+" \""+tar.LOCATION+"/"+tar.NAME+"\" "+fulldir+" "+pr.MACRO_VERSION, stdin=None, stdout=outlog, stderr=subprocess.STDOUT, shell=True, env=my_env) 
 	    outlog.close()
             self.RUNNING=self.RUNNING+1
             self.RUNNINGINSTANCES.append([procevd,pr.RUN_ID])

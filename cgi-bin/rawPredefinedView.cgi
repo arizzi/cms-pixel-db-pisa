@@ -29,6 +29,7 @@ if checked == "1" :
 	checked="checked"
 	
 searchar=[]
+custom=""
 if objName == 'empty' :
 	viewNumber = int(form.getfirst('viewNumber', '0'))
 	if viewNumber >= len(columns) :
@@ -36,11 +37,13 @@ if objName == 'empty' :
 	else:
 		toprint = columns[viewNumber]
 		topush='"name" : "viewNumber", "value" : "%s"' % viewNumber
+	custom=customjs.get(viewNumber,"")
 else:
 	viewNumber=-1
 	objName = parseObjName(cgi.escape(objName))
 	id,toprint,query,count = fromObjectName(objName)
 	topush='"name" : "objName", "value" : "%s"' % objName
+	custom=customjs.get(objName,"")
 
 
 for p in toprint :
@@ -67,7 +70,7 @@ print '''
 <script type="text/javascript" src="http://jquery-datatables-column-filter.googlecode.com/svn/trunk/media/js/jquery.dataTables.columnFilter.js"></script>
 <script>
                 var selected = [];
-
+		var table;
 $(document).ready(function() {
 		$('#example tbody').on( 'click', 'tr', function () {
                                         var id = $(this).attr('id');
@@ -86,7 +89,7 @@ $(document).ready(function() {
 			} );
 
 		var urlSearch = %s;
-		var table =          $('#example').DataTable( {
+		table =          $('#example').DataTable( {
 			dom: 'T<"clear">lfrtip',
 			"bStateSave": true,
 			 "aLengthMenu": [   [25, 50, 100, 200, -1],
@@ -94,6 +97,7 @@ $(document).ready(function() {
 			"iDisplayLength" : 25,
 			"bProcessing": true,
 			"bServerSide": true,
+			 %s //room for other custom stuff such as the order string
 			 "tableTools": {
 			            "sSwfPath": "//cdn.datatables.net/tabletools/2.2.0/swf/copy_csv_xls_pdf.swf"
 			   },
@@ -224,10 +228,14 @@ $(document).ready(function() {
                                 }
                                 update();
                         }
+		function resetView(){
+			table.state.clear();
+			window.location.reload();
+		}
 	                </script>
 <body>
 <main>
-''' %(searcharray,topush,viewNumber,objName)
+''' %(searcharray,custom,topush,viewNumber,objName)
 sys.path.append("../PixelDB")
 
 from storm import *
@@ -262,6 +270,7 @@ print "<div id=plotPH></div><hr>"
 if True :
  print "<button onclick='selectAll()'>Select all</button>"
  print "<button onclick='selectNone()'>Unselect all</button>"
+ print "<button  style='float: right;' onclick='resetView()'>Reset view</button>"
 
 
 print "<br><input type=checkbox id=exact %s  onclick=\"var table = $('#example').DataTable(); table.ajax.reload();\"> Exact per column search (you can still add the %% yourself)"%(checked) 

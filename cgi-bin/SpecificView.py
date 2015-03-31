@@ -7,7 +7,12 @@ from PixelDB import *
 import cgi
 import re
 from GenericView import *
-
+colorRoc={}
+colorRoc[1]="#00AA00"
+colorRoc[2]="#00FF00"
+colorRoc[3]="#008800"
+colorRoc[4]="#0000FF"
+colorRoc[5]="#FF0000"
 
 def specificView(objName,form,pdb) :
    rocMap=[[7,6,5,4,3,2,1,0],[8,9,10,11,12,13,14,15]]
@@ -117,6 +122,41 @@ def specificView(objName,form,pdb) :
           path=re.sub(",","",ana.data.PFNs)
           print "<img src=%s/bareModuleQA.png>" % path
           #>M0178T-10a.gif"
+
+   if objName == "RocWafer" :
+          rocs = pdb.store.find(Roc, Roc.WAFER_ID==unicode(cgi.escape(form.getfirst('ROCWAFER_ID', 'empty'))))
+	  r={}
+	  for roc in rocs :
+			r[roc.ROC_POSITION]=roc
+	  print "<table align=center border=1 cellspacing=0 cellpadding=0>"
+	  lettermap=['A','C','B','D'] 
+	  print "<tr><td></td>"
+	  for yy in xrange (0,10) :
+		print "<td colspan=1>Y%s" % yy
+	  for x in xrange(0,8) :
+#	    x=xx/2
+	    print "<tr><td> %sX" %(x)
+	    for y in xrange(0,10) :
+#	      y=yy/2
+	     print "<td><table  width=100% border=0>"
+	     for xx in xrange(0,2) :
+	      print "<tr>"
+	      for yy in xrange(0,2) :
+	        i=xx%2+yy%2*2
+	        p=lettermap[i]
+	        key="%s%s%s"%(x,y,p)
+	        if key in r :
+			if r[key].LASTTEST_ROC :
+  	      			print "<td bgcolor=%s><font size=+2>"%(colorRoc[r[key].lasttest_roc.RESULT])
+				print "&nbsp;%s&nbsp;"%r[key].lasttest_roc.RESULT
+			else : 
+				print "<td>X"
+	        else:
+			print "<td>&nbsp;"
+	     print "</table>"
+	  print "</table>"
+#          path=re.sub(",","",ana.data.PFNs)
+#          print "<img src=%s/bareModuleQA.png>" % path
 	
 
    if objName == "Test_Hdi_Electric" :

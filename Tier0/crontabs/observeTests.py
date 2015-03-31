@@ -134,7 +134,8 @@ if (insert==1):
             continue
     
         line= line.rstrip(os.linesep)
-        (ret, ck) = commands.getstatusoutput('cksum \"'+line+"\" | awk \'{print $1}\'")
+#        (ret, ck) = commands.getstatusoutput('cksum \"'+line+"\" | awk \'{print $1}\'")
+        ck=0
         print " working on Tar file: ",line,' CKSUM: ', ck    
 
 

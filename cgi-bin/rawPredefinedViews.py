@@ -1,4 +1,5 @@
 tier0Views=[]
+customjs={}
 ##################################### Automatic object views ######################################
 from pixelwebui import *
 import sys
@@ -323,6 +324,7 @@ countqueries.append("select COUNT(1)  from inventory_hdi")
 
 ################################################ LogBook View ########################################
 header.append('''<h1>Logbook</h1><a href=/cgi-bin/writers/newTest.cgi?objName=Test_Logbook>Add Entry</a><br><p>''')
+customjs[6]='"order": [[ 1,"desc" ]],'
 (i,c,q,cq)=fromObjectName("Test_Logbook")
 c[0]=("Entry #",c[0][1],c[0][2])
 c=c[:1]
@@ -466,6 +468,7 @@ columns.append(c)
 ############################################# Tier0 View #################################################
 #view 9
 tier0Views.append(9)
+customjs[9]='"order": [[ 1,"desc" ],[5,"desc"]],'
 header.append("Test Processing")
 columns.append([
 		("Name","InputTar.NAME",""),
@@ -473,7 +476,8 @@ columns.append([
 		("Center","InputTar.CENTER",""),
 		("Status","InputTar.STATUS",""),
 		("TestName","InputTar.TESTNAME",""),
-		("Result1,macro,Result2","ProcessingRun.RUN_ID","procResult(o)"),
+		("Proc ID","ProcessingRun.RUN_ID",""),
+		("Result1,macro,Result2","ProcessingRun.STATUS","procResult(o)"),
 		("Log files","ProcessingRun.OUTLOG","logs(o)"),
 		("","ProcessingRun.MACRO_VERSION","NOPRINT"),
 		("","ProcessingRun.EXIT_CODE","NOPRINT"),
