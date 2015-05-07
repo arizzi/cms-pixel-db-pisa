@@ -146,6 +146,7 @@ for c in colNames :
 	cc=re.sub('\(','_',cc)
 	cc=re.sub(',','_',cc)
 	cc=re.sub('\)','_',cc)
+	cc=re.sub('\+','_',cc)
 	colString+="%s as %s"%( c,cc)
 
 if debug == "1" :
@@ -170,6 +171,7 @@ for o in cur.fetchall() :
         rn=re.sub('\(','_',rn)
         rn=re.sub(',','_',rn)
         rn=re.sub('\)','_',rn)
+	rn=re.sub('\+','_',rn)
 
 	#oo=o[rn]
 	if ev == '' :

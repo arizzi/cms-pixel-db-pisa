@@ -110,7 +110,7 @@ def inputField(objName,column, cookies, defVal = "") :
 		channels = ["CH1","CH2","CH3","CH4","LV"]
 		tests = ["CLK0","CLK1","CLK2","CLK3","CTR0","CTR1","CTR2","CTR3","SDA0","SDA1","SDA2","SDA3"]
 		lens = [12,12,8,12,4]
-		inputString= "<table cellpadding=0 cellspacing=2 bgcolor=#000000><tr bgcolor=#FFFFFF><td>Test</td>"
+		inputString+="(if this is filled the table below is ignored) <table cellpadding=0 cellspacing=2 bgcolor=#000000><tr bgcolor=#FFFFFF><td>Test</td>"
 		for c in channels :
 			inputString+= "<td>%s</td>" % c
 		inputString+= "</tr>"
@@ -124,7 +124,7 @@ def inputField(objName,column, cookies, defVal = "") :
 			inputString+= "</tr>"	
 		inputString+= "</table><p>"
 		inputString+= "<button onClick=\"setAllPass();\" type=button> Set all to PASS</button> <button onClick=\"setAllEmpty();\" type=button>Reset all to empty</button>"
-
+		
 	elif column == "DATA_ID" :
 	    if defVal == "" :
 	 	inputString="<input type=\"file\" name=\"DATA_ID_filename\" />"
@@ -286,7 +286,14 @@ if action == "Insert" :
 
 #    print "DICT: ",buildDict
      o=objType(**buildDict)
+
      if SIGNALS_AND_LVS  :
+	     salstr =  form.getfirst("SIGNALS_AND_LVS","")
+	     print salstr
+	     if salstr != "" : 
+                print "USING PASSED STRING INSTEAD OF TABLE", salstr
+                o.SIGNALS_AND_LVS=unicode(salstr)
+	     else:
 		channels = SIGNALS_AND_LVS
 		for ch in channels :
 			for t in channels[ch] :

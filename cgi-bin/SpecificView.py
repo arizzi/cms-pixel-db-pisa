@@ -8,10 +8,15 @@ import cgi
 import re
 from GenericView import *
 colorRoc={}
-colorRoc[1]="#00AA00"
-colorRoc[2]="#00FF00"
-colorRoc[3]="#008800"
-colorRoc[4]="#0000FF"
+#colorRoc[1]="#00AA00"
+#colorRoc[2]="#00FF00"
+#colorRoc[3]="#008800"
+#colorRoc[4]="#0000FF"
+#colorRoc[5]="#FF0000"
+colorRoc[1]="#00FF00"
+colorRoc[2]="#0000FF"
+colorRoc[3]="#AA00AA"
+colorRoc[4]="#FFFF00"
 colorRoc[5]="#FF0000"
 
 def specificView(objName,form,pdb) :
@@ -145,6 +150,10 @@ def specificView(objName,form,pdb) :
 	        i=xx%2+yy%2*2
 	        p=lettermap[i]
 	        key="%s%s%s"%(x,y,p)
+		if x==0 and y==0 :
+                     print "<td bgcolor=#CCCCCC><font size=+2>"
+                     print "%s"%p
+
 	        if key in r :
 			if r[key].LASTTEST_ROC :
   	      			print "<td bgcolor=%s><font size=+2>"%(colorRoc[r[key].lasttest_roc.RESULT])

@@ -290,7 +290,7 @@ def testEntryBM(o,testname,res="_RESULT",edit=False):
            ret+=' <a href=/cgi-bin/writers/edit.cgi?objName='+testnameObj+'&TEST_ID=%s>edit</a>'%(o[testnameObj+'_TEST_ID'])
          ret+=testNotes(o,testname)
          return ret
-
+	
 
 columns.append([
 	("BARE MODULE  ID","BareModule.BAREMODULE_ID","'<a href=/cgi-bin/viewdetails.cgi?objName=BareModule&BAREMODULE_ID=%s>%s</a>'%(o['BareModule_BAREMODULE_ID'],o['BareModule_BAREMODULE_ID'])"),
@@ -298,29 +298,49 @@ columns.append([
 	("Inspection","Test_BareModule_Inspection.RESULT","testEntryBM(o,'Test_BareModule_Inspection')"),
 	("BumpBonding Tot failures","Test_BareModule_QA_BumpBonding.TOTAL_FAILURES","testEntryBM(o,'Test_BareModule_QA_BumpBonding','_TOTAL_FAILURES')"),
 	("PixelAlive Tot failures","Test_BareModule_QA_PixelAlive.TOTAL_FAILURES","testEntryBM(o,'Test_BareModule_QA_PixelAlive','_TOTAL_FAILURES')"),
-	("Global Grade","Test_BareModule_Grading.GLOBAL_GRADING","testEntryBM(o,'Test_BareModule_Grading','_GLOBAL_GRADING',True)"),
-        ("i1","Test_IV.I1","'%6g'%o['Test_IV_I1'] if o['Test_IV_I1'] is not None else 'n/a'"),
-        ("i2","Test_IV.I2","'%6g'%o['Test_IV_I2'] if o['Test_IV_I2'] is not None else 'n/a'"),
-        ("Slope","Test_IV.SLOPE",''),
+#	("Global Grade","Test_BareModule_Grading.GLOBAL_GRADING","testEntryBM(o,'Test_BareModule_Grading','_GLOBAL_GRADING',True)"),
+        ("i1@BAM","Test_IV.I1","'%6g'%o['Test_IV_I1'] if o['Test_IV_I1'] is not None else 'n/a'"),
+        ("i2@BAM","Test_IV.I2","'%6g'%o['Test_IV_I2'] if o['Test_IV_I2'] is not None else 'n/a'"),
+        ("Slope@BAM","Test_IV.SLOPE",''),
         ("i1@CIS","Test_IVCIS.I1","'%6g'%o['Test_IVCIS_I1'] if o['Test_IVCIS_I1'] is not None else 'n/a'"),
         ("i2@CIS","Test_IVCIS.I2","'%6g'%o['Test_IVCIS_I2'] if o['Test_IVCIS_I2'] is not None else 'n/a'"),
         ("Slope@CIS","Test_IVCIS.SLOPE",''),
+	("IV Grade","Test_IV.GRADE",""),
+	("Tot Defect for Grade","(Test_BareModule_QA_BumpBonding.TOTAL_FAILURES+Test_BareModule_QA_PixelAlive.TOTAL_FAILURES)",""),
+	("IDig Grade","idigGrade(BareModule.BAREMODULE_ID)",""),
+        ("N reworked","BareModule.N_REWORKED_ROC",""),
+        ("Final Grade","bmGrade(BareModule.BAREMODULE_ID)",""),
         ("","Test_BareModule_Inspection.TEST_ID","NOPRINT"),
         ("","Test_BareModule_QA_BumpBonding.TEST_ID","NOPRINT"),
         ("","Test_BareModule_QA_PixelAlive.TEST_ID","NOPRINT"),
-        ("","Test_BareModule_Grading.TEST_ID","NOPRINT"),
+#        ("","Test_BareModule_Grading.TEST_ID","NOPRINT"),
 
 ])
 rowkeys.append("BareModule_BAREMODULE_ID") #not obvious
-queries.append("select %s,Transfer.STATUS as Transfer_STATUS, Transfer.SENDER as Transfer_SENDER from inventory_baremodule as BareModule join transfers as Transfer on BareModule.TRANSFER_ID=Transfer.TRANSFER_ID "
+queries.append("select %s,Transfer.STATUS as Transfer_STATUS, Transfer.SENDER as Transfer_SENDER "
+#	        ",(select count(1) from test_bm_roc_dacparameters where test_bm_roc_dacparameters.BAREMODULE_ID = BareModule.BAREMODULE_ID and idig <= 65) as belowDig"
+#	        ",(select count(1) from test_bm_roc_dacparameters where test_bm_roc_dacparameters.BAREMODULE_ID = BareModule.BAREMODULE_ID and idig > 65) as aboveDig"
+		" from inventory_baremodule as BareModule join transfers as Transfer on BareModule.TRANSFER_ID=Transfer.TRANSFER_ID "
 		"left outer join test_baremodule_qa as Test_BareModule_QA_PixelAlive on BareModule.LASTTEST_BAREMODULE_QA_PIXELALIVE=Test_BareModule_QA_PixelAlive.TEST_ID "
 		"left outer join test_baremodule_qa as Test_BareModule_QA_BumpBonding on BareModule.LASTTEST_BAREMODULE_QA_BONDING=Test_BareModule_QA_BumpBonding.TEST_ID "
-		"left outer join test_baremodule_grading as Test_BareModule_Grading on BareModule.LASTTEST_BAREMODULE_GRADING=Test_BareModule_Grading.TEST_ID "
+#		"left outer join test_baremodule_grading as Test_BareModule_Grading on BareModule.LASTTEST_BAREMODULE_GRADING=Test_BareModule_Grading.TEST_ID "
 		"left outer join test_baremodule_inspection as Test_BareModule_Inspection on BareModule.LASTTEST_BAREMODULE_INSPECTION=Test_BareModule_Inspection.TEST_ID "
 		"left outer join test_iv as Test_IVCIS on Test_IVCIS.SENSOR_ID=BareModule.SENSOR_ID and Test_IVCIS.TYPE='CIS' "
-		"left outer join test_iv as Test_IV on Test_IV.SENSOR_ID=BareModule.SENSOR_ID and Test_IV.TYPE='BAM' "
+	        "left outer join test_iv as Test_IV on Test_IV.test_id = (select TEST_ID from test_iv where  sensor_id=BareModule.sensor_id and type='BAM' order by TEST_ID desc limit 1)"
+
+#		"left outer join test_iv as Test_IV on Test_IV.SENSOR_ID=BareModule.SENSOR_ID and Test_IV.TYPE='BAM' "
 		" WHERE 1 ")
-countqueries.append("select COUNT(1)  from inventory_hdi")
+countqueries.append("select COUNT(1)"
+                " from inventory_baremodule as BareModule join transfers as Transfer on BareModule.TRANSFER_ID=Transfer.TRANSFER_ID "
+                "left outer join test_baremodule_qa as Test_BareModule_QA_PixelAlive on BareModule.LASTTEST_BAREMODULE_QA_PIXELALIVE=Test_BareModule_QA_PixelAlive.TEST_ID "
+                "left outer join test_baremodule_qa as Test_BareModule_QA_BumpBonding on BareModule.LASTTEST_BAREMODULE_QA_BONDING=Test_BareModule_QA_BumpBonding.TEST_ID "
+#               "left outer join test_baremodule_grading as Test_BareModule_Grading on BareModule.LASTTEST_BAREMODULE_GRADING=Test_BareModule_Grading.TEST_ID "
+                "left outer join test_baremodule_inspection as Test_BareModule_Inspection on BareModule.LASTTEST_BAREMODULE_INSPECTION=Test_BareModule_Inspection.TEST_ID "
+                "left outer join test_iv as Test_IVCIS on Test_IVCIS.SENSOR_ID=BareModule.SENSOR_ID and Test_IVCIS.TYPE='CIS' "
+                "left outer join test_iv as Test_IV on Test_IV.test_id = (select TEST_ID from test_iv where  sensor_id=BareModule.sensor_id and type='BAM' order by TEST_ID desc limit 1)"
+
+#               "left outer join test_iv as Test_IV on Test_IV.SENSOR_ID=BareModule.SENSOR_ID and Test_IV.TYPE='BAM' "
+                " WHERE 1 ")
 
 ################################################ LogBook View ########################################
 header.append('''<h1>Logbook</h1><a href=/cgi-bin/writers/newTest.cgi?objName=Test_Logbook>Add Entry</a><br><p>''')
@@ -480,7 +500,7 @@ columns.append([
 		("Result1,macro,Result2","ProcessingRun.STATUS","procResult(o)"),
 		("Log files","ProcessingRun.OUTLOG","logs(o)"),
 		("","ProcessingRun.MACRO_VERSION","NOPRINT"),
-		("","ProcessingRun.EXIT_CODE","NOPRINT"),
+		("HIDDEN","ProcessingRun.EXIT_CODE","repro(o)"),
 		("","ProcessingRun.STATUS","NOPRINT"),
 		("","ProcessedDir.UPLOAD_STATUS","NOPRINT"),
 ])
@@ -493,6 +513,9 @@ countqueries.append("select COUNT(1) from inputtar as InputTar"
                 " left join processingrun as ProcessingRun on InputTar.TAR_ID=ProcessingRun.TAR_ID"
                 " left join outputdir as ProcessedDir on ProcessedDir.PROCESSING_RUN_ID=ProcessingRun.RUN_ID"
                 "  WHERE 1")
+def repro(o):
+	return "<a href=/cgi-bin/writers/reprocess.cgi?processingrun=%s>reprocess this </a>"  % (o["ProcessingRun_RUN_ID"])
+
 
 def logs(o):
         last= o["ProcessingRun_OUTLOG"]

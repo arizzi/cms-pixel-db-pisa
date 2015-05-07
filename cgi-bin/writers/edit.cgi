@@ -85,7 +85,7 @@ def inputField(objName,column, defVal = "", o=None) :
 	config = ConfigParser.ConfigParser()
 	config.read('/var/www/cgi-bin/writers/editor.ini')
 	#default input string:
-	inputString = "<input type=input name=\"%s\" value=\"%s\">" % (column,defVal)
+	inputString = "<input type=input name=\"%s\" value=\"%s\">" % (column,cgi.escape("%s"%defVal, quote=True))
 	if column == "TRANSFER_ID" and defVal == "":
 		inputString+=" <b>or</b> create transfer..."
 # FROM: <input type=\"input\" name=\"TRANSFER_ID_from\" /> TO: <input type=\"input\" name=\"TRANSFER_ID_to\" /> "
@@ -357,7 +357,13 @@ if action == "Save changes" or  action == "Save and Close":
 		except :
 		     print "Cannot parse date %s<br>"%d
 	   elif c == "SIGNALS_AND_LVS" :
-                for f in form :
+		salstr =  form.getfirst("SIGNALS_AND_LVS","")	
+		print salstr
+		if salstr != "" :
+			print "USING PASSED STRING INSTEAD OF TABLE", salstr
+			o.SIGNALS_AND_LVS=salstr
+		else :
+                   for f in form :
                         m=re.match('SIGNALS_AND_LVS_(.*)_(.*)',f)
                         if m :
                                 o.setBit(m.group(2),m.group(1),form[f].value)
@@ -378,6 +384,8 @@ if action == "Save changes" or  action == "Save and Close":
 #		setattr(o,c,columnType(form.getfirst(c, getattr(o,c))))
 		setattr(o,c,columnType(field))
    pdb.store.commit()
+   pdb.insertHistory(type=0,id=0, target_id=getattr(o,ID), target_type=objName, operation="WEBEDIT", datee=datetime.now(), comment=" from %s "%(os.environ["REMOTE_ADDR"]))
+
    print "<b>Saved!!!!!!</b>"
 
 if action != "Save and Close" :

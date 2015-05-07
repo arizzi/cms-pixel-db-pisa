@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # enable debugging
+import shutil
+
 import cgitb
 from datetime import *
 cgitb.enable()
@@ -26,10 +28,12 @@ import tempfile
 import tarfile
 
 def csv_files(members):
+    tars=[]
     for tarinfo in members:
 	print "h",tarinfo.name
         if re.match("^[^/.]+\.csv",tarinfo.name) :
-            yield tarinfo
+            tars.append(tarinfo)
+    return tars
 
 
 
@@ -64,12 +68,14 @@ if action == "Upload" :
 		tar.extractall(path=directory_name,members=toextract)
 		tar.close()
 		for f in toextract:
-			files.append(f.name)
+			files.append(directory_name+"/"+f.name)
+		print files
 	  else :
 		print "unknown format"
 		exit(0)
 
 	  for fname in files :
+		print "working on ",fname
     		f=open(fname) 
 		dic={}
 		rocs={}
@@ -136,8 +142,8 @@ if action == "Upload" :
                         print "<b>## ERROR ## BareModule %s already exists</b> <br>" % baremoduleid
 			
 	  os.unlink('/tmp/' + fn)
-          os.removedirs(directory_name)
-
+          #os.removedirs(directory_name)
+	  shutil.rmtree(directory_name)
 	  print "</pre><a href=/cgi-bin/view.cgi?objName=BareModule>back to BareModule inventory</a>"
 
     

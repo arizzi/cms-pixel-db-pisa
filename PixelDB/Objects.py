@@ -1050,6 +1050,7 @@ class Test_Roc(object):
       IANA = Float()
       IDIGI = Float()
       VDAC = Float()
+      VDREG = Float()
       V24 = Float()
       PHFAIL = Int()
       VDCAP = Int()
@@ -1066,13 +1067,14 @@ class Test_Roc(object):
        
       COMMENT = Unicode()
       def __init__(self,SESSION_ID, ROC_ID, RESULT,  V24, IANA, IDIGI, VDAC, DEFECTPIXELS, ADDRPIXELS, TRIMPIXELS, MASKPIXELS, NSIGPIXELS, NOISEPIXELS, THRESHOLDPIXELS, PHFAIL, 
-			VDCAP,VDIGU_ADC,VANAU_ADC,VANAR_ADC,VBG_ADC,IANA_ADC,VDIGU_VOLTS,VANAU_VOLTS,IANA_MILLIAMPS,VANASCAN,COMMENT="",DATA_ID=0):
+			VDCAP,VDIGU_ADC,VANAU_ADC,VANAR_ADC,VBG_ADC,IANA_ADC,VDIGU_VOLTS,VANAU_VOLTS,IANA_MILLIAMPS,VANASCAN,VDREG=0,COMMENT="",DATA_ID=0):
           self.SESSION_ID=SESSION_ID 
           self.ROC_ID=unicode(ROC_ID)
           self.RESULT=int(RESULT)
           self.DATA_ID=DATA_ID
           self.DEFECTPIXELS=int(DEFECTPIXELS)
           self.VDAC = float(VDAC)
+          self.VDREG = float(VDREG)
           self.IANA= float(IANA)
           self.V24 = float(V24)
           self.IDIGI=float(IDIGI)

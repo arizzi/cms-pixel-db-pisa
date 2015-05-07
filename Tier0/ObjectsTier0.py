@@ -124,6 +124,10 @@ class ProcessingRun (object):
     DATE = DateTime()
     OUTLOG= Unicode()
     PROCESSED_DIR_ID = Int()
+
+    def makeReRunCopy(self):
+        return ProcessingRun(self.MACRO_VERSION,self.EXECUTED_COMMAND,-1,datetime.now(),u'injected',self.TAR_ID,self.PROCESSEDPREFIX, self.UPLOADMETHOD )
+    
     def __init__(self, MACRO_VERSION, EXECUTED_COMMAND, EXIT_CODE, DATE, STATUS, TAR_ID, PROCESSEDPREFIX,UPLOADMETHOD,PROCESSED_DIR_ID=0):
         self.TAR_ID = TAR_ID
         self.MACRO_VERSION = unicode(MACRO_VERSION)

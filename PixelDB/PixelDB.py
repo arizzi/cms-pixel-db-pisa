@@ -1699,11 +1699,11 @@ class PixelDBInterface(object) :
     
         bmid = None
         lab= None
-        temp = None
-        rh = None
+        temp = -99
+        rh = -99
         dead = None
         bbcut = None
-        op = None
+        op = "n/a"
         
         while 1:
             line = file.readline()
@@ -1745,6 +1745,7 @@ class PixelDBInterface(object) :
             bbcut = -1
 
         if (bmid ==  None  or lab  ==  None  or temp ==  None  or rh ==  None  or dead ==  None  or bbcut ==  None  or op ==  None):
+	    print "Missing fields!"
             ok = False
                 
 #(bmid, lab, operator, temperature, rh, deadmissingchannels, bbcut, ok) 

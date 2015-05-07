@@ -250,6 +250,8 @@ else :
   pdb = PixelDBInterface(operator="webfrontend",center="cern")
   pdb.connectToDB()
 
+printhidden = (form.getfirst("showhidden","0") == "1")
+
 if objName == 'empty' :
 
 		print header[viewNumber]
@@ -258,7 +260,7 @@ if True :
 	print "<button onclick='draw(0)'>Draw histogram</button><button onclick='draw(1)'>Draw for all</button>&nbsp;<select id=sel>"
 	i=0
 	for (c,s,e) in toprint :
-		if e!= "NOPRINT":
+		if e!= "NOPRINT" and c!="HIDDEN":
 			print "<option value=%d>%s</option>"% (i,c)
 		i+=1
 	print "</select>"
@@ -278,12 +280,12 @@ print "<p id=filterPH></p>"
 print "<table id=example class=\"display cell-border compact\"  width=100%>"
 print " <thead> <tr>"
 for (c,s,e) in toprint :
- if e!= "NOPRINT":
+ if e!= "NOPRINT" and (c!="HIDDEN" or printhidden):
 	 print "<th>", c,"</th>"
 print "</thead></tr>"
 print " <tfoot> <tr>"
 for (c,s,e) in toprint :
- if e!= "NOPRINT":
+ if e!= "NOPRINT" and (c!="HIDDEN"  or printhidden ): 
 	 print "<th>", c,"</th>"
 print "</tfoot></tr><tbody></tbody></table>"
 
