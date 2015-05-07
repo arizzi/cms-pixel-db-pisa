@@ -11,7 +11,7 @@ import csv
 pdb = PixelDBInterface(operator="webfrontend",center="cern")
 pdb.connectToDB()
 #filename="/home/cmsweb/First_batch_KIT_Oct14.csv"
-filename="wafers.json"
+filename="wafers-2015-05-07.json"
 os.path.isfile(filename)
 t= None
 i=0
@@ -30,7 +30,7 @@ with open(filename, 'rb') as f:
 		if not h:
 	        	  print "RocWafer %s is new, inserting it..." % waferid
 			  dest="/data/pixels/uploads/RocWafers/%s_wmap_fail.ps" % waferid
-			  origin="wafermaps/%s_wmap_fail.ps" %waferid
+			  origin="wafertests_PSI_May06_fail/%s_wmap_fail.ps" %waferid
 			  os.system("cp %s %s"%(origin,dest))
 		          data = Data(PFNs=dest)
                           pdb.insertData(data)
