@@ -200,23 +200,24 @@ class PixelDBInterface(object) :
             if (self.canBareModuleBeUsed(fm.BAREMODULE_ID) == False):
                   print "ERROR: baremodule not available", fm.BAREMODULE_ID
                   return None
-	    if (self.canTbmBeUsed(fm.TBM_ID) == False):
-                  print "ERROR: tbm not available",fm.TBM_ID
-                  return None
+	    # TBMs are not tracked
+	    #if (self.canTbmBeUsed(fm.TBM_ID) == False):
+            #      print "ERROR: tbm not available",fm.TBM_ID
+            #      return None
 	    if (self.canHdiBeUsed(unicode(fm.HDI_ID)) == False):
                   print "ERROR: hdi not available",fm.HDI_ID
                   return None
 
             #
             self.setBareModuleStatus(fm.BAREMODULE_ID,"USED")
-            self.setHdiStatus(fm.TBM_ID,"USED")
+#            self.setHdiStatus(fm.TBM_ID,"USED")
             self.setTbmStatus(fm.HDI_ID,"USED")
             self.store.add(fm)
             self.store.commit()
             # log in history 
             self.insertHistory(type="BAREMODULE", id=fm.BAREMODULE_ID, target_type="FULLMODULE", target_id=fm.FULLMODULE_ID, operation="ASSEMBLE", datee=datetime.now(), comment="NO COMMENT")
             self.insertHistory(type="HDI", id=fm.HDI_ID, target_type="FULLMODULE", target_id=fm.FULLMODULE_ID, operation="ASSEMBLE", datee=datetime.now(), comment="NO COMMENT")
-            self.insertHistory(type="TBM", id=fm.TBM_ID, target_type="FULLMODULE", target_id=fm.FULLMODULE_ID, operation="ASSEMBLE", datee=datetime.now(), comment="NO COMMENT")
+#            self.insertHistory(type="TBM", id=fm.TBM_ID, target_type="FULLMODULE", target_id=fm.FULLMODULE_ID, operation="ASSEMBLE", datee=datetime.now(), comment="NO COMMENT")
             return fm
 
             
@@ -451,7 +452,7 @@ class PixelDBInterface(object) :
             return aa
 
       def getFullModule(self, FullModule_id):
-            aa = self.store.find(FullModule, FullModule.FULLMODULE_ID==FullModule_id).one()
+            aa = self.store.find(FullModule, FullModule.FULLMODULE_ID==unicode(FullModule_id)).one()
             return aa
 
       def getTransfer(self, id):

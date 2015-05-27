@@ -150,8 +150,9 @@ for c in colNames :
 	colString+="%s as %s"%( c,cc)
 
 if debug == "1" :
-	print "%s %s %s"% ((query%colString),sWhere,sOrder)
-countdisplay=cur.execute("%s %s %s "% ((query%colString),sWhere,sOrder))
+	print "COUNTSTRING: %s %s %s"% ((query%" count(1) "),sWhere,sOrder)
+countdisplay=cur.execute("%s %s %s "% ((query%" count(1) "),sWhere,sOrder))
+totdis =  cur.fetchone()['count(1)']
 
 if debug == "1" :
 	print "%s %s %s %s"% ((query%colString),sWhere,sOrder,sLimit)
@@ -160,7 +161,8 @@ cur.execute("%s %s %s %s"% ((query%colString),sWhere,sOrder,sLimit))
 output = {}
 output["sEcho"] = form.getfirst('sEcho',1)
 output["iTotalRecords"] = count
-output["iTotalDisplayRecords"] =  countdisplay
+#output["iTotalDisplayRecords"] =  countdisplay
+output["iTotalDisplayRecords"] = totdis
 output["aaData"] = []
 for o in cur.fetchall() :
    i=0

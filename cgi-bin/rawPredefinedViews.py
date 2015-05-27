@@ -209,11 +209,11 @@ columns.append([
         ("Grade","Test_Roc.RESULT","rocColors(o)"),
         ("Wafer Type","Roc_Wafer.TYPE",""),
         ("Roc Type","Roc.TYPE",""),
-        ("TRIMPIXELS","Test_Roc.TRIMPIXELS",""),
-        ("MASKPIXELS","Test_Roc.MASKPIXELS",""),
         ("IANA","Test_Roc.IANA",""),
         ("IDIGI","Test_Roc.IDIGI",""),
         ("DEFECTPIXELS","Test_Roc.DEFECTPIXELS",""),
+        ("TRIMPIXELS","Test_Roc.TRIMPIXELS",""),
+        ("MASKPIXELS","Test_Roc.MASKPIXELS",""),
         ("THRESHOLDPIXELS","Test_Roc.THRESHOLDPIXELS",""),
         ("ADDRPIXELS","Test_Roc.ADDRPIXELS",""),
         ("NSIGPIXELS","Test_Roc.NSIGPIXELS",""),
@@ -488,11 +488,12 @@ columns.append(c)
 ############################################# Tier0 View #################################################
 #view 9
 tier0Views.append(9)
-customjs[9]='"order": [[ 1,"desc" ],[5,"desc"]],'
+customjs[9]='"order": [[ 2,"desc" ],[6,"desc"]],'
 header.append("Test Processing")
 columns.append([
 		("Name","InputTar.NAME",""),
-		("Date","InputTar.DATE",""),
+		("InputDate","InputTar.DATE",""),
+		("ProcDate","ProcessingRun.DATE",""),
 		("Center","InputTar.CENTER",""),
 		("Status","InputTar.STATUS",""),
 		("TestName","InputTar.TESTNAME",""),

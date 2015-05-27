@@ -76,7 +76,7 @@ if action == "Upload" :
 
 	  for fname in files :
 		print "working on ",fname
-    		f=open(fname) 
+    		f=open(fname,mode="U") 
 		dic={}
 		rocs={}
 	        for l in f:

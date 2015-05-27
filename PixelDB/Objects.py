@@ -21,13 +21,15 @@ class Transfer (object):
     RECEIVED_DATE=DateTime() 
     STATUS=Unicode()
     COMMENT=Unicode()
-    def __init__(self, SENDER,RECEIVER, ISSUED_DATE=datetime.now(), RECEIVED_DATE=datetime.now(), STATUS="ARRIVED", COMMENT=""):
+    TRACKING=Unicode()
+    def __init__(self, SENDER,RECEIVER, ISSUED_DATE=datetime.now(), RECEIVED_DATE=datetime.now(), STATUS="ARRIVED", COMMENT="", TRACKING=""):
         self.SENDER=unicode(SENDER)
         self.RECEIVER=unicode(RECEIVER)
         self.ISSUED_DATE=ISSUED_DATE
         self.RECEIVED_DATE=RECEIVED_DATE
         self.STATUS=unicode(STATUS)
         self.COMMENT=unicode(COMMENT)
+        self.TRACKING=unicode(TRACKING)
 
 class Data(object):
       __storm_table__ = "test_data"
@@ -1053,7 +1055,7 @@ class Test_Roc(object):
       VDREG = Float()
       V24 = Float()
       PHFAIL = Int()
-      VDCAP = Int()
+      VDCAP = Float()
       VDIGU_ADC = Int()
       VANAU_ADC = Int()
       VANAR_ADC = Int()
@@ -1086,7 +1088,7 @@ class Test_Roc(object):
           self.THRESHOLDPIXELS=int(THRESHOLDPIXELS)
           self.PHFAIL=int(PHFAIL)
           self.COMMENT=unicode(COMMENT)
-	  self.VDCAP = int(VDCAP)
+	  self.VDCAP = float(VDCAP)
           self.VDIGU_ADC = int(VDIGU_ADC)
           self.VANAU_ADC = int(VANAU_ADC)
           self.VANAR_ADC = int(VANAR_ADC)

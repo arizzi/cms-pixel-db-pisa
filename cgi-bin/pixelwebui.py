@@ -34,6 +34,7 @@ sortedCols["Test_DacParameters"]=["ROC_POS","VDIG","VANA","VSH","VCOMP","VWLLPR"
 sortedCols["Test_PerformanceParameters"]=["ROC_POS"]
 sortedCols["BareModule"]=["BUILTBY","BUILTON","COMMENT"]
 sortedCols["RocWafer"]=["ROCWAFER_ID","LOT","TYPE","N_ROC","N_GOOD","YIELD","TEST","PRODCENTER", "NOM_THICKNESS", "COMMENT"]
+sortedCols["Test_Roc"]=["SESSION_ID","TEST_ID","ROC_ID","RESULT","COMMENT","DEFECTPIXELS","MASKPIXELS","TRIMPIXELS","ADDRPIXELS","NSIGPIXELS","NOISEPIXELS","IDIGI","IANA","V24","VDCAP","VDREG","VDAC","VANASCAN","VDIGU_VOLTS","VDIGU_ADC","VANAU_VOLTS","VANAU_ADC","VANAR_ADC","VBG_ADC","IANA_MILLIAMPS","IANA_ADC"]
 
 letterToObjName={"B":"BareModule","M":"FullModule","S":"Sensor"}
 

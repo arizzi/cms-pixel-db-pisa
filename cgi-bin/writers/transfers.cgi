@@ -298,11 +298,11 @@ if action == "empty" :
    transfers = pdb.store.find(Transfer,Transfer.STATUS!=unicode("ARRIVED"))
    print "<table id=transfers class=display width=\"100%\">"
    print " <thead> <tr>"
-   print "<th>Sender</th><th>Receiver</th><th>Comment</th><th>Status</th><th>Date sent</th><th>Actions</th>"
+   print "<th>Sender</th><th>Receiver</th><th>Comment</th><th>Tracking</th><th>Status</th><th>Date sent</th><th>Actions</th>"
    print "</thead></tr><tbody>"
    for o in transfers :
      print "<tr>"
-     print "<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td><a href=transfers.cgi?submit=receive&TRANSFER_ID=%s onClick=\"return verify(%s);\" >receive</a> | <a href=transfers.cgi?submit=cancel&TRANSFER_ID=%s onClick=\"return verify(%s);\" >cancel</a> |  <a href=transfers.cgi?submit=details&TRANSFER_ID=%s >details</a> " %(o.SENDER,o.RECEIVER,o.COMMENT,o.STATUS,o.ISSUED_DATE, o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID)
+     print "<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td><a href=transfers.cgi?submit=receive&TRANSFER_ID=%s onClick=\"return verify(%s);\" >receive</a> | <a href=transfers.cgi?submit=cancel&TRANSFER_ID=%s onClick=\"return verify(%s);\" >cancel</a> |  <a href=transfers.cgi?submit=details&TRANSFER_ID=%s >details</a> | <a href=edit.cgi?objName=Transfer&TRANSFER_ID=%s >edit</a> " %(o.SENDER,o.RECEIVER,o.COMMENT,o.TRACKING,o.STATUS,o.ISSUED_DATE, o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID)
    print "</tbody><tfoot></tfoot></table>"
 
    if True:

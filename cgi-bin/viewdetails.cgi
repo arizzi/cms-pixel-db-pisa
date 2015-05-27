@@ -175,7 +175,15 @@ else :
 	     else:
 	      ID1=objRef.__class__.__name__+"_ID"
 	      ID1=ID1.upper()
-	     for attr, value in type(objRef).__dict__.iteritems():
+  	     rcolumns = []
+             if objRef.__class__.__name__ in sortedCols:
+                rcolumns = sortedCols[objRef.__class__.__name__]
+             for attr, value in type(objRef).__dict__.iteritems():
+                     if attr not in rcolumns :
+                               rcolumns.append(attr)
+             for attr in rcolumns :
+              value=type(objRef).__dict__[attr]
+	     #for attr, value in type(objRef).__dict__.iteritems():
 	      if  type(eval(objRef.__class__.__name__+"."+attr)) is properties.PropertyColumn :
 	       print "<b>",attr,":</b>", getattr(objRef,attr) ,"<BR>"   
 	     print "<a href=\"viewdetails.cgi?objName="+objRef.__class__.__name__+"&"+ID1+"="+str(getattr(objRef,ID1))+"\">details</a>"
@@ -201,7 +209,14 @@ else :
               else:
                ID1=objRef.__class__.__name__+"_ID"
                ID1=ID1.upper()
+	      rcolumns = []
+              if objRef.__class__.__name__ in sortedCols:
+                rcolumns = sortedCols[objRef.__class__.__name__]
               for attr, value in type(objRef).__dict__.iteritems():
+		     if attr not in columns :
+        	               rcolumns.append(attr)
+	      for attr in rcolumns :
+	       value=type(objRef).__dict__[attr]
                if  type(eval(objRef.__class__.__name__+"."+attr)) is properties.PropertyColumn :
                 print "<b>",attr,":</b>", getattr(objRef,attr) ,"<BR>"
               print "<a href=\"viewdetails.cgi?objName="+objRef.__class__.__name__+"&"+ID1+"="+str(getattr(objRef,ID1))+"\">details</a>"

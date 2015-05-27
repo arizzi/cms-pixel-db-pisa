@@ -294,10 +294,21 @@ if action == "Insert" :
      if pdb.store.find(objType,filter==getattr(o,ID)).count() > 0 :
 	print "This object ALREADY exists: CANNOT INSERT"	
      else:
-        pdb.store.add(o)
-	pdb.store.commit()
-	print " Objected added"
-	pdb.insertHistory(type=0,id=0, target_id=getattr(o,ID), target_type=objName, operation="INSERT", datee=datetime.now(), comment="")
+	try:
+	   print "<br>"
+	   ret= eval("pdb.insert%s(o)"%objName)
+	except:
+	    print "Cannot use Insert function, inserting with no checks"
+	    pdb.store.add(o)
+	    pdb.store.commit()
+ 	    pdb.insertHistory(type=0,id=0, target_id=getattr(o,ID), target_type=objName, operation="INSERT", datee=datetime.now(), comment="")
+	    ret=o	
+	if ret is not None:
+	        print "<br>"
+		print " Objected added"
+	else :
+  		print "<br>"
+		print "<h3> Cannot INSERT! Please fix the errors and try again</h3>"
 
   else:     
      print "This object ALREADY exists. You CANNOT INSERT, but you can EDIT ! "
