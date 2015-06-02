@@ -543,6 +543,37 @@ def procResult(o):
 
 
 
+################################################ XRay ROC View ########################################
+#view10
+header.append('''<h1>Full Module test results</h1>''')
+columns.append([
+	("Mod ID","FMS.FULLMODULE_ID",""),
+	("Temp","FMT.TEMPNOMINAL",""),
+	("Grade","FMA.GRADE",""),
+	("Summary ID","FMS.TEST_ID",""),
+	("IV Slope","IV.SLOPE",""),
+	("FMT ID","FMT.TEST_ID",""),
+	("FMA ID","FMA.TEST_ID",""),
+	("FMSE id","FMSE.TEST_ID",""),
+	("FMSE SE","FMSE.SESSION_ID",""),
+	("Center","Session.CENTER",""),
+	 ])
+rowkeys.append("FMS_TEST_ID")
+queries.append("select %s from test_fullmodulesummary as FMS "
+	       "join inventory_fullmodule as FM on FM.LASTTEST_FULLMODULE = FMS.TEST_ID "	
+	       "left join test_fullmodule as FMT on FMS.FULLMODULETEST_IDS like concat('%%',FMT.TEST_ID,'%%') "
+	       "left join test_fullmoduleanalysis as FMA on FMA.TEST_ID=(select FMA2.TEST_ID from test_fullmoduleanalysis as FMA2 where FMA2.FULLMODULETEST_ID=FMT.TEST_ID order by TEST_ID DESC limit 1) "
+               "left join test_fullmodulesession as FMSE on FMSE.TEST_ID=FMT.SESSION_ID "
+               "left join sessions as Session on FMSE.SESSION_ID=Session.SESSION_ID "
+               "left join test_iv as IV on IV.SESSION_ID=Session.SESSION_ID WHERE 1 ")
+countqueries.append("select COUNT(1) from test_fullmodulesummary as FMS "
+               "left join test_fullmodule as FMT on FMS.FULLMODULETEST_IDS like concat('%%',FMT.TEST_ID,'%%') "
+               "left join test_fullmoduleanalysis as FMA on FMA.FULLMODULETEST_ID=FMT.TEST_ID "
+               "left join test_fullmodulesession as FMSE on FMSE.SESSION_ID=FMT.SESSION_ID "
+               "left join sessions as Session on FMSE.SESSION_ID=Session.SESSION_ID WHERE 1")
+#countqueries.append(cq)
+
+
 ############################################## tools#####################################################
 def coloredResult(res) :
 	if res=="OK" :

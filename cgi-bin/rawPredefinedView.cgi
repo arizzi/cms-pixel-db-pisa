@@ -68,6 +68,7 @@ print '''
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.2/js/jquery.dataTables.js"></script>
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/tabletools/2.2.0/js/dataTables.tableTools.js"></script>
 <script type="text/javascript" src="http://jquery-datatables-column-filter.googlecode.com/svn/trunk/media/js/jquery.dataTables.columnFilter.js"></script>
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/plug-ins/1.10.7/api/fnFakeRowspan.js"></script>
 <script>
                 var selected = [];
 		var table;
@@ -128,7 +129,8 @@ $(document).ready(function() {
 			aoData.push( { %s } );
 			}
 			} );
-	         var jqInputs = $('thead input');
+	         $('#example').dataTable().fnFakeRowspan(0);
+		 var jqInputs = $('thead input');
                  for ( var i=0 ; i<jqInputs.length ; i++ )
                                 {
                                 if(urlSearch.length > i && urlSearch[i]!='')

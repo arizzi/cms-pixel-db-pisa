@@ -155,7 +155,7 @@ countdisplay=cur.execute("%s %s %s "% ((query%" count(1) "),sWhere,sOrder))
 totdis =  cur.fetchone()['count(1)']
 
 if debug == "1" :
-	print "%s %s %s %s"% ((query%colString),sWhere,sOrder,sLimit)
+	print "QUERY:%s %s %s %s"% ((query%colString),sWhere,sOrder,sLimit)
 cur.execute("%s %s %s %s"% ((query%colString),sWhere,sOrder,sLimit))
 
 output = {}
