@@ -1224,8 +1224,9 @@ class Test_IV(object): # e' il vecchio test_sensor
       SLOPE = Float()
       TEMPERATURE= Float()
       TYPE = Unicode()
+      REF_ID = Int()
       data=Reference(DATA_ID,Data.DATA_ID)
-      def __init__(self,SESSION_ID,SENSOR_ID,GRADE,DATA_ID,V1,I1,V2,I2,SLOPE, DATE,TYPE="", COMMENT="", TEMPERATURE=0):
+      def __init__(self,SESSION_ID,SENSOR_ID,GRADE,DATA_ID,V1,I1,V2,I2,SLOPE, DATE,TYPE="", COMMENT="", TEMPERATURE=0,REF_ID=0):
           self.SESSION_ID=SESSION_ID
           self.SENSOR_ID=unicode(SENSOR_ID)
           self.TYPE=unicode(TYPE)
@@ -1240,7 +1241,7 @@ class Test_IV(object): # e' il vecchio test_sensor
           self.DATE = DATE
           self.SLOPE= float(SLOPE)
           self.TEMPERATURE = TEMPERATURE
-
+	  self.REF_ID=int(REF_ID)
 
 class Test_IT(object):
       __storm_table__ = "test_it"

@@ -38,12 +38,14 @@ if objName == 'empty' :
 		toprint = columns[viewNumber]
 		topush='"name" : "viewNumber", "value" : "%s"' % viewNumber
 	custom=customjs.get(viewNumber,"")
+	custom2=customjs2.get(viewNumber,"")
 else:
 	viewNumber=-1
 	objName = parseObjName(cgi.escape(objName))
 	id,toprint,query,count = fromObjectName(objName)
 	topush='"name" : "objName", "value" : "%s"' % objName
 	custom=customjs.get(objName,"")
+	custom2=customjs2.get(viewNumber,"")
 
 
 for p in toprint :
@@ -86,7 +88,7 @@ $(document).ready(function() {
 		} );
 		$('#example thead th').each( function () {
 			var title = $('#example thead th').eq( $(this).index() ).text();
-			$(this).html(title+'<br><input size=10 type="text" onclick="event.stopPropagation();"/>' );
+			$(this).html(title+'<br><input size='+title.length+' type="text" onclick="event.stopPropagation();"/>' );
 			} );
 
 		var urlSearch = %s;
@@ -129,7 +131,11 @@ $(document).ready(function() {
 			aoData.push( { %s } );
 			}
 			} );
-	         $('#example').dataTable().fnFakeRowspan(0);
+		 %s // More custom stuff
+//	         $('#example').dataTable().fnFakeRowspan(0);
+//	         $('#example').dataTable().fnFakeRowspan(1);
+///	         $('#example').dataTable().fnFakeRowspan(2);
+
 		 var jqInputs = $('thead input');
                  for ( var i=0 ; i<jqInputs.length ; i++ )
                                 {
@@ -237,7 +243,7 @@ $(document).ready(function() {
 	                </script>
 <body>
 <main>
-''' %(searcharray,custom,topush,viewNumber,objName)
+''' %(searcharray,custom,topush,custom2,viewNumber,objName)
 sys.path.append("../PixelDB")
 
 from storm import *

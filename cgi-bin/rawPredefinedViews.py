@@ -1,5 +1,6 @@
 tier0Views=[]
 customjs={}
+customjs2={}
 ##################################### Automatic object views ######################################
 from pixelwebui import *
 import sys
@@ -543,20 +544,52 @@ def procResult(o):
 
 
 
-################################################ XRay ROC View ########################################
+################################################ Full Module test View ########################################
 #view10
-header.append('''<h1>Full Module test results</h1>''')
+header.append('''<h1>Full Module test results (Last test only) </h1>''')
+def gradeColor(oo) :
+	if oo == "A" :	
+		return "<font color=green>A</font>"
+	if oo == "B" :	
+		return "<font color=blue>B</font>"
+	if oo == "C" :	
+		return "<font color=red>C</font>"
+	return oo
+def tempWithPlot(o) :
+	t=o["FMT_TEMPNOMINAL"]
+#	if t[0] == 'p' :
+#		t='+'+t[1:]
+#	if t[0] == 'm' :
+#		t='-'+t[1:]
+#	t=re.sub('_([0-9]+)',' (\\1)',t)
+	p=o["Data_PFNs"]
+	url='<a href=%s/TestResult.html>%s</a>'%(re.sub('file:','',p),t)
+        return url
 columns.append([
 	("Mod ID","FMS.FULLMODULE_ID",""),
-	("Temp","FMT.TEMPNOMINAL",""),
-	("Grade","FMA.GRADE",""),
-	("Summary ID","FMS.TEST_ID",""),
-	("IV Slope","IV.SLOPE",""),
-	("FMT ID","FMT.TEST_ID",""),
-	("FMA ID","FMA.TEST_ID",""),
-	("FMSE id","FMSE.TEST_ID",""),
-	("FMSE SE","FMSE.SESSION_ID",""),
+	("STATUS","FM.STATUS",""),
+	("Step","FMT.TEMPNOMINAL","tempWithPlot(o)"),
+	("T","FMA.TEMPVALUE",""),
+#	("Plot","Data.PFNs"," '<a href=%s/TestResult.html>plot</a>'%re.sub('file:','',oo)"),
+	("GR","FMA.GRADE","gradeColor(oo)"),
+	("Slope","FMA.IVSLOPE"," oo if oo !=0 else 'n/a'"),
+#	("Slope2","IV.SLOPE"," oo if oo !=0 else 'n/a'"),
+	("I","FMA.I150"," '%s uA'%oo if oo != -1 else 'n/a'"),
+	("#Def","FMA.PIXELDEFECTS",""),
+	("ROC>1%","FMA.ROCSWORSEPERCENT",""),
+	("PHCAL ID","FMA.PHCAL",""),
+	("TRIM","FMA.TRIMMING",""),
+	("Comment","FMA.COMMENT",""),
+	("Type","FMS.QUALIFICATIONTYPE",""),
+	("Date","Session.DATE",""),
 	("Center","Session.CENTER",""),
+	("Macro Version","FMA.MACRO_VERSION",""),
+	("FMS ID","FMS.TEST_ID","'<a href=viewdetails.cgi?objName=Test_FullModuleSummary&TEST_ID=%s>details</a>'%oo"),
+	("HIDDEN","Data.PFNs"," '<a href=%s/TestResult.html>plot</a>'%re.sub('file:','',oo)"),
+#	("FMT ID","FMT.TEST_ID",""),
+#	("FMA ID","FMA.TEST_ID",""),
+#	("FMSE id","FMSE.TEST_ID",""),
+#	("FMSE SE","FMSE.SESSION_ID",""),
 	 ])
 rowkeys.append("FMS_TEST_ID")
 queries.append("select %s from test_fullmodulesummary as FMS "
@@ -565,12 +598,78 @@ queries.append("select %s from test_fullmodulesummary as FMS "
 	       "left join test_fullmoduleanalysis as FMA on FMA.TEST_ID=(select FMA2.TEST_ID from test_fullmoduleanalysis as FMA2 where FMA2.FULLMODULETEST_ID=FMT.TEST_ID order by TEST_ID DESC limit 1) "
                "left join test_fullmodulesession as FMSE on FMSE.TEST_ID=FMT.SESSION_ID "
                "left join sessions as Session on FMSE.SESSION_ID=Session.SESSION_ID "
-               "left join test_iv as IV on IV.SESSION_ID=Session.SESSION_ID WHERE 1 ")
+               "left join test_data as Data on FMA.DATA_ID=Data.DATA_ID "
+               "left join test_iv as IV on IV.REF_ID=FMA.TEST_ID WHERE 1 ")
+
 countqueries.append("select COUNT(1) from test_fullmodulesummary as FMS "
+               "join inventory_fullmodule as FM on FM.LASTTEST_FULLMODULE = FMS.TEST_ID "
                "left join test_fullmodule as FMT on FMS.FULLMODULETEST_IDS like concat('%%',FMT.TEST_ID,'%%') "
+               "left join test_fullmoduleanalysis as FMA on FMA.TEST_ID=(select FMA2.TEST_ID from test_fullmoduleanalysis as FMA2 where FMA2.FULLMODULETEST_ID=FMT.TEST_ID order by TEST_ID DESC limit 1) "
+               "left join test_fullmodulesession as FMSE on FMSE.TEST_ID=FMT.SESSION_ID "
+               "left join sessions as Session on FMSE.SESSION_ID=Session.SESSION_ID "
+               "left join test_data as Data on FMA.DATA_ID=Data.DATA_ID "
+               "left join test_iv as IV on IV.SESSION_ID=Session.SESSION_ID WHERE 1 ")
+#countqueries.append(cq)
+customjs2[10]='''$('#example').dataTable().fnFakeRowspan(0);
+'''
+
+
+################################################ Full Module test View ########################################
+#view11
+header.append('''<h1>Full Module test results (all tests, all analysis) </h1>''')
+columns.append([
+	("Mod ID","FMS.FULLMODULE_ID",""),
+	("Summary ID","FMS.TEST_ID","viewDetails(oo,'Test_FullModuleSummary')"),
+	("Date","Session.DATE",""),
+	("Test ID","FMT.TEST_ID","viewDetails(oo,'Test_FullModule')"),
+	("Step","FMT.TEMPNOMINAL",""),
+	("Macro Version","FMA.MACRO_VERSION",""),
+	("Analysis ID","FMA.TEST_ID","viewDetails(oo,'Test_FullModuleAnalysis')"),
+	#("Plots","Data.PFNs","tempWithPlot(o)"),
+	("Plots","Data.PFNs"," '<a href=%s/TestResult.html>plot</a>'%re.sub('file:','',oo)"),
+	#("Step","FMT.TEMPNOMINAL","tempWithPlot(o)"),
+	("STATUS","FM.STATUS",""),
+	("T","FMA.TEMPVALUE",""),
+#	("Plot","Data.PFNs"," '<a href=%s/TestResult.html>plot</a>'%re.sub('file:','',oo)"),
+	("GR","FMA.GRADE","gradeColor(oo)"),
+	("Slope","FMA.IVSLOPE"," oo if oo !=0 else 'n/a'"),
+	("I","FMA.I150"," '%s uA'%oo if oo != -1 else 'n/a'"),
+	("#Def","FMA.PIXELDEFECTS",""),
+	("ROC>1%","FMA.ROCSWORSEPERCENT",""),
+	("PHCAL ID","FMA.PHCAL",""),
+	("TRIM","FMA.TRIMMING",""),
+	("Comment","FMA.COMMENT",""),
+	("Type","FMS.QUALIFICATIONTYPE",""),
+	("Center","Session.CENTER",""),
+#	("FMS ID","FMS.TEST_ID","'<a href=viewdetails.cgi?objName=Test_FullModuleSummary&TEST_ID=%s>details</a>'%oo"),
+#	("FMSE id","FMSE.TEST_ID",""),
+#	("FMSE SE","FMSE.SESSION_ID",""),
+	 ])
+customjs2[11]='''$('#example').dataTable().fnFakeRowspan(0);
+               $('#example').dataTable().fnFakeRowspan(1);
+              $('#example').dataTable().fnFakeRowspan(2);
+              $('#example').dataTable().fnFakeRowspan(3);
+              $('#example').dataTable().fnFakeRowspan(4);
+'''
+rowkeys.append("FMA_TEST_ID")
+queries.append("select %s from test_fullmodule as FMT "
+	       "left join test_fullmodulesummary as FMS on FMS.TEST_ID = FMT.SUMMARY_ID "
+	       "join inventory_fullmodule as FM on FM.FULLMODULE_ID = FMT.FULLMODULE_ID "	
+	       "left join test_fullmoduleanalysis as FMA on FMA.FULLMODULETEST_ID=FMT.TEST_ID "
+               "left join test_fullmodulesession as FMSE on FMSE.TEST_ID=FMT.SESSION_ID "
+               "left join sessions as Session on FMSE.SESSION_ID=Session.SESSION_ID "
+               "left join test_data as Data on FMA.DATA_ID=Data.DATA_ID "
+               "left join test_iv as IV on IV.SESSION_ID=Session.SESSION_ID WHERE 1 ")
+
+countqueries.append("select COUNT(1)  from test_fullmodule as FMT "
+               "left join test_fullmodulesummary as FMS on FMS.TEST_ID = FMT.SUMMARY_ID "
+               "join inventory_fullmodule as FM on FM.FULLMODULE_ID = FMT.FULLMODULE_ID " 
                "left join test_fullmoduleanalysis as FMA on FMA.FULLMODULETEST_ID=FMT.TEST_ID "
-               "left join test_fullmodulesession as FMSE on FMSE.SESSION_ID=FMT.SESSION_ID "
-               "left join sessions as Session on FMSE.SESSION_ID=Session.SESSION_ID WHERE 1")
+               "left join test_fullmodulesession as FMSE on FMSE.TEST_ID=FMT.SESSION_ID "
+               "left join sessions as Session on FMSE.SESSION_ID=Session.SESSION_ID "
+               "left join test_data as Data on FMA.DATA_ID=Data.DATA_ID "
+               "left join test_iv as IV on IV.SESSION_ID=Session.SESSION_ID WHERE 1 ")
+
 #countqueries.append(cq)
 
 
@@ -582,5 +681,6 @@ def coloredResult(res) :
 		return "<font color =red>"+res+"</font>"
 
 
-
+def viewDetails(oo,objName) :
+  return '<a href=viewdetails.cgi?objName=%s&%s=%s>%s</a>'%(objName,idField(objName),oo,oo)
 

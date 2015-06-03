@@ -175,7 +175,7 @@ for o in cur.fetchall() :
         rn=re.sub('\)','_',rn)
 	rn=re.sub('\+','_',rn)
 
-	#oo=o[rn]
+	oo=o[rn] if rn in o else None
 	if ev == '' :
 		row[i]="%s"%o[rn]
 	else :
