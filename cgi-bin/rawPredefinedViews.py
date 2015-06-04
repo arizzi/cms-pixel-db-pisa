@@ -310,7 +310,7 @@ columns.append([
 	("Tot Defect for Grade","(Test_BareModule_QA_BumpBonding.TOTAL_FAILURES+Test_BareModule_QA_PixelAlive.TOTAL_FAILURES)",""),
 	("IDig Grade","idigGrade(BareModule.BAREMODULE_ID)",""),
         ("N reworked","BareModule.N_REWORKED_ROC",""),
-        ("Final Grade","bmGrade(BareModule.BAREMODULE_ID)",""),
+        ("Final Grade","bmGrade(BareModule.BAREMODULE_ID)","gradeColor(oo)"),
         ("","Test_BareModule_Inspection.TEST_ID","NOPRINT"),
         ("","Test_BareModule_QA_BumpBonding.TEST_ID","NOPRINT"),
         ("","Test_BareModule_QA_PixelAlive.TEST_ID","NOPRINT"),
@@ -547,14 +547,6 @@ def procResult(o):
 ################################################ Full Module test View ########################################
 #view10
 header.append('''<h1>Full Module test results (Last test only) </h1>''')
-def gradeColor(oo) :
-	if oo == "A" :	
-		return "<font color=green>A</font>"
-	if oo == "B" :	
-		return "<font color=blue>B</font>"
-	if oo == "C" :	
-		return "<font color=red>C</font>"
-	return oo
 def tempWithPlot(o) :
 	t=o["FMT_TEMPNOMINAL"]
 #	if t[0] == 'p' :
@@ -572,8 +564,8 @@ columns.append([
 	("T","FMA.TEMPVALUE",""),
 #	("Plot","Data.PFNs"," '<a href=%s/TestResult.html>plot</a>'%re.sub('file:','',oo)"),
 	("GR","FMA.GRADE","gradeColor(oo)"),
-	("Slope","FMA.IVSLOPE"," oo if oo !=0 else 'n/a'"),
-#	("Slope2","IV.SLOPE"," oo if oo !=0 else 'n/a'"),
+	("IV","IV.GRADE"," gradeColor(oo) if oo !=0 else 'n/a'"),
+	("Slope","FMA.IVSLOPE"," viewDetails(o['IV_TEST_ID'],'Test_IV',oo) if o['IV_TEST_ID'] is not None else ( oo if oo !=0 else 'n/a')"),
 	("I","FMA.I150"," '%s uA'%oo if oo != -1 else 'n/a'"),
 	("#Def","FMA.PIXELDEFECTS",""),
 	("ROC>1%","FMA.ROCSWORSEPERCENT",""),
@@ -586,6 +578,8 @@ columns.append([
 	("Macro Version","FMA.MACRO_VERSION",""),
 	("FMS ID","FMS.TEST_ID","'<a href=viewdetails.cgi?objName=Test_FullModuleSummary&TEST_ID=%s>details</a>'%oo"),
 	("HIDDEN","Data.PFNs"," '<a href=%s/TestResult.html>plot</a>'%re.sub('file:','',oo)"),
+	("HIDDEN","IV.TEST_ID",""),
+#	("Slope2","IV.SLOPE"," oo if oo !=0 else 'n/a'"),
 #	("FMT ID","FMT.TEST_ID",""),
 #	("FMA ID","FMA.TEST_ID",""),
 #	("FMSE id","FMSE.TEST_ID",""),
@@ -599,7 +593,7 @@ queries.append("select %s from test_fullmodulesummary as FMS "
                "left join test_fullmodulesession as FMSE on FMSE.TEST_ID=FMT.SESSION_ID "
                "left join sessions as Session on FMSE.SESSION_ID=Session.SESSION_ID "
                "left join test_data as Data on FMA.DATA_ID=Data.DATA_ID "
-               "left join test_iv as IV on IV.REF_ID=FMA.TEST_ID WHERE 1 ")
+               "left join test_iv as IV on IV.REF_ID=FMA.TEST_ID WHERE FM.STATUS <> 'HIDDEN' ")
 
 countqueries.append("select COUNT(1) from test_fullmodulesummary as FMS "
                "join inventory_fullmodule as FM on FM.LASTTEST_FULLMODULE = FMS.TEST_ID "
@@ -608,7 +602,7 @@ countqueries.append("select COUNT(1) from test_fullmodulesummary as FMS "
                "left join test_fullmodulesession as FMSE on FMSE.TEST_ID=FMT.SESSION_ID "
                "left join sessions as Session on FMSE.SESSION_ID=Session.SESSION_ID "
                "left join test_data as Data on FMA.DATA_ID=Data.DATA_ID "
-               "left join test_iv as IV on IV.SESSION_ID=Session.SESSION_ID WHERE 1 ")
+               "left join test_iv as IV on IV.REF_ID=FMA.TEST_ID WHERE FM.STATUS <> 'HIDDEN' ")
 #countqueries.append(cq)
 customjs2[10]='''$('#example').dataTable().fnFakeRowspan(0);
 '''
@@ -618,7 +612,7 @@ customjs2[10]='''$('#example').dataTable().fnFakeRowspan(0);
 #view11
 header.append('''<h1>Full Module test results (all tests, all analysis) </h1>''')
 columns.append([
-	("Mod ID","FMS.FULLMODULE_ID",""),
+	("Mod ID","FMS.FULLMODULE_ID","viewDetails(oo,'FullModule')"),
 	("Summary ID","FMS.TEST_ID","viewDetails(oo,'Test_FullModuleSummary')"),
 	("Date","Session.DATE",""),
 	("Test ID","FMT.TEST_ID","viewDetails(oo,'Test_FullModule')"),
@@ -632,7 +626,9 @@ columns.append([
 	("T","FMA.TEMPVALUE",""),
 #	("Plot","Data.PFNs"," '<a href=%s/TestResult.html>plot</a>'%re.sub('file:','',oo)"),
 	("GR","FMA.GRADE","gradeColor(oo)"),
-	("Slope","FMA.IVSLOPE"," oo if oo !=0 else 'n/a'"),
+        ("IV","IV.GRADE"," gradeColor(oo) if oo !=0 else 'n/a'"),
+        ("Slope","FMA.IVSLOPE"," viewDetails(o['IV_TEST_ID'],'Test_IV',oo) if o['IV_TEST_ID'] is not None else ( oo if oo !=0 else 'n/a')"),
+#	("Slope","FMA.IVSLOPE"," oo if oo !=0 else 'n/a'"),
 	("I","FMA.I150"," '%s uA'%oo if oo != -1 else 'n/a'"),
 	("#Def","FMA.PIXELDEFECTS",""),
 	("ROC>1%","FMA.ROCSWORSEPERCENT",""),
@@ -641,6 +637,8 @@ columns.append([
 	("Comment","FMA.COMMENT",""),
 	("Type","FMS.QUALIFICATIONTYPE",""),
 	("Center","Session.CENTER",""),
+        ("HIDDEN","IV.TEST_ID",""),
+ 
 #	("FMS ID","FMS.TEST_ID","'<a href=viewdetails.cgi?objName=Test_FullModuleSummary&TEST_ID=%s>details</a>'%oo"),
 #	("FMSE id","FMSE.TEST_ID",""),
 #	("FMSE SE","FMSE.SESSION_ID",""),
@@ -659,7 +657,7 @@ queries.append("select %s from test_fullmodule as FMT "
                "left join test_fullmodulesession as FMSE on FMSE.TEST_ID=FMT.SESSION_ID "
                "left join sessions as Session on FMSE.SESSION_ID=Session.SESSION_ID "
                "left join test_data as Data on FMA.DATA_ID=Data.DATA_ID "
-               "left join test_iv as IV on IV.SESSION_ID=Session.SESSION_ID WHERE 1 ")
+               "left join test_iv as IV on IV.REF_ID=FMA.TEST_ID WHERE 1 ")
 
 countqueries.append("select COUNT(1)  from test_fullmodule as FMT "
                "left join test_fullmodulesummary as FMS on FMS.TEST_ID = FMT.SUMMARY_ID "
@@ -668,7 +666,7 @@ countqueries.append("select COUNT(1)  from test_fullmodule as FMT "
                "left join test_fullmodulesession as FMSE on FMSE.TEST_ID=FMT.SESSION_ID "
                "left join sessions as Session on FMSE.SESSION_ID=Session.SESSION_ID "
                "left join test_data as Data on FMA.DATA_ID=Data.DATA_ID "
-               "left join test_iv as IV on IV.SESSION_ID=Session.SESSION_ID WHERE 1 ")
+               "left join test_iv as IV on IV.REF_ID=FMA.TEST_ID WHERE 1 ")
 
 #countqueries.append(cq)
 
@@ -681,6 +679,18 @@ def coloredResult(res) :
 		return "<font color =red>"+res+"</font>"
 
 
-def viewDetails(oo,objName) :
-  return '<a href=viewdetails.cgi?objName=%s&%s=%s>%s</a>'%(objName,idField(objName),oo,oo)
+def viewDetails(oo,objName,text=None) :
+  if text is None :
+	text=oo
+  return '<a href=viewdetails.cgi?objName=%s&%s=%s>%s</a>'%(objName,idField(objName),oo,text)
+
+def gradeColor(oo) :
+	if oo == "A" :	
+		return "<font color=green>A</font>"
+	if oo == "B" :	
+		return "<font color=blue>B</font>"
+	if oo == "C" :	
+		return "<font color=red>C</font>"
+	return oo
+
 

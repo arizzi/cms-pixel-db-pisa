@@ -211,7 +211,7 @@ class PixelDBInterface(object) :
             #
             self.setBareModuleStatus(fm.BAREMODULE_ID,"USED")
 #            self.setHdiStatus(fm.TBM_ID,"USED")
-            self.setTbmStatus(fm.HDI_ID,"USED")
+            self.setHdiStatus(fm.HDI_ID,"USED")
             self.store.add(fm)
             self.store.commit()
             # log in history 
@@ -2129,28 +2129,43 @@ class PixelDBInterface(object) :
             return rr     
             
              
-      
+	  
       def updateLastTestFullModule(self,moduleId,summaryId, newType, newDate):
 	  fm=self.getFullModule(unicode(moduleId))
 	  if fm is None :
 	     return None
-	  if fm.LASTTEST_FULLMODULE != 0 and fm.LASTTEST_FULLMODULE != None and fm.lasttest != None:
-  	     prevSummary=fm.lasttest
-	     prevType=prevSummary.QUALIFICATIONTYPE
-	     prevDate=prevSummary.TIMESTAMP
-	     #if both are full qualification	
-	     if  prevType == "FullQualification" and newType == "FullQualification" :
-		#check the timestamp
+	  if newType == "FullQualification" :
+	     if fm.LASTTEST_FULLMODULE != 0 and fm.LASTTEST_FULLMODULE != None and fm.lasttest != None:
+  		prevSummary=fm.lasttest
+		prevDate=prevSummary.TIMESTAMP
  		if prevDate < newDate :
 		  fm.LASTTEST_FULLMODULE=summaryId
 		  self.store.commit()	
-	     #if new is Full and the old is not, take this one no matter what
-             if  prevType != "FullQualification" and newType == "FullQualification" :
-   	        fm.LASTTEST_FULLMODULE=summaryId
-                self.store.commit()
-          else:
-              fm.LASTTEST_FULLMODULE=summaryId
-              self.store.commit()
+	     else:
+                  fm.LASTTEST_FULLMODULE=summaryId
+	          self.store.commit()
+	  elif newType == "Reception" :
+             if fm.LASTTEST_RECEPTION != 0 and fm.RECEPTION != None and fm.lasttest_reception != None:
+                prevSummary=fm.lasttest_reception
+                prevDate=prevSummary.TIMESTAMP
+                if prevDate < newDate :
+	           fm.LASTTEST_RECEPTION=summaryId
+                   self.store.commit()   
+	     else :
+	           fm.LASTTEST_RECEPTION=summaryId
+                   self.store.commit()   
+
+	  else :
+             if fm.LASTTEST_OTHER != 0 and fm.LASTTEST_OTHER != None and fm.lasttest_other != None:
+                prevSummary=fm.lasttest_other
+                prevDate=prevSummary.TIMESTAMP
+                if prevDate < newDate :
+	         fm.LASTTEST_OTHER=summaryId
+                 self.store.commit()   
+   	     else:
+	         fm.LASTTEST_OTHER=summaryId
+                 self.store.commit()   
+	
           return fm 
 
        
