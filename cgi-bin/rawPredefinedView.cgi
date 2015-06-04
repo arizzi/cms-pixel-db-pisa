@@ -39,13 +39,15 @@ if objName == 'empty' :
 		topush='"name" : "viewNumber", "value" : "%s"' % viewNumber
 	custom=customjs.get(viewNumber,"")
 	custom2=customjs2.get(viewNumber,"")
+	gh=groupheader.get(viewNumber,"")
 else:
 	viewNumber=-1
 	objName = parseObjName(cgi.escape(objName))
 	id,toprint,query,count = fromObjectName(objName)
 	topush='"name" : "objName", "value" : "%s"' % objName
 	custom=customjs.get(objName,"")
-	custom2=customjs2.get(viewNumber,"")
+	custom2=customjs2.get(objName,"")
+	gh=groupheader.get(objName,"")
 
 
 for p in toprint :
@@ -86,9 +88,11 @@ $(document).ready(function() {
                                         $(this).toggleClass('selected');
                                         update();
 		} );
-		$('#example thead th').each( function () {
-			var title = $('#example thead th').eq( $(this).index() ).text();
-			$(this).html(title+'<br><input size='+title.length+' type="text" onclick="event.stopPropagation();"/>' );
+		$('#example thead th[nosearch!="1"]').each( function () {
+			if(! $(this).attr('nosearch')) {
+			  var title = $('#example thead th[nosearch!="1"]').eq( $(this).index() ).text();
+			  $(this).html(title+'<br><input size='+title.length+' type="text" onclick="event.stopPropagation();"/>' );
+			}
 			} );
 
 		var urlSearch = %s;
@@ -286,7 +290,7 @@ if True :
 print "<br><input type=checkbox id=exact %s  onclick=\"var table = $('#example').DataTable(); table.ajax.reload();\"> Exact per column search (you can still add the %% yourself)"%(checked) 
 print "<p id=filterPH></p>"
 print "<table id=example class=\"display cell-border compact\"  width=100%>"
-print " <thead> <tr>"
+print " <thead>"+gh+" <tr>"
 for (c,s,e) in toprint :
  if e!= "NOPRINT" and (c!="HIDDEN" or printhidden):
 	 print "<th>", c,"</th>"

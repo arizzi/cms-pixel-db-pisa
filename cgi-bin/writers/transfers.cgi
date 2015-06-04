@@ -42,11 +42,12 @@ print '''
                                         } );
                                 } );
 
-function verify(a)
+function verify(a,b)
 {
-var s=prompt("Please scan the barcode of the transfer\\n"+a,"");
-if(s!=a) alert("Wrong barcode!!");
-return (s==a);
+return confirm("Are you sure you want to "+b+" the transfer # "+a+" ?");
+//var s=prompt("Please scan the barcode of the transfer\\n"+a,"");
+//if(s!=a) alert("Wrong barcode!!");
+//return (s==a);
 }
                         </script>
 <body><main>
@@ -302,7 +303,7 @@ if action == "empty" :
    print "</thead></tr><tbody>"
    for o in transfers :
      print "<tr>"
-     print "<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td><a href=transfers.cgi?submit=receive&TRANSFER_ID=%s onClick=\"return verify(%s);\" >receive</a> | <a href=transfers.cgi?submit=cancel&TRANSFER_ID=%s onClick=\"return verify(%s);\" >cancel</a> |  <a href=transfers.cgi?submit=details&TRANSFER_ID=%s >details</a> | <a href=edit.cgi?objName=Transfer&TRANSFER_ID=%s >edit</a> " %(o.SENDER,o.RECEIVER,o.COMMENT,o.TRACKING,o.STATUS,o.ISSUED_DATE, o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID)
+     print "<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td><a href=transfers.cgi?submit=receive&TRANSFER_ID=%s onClick=\"return verify(%s,'receive');\" >receive</a> | <a href=transfers.cgi?submit=cancel&TRANSFER_ID=%s onClick=\"return verify(%s,'cancel');\" >cancel</a> |  <a href=transfers.cgi?submit=details&TRANSFER_ID=%s >details</a> | <a href=edit.cgi?objName=Transfer&TRANSFER_ID=%s >edit</a> " %(o.SENDER,o.RECEIVER,o.COMMENT,o.TRACKING,o.STATUS,o.ISSUED_DATE, o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID,o.TRANSFER_ID)
    print "</tbody><tfoot></tfoot></table>"
 
    if True:

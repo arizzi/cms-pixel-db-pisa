@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 # enable debugging
+#!/usr/bin/env python
+print "Location: /cgi-bin/rawPredefinedView.cgi?viewNumber=11"
+print
+exit(0)
+
 import sys
 import cgitb
 from datetime import *

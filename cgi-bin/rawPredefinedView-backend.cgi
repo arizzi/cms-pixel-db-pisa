@@ -24,10 +24,12 @@ if objName == 'empty' :
 		query=queries[viewNumber]
 		countquery=countqueries[viewNumber]
 		rowkey=rowkeys[viewNumber]
+		sGroup=groupby.get(viewNumber,' ')
 else:
 	viewNumber=-1
         objName = parseObjName(cgi.escape(objName))
         rowkey,cols,query,countquery = fromObjectName(objName)
+	sGroup=groupby.get(objName,' ')
 
 dbname="prod_pixel"
 if objName in tier0Objects  or viewNumber in tier0Views :
@@ -150,13 +152,13 @@ for c in colNames :
 	colString+="%s as %s"%( c,cc)
 
 if debug == "1" :
-	print "COUNTSTRING: %s %s %s"% ((query%" count(1) "),sWhere,sOrder)
-countdisplay=cur.execute("%s %s %s "% ((query%" count(1) "),sWhere,sOrder))
+	print "COUNTSTRING: %s %s %s %s"% ((query%" count(1) "),sWhere,sGroup,sOrder)
+countdisplay=cur.execute("%s %s %s %s "% ((query%" count(1) "),sWhere,sGroup,sOrder))
 totdis =  cur.fetchone()['count(1)']
 
 if debug == "1" :
-	print "QUERY:%s %s %s %s"% ((query%colString),sWhere,sOrder,sLimit)
-cur.execute("%s %s %s %s"% ((query%colString),sWhere,sOrder,sLimit))
+	print "QUERY:%s %s %s %s %s"% ((query%colString),sWhere,sGroup,sOrder,sLimit)
+cur.execute("%s %s %s %s %s"% ((query%colString),sWhere,sGroup,sOrder,sLimit))
 
 output = {}
 output["sEcho"] = form.getfirst('sEcho',1)

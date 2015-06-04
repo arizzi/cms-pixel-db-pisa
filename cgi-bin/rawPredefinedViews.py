@@ -1,6 +1,8 @@
 tier0Views=[]
 customjs={}
 customjs2={}
+groupby={}
+groupheader={}
 ##################################### Automatic object views ######################################
 from pixelwebui import *
 import sys
@@ -439,6 +441,8 @@ queries.append("select %s,Transfer.STATUS as Transfer_STATUS, Transfer.SENDER as
                 "left outer join Test_FullModule_XRay_HR_Module_Analysis as Test_FullModule_XRay_HR_Module50_Analysis on Test_FullModule_XRay_HR_Module50_Analysis.FULLMODULETEST_ID=Test_FullModule_XRay_HR_Module50.TEST_ID and Test_FullModule_XRay_HR_Module50_Analysis.PROCESSING_ID=Test_FullModule_XRay_HR_Module50.LAST_PROCESSING_ID "
 		"left outer join test_data as DataHR50 on Test_FullModule_XRay_HR_Module50_Analysis.DATA_ID=DataHR50.DATA_ID "
                 " WHERE (Test_FullModule_XRay_Vcal.TEST_ID <> 0  OR Test_FullModule_XRay_HR_Module50.TEST_ID <> 0) ")
+
+
 countqueries.append("select COUNT(1) from inventory_fullmodule as FullModule left outer join transfers as Transfer on FullModule.TRANSFER_ID=Transfer.TRANSFER_ID "
                 "left outer join Test_FullModule_XRay_Vcal as Test_FullModule_XRay_Vcal on FullModule.LASTTEST_XRAY_VCAL=Test_FullModule_XRay_Vcal.TEST_ID "
                 "left outer join Test_FullModule_XRay_Vcal_Module_Analysis as Test_FullModule_XRay_Vcal_Module_Analysis on Test_FullModule_XRay_Vcal_Module_Analysis.FULLMODULETEST_ID=Test_FullModule_XRay_Vcal.TEST_ID and Test_FullModule_XRay_Vcal_Module_Analysis.PROCESSING_ID=Test_FullModule_XRay_Vcal.LAST_PROCESSING_ID "
@@ -610,7 +614,7 @@ customjs2[10]='''$('#example').dataTable().fnFakeRowspan(0);
 
 ################################################ Full Module test View ########################################
 #view11
-header.append('''<h1>Full Module test results (all tests, all analysis) </h1>''')
+header.append('''<h1>Full Module test results (all tests, all analysis, including hidden modules) </h1>''')
 columns.append([
 	("Mod ID","FMS.FULLMODULE_ID","viewDetails(oo,'FullModule')"),
 	("Summary ID","FMS.TEST_ID","viewDetails(oo,'Test_FullModuleSummary')"),
@@ -669,6 +673,51 @@ countqueries.append("select COUNT(1)  from test_fullmodule as FMT "
                "left join test_iv as IV on IV.REF_ID=FMA.TEST_ID WHERE 1 ")
 
 #countqueries.append(cq)
+
+
+################################################ Full Module test View ########################################
+#view12
+header.append('''<h1>Full Module Overview </h1>''')
+columns.append([
+        ("Mod ID","FM.FULLMODULE_ID","viewDetails(oo,'FullModule')"),
+        ("Built By","FM.BUILTBY",""),
+        ("Status","FM.STATUS",""),
+	("Center","Transfer.RECEIVER","o['Transfer_RECEIVER'] if o['Transfer_STATUS']=='ARRIVED' else  '%s=>%s'%(o['Transfer_SENDER'],o['Transfer_RECEIVER']) "),
+        ("FullQual","MAX(FQ.GRADE)"," gradeColor(oo) if oo !=0 else 'n/a'"),
+        ("#Def","MAX(FQ.Def)",""),
+        ("ROC>1%","MAX(FQ.ROCPERCENT)",""),
+        ("OtherQual","MAX(OQ.GRADE)"," gradeColor(oo) if oo !=0 else 'n/a'"),
+        ("BareMod GR","bmGrade(IV.BAREMODULE_ID)"," gradeColor(oo) if oo !=0 else 'n/a'"),
+        ("CIS","IV.CIS"," '%2.0f (%s) '%(float(oo),viewDetails(o['IV_CIS_ID'],'Test_IV','details')) if oo is not None else ''"),
+        ("NEW","IV.NEW"," '%s (%s)'%(gradeColor(oo),viewDetails(o['IV_NEW_ID'],'Test_IV','details')) if oo is not None else ''"),
+        ("CUT","IV.CUT","'%s (%s)'%(gradeColor(oo),viewDetails(o['IV_CUT_ID'],'Test_IV','details')) if oo is not None else ''"),
+        ("BAM","IV.BAM","'%s (%s)'%(gradeColor(oo),viewDetails(o['IV_BAM_ID'],'Test_IV','details')) if oo is not None else ''"),
+        ("CYC","IV.CYC","'%s (%s)'%(gradeColor(oo),viewDetails(o['IV_CYC_ID'],'Test_IV','details')) if oo is not None else ''"),
+#       ("FMS ID","FMS.TEST_ID","'<a href=viewdetails.cgi?objName=Test_FullModuleSummary&TEST_ID=%s>details</a>'%oo"),
+#       ("FMSE id","FMSE.TEST_ID",""),
+        ("HIDDEN","IV.CIS_ID",""),
+        ("HIDDEN","IV.NEW_ID",""),
+        ("HIDDEN","IV.BAM_ID",""),
+        ("HIDDEN","IV.CUT_ID",""),
+        ("HIDDEN","IV.CYC_ID",""),
+        ("HIDDEN","Transfer.SENDER",""),
+        ("HIDDEN","Transfer.STATUS",""),
+         ])
+groupheader[12]="<tr><th  style=\" border-right: 1px solid #111111;\"  nosearch=1 colspan=4>Inventory</th><th  style=\" border-right: 1px solid #111111;\" nosearch=1 colspan=3>Full Qualification</th><th nosearch=1 colspan=1></th><th nosearch=1 colspan=1></th><th nosearch=1 colspan=5 style=\" border-left: 1px solid #111111;\" >IV Tests</th></tr>"
+rowkeys.append("FM_FULLMODULE_ID")
+groupby[12]="group by FM.FULLMODULE_ID"
+queries.append("select %s from inventory_fullmodule as FM "
+	       "left join transfers as Transfer on FM.TRANSFER_ID=Transfer.TRANSFER_ID "
+               "left join viewIV as IV on FM.FULLMODULE_ID=IV.FULLMODULE_ID "
+               "left join view10 as FQ on FQ.FULLMODULE_ID=IV.FULLMODULE_ID "
+               "left join view10other as OQ on OQ.FULLMODULE_ID=IV.FULLMODULE_ID where FM.STATUS<>'HIDDEN' ")
+
+countqueries.append("select COUNT(1) from inventory_fullmodule as FM "
+               "left join viewIV as IV on FM.FULLMODULE_ID=IV.FULLMODULE_ID "
+               "left join view10 as FQ on FQ.FULLMODULE_ID=IV.FULLMODULE_ID "
+               "left join view10other as OQ on OQ.FULLMODULE_ID=IV.FULLMODULE_ID where FM.STATUS<>'HIDDEN' ")
+
+
 
 
 ############################################## tools#####################################################
