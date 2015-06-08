@@ -32,7 +32,7 @@ with open(filename, 'rb') as csvfile:
 		h = pdb.getHdi(unicode(HDI_ID))
 		if not h:
 	        	  print "HDI %s is new, inserting it..." % HDI_ID
-        	          h = Hdi(HDI_ID=HDI_ID, TRANSFER_ID=t.TRANSFER_ID, BATCH_ID=BATCH_ID,COMMENT=COMMENT, TYPE=TYPE)  
+        	          h = Hdi(HDI_ID=HDI_ID, TRANSFER_ID=t.TRANSFER_ID, BATCH_ID=BATCH_ID,COMMENT=COMMENT, TYPE=TYPE,STATUS='INSTOCK')  
 	                  if  pdb.insertHdi(h) :
        		               print "OK<br>"
                		  else :

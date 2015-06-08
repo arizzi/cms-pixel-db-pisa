@@ -5,6 +5,7 @@ groupby={}
 groupheader={}
 ##################################### Automatic object views ######################################
 from pixelwebui import *
+import datetime
 import sys
 sys.path.append("../PixelDB")
 from storm.properties import *
@@ -399,8 +400,8 @@ columns.append([
         ("FULL MODULE  ID","FullModule.FULLMODULE_ID","'%s<br><a href=/cgi-bin/viewdetails.cgi?objName=FullModule&FULLMODULE_ID=%s>mod details</a> | %s'%(o['FullModule_FULLMODULE_ID'],o['FullModule_FULLMODULE_ID'],rocLink(o))"),
         ("Center","Transfer.RECEIVER","o['Transfer_RECEIVER'] if o['Transfer_STATUS']=='ARRIVED' else  o['Transfer_SENDER'] "),
 	("Analysis ID","Test_FullModule_XRay_Vcal_Module_Analysis.TEST_ID","vcalAna(o)"),
-	("Slope","Test_FullModule_XRay_Vcal_Module_Analysis.SLOPE",""),
-	("Offset","Test_FullModule_XRay_Vcal_Module_Analysis.OFFSET",""),
+	("Slope","Test_FullModule_XRay_Vcal_Module_Analysis.SLOPE","'%4.2f'%oo"),
+	("Offset","Test_FullModule_XRay_Vcal_Module_Analysis.OFFSET","'%4.2f'%oo"),
 	("Grade Vcal","Test_FullModule_XRay_Vcal_Module_Analysis.GRADE",""),
 	("#Pix w/ low eff","GREATEST(Test_FullModule_XRay_HR_Module50_Analysis.N_PIXELS_EFF_BELOW_CUT,Test_FullModule_XRay_HR_Module150_Analysis.N_PIXELS_EFF_BELOW_CUT)",""),
 	("Eff @50","Test_FullModule_XRay_HR_Module50_Analysis.INTERP_EFF_TESTPOINT",""),
@@ -577,7 +578,8 @@ columns.append([
 	("TRIM","FMA.TRIMMING",""),
 	("Comment","FMA.COMMENT",""),
 	("Type","FMS.QUALIFICATIONTYPE",""),
-	("Date","Session.DATE",""),
+	("DateTest","FMS.TIMESTAMP","datetime.fromtimestamp(int(oo)).strftime('%Y-%m-%d %H:%M:%S')"),
+	("DateProc","Session.DATE",""),
 	("Center","Session.CENTER",""),
 	("Macro Version","FMA.MACRO_VERSION",""),
 	("FMS ID","FMS.TEST_ID","'<a href=viewdetails.cgi?objName=Test_FullModuleSummary&TEST_ID=%s>details</a>'%oo"),
@@ -686,8 +688,12 @@ columns.append([
         ("FullQual","MAX(FQ.GRADE)"," gradeColor(oo) if oo !=0 else 'n/a'"),
         ("#Def","MAX(FQ.Def)",""),
         ("ROC>1%","MAX(FQ.ROCPERCENT)",""),
-        ("OtherQual","MAX(OQ.GRADE)"," gradeColor(oo) if oo !=0 else 'n/a'"),
-        ("BareMod GR","bmGrade(IV.BAREMODULE_ID)"," gradeColor(oo) if oo !=0 else 'n/a'"),
+        ("Reception","MAX(FR.GRADE)"," gradeColor(oo) if oo !=0 else 'n/a'"),
+        ("OtherQual","MAX(OQ.GRADE)"," (gradeColor(oo)+' (%s)'%o['OQ_TYPE']) if oo is not None  else 'n/a'"),
+        ("VCal","XR.VCALGRADE"," (gradeColor(oo)+' (%2.2f,%2.2f)'%(o['XR_SLOPE'],o['XR_OFFSET']))  if oo is not None  else 'n/a'"),
+        ("HR","XR.HRGRADE"," gradeColor(oo) if oo is not None  else 'n/a'"),
+        ("GR","XR.GRADE"," gradeColor(oo) if oo is not None  else 'n/a'"),
+        ("Grade","bmGrade(IV.BAREMODULE_ID)"," gradeColor(oo) if oo !=0 else 'n/a'"),
         ("CIS","IV.CIS"," '%2.0f (%s) '%(float(oo),viewDetails(o['IV_CIS_ID'],'Test_IV','details')) if oo is not None else ''"),
         ("NEW","IV.NEW"," '%s (%s)'%(gradeColor(oo),viewDetails(o['IV_NEW_ID'],'Test_IV','details')) if oo is not None else ''"),
         ("CUT","IV.CUT","'%s (%s)'%(gradeColor(oo),viewDetails(o['IV_CUT_ID'],'Test_IV','details')) if oo is not None else ''"),
@@ -695,27 +701,37 @@ columns.append([
         ("CYC","IV.CYC","'%s (%s)'%(gradeColor(oo),viewDetails(o['IV_CYC_ID'],'Test_IV','details')) if oo is not None else ''"),
 #       ("FMS ID","FMS.TEST_ID","'<a href=viewdetails.cgi?objName=Test_FullModuleSummary&TEST_ID=%s>details</a>'%oo"),
 #       ("FMSE id","FMSE.TEST_ID",""),
+        ("HIDDEN","OQ.TYPE",""),
         ("HIDDEN","IV.CIS_ID",""),
         ("HIDDEN","IV.NEW_ID",""),
         ("HIDDEN","IV.BAM_ID",""),
         ("HIDDEN","IV.CUT_ID",""),
         ("HIDDEN","IV.CYC_ID",""),
+        ("HIDDEN","XR.SLOPE",""),
+        ("HIDDEN","XR.OFFSET",""),
         ("HIDDEN","Transfer.SENDER",""),
         ("HIDDEN","Transfer.STATUS",""),
          ])
-groupheader[12]="<tr><th  style=\" border-right: 1px solid #111111;\"  nosearch=1 colspan=4>Inventory</th><th  style=\" border-right: 1px solid #111111;\" nosearch=1 colspan=3>Full Qualification</th><th nosearch=1 colspan=1></th><th nosearch=1 colspan=1></th><th nosearch=1 colspan=5 style=\" border-left: 1px solid #111111;\" >IV Tests</th></tr>"
+groupheader[12]="<tr><th  style=\" border-right: 1px solid #111111;\"  nosearch=1 colspan=4>Inventory</th><th  style=\" border-right: 1px solid #111111;\" nosearch=1 colspan=3>Full Qualification</th><th nosearch=1  style=\" border-right: 1px solid #111111;\" colspan=2>More full tests</th> <th  style=\" border-right: 1px solid #111111;\"  nosearch=1 colspan=3>XRay tests</th> <th  style=\" border-right: 1px solid #111111;\"  nosearch=1 colspan=1>BareModule test</th><th nosearch=1 colspan=5 style=\" border-left: 1px solid #111111;\" >IV Tests</th></tr>"
 rowkeys.append("FM_FULLMODULE_ID")
 groupby[12]="group by FM.FULLMODULE_ID"
 queries.append("select %s from inventory_fullmodule as FM "
 	       "left join transfers as Transfer on FM.TRANSFER_ID=Transfer.TRANSFER_ID "
                "left join viewIV as IV on FM.FULLMODULE_ID=IV.FULLMODULE_ID "
                "left join view10 as FQ on FQ.FULLMODULE_ID=IV.FULLMODULE_ID "
-               "left join view10other as OQ on OQ.FULLMODULE_ID=IV.FULLMODULE_ID where FM.STATUS<>'HIDDEN' ")
+               "left join view10reception as FR on FR.FULLMODULE_ID=IV.FULLMODULE_ID "
+               "left join view10other as OQ on OQ.FULLMODULE_ID=IV.FULLMODULE_ID "
+	       "left join viewXRay as XR on FM.FULLMODULE_ID=XR.FULLMODULE_ID "
+	       " where FM.STATUS<>'HIDDEN' ")
 
 countqueries.append("select COUNT(1) from inventory_fullmodule as FM "
+               "left join transfers as Transfer on FM.TRANSFER_ID=Transfer.TRANSFER_ID "
+#              "left join viewXRay as XR on FM.FULLMODULE_ID=XR.FULLMODULE_ID "
                "left join viewIV as IV on FM.FULLMODULE_ID=IV.FULLMODULE_ID "
                "left join view10 as FQ on FQ.FULLMODULE_ID=IV.FULLMODULE_ID "
+               "left join view10reception as FR on FR.FULLMODULE_ID=IV.FULLMODULE_ID "
                "left join view10other as OQ on OQ.FULLMODULE_ID=IV.FULLMODULE_ID where FM.STATUS<>'HIDDEN' ")
+ 
 
 
 

@@ -154,7 +154,10 @@ for c in colNames :
 if debug == "1" :
 	print "COUNTSTRING: %s %s %s %s"% ((query%" count(1) "),sWhere,sGroup,sOrder)
 countdisplay=cur.execute("%s %s %s %s "% ((query%" count(1) "),sWhere,sGroup,sOrder))
-totdis =  cur.fetchone()['count(1)']
+if countdisplay > 0 :
+	totdis =  cur.fetchone()['count(1)']
+else: 
+	totdis = 0
 
 if debug == "1" :
 	print "QUERY:%s %s %s %s %s"% ((query%colString),sWhere,sGroup,sOrder,sLimit)

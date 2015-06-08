@@ -133,7 +133,7 @@ if action == "Upload" :
 				 print "Cannot parse datetime, using current datetime.... you can later edit this field in the baremodule inventory if you want to change it<br>"
 				 dd=datetime.now()
 			 print "Build date used %s<br>"%dd
-		         bm = BareModule(baremoduleid,rocids,sensorid,t.TRANSFER_ID,sender,TYPE=dic["TYPE"],COMMENT=dic["COMMENT"],BUILTON=dd)
+		         bm = BareModule(baremoduleid,rocids,sensorid,t.TRANSFER_ID,sender,TYPE=dic["TYPE"],COMMENT=dic["COMMENT"],BUILTON=dd,status="INSTOCK")
 		         if pdb.insertBareModule(bm)  :
                 	    print "<br><b> Bare module %s  inserted </b>" % baremoduleid
 			 else :
