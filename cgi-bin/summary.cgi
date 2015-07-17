@@ -10,6 +10,9 @@ import cgi
 form = cgi.FieldStorage() # instantiate only once!
 print "Content-Type: text/html"
 print
+print "<html>\n        <head>\n         "
+print '<link rel="stylesheet" type="text/css" href="/frames.css" />'
+print "<body><main>"
 
 
 from  rawPredefinedViews import *
@@ -40,7 +43,7 @@ style={
 }
 inventories=["roc","sensor","hdi","baremodule","fullmodule"]
 sortedcats=['USED','ASSEMBLED_BARE','INSTOCK','BROKEN']
-targets={"roc":40000,"sensor":2000,"hdi":2000,"baremodule":2000,"fullmodule":2000}
+targets={"roc":32000,"sensor":2000,"hdi":2000,"baremodule":2000,"fullmodule":2000}
 inv={}
 
 
@@ -52,7 +55,7 @@ def pretty(x) :
                         c.append(cat)
         for cat in c :
 		if cat in x:
-			r+="<svg width=30 height=15><rect width=30 height=15 style=%s></svg>%s: %s , "%(style.get(cat,"fill:rgb(128,128,128)"),cat,x[cat])	
+			r+="<svg width=10 height=10><rect width=10 height=10 style=%s></svg>%s:&nbsp;%s<br>  "%(style.get(cat,"fill:rgb(128,128,128)"),cat,x[cat])	
 	return r
 
 
@@ -63,7 +66,7 @@ def printStock(sWhere="") :
 	for l in cur.fetchall():
 		inv[i][l["STATUS"]]=l["COUNT(1)"]
 #print inv
-    print "<table border=0>"
+    print "<table border=1 cellpadding=0 cellspacing=0 width=900>"
 
     for i in inventories :
 	target=targets[i]
@@ -83,9 +86,25 @@ def printStock(sWhere="") :
 #	print "<img src=aa height=20 width=%s>"%((target-t)*300/target)
 	print "<text x=300 y=45 >%s</text>"%(target)
 	print "<line x1=300 y1=35 x2=300 y2=0 style='stroke:rgb(0,0,0);stroke-width:2;stroke-dasharray:5,5'/>"
-	print "</svg></td><td>%s Total in DB: %s</td>"%(pretty(inv[i]),t)
+	print "</svg></td><td><font size=2>%s<b>Total in DB: %s</b></td>"%(pretty(inv[i]),t)
     print "</table>"
 
+def drawProd() :
+#select grade,timestamp from view10 left join test_fullmodulesummary on FULLMODULESUMMARY_ID=test_id
+	cur.execute("select grade,timestamp from view10 left join test_fullmodulesummary on FULLMODULESUMMARY_ID=test_id and STATUS <> 'HIDDEN'")
+	for l in cur.fetchall():
+		print l	
 print "<h1> Stock status </h1>"
+print "Dashed line shows needs for 2K modules (no spares, no contingency,etc...) they are not the actual targets.<p>"
 printStock()
 #printStock(" where RECEIVER='PISA' or RECEIVER='BARI' or RECEIVER='CATANIA'")
+print "<h1> Module test results </h1>"
+print "Grade legend: <font color=green> A(-)</font>"
+print "<font color=yellow> B(-)</font>"
+print "<font color=red> C</font><p>"
+print "<table border=0><tr><td align=center>Bare Modules (x = built on date) </td><td align=center>Full Modules (x = last test date)<br>Series: M1xxx, M2xxx, M3xxx,M4xxx</td></tr><tr><td><img src=/cgi-bin/productionPlots.cgi?objName=BareModule>"
+print "</td><td><img src=/cgi-bin/productionPlots.cgi></td></tr></table>"
+
+
+#printStock()
+printFooter()

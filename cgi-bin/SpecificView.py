@@ -54,11 +54,15 @@ def specificView(objName,form,pdb) :
          else: 
 		files=re.split(",",data.PFNs)
 		for f in files:
-   		 	m=re.match("file:(/data/pixels/.*(jpg|png|gif|bmp))",f)
+   		 	m=re.match("file:(/+data/pixels/.*(jpg|png|gif|bmp))",f)
 			if m :
 			     print f+"<br><img src=%s><hr>" % m.group(1)	
 			else:
-	 		     print "<a href=%s>%s </a><br>" %(f,f)
+   		 	     m=re.match("file:(/+data/pixels/.*)",f)
+			     if m :
+		 		     print "<a href=%s>%s </a><br>" %(m.group(1),f)
+			     else: 
+		 		     print "<a href=%s>%s </a><br>" %(f,f)
 
 		
 			

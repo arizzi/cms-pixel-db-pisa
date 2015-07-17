@@ -64,7 +64,7 @@ if action == "Upload" :
 		print "Tar gz found"
 		tar = tarfile.open('/tmp/' + fn,"r:gz")
 		toextract=csv_files(tar)
-		print "Files found: ", toextract
+	#	print "Files found: ", toextract
 		tar.extractall(path=directory_name,members=toextract)
 		tar.close()
 		for f in toextract:
@@ -120,7 +120,7 @@ if action == "Upload" :
 	        else :
 	            print "Sensor %s has been found" % sensorid
 
-		print "</pre>"
+	#	print "</pre>"
  		#if sensor inserted or existed, make baremodule	
 	        if s :
                     bm  = pdb.getBareModule(baremoduleid)
@@ -133,7 +133,7 @@ if action == "Upload" :
 				 print "Cannot parse datetime, using current datetime.... you can later edit this field in the baremodule inventory if you want to change it<br>"
 				 dd=datetime.now()
 			 print "Build date used %s<br>"%dd
-		         bm = BareModule(baremoduleid,rocids,sensorid,t.TRANSFER_ID,sender,TYPE=dic["TYPE"],COMMENT=dic["COMMENT"],BUILTON=dd,status="INSTOCK")
+		         bm = BareModule(baremoduleid,rocids,sensorid,t.TRANSFER_ID,sender,TYPE=dic["TYPE"],COMMENT=dic["COMMENT"],BUILTON=dd,STATUS="INSTOCK")
 		         if pdb.insertBareModule(bm)  :
                 	    print "<br><b> Bare module %s  inserted </b>" % baremoduleid
 			 else :
@@ -145,6 +145,7 @@ if action == "Upload" :
           #os.removedirs(directory_name)
 	  shutil.rmtree(directory_name)
 	  print "</pre><a href=/cgi-bin/view.cgi?objName=BareModule>back to BareModule inventory</a>"
+	  print "<br><a href=/cgi-bin/writers/uploadBareModuleData.cgi>upload another file</a>"
 
     
 else :

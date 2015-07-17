@@ -91,7 +91,9 @@ $(document).ready(function() {
 		$('#example thead th[nosearch!="1"]').each( function () {
 			if(! $(this).attr('nosearch')) {
 			  var title = $('#example thead th[nosearch!="1"]').eq( $(this).index() ).text();
-			  $(this).html(title+'<br><input size='+title.length+' type="text" onclick="event.stopPropagation();"/>' );
+			  var l = title.length;
+			  if (l > 10) {l=10;}
+			  $(this).html(title+'<br><input size='+l+' type="text" onclick="event.stopPropagation();"/>' );
 			}
 			} );
 
@@ -99,6 +101,8 @@ $(document).ready(function() {
 		table =          $('#example').DataTable( {
 			dom: 'T<"clear">lfrtip',
 			"bStateSave": true,
+			"fnStateSaveCallback": function (oSettings, oData) { console.log(window.location.href); localStorage.setItem( 'DataTables_'+window.location.href, JSON.stringify(oData) );}, 
+			"fnStateLoadCallback": function (oSettings) { return JSON.parse( localStorage.getItem('DataTables_'+window.location.href) );},
 			 "aLengthMenu": [   [25, 50, 100, 200, -1],
 				        [25, 50, 100, 200, "All"]],
 			"iDisplayLength" : 25,
@@ -117,12 +121,12 @@ $(document).ready(function() {
 					{
 						oSettings.aoPreSearchCols[i].sSearch = urlSearch[i];
 					}
-				console.log(oSettings.aoPreSearchCols[i].sSearch);
+//				console.log(oSettings.aoPreSearchCols[i].sSearch);
 				if(oSettings.aoPreSearchCols[i].sSearch!='')
 					{
 						jqInputs[i].value = oSettings.aoPreSearchCols[i].sSearch;
 					}
-				console.log(urlSearch.length);
+//				console.log(urlSearch.length);
 				
 				}
 			  },

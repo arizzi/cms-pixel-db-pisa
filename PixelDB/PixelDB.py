@@ -1511,7 +1511,7 @@ class PixelDBInterface(object) :
                 if (key.upper() == "RH".upper()):
                     HUMIDITY = self.safeFloat(value.strip())
                 if (key.upper() == "IDig".upper()):
-                    IDIG = self.safeInt(re.split("\s+",value.strip())[0])
+                    IDIG = self.safeFloat(re.split("\s+",value.strip())[0])
                 if (key.upper() == "deser".upper()):
                     DESER = self.safeInt(value.strip())
                 if (key.upper() == "clk".upper()):

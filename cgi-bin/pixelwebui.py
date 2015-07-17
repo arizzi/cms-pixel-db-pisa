@@ -35,6 +35,8 @@ sortedCols["Test_PerformanceParameters"]=["ROC_POS"]
 sortedCols["BareModule"]=["BUILTBY","BUILTON","COMMENT"]
 sortedCols["RocWafer"]=["ROCWAFER_ID","LOT","TYPE","N_ROC","N_GOOD","YIELD","TEST","PRODCENTER", "NOM_THICKNESS", "COMMENT"]
 sortedCols["Test_Roc"]=["SESSION_ID","TEST_ID","ROC_ID","RESULT","COMMENT","DEFECTPIXELS","MASKPIXELS","TRIMPIXELS","ADDRPIXELS","NSIGPIXELS","NOISEPIXELS","IDIGI","IANA","V24","VDCAP","VDREG","VDAC","VANASCAN","VDIGU_VOLTS","VDIGU_ADC","VANAU_VOLTS","VANAU_ADC","VANAR_ADC","VBG_ADC","IANA_MILLIAMPS","IANA_ADC"]
+sortedCols["Test_BM_ROC_DacParameters"]=["BAREMODULE_ID","ROC_POS","IDIG"]
+sortedCols["Test_IV"]=["SENSOR_ID","TYPE","GRADE","I1","I2","SLOPE","DATE","TEMPERATURE","V1","V2","COMMENT"]
 
 letterToObjName={"B":"BareModule","M":"FullModule","S":"Sensor"}
 
@@ -142,9 +144,10 @@ def onlyColumns(objName):
 
 
 def corTemp(I,T) :
-        kb=1.3806488e-23
-        eg=1.2e-19
-	T+=273.
+#        kb=1.3806488e-23
+	kb=8.61733e-5
+        eg=1.12 
+	T+=273.15
         return I*(293.15/T)**2 * exp(-eg/(2*kb)*(1./293.15-1./T))
 
 

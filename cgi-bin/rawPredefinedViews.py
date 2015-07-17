@@ -234,7 +234,7 @@ queries.append("select %s,Transfer.STATUS as Transfer_STATUS, Transfer.SENDER as
 countqueries.append("select COUNT(1)  from inventory_roc")
 
 ################################################ TestParams View ########################################
-header.append('''<h1>Overview of PerformanceParamters</h1>''')
+header.append('''<h1>Overview of PerformanceParameters</h1>''')
 (i,c,q,cq)=fromObjectName("Test_PerformanceParameters")
 #for i in xrange(0,len(c)):
 #    e=c[i]
@@ -245,9 +245,10 @@ c.append(("Macro Version","FMA.MACRO_VERSION",""))
 c.insert(2,("Center","Session.CENTER",""))
 c.insert(2,("Date","Session.DATE",""))
 c.insert(2,("Temperature","FMT.TEMPNOMINAL",""))
+c.insert(1,("Status","FM.STATUS",""))
 c.insert(1,("Full Module","FMT.FULLMODULE_ID",""))
 rowkeys.append(i)
-queries.append("select %s from test_performanceparameters left outer join test_fullmoduleanalysis as FMA on FMA.TEST_ID=FULLMODULEANALYSISTEST_ID left outer join test_fullmodule as FMT on FMT.TEST_ID=FMA.FULLMODULETEST_ID left join test_fullmodulesession as s1 on s1.TEST_ID=FMT.SESSION_ID left join sessions as Session on s1.SESSION_ID=Session.SESSION_ID WHERE 1")
+queries.append("select %s from test_performanceparameters left outer join test_fullmoduleanalysis as FMA on FMA.TEST_ID=FULLMODULEANALYSISTEST_ID left outer join test_fullmodule as FMT on FMT.TEST_ID=FMA.FULLMODULETEST_ID left join test_fullmodulesession as s1 on s1.TEST_ID=FMT.SESSION_ID left join sessions as Session on s1.SESSION_ID=Session.SESSION_ID left outer join inventory_fullmodule as FM on FM.FULLMODULE_ID=FMT.FULLMODULE_ID  WHERE 1")
 countqueries.append("select COUNT(1)from test_performanceparameters left outer join test_fullmoduleanalysis as FMA on FMA.TEST_ID=FULLMODULEANALYSISTEST_ID left outer join test_fullmodule as FMT on FMT.TEST_ID=FMA.FULLMODULETEST_ID  left join test_fullmodulesession as s1 on s1.TEST_ID=FMT.SESSION_ID left join sessions as Session on s1.SESSION_ID=Session.SESSION_ID WHERE 1")
 #countqueries.append(cq)
 columns.append(c)
@@ -264,9 +265,10 @@ c.append(("Macro Version","FMA.MACRO_VERSION",""))
 c.insert(2,("Center","Session.CENTER",""))
 c.insert(2,("Date","Session.DATE",""))
 c.insert(2,("Temperature","FMT.TEMPNOMINAL",""))
+c.insert(1,("Status","FM.STATUS",""))
 c.insert(1,("Full Module ID","FMT.FULLMODULE_ID",""))
 rowkeys.append(i)
-queries.append("select %s from test_dacparameters left outer join test_fullmoduleanalysis as FMA on FMA.TEST_ID=FULLMODULEANALYSISTEST_ID left outer join test_fullmodule as FMT on FMT.TEST_ID=FMA.FULLMODULETEST_ID left join test_fullmodulesession as s1 on s1.TEST_ID=FMT.SESSION_ID left join sessions as Session on s1.SESSION_ID=Session.SESSION_ID WHERE 1")
+queries.append("select %s from test_dacparameters left outer join test_fullmoduleanalysis as FMA on FMA.TEST_ID=FULLMODULEANALYSISTEST_ID left outer join test_fullmodule as FMT on FMT.TEST_ID=FMA.FULLMODULETEST_ID left join test_fullmodulesession as s1 on s1.TEST_ID=FMT.SESSION_ID left join sessions as Session on s1.SESSION_ID=Session.SESSION_ID left outer join inventory_fullmodule as FM on FM.FULLMODULE_ID=FMT.FULLMODULE_ID WHERE 1")
 countqueries.append("select COUNT(1)from test_dacparameters left outer join test_fullmoduleanalysis as FMA on FMA.TEST_ID=FULLMODULEANALYSISTEST_ID left outer join test_fullmodule as FMT on FMT.TEST_ID=FMA.FULLMODULETEST_ID  left join test_fullmodulesession as s1 on s1.TEST_ID=FMT.SESSION_ID left join sessions as Session on s1.SESSION_ID=Session.SESSION_ID WHERE 1")
 #countqueries.append(cq)
 columns.append(c)
@@ -287,36 +289,48 @@ def testEntryBM(o,testname,res="_RESULT",edit=False):
 		typestr="&TYPE="+m.group(1)	
          ret="n/a"
          if  o[testname+res] :
-                ret=(o[testname+res])+testDetails(o,testname)+" "
-	 if ret=="n/a" or  not edit :
-           ret+=' <a href=/cgi-bin/writers/newTest.cgi?objName='+testnameObj+'&BAREMODULE_ID=%s%s><img src=/icons/add.png width=16></a>'%(o['BareModule_BAREMODULE_ID'],typestr)
-	 else:
-           ret+=' <a href=/cgi-bin/writers/edit.cgi?objName='+testnameObj+'&TEST_ID=%s>edit</a>'%(o[testnameObj+'_TEST_ID'])
-         ret+=testNotes(o,testname)
+#                ret=(o[testname+res])+testDetails(o,testname)+" "
+                ret=viewDetails(o[testname+'_TEST_ID'],testnameObj,o[testname+res]) 
+#	 if ret=="n/a" or  not edit :
+#           ret+=' <a href=/cgi-bin/writers/newTest.cgi?objName='+testnameObj+'&BAREMODULE_ID=%s%s><img src=/icons/add.png width=16></a>'%(o['BareModule_BAREMODULE_ID'],typestr)
+#	 else:
+#           ret+=' <a href=/cgi-bin/writers/edit.cgi?objName='+testnameObj+'&TEST_ID=%s>edit</a>'%(o[testnameObj+'_TEST_ID'])
+#         ret+=testNotes(o,testname)
          return ret
 	
 
 columns.append([
-	("BARE MODULE  ID","BareModule.BAREMODULE_ID","'<a href=/cgi-bin/viewdetails.cgi?objName=BareModule&BAREMODULE_ID=%s>%s</a>'%(o['BareModule_BAREMODULE_ID'],o['BareModule_BAREMODULE_ID'])"),
+	("BAREMODULE  ID","BareModule.BAREMODULE_ID","'<a href=/cgi-bin/viewdetails.cgi?objName=BareModule&BAREMODULE_ID=%s>%s</a>'%(o['BareModule_BAREMODULE_ID'],o['BareModule_BAREMODULE_ID'])"),
+        ("FullModule","FM.FULLMODULE_ID","oo if oo is not None else ''"),
         ("Center","Transfer.RECEIVER","o['Transfer_RECEIVER'] if o['Transfer_STATUS']=='ARRIVED' else  o['Transfer_SENDER'] "),
-	("Inspection","Test_BareModule_Inspection.RESULT","testEntryBM(o,'Test_BareModule_Inspection')"),
-	("BumpBonding Tot failures","Test_BareModule_QA_BumpBonding.TOTAL_FAILURES","testEntryBM(o,'Test_BareModule_QA_BumpBonding','_TOTAL_FAILURES')"),
-	("PixelAlive Tot failures","Test_BareModule_QA_PixelAlive.TOTAL_FAILURES","testEntryBM(o,'Test_BareModule_QA_PixelAlive','_TOTAL_FAILURES')"),
+        ("Status","BareModule.STATUS",''),
+        ("BuiltBy","BareModule.BUILTBY",''),
+#	("Inspection","Test_BareModule_Inspection.RESULT","testEntryBM(o,'Test_BareModule_Inspection')"),
+	("BB #fail","Test_BareModule_QA_BumpBonding.TOTAL_FAILURES","testEntryBM(o,'Test_BareModule_QA_BumpBonding','_TOTAL_FAILURES')"),
+	("PA #fail","Test_BareModule_QA_PixelAlive.TOTAL_FAILURES","testEntryBM(o,'Test_BareModule_QA_PixelAlive','_TOTAL_FAILURES')"),
 #	("Global Grade","Test_BareModule_Grading.GLOBAL_GRADING","testEntryBM(o,'Test_BareModule_Grading','_GLOBAL_GRADING',True)"),
-        ("i1@BAM","Test_IV.I1","'%6g'%o['Test_IV_I1'] if o['Test_IV_I1'] is not None else 'n/a'"),
-        ("i2@BAM","Test_IV.I2","'%6g'%o['Test_IV_I2'] if o['Test_IV_I2'] is not None else 'n/a'"),
-        ("Slope@BAM","Test_IV.SLOPE",''),
-        ("i1@CIS","Test_IVCIS.I1","'%6g'%o['Test_IVCIS_I1'] if o['Test_IVCIS_I1'] is not None else 'n/a'"),
-        ("i2@CIS","Test_IVCIS.I2","'%6g'%o['Test_IVCIS_I2'] if o['Test_IVCIS_I2'] is not None else 'n/a'"),
-        ("Slope@CIS","Test_IVCIS.SLOPE",''),
 	("IV Grade","Test_IV.GRADE",""),
-	("Tot Defect for Grade","(Test_BareModule_QA_BumpBonding.TOTAL_FAILURES+Test_BareModule_QA_PixelAlive.TOTAL_FAILURES)",""),
-	("IDig Grade","idigGrade(BareModule.BAREMODULE_ID)",""),
-        ("N reworked","BareModule.N_REWORKED_ROC",""),
-        ("Final Grade","bmGrade(BareModule.BAREMODULE_ID)","gradeColor(oo)"),
+	("#Def for GR","(Test_BareModule_QA_BumpBonding.TOTAL_FAILURES+Test_BareModule_QA_PixelAlive.TOTAL_FAILURES)",""),
+	("IDig Grade","idigGrade(BareModule.BAREMODULE_ID)","'<a href=/cgi-bin/view.cgi?objName=Test_BM_ROC_DacParameters&BAREMODULE_ID=%s>%s</a>'%(o['BareModule_BAREMODULE_ID'],oo)"),
+        ("#rework","BareModule.TYPE",""),
+        ("Final GR","bmGrade(BareModule.BAREMODULE_ID)","gradeColor(oo)"),
+        ("i1@20&deg;BAM","Test_IV.I1","'%6g'%corTemp(o['Test_IV_I1'],o['Test_IV_TEMPERATURE']) if oo is not None else 'n/a'"),
+        ("i2@20&deg;BAM","Test_IV.I2","'%6g'%corTemp(o['Test_IV_I2'],o['Test_IV_TEMPERATURE']) if oo is not None else 'n/a'"),
+#        ("i1@BAM","Test_IV.I1","'%6g'%o['Test_IV_I1'] if o['Test_IV_I1'] is not None else 'n/a'"),
+#        ("i2@BAM","Test_IV.I2","'%6g'%o['Test_IV_I2'] if o['Test_IV_I2'] is not None else 'n/a'"),
+        ("Slope@BAM","Test_IV.SLOPE",''),
+        ("i1@20&deg;CIS","Test_IVCIS.I1","'%6g'%corTemp(o['Test_IVCIS_I1'],o['Test_IVCIS_TEMPERATURE']) if oo is not None else 'n/a'"),
+        ("i2@20&deg;CIS","Test_IVCIS.I2","'%6g'%corTemp(o['Test_IVCIS_I2'],o['Test_IVCIS_TEMPERATURE']) if oo is not None else 'n/a'"),
+ 
+#       ("i1@CIS","Test_IVCIS.I1","'%6g'%o['Test_IVCIS_I1'] if o['Test_IVCIS_I1'] is not None else 'n/a'"),
+ #       ("i2@CIS","Test_IVCIS.I2","'%6g'%o['Test_IVCIS_I2'] if o['Test_IVCIS_I2'] is not None else 'n/a'"),
+        ("Slope@CIS","Test_IVCIS.SLOPE",''),
+        ("","Test_IV.TEMPERATURE","NOPRINT"),
+        ("","Test_IVCIS.TEMPERATURE","NOPRINT"),
         ("","Test_BareModule_Inspection.TEST_ID","NOPRINT"),
         ("","Test_BareModule_QA_BumpBonding.TEST_ID","NOPRINT"),
         ("","Test_BareModule_QA_PixelAlive.TEST_ID","NOPRINT"),
+	
 #        ("","Test_BareModule_Grading.TEST_ID","NOPRINT"),
 
 ])
@@ -329,6 +343,7 @@ queries.append("select %s,Transfer.STATUS as Transfer_STATUS, Transfer.SENDER as
 		"left outer join test_baremodule_qa as Test_BareModule_QA_BumpBonding on BareModule.LASTTEST_BAREMODULE_QA_BONDING=Test_BareModule_QA_BumpBonding.TEST_ID "
 #		"left outer join test_baremodule_grading as Test_BareModule_Grading on BareModule.LASTTEST_BAREMODULE_GRADING=Test_BareModule_Grading.TEST_ID "
 		"left outer join test_baremodule_inspection as Test_BareModule_Inspection on BareModule.LASTTEST_BAREMODULE_INSPECTION=Test_BareModule_Inspection.TEST_ID "
+		"left outer join inventory_fullmodule as FM on BareModule.BAREMODULE_ID = FM.BAREMODULE_ID "
 		"left outer join test_iv as Test_IVCIS on Test_IVCIS.SENSOR_ID=BareModule.SENSOR_ID and Test_IVCIS.TYPE='CIS' "
 	        "left outer join test_iv as Test_IV on Test_IV.test_id = (select TEST_ID from test_iv where  sensor_id=BareModule.sensor_id and type='BAM' order by TEST_ID desc limit 1)"
 
@@ -571,13 +586,14 @@ columns.append([
 	("GR","FMA.GRADE","gradeColor(oo)"),
 	("IV","IV.GRADE"," gradeColor(oo) if oo !=0 else 'n/a'"),
 	("Slope","FMA.IVSLOPE"," viewDetails(o['IV_TEST_ID'],'Test_IV',oo) if o['IV_TEST_ID'] is not None else ( oo if oo !=0 else 'n/a')"),
-	("I","FMA.I150"," '%s uA'%oo if oo != -1 else 'n/a'"),
+	("I(uA)","FMA.I150"," '%s'%(float(oo)*1e6) if oo != -1 else 'n/a'"),
+	("I@20&deg;","FMA.I150"," '%.2g'%(1e6*corTemp(float(oo),float(o['FMA_TEMPVALUE']))) if oo != -1 else 'n/a'"),
 	("#Def","FMA.PIXELDEFECTS",""),
 	("ROC>1%","FMA.ROCSWORSEPERCENT",""),
 	("PHCAL ID","FMA.PHCAL",""),
 	("TRIM","FMA.TRIMMING",""),
 	("Comment","FMA.COMMENT",""),
-	("Type","FMS.QUALIFICATIONTYPE",""),
+	("Dac|Perf","FMA.TEST_ID","'<a href=http://cmspixelprod.pi.infn.it/cgi-bin/rawPredefinedView.cgi?viewNumber=4&FULLMODULEANALYSISTEST_ID=%s>dac</a>|<a href=http://cmspixelprod.pi.infn.it/cgi-bin/rawPredefinedView.cgi?viewNumber=3&FULLMODULEANALYSISTEST_ID=%s>perf</a>'%(oo,oo)"),
 	("DateTest","FMS.TIMESTAMP","datetime.fromtimestamp(int(oo)).strftime('%Y-%m-%d %H:%M:%S')"),
 	("DateProc","Session.DATE",""),
 	("Center","Session.CENTER",""),
@@ -585,6 +601,7 @@ columns.append([
 	("FMS ID","FMS.TEST_ID","'<a href=viewdetails.cgi?objName=Test_FullModuleSummary&TEST_ID=%s>details</a>'%oo"),
 	("HIDDEN","Data.PFNs"," '<a href=%s/TestResult.html>plot</a>'%re.sub('file:','',oo)"),
 	("HIDDEN","IV.TEST_ID",""),
+	("HIDDEN","FMS.QUALIFICATIONTYPE",""),
 #	("Slope2","IV.SLOPE"," oo if oo !=0 else 'n/a'"),
 #	("FMT ID","FMT.TEST_ID",""),
 #	("FMA ID","FMA.TEST_ID",""),
@@ -624,7 +641,7 @@ columns.append([
 	("Test ID","FMT.TEST_ID","viewDetails(oo,'Test_FullModule')"),
 	("Step","FMT.TEMPNOMINAL",""),
 	("Macro Version","FMA.MACRO_VERSION",""),
-	("Analysis ID","FMA.TEST_ID","viewDetails(oo,'Test_FullModuleAnalysis')"),
+	("Analysis ID","FMA.TEST_ID","viewDetails(oo,'Test_FullModuleAnalysis')+'|<a href=http://cmspixelprod.pi.infn.it/cgi-bin/rawPredefinedView.cgi?viewNumber=4&FULLMODULEANALYSISTEST_ID=%s>dac</a>|<a href=http://cmspixelprod.pi.infn.it/cgi-bin/rawPredefinedView.cgi?viewNumber=3&FULLMODULEANALYSISTEST_ID=%s>perf</a>'%(oo,oo)"),
 	#("Plots","Data.PFNs","tempWithPlot(o)"),
 	("Plots","Data.PFNs"," '<a href=%s/TestResult.html>plot</a>'%re.sub('file:','',oo)"),
 	#("Step","FMT.TEMPNOMINAL","tempWithPlot(o)"),
@@ -685,7 +702,7 @@ columns.append([
         ("Built By","FM.BUILTBY",""),
         ("Status","FM.STATUS",""),
 	("Center","Transfer.RECEIVER","o['Transfer_RECEIVER'] if o['Transfer_STATUS']=='ARRIVED' else  '%s=>%s'%(o['Transfer_SENDER'],o['Transfer_RECEIVER']) "),
-        ("FullQual","MAX(FQ.GRADE)"," gradeColor(oo) if oo !=0 else 'n/a'"),
+        ("FullQual","MAX(FQ.GRADE)"," '<a href=%s/TestResult.html>%s</a>'%(re.sub('file:','',o['FQ_DATA_ID']),gradeColor(oo)) if oo is not None else 'n/a'"),
         ("#Def","MAX(FQ.Def)",""),
         ("ROC>1%","MAX(FQ.ROCPERCENT)",""),
         ("Reception","MAX(FR.GRADE)"," gradeColor(oo) if oo !=0 else 'n/a'"),
@@ -694,14 +711,16 @@ columns.append([
         ("HR","XR.HRGRADE"," gradeColor(oo) if oo is not None  else 'n/a'"),
         ("GR","XR.GRADE"," gradeColor(oo) if oo is not None  else 'n/a'"),
         ("Grade","bmGrade(IV.BAREMODULE_ID)"," gradeColor(oo) if oo !=0 else 'n/a'"),
-        ("CIS","IV.CIS"," '%2.0f (%s) '%(float(oo),viewDetails(o['IV_CIS_ID'],'Test_IV','details')) if oo is not None else ''"),
-        ("NEW","IV.NEW"," '%s (%s)'%(gradeColor(oo),viewDetails(o['IV_NEW_ID'],'Test_IV','details')) if oo is not None else ''"),
-        ("CUT","IV.CUT","'%s (%s)'%(gradeColor(oo),viewDetails(o['IV_CUT_ID'],'Test_IV','details')) if oo is not None else ''"),
-        ("BAM","IV.BAM","'%s (%s)'%(gradeColor(oo),viewDetails(o['IV_BAM_ID'],'Test_IV','details')) if oo is not None else ''"),
-        ("CYC","IV.CYC","'%s (%s)'%(gradeColor(oo),viewDetails(o['IV_CYC_ID'],'Test_IV','details')) if oo is not None else ''"),
+        ("CIS","IV.CIS"," '%s'%(viewDetails(o['IV_CIS_ID'],'Test_IV',gradeColor('%1.0f'%float(oo)))) if oo is not None else ''"),
+        ("NEW","IV.NEW"," '%s'%(viewDetails(o['IV_NEW_ID'],'Test_IV',gradeColor(oo))) if oo is not None else ''"),
+        ("CUT","IV.CUT","'%s'%(viewDetails(o['IV_CUT_ID'],'Test_IV',gradeColor(oo))) if oo is not None else ''"),
+        ("BAM","IV.BAM","'%s'%(viewDetails(o['IV_BAM_ID'],'Test_IV',gradeColor(oo))) if oo is not None else ''"),
+        ("CYC","IV.CYC","'%s'%(viewDetails(o['IV_CYC_ID'],'Test_IV',gradeColor(oo))) if oo is not None else ''"),
+#        ("CYC","IV.CYC","'%s (%s)'%(gradeColor(oo),viewDetails(o['IV_CYC_ID'],'Test_IV','details')) if oo is not None else ''"),
 #       ("FMS ID","FMS.TEST_ID","'<a href=viewdetails.cgi?objName=Test_FullModuleSummary&TEST_ID=%s>details</a>'%oo"),
 #       ("FMSE id","FMSE.TEST_ID",""),
         ("HIDDEN","OQ.TYPE",""),
+        ("HIDDEN","FQ.DATA_ID",""),
         ("HIDDEN","IV.CIS_ID",""),
         ("HIDDEN","IV.NEW_ID",""),
         ("HIDDEN","IV.BAM_ID",""),
@@ -718,23 +737,20 @@ groupby[12]="group by FM.FULLMODULE_ID"
 queries.append("select %s from inventory_fullmodule as FM "
 	       "left join transfers as Transfer on FM.TRANSFER_ID=Transfer.TRANSFER_ID "
                "left join viewIV as IV on FM.FULLMODULE_ID=IV.FULLMODULE_ID "
-               "left join view10 as FQ on FQ.FULLMODULE_ID=IV.FULLMODULE_ID "
-               "left join view10reception as FR on FR.FULLMODULE_ID=IV.FULLMODULE_ID "
-               "left join view10other as OQ on OQ.FULLMODULE_ID=IV.FULLMODULE_ID "
+               "left join view10 as FQ on FQ.FULLMODULE_ID=FM.FULLMODULE_ID "
+               "left join view10reception as FR on FR.FULLMODULE_ID=FM.FULLMODULE_ID "
+               "left join view10other as OQ on OQ.FULLMODULE_ID=FM.FULLMODULE_ID "
 	       "left join viewXRay as XR on FM.FULLMODULE_ID=XR.FULLMODULE_ID "
 	       " where FM.STATUS<>'HIDDEN' ")
 
 countqueries.append("select COUNT(1) from inventory_fullmodule as FM "
                "left join transfers as Transfer on FM.TRANSFER_ID=Transfer.TRANSFER_ID "
-#              "left join viewXRay as XR on FM.FULLMODULE_ID=XR.FULLMODULE_ID "
                "left join viewIV as IV on FM.FULLMODULE_ID=IV.FULLMODULE_ID "
-               "left join view10 as FQ on FQ.FULLMODULE_ID=IV.FULLMODULE_ID "
-               "left join view10reception as FR on FR.FULLMODULE_ID=IV.FULLMODULE_ID "
-               "left join view10other as OQ on OQ.FULLMODULE_ID=IV.FULLMODULE_ID where FM.STATUS<>'HIDDEN' ")
- 
-
-
-
+               "left join view10 as FQ on FQ.FULLMODULE_ID=FM.FULLMODULE_ID "
+               "left join view10reception as FR on FR.FULLMODULE_ID=FM.FULLMODULE_ID "
+               "left join view10other as OQ on OQ.FULLMODULE_ID=FM.FULLMODULE_ID "
+               "left join viewXRay as XR on FM.FULLMODULE_ID=XR.FULLMODULE_ID "
+               " where FM.STATUS<>'HIDDEN' ")
 
 ############################################## tools#####################################################
 def coloredResult(res) :
@@ -750,12 +766,12 @@ def viewDetails(oo,objName,text=None) :
   return '<a href=viewdetails.cgi?objName=%s&%s=%s>%s</a>'%(objName,idField(objName),oo,text)
 
 def gradeColor(oo) :
-	if oo == "A" :	
-		return "<font color=green>A</font>"
-	if oo == "B" :	
-		return "<font color=blue>B</font>"
-	if oo == "C" :	
-		return "<font color=red>C</font>"
+	if oo == "A" or oo == "A-" or oo=="1":	
+		return "<font color=green>%s</font>"%oo
+	if oo == "B"  or oo == "B-":	
+		return "<font color=blue>%s</font>"%oo
+	if oo == "C"  or oo == "C-" or oo == "0":	
+		return "<font color=red>%s</font>"%oo
 	return oo
 
 

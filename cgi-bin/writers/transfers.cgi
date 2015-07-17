@@ -308,14 +308,14 @@ if action == "empty" :
 
    if True:
     print "</p><br><h2> Last 20 received transfers (excluding factories, autogen and self-transfer )</h2><p>"
-    transfers = pdb.store.find(Transfer,Transfer.STATUS==unicode("ARRIVED"),Transfer.SENDER!=u"FACTORY",Transfer.SENDER!=u"CIS", Transfer.SENDER!=u"RTI",Transfer.SENDER!=u"IZM",Transfer.SENDER!=u"Dectris",Transfer.SENDER!=u"Advacam",Not(Transfer.COMMENT.like(u"%autogen%")),Transfer.SENDER!=Transfer.RECEIVER,Transfer.SENDER!=u"any")
+    transfers = pdb.store.find(Transfer,Transfer.STATUS==unicode("ARRIVED"),Transfer.SENDER!=u"FACTORY",Transfer.SENDER!=u"CIS", Transfer.SENDER!=u"RTI",Transfer.SENDER!=u"IZM",Transfer.SENDER!=u"IZM-INFN", Transfer.SENDER!=u"RTI-KIT",Transfer.SENDER!=u"Dectris",Transfer.SENDER!=u"Advacam",Not(Transfer.COMMENT.like(u"%autogen%")),Transfer.SENDER!=Transfer.RECEIVER,Transfer.SENDER!=u"any")
     print "<table class=display id=transfers2 width=\"100%\">"
     print " <thead> <tr>"
-    print "<th>Sender</th><th>Receiver</th><th>Comment</th><th>Status</th><th>Date sent</th>"
+    print "<th>Sender</th><th>Receiver</th><th>Comment</th><th>Status</th><th>Date sent</th><th>Details</th>"
     print "</thead></tr><tbody>"
     for o in transfers.order_by(Desc(Transfer.ISSUED_DATE))[:20] :
       print "<tr>"
-      print "<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td>" %(o.SENDER,o.RECEIVER,o.COMMENT,o.STATUS,o.ISSUED_DATE )
+      print "<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td><a href=transfers.cgi?submit=details&TRANSFER_ID=%s </a>details</td>" %(o.SENDER,o.RECEIVER,o.COMMENT,o.STATUS,o.ISSUED_DATE,o.TRANSFER_ID )
     print "</tbody><tfoot></tfoot></table>"
   
  
