@@ -653,7 +653,8 @@ class Test_FullModule(object):
       TIMESTAMP=Unicode()
       COLDBOX=Unicode()
       COLDBOX_SLOT=Unicode()
-      def __init__(self,SESSION_ID,FULLMODULE_ID,RESULT,TEMPNOMINAL,DATA_ID,COLDBOX,COLDBOX_SLOT, CKSUM,TIMESTAMP,TYPE):
+      LASTANALYSIS_ID=Int()	
+      def __init__(self,SESSION_ID,FULLMODULE_ID,RESULT,TEMPNOMINAL,DATA_ID,COLDBOX,COLDBOX_SLOT, CKSUM,TIMESTAMP,TYPE,LASTANALYSIS_ID=0):
 
        self.SESSION_ID=SESSION_ID
        self.FULLMODULE_ID=unicode(FULLMODULE_ID)
@@ -665,6 +666,7 @@ class Test_FullModule(object):
        self.CKSUM=unicode(CKSUM)
        self.TYPE = unicode(TYPE)
        self.TIMESTAMP=unicode(TIMESTAMP)
+       self.LASTANALYSIS_ID=LASTANALYSIS_ID
 
 class Test_FullModuleAnalysis(object):
       __storm_table__ = "test_fullmoduleanalysis"
@@ -925,9 +927,10 @@ class Test_Hdi_Bonding(object):
       HUB_ADDRESS_BONDS = Unicode()
       N_TEST_BONDS=Int()
       AVG_PULL_FORCE_G=Float()
+      STDEV_PULL_FORCE_G=Float()
       NOTES = Unicode()
       data=Reference(DATA_ID,Data.DATA_ID)
-      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,TBM_BONDS,HUB_ADDRESS_BONDS, N_TEST_BONDS, AVG_PULL_FORCE_G, NOTES ):
+      def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,TBM_BONDS,HUB_ADDRESS_BONDS, N_TEST_BONDS, AVG_PULL_FORCE_G, STDEV_PULL_FORCE_G,NOTES ):
           self.SESSION_ID=SESSION_ID
           self.HDI_ID=unicode(HDI_ID)
           self.RESULT=unicode(RESULT)
@@ -936,6 +939,7 @@ class Test_Hdi_Bonding(object):
           self.HUB_ADDRESS_BONDS=unicode(HUB_ADDRESS_BONDS)
           self.N_TEST_BONDS=N_TEST_BONDS
           self.AVG_PULL_FORCE_G=float(AVG_PULL_FORCE_G)
+          self.STDEV_PULL_FORCE_G=float(STDEV_PULL_FORCE_G)
 	  self.NOTES=unicode(NOTES)
 
 

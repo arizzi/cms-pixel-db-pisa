@@ -2064,6 +2064,9 @@ class PixelDBInterface(object) :
                   return None
                   
             print "CREATE FMA ... done"
+	    print "Update FMT LASTANALYSIS_ID with ", fmanalysis.TEST_ID
+	    t.LASTANALYSIS_ID=fmanalysis.TEST_ID
+	    self.store.commit()
             #
             #                create or search a session, based on dirname
             #

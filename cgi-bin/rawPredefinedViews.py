@@ -697,7 +697,7 @@ countqueries.append("select COUNT(1)  from test_fullmodule as FMT "
 ################################################ Full Module test View ########################################
 #view12
 header.append('''<h1>Full Module Overview </h1>''')
-columns.append([
+'''
         ("Mod ID","FM.FULLMODULE_ID","viewDetails(oo,'FullModule')"),
         ("Built By","FM.BUILTBY",""),
         ("Status","FM.STATUS",""),
@@ -716,9 +716,9 @@ columns.append([
         ("CUT","IV.CUT","'%s'%(viewDetails(o['IV_CUT_ID'],'Test_IV',gradeColor(oo))) if oo is not None else ''"),
         ("BAM","IV.BAM","'%s'%(viewDetails(o['IV_BAM_ID'],'Test_IV',gradeColor(oo))) if oo is not None else ''"),
         ("CYC","IV.CYC","'%s'%(viewDetails(o['IV_CYC_ID'],'Test_IV',gradeColor(oo))) if oo is not None else ''"),
-#        ("CYC","IV.CYC","'%s (%s)'%(gradeColor(oo),viewDetails(o['IV_CYC_ID'],'Test_IV','details')) if oo is not None else ''"),
-#       ("FMS ID","FMS.TEST_ID","'<a href=viewdetails.cgi?objName=Test_FullModuleSummary&TEST_ID=%s>details</a>'%oo"),
-#       ("FMSE id","FMSE.TEST_ID",""),
+###        ("CYC","IV.CYC","'%s (%s)'%(gradeColor(oo),viewDetails(o['IV_CYC_ID'],'Test_IV','details')) if oo is not None else ''"),
+###       ("FMS ID","FMS.TEST_ID","'<a href=viewdetails.cgi?objName=Test_FullModuleSummary&TEST_ID=%s>details</a>'%oo"),
+###       ("FMSE id","FMSE.TEST_ID",""),
         ("HIDDEN","OQ.TYPE",""),
         ("HIDDEN","FQ.DATA_ID",""),
         ("HIDDEN","IV.CIS_ID",""),
@@ -730,11 +730,48 @@ columns.append([
         ("HIDDEN","XR.OFFSET",""),
         ("HIDDEN","Transfer.SENDER",""),
         ("HIDDEN","Transfer.STATUS",""),
+'''
+columns.append([
+        ("Mod ID","FM_FULLMODULE_ID","viewDetails(oo,'FullModule')"),
+        ("Built By","FM_BUILTBY",""),
+        ("Status","FM_STATUS",""),
+        ("Center","Transfer_RECEIVER","o['Transfer_RECEIVER'] if o['Transfer_STATUS']=='ARRIVED' else  '%s=>%s'%(o['Transfer_SENDER'],o['Transfer_RECEIVER']) "),
+        ("FullQual","MAX_FQ_GRADE"," '<a href=%s/TestResult.html>%s</a>'%(re.sub('file:','',o['FQ_DATA_ID']),gradeColor(oo)) if oo is not None else 'n/a'"),
+        ("#Def","MAX_FQ_Def",""),
+        ("ROC>1%","MAX_FQ_ROCPERCENT",""),
+        ("Reception","MAX_FR_GRADE"," gradeColor(oo) if oo !=0 else 'n/a'"),
+        ("OtherQual","MAX_OQ_GRADE"," (gradeColor(oo)+' (%s)'%o['OQ_TYPE']) if oo is not None  else 'n/a'"),
+        ("VCal","XR_VCALGRADE"," (gradeColor(oo)+' (%2.2f,%2.2f)'%(o['XR_SLOPE'],o['XR_OFFSET']))  if oo is not None  else 'n/a'"),
+        ("HR","XR_HRGRADE"," gradeColor(oo) if oo is not None  else 'n/a'"),
+        ("GR","XR_GRADE"," gradeColor(oo) if oo is not None  else 'n/a'"),
+        ("Grade","bmGrade_IV_BAREMODULE_ID"," gradeColor(oo) if oo !=0 else 'n/a'"),
+        ("CIS","IV_CIS"," '%s'%(viewDetails(o['IV_CIS_ID'],'Test_IV',gradeColor('%1.0f'%float(oo)))) if oo is not None else ''"),
+        ("NEW","IV_NEW"," '%s'%(viewDetails(o['IV_NEW_ID'],'Test_IV',gradeColor(oo))) if oo is not None else ''"),
+        ("CUT","IV_CUT","'%s'%(viewDetails(o['IV_CUT_ID'],'Test_IV',gradeColor(oo))) if oo is not None else ''"),
+        ("BAM","IV_BAM","'%s'%(viewDetails(o['IV_BAM_ID'],'Test_IV',gradeColor(oo))) if oo is not None else ''"),
+        ("CYC","IV_CYC","'%s'%(viewDetails(o['IV_CYC_ID'],'Test_IV',gradeColor(oo))) if oo is not None else ''"),
+###        ("CYC","IV.CYC","'%s (%s)'%(gradeColor(oo),viewDetails(o['IV_CYC_ID'],'Test_IV','details')) if oo is not None else ''"),
+###       ("FMS ID","FMS.TEST_ID","'<a href=viewdetails.cgi?objName=Test_FullModuleSummary&TEST_ID=%s>details</a>'%oo"),
+###       ("FMSE id","FMSE.TEST_ID",""),
+        ("HIDDEN","OQ_TYPE",""),
+        ("HIDDEN","FQ_DATA_ID",""),
+        ("HIDDEN","IV_CIS_ID",""),
+        ("HIDDEN","IV_NEW_ID",""),
+        ("HIDDEN","IV_BAM_ID",""),
+        ("HIDDEN","IV_CUT_ID",""),
+        ("HIDDEN","IV_CYC_ID",""),
+        ("HIDDEN","XR_SLOPE",""),
+        ("HIDDEN","XR_OFFSET",""),
+        ("HIDDEN","Transfer_SENDER",""),
+        ("HIDDEN","Transfer_STATUS",""),
+
          ])
 groupheader[12]="<tr><th  style=\" border-right: 1px solid #111111;\"  nosearch=1 colspan=4>Inventory</th><th  style=\" border-right: 1px solid #111111;\" nosearch=1 colspan=3>Full Qualification</th><th nosearch=1  style=\" border-right: 1px solid #111111;\" colspan=2>More full tests</th> <th  style=\" border-right: 1px solid #111111;\"  nosearch=1 colspan=3>XRay tests</th> <th  style=\" border-right: 1px solid #111111;\"  nosearch=1 colspan=1>BareModule test</th><th nosearch=1 colspan=5 style=\" border-left: 1px solid #111111;\" >IV Tests</th></tr>"
 rowkeys.append("FM_FULLMODULE_ID")
-groupby[12]="group by FM.FULLMODULE_ID"
-queries.append("select %s from inventory_fullmodule as FM "
+groupby[12]="group by FM_FULLMODULE_ID"
+queries.append("select %s from view12 where 1 ")
+'''
+from inventory_fullmodule as FM "
 	       "left join transfers as Transfer on FM.TRANSFER_ID=Transfer.TRANSFER_ID "
                "left join viewIV as IV on FM.FULLMODULE_ID=IV.FULLMODULE_ID "
                "left join view10 as FQ on FQ.FULLMODULE_ID=FM.FULLMODULE_ID "
@@ -742,8 +779,10 @@ queries.append("select %s from inventory_fullmodule as FM "
                "left join view10other as OQ on OQ.FULLMODULE_ID=FM.FULLMODULE_ID "
 	       "left join viewXRay as XR on FM.FULLMODULE_ID=XR.FULLMODULE_ID "
 	       " where FM.STATUS<>'HIDDEN' ")
-
-countqueries.append("select COUNT(1) from inventory_fullmodule as FM "
+'''
+countqueries.append("select COUNT(1) from view12 where 1 ")
+'''
+,FQ.GRADE,FM.FULLMODULE_ID from inventory_fullmodule as FM "
                "left join transfers as Transfer on FM.TRANSFER_ID=Transfer.TRANSFER_ID "
                "left join viewIV as IV on FM.FULLMODULE_ID=IV.FULLMODULE_ID "
                "left join view10 as FQ on FQ.FULLMODULE_ID=FM.FULLMODULE_ID "
@@ -751,7 +790,7 @@ countqueries.append("select COUNT(1) from inventory_fullmodule as FM "
                "left join view10other as OQ on OQ.FULLMODULE_ID=FM.FULLMODULE_ID "
                "left join viewXRay as XR on FM.FULLMODULE_ID=XR.FULLMODULE_ID "
                " where FM.STATUS<>'HIDDEN' ")
-
+'''
 ############################################## tools#####################################################
 def coloredResult(res) :
 	if res=="OK" :

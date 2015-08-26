@@ -26,7 +26,7 @@ addrCenters={}
 sortedCols={}
 sortedCols["Test_Hdi_Reception"]=["HDI_ID","RESULT","INSPECTION_FRONT","INSPECTION_BACK" ]
 sortedCols["Test_Hdi_TbmGluing"]=["HDI_ID","RESULT","NOTES"] #notes
-sortedCols["Test_Hdi_Bonding"]=["HDI_ID","RESULT","TBM_BONDS","HUB_ADDRESS_BONDS","N_TEST_BONDS","AVG_PULL_FORCE_G","NOTES"]
+sortedCols["Test_Hdi_Bonding"]=["HDI_ID","RESULT","TBM_BONDS","HUB_ADDRESS_BONDS","N_TEST_BONDS","AVG_PULL_FORCE_G","STDEV_PULL_FORCE_G","NOTES"]
 sortedCols["Test_Hdi_Electric"]=["HDI_ID","RESULT","NUM_TBM","DIGITAL_CURRENT_mA","SIGNALS_AND_LVS","HV600_CURRENT_uA","NOTES"]
 sortedCols["Test_Hdi_Validation"]=["HDI_ID","RESULT","VISUAL_INSPECTION","NOTES"]
 sortedCols["Hdi"]=["HDI_ID","STATUS","TBM1_VERSION","TBM2_VERSION","BATCH_ID","TYPE","COMMENT"]
@@ -39,7 +39,7 @@ sortedCols["Test_BM_ROC_DacParameters"]=["BAREMODULE_ID","ROC_POS","IDIG"]
 sortedCols["Test_IV"]=["SENSOR_ID","TYPE","GRADE","I1","I2","SLOPE","DATE","TEMPERATURE","V1","V2","COMMENT"]
 
 letterToObjName={"B":"BareModule","M":"FullModule","S":"Sensor"}
-
+objNameToLetter={"BareModule":"B","FullModule":"M","Sensor":"S"}
 
 # HDI_ID > center > status (assumendo questo sara' lo stato globale
 # dell' oggetto: OK or BAD o missing tests) >  TBM1_version > TBM2_Version >
@@ -56,7 +56,7 @@ letterToObjName={"B":"BareModule","M":"FullModule","S":"Sensor"}
 sortedInputCols={}
 sortedInputCols["Test_Hdi_Reception"]=["TEST_ID","HDI_ID","SESSION_ID","INSPECTION_FRONT","INSPECTION_BACK","DATA_ID","RESULT"]
 sortedInputCols["Test_Hdi_TbmGluing"]=["TEST_ID","HDI_ID","SESSION_ID","NOTES","DATA_ID","RESULT"]
-sortedInputCols["Test_Hdi_Bonding"]=["TEST_ID","HDI_ID","SESSION_ID","TBM_BONDS","HUB_ADDRESS_BONDS","N_TEST_BONDS","AVG_PULL_FORCE_G","NOTES","DATA_ID","RESULT"]
+sortedInputCols["Test_Hdi_Bonding"]=["TEST_ID","HDI_ID","SESSION_ID","TBM_BONDS","HUB_ADDRESS_BONDS","N_TEST_BONDS","AVG_PULL_FORCE_G","STDEV_PULL_FORCE_G","NOTES","DATA_ID","RESULT"]
 sortedInputCols["Test_Hdi_Electric"]=["TEST_ID","HDI_ID","SESSION_ID","NUM_TBM","DIGITAL_CURRENT_mA","SIGNALS_AND_LVS","HV600_CURRENT_uA","NOTES","DATA_ID","RESULT"]
 sortedInputCols["Test_Hdi_Validation"]=["TEST_ID","HDI_ID","SESSION_ID","VISUAL_INSPECTION","NOTES","DATA_ID","RESULT"]
 sortedInputCols["Hdi"]=sortedCols["Hdi"]

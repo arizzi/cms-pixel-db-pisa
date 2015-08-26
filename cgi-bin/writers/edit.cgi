@@ -418,7 +418,7 @@ if action != "Save and Close" :
                 print inputField(objName,ID,getattr(o,ID),o)
 	else :
                 print "<tr><td>",ID.lower().capitalize()," (main ID)</td><td>"
-                print inputField(objName,ID)
+                print inputField(objName,ID,objNameToLetter.get(objName,""))
 
 #<input type=input name=\"%s\" value=\"%s\">"%(ID,"")
 
@@ -445,5 +445,5 @@ if action != "Save and Close" :
 #	print "<br><br><a href=/> Back to DB home page</a>"
 	else :
  		print "<input type=\"submit\" name=\"submit\" value=\"Insert\" /></form>"
-print "<br> <a href=/>back home</a> | <a href=%s>back to last list view </a>" % (setcookies["lastview"].value if "lastview" in setcookies else "")
+print "<br> <a href=/>back home</a> | <a href=edit.cgi?objName=%s>add new</a> | <a href=%s>back to last list view </a>" % (objName,(setcookies["lastview"].value if "lastview" in setcookies else ""))
 printFooter()
