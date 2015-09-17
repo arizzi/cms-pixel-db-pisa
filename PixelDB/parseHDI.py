@@ -12,7 +12,7 @@ import csv
 pdb = PixelDBInterface(operator="webfrontend",center="cern")
 pdb.connectToDB()
 #filename="/home/cmsweb/First_batch_KIT_Oct14.csv"
-filename="/home/cmsweb/hdihh.csv"
+filename="/home/cmsweb/HDIsfromHH-2015-09-09.csv"
 os.path.isfile(filename)
 t= None
 i=0

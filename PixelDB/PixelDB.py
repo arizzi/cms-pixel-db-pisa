@@ -7,6 +7,7 @@ import subprocess
 import os.path
 import re
 import secrets
+
 class PixelDBInterface(object) :
 
       def __init__(self, operator, center, datee =datetime.now() ) :
@@ -467,6 +468,20 @@ class PixelDBInterface(object) :
 #
 # get test
 #
+      def getModuleXrayHRTestSummaryWithTimestamp(self, FullModule_id, TIMESTAMP):
+#            print "GOT   ", FullModule_id, TIMESTAMP, type(TIMESTAMP), type(FullModule_id)
+            aa = self.store.find(Test_FullModule_XRay_HR_Summary, Test_FullModule_XRay_HR_Summary.FULLMODULE_ID == unicode(FullModule_id), Test_FullModule_XRay_HR_Summary.TIMESTAMP==unicode(TIMESTAMP)).one()
+#            print "RETURNIONG ", aa
+            return aa
+      def getModuleXrayHRTestWithTimestampAndRate(self, FullModule_id, TIMESTAMP,RATE):
+            aa = self.store.find(Test_FullModule_XRay_HR_Module, Test_FullModule_XRay_HR_Module.FULLMODULE_ID == unicode(FullModule_id), Test_FullModule_XRay_HR_Module.TIMESTAMP==unicode(TIMESTAMP),
+				 Test_FullModule_XRay_HR_Module.HITRATENOMINAL==float(RATE)).one()
+            return aa
+  
+      def getRocXrayHRTestWithPosAndModtestID(self,pos,  ModtestID):
+            aa = self.store.find(Test_FullModule_XRay_HR_Roc, Test_FullModule_XRay_HR_Roc.TEST_XRAY_HR_MODULE_ID == ModtestID,Test_FullModule_XRay_HR_Roc.ROC_POS == int(pos)).one()
+            return aa
+ 	
 
       def getXrayVcalTestWithTimestamp(self, FullModule_id, TIMESTAMP):
             aa = self.store.find(Test_FullModule_XRay_Vcal, Test_FullModule_XRay_Vcal.FULLMODULE_ID == unicode(FullModule_id), Test_FullModule_XRay_Vcal.TIMESTAMP==unicode(TIMESTAMP)).one()
@@ -1753,6 +1768,17 @@ class PixelDBInterface(object) :
                 
         return (bmid, lab, op, temp, rh, dead, bbcut, ok)
 
+      def setLastTest_XRay_HR(self,t):
+            fm = self.getFullModule(t.FULLMODULE_ID)
+            if fm is None:
+                  print " Error: the FM ", t.FULLMODULE_ID, " does not seem to exist, passing..."
+                  return None
+            fm.LASTTEST_XRAY_HR = t.TEST_ID
+	    print "Set last HR to " , t.TEST_ID
+            self.store.commit()
+            return t
+
+
 
       def setLastTest_XRay_VCAL(self,t):
             #
@@ -1765,6 +1791,317 @@ class PixelDBInterface(object) :
             fm.LASTTEST_XRAY_VCAL = t.TEST_ID
             self.store.commit()
             return t
+   
+
+
+      def insertHR (self,sessionid, HighRateDataModule , HighRateDataAggr, HighRateDataAllNoise, HighRateDataInterp
+                                             ,HighRateDataRoc
+                                             ,HighRateDataAggrRoc
+                                             ,HighRateDataAllNoiseRoc
+                                             ,HighRateDataInterpRoc):
+	    results=[]
+            #
+            # MODULES
+            #
+
+            #
+            #create Module part common to all the tests
+            #
+            fullmodule_id = HighRateDataModule['ModuleID']
+            result = HighRateDataModule['HRGrade']
+            macroVersion = HighRateDataModule['MacroVersion']
+            addrPixBad = HighRateDataModule['AddrPixelsBad']
+            addrPixHot = HighRateDataModule['AddrPixelsHot']
+            n_hot_pixels = HighRateDataModule['NHotPixel']
+            n_con_nonuniform= HighRateDataModule['ROCsWithUniformityProblems']
+            module = self.getFullModule(fullmodule_id)
+            if module is None :
+                  print "Cannot insert on non existing module",modulename
+                  return None
+            timestamp = HighRateDataModule['TestDate']
+            temperature = -99
+            try :
+                temperature = float(HighRateDataModule['TestTemp'])
+            except :
+                print "Cannot get temperature " 
+
+	    dataTest=None
+	    dataAna=None	
+
+#
+# prepare
+#
+
+            interpEffTestPoint = {}
+            interpEff={}
+            nPixelsNoise={}
+            meanNoiseAllPixels = {}
+            widthNoiseAllPixels = {}
+            addrPixelNoise = {}
+            measuredHitRate = {}
+            nPixelNoHit = {}
+            nBinsLowHigh = {}
+            #
+            # these are the common parts, now I do
+            # 1- INTERP: search in HighRateDataInterp, HighRateDataInterpRoc , loop on the rates
+            #            
+
+            for rate, payload in HighRateDataInterp.iteritems():
+                  print " Studying interpolation per Rate = ", rate
+                  interpEffTestPoint[rate] = payload['InterpEffTestpoint']
+                  interpEff[rate] = payload['InterpEffTestpoint']
+                  
+            #
+            # now Noise
+            #
+            #
+            for rate, payload in HighRateDataAllNoise.iteritems():
+                  print " Studying Noise per Rate = ", rate            
+
+                  nPixelsNoise[rate] = payload['NPixelsNoise']['Value']
+                  meanNoiseAllPixels[rate] = payload['MeanNoiseAllPixels']
+                  widthNoiseAllPixels[rate] = payload['WidthNoiseAllPixels']
+                  addrPixelNoise[rate] = payload['AddrPixelsNoise']['Value']
+                  
+            #
+            # now Aggregate (which is hitmap)
+            #
+            #
+            for rate, payload in HighRateDataAggr.iteritems():
+                  print ' Studying Hitmap per Rate = ', rate
+                  measuredHitRate[rate] = payload['MeasuredHitrate']
+                  nPixelNoHit[rate] = payload['NPixelNoHit']
+                  nBinsLowHigh[rate] = payload['NBinsLowHigh']                  
+                  
+
+            #
+            # try and accumulate
+            #
+                  
+            rates = list(set(interpEffTestPoint.keys())|set(nPixelsNoise.keys())|set(measuredHitRate.keys()))
+
+            # fill a result per rate
+
+
+
+            #
+            # per roc
+            #
+            # common
+            
+            addrPixBad_roc={}
+            addrPixHot_roc = {}
+            n_hot_pixels_roc = {}
+            n_con_nonuniform_roc = {}
+	    grade_roc = {}
+
+
+            for roc, payload in HighRateDataRoc.iteritems():
+                roc_pos = payload['RocPos']
+                addrPixBad_roc[roc_pos] =  payload['AddrPixelsBad']
+                addrPixHot_roc[roc_pos] =  payload['AddrPixelsHot']
+                n_hot_pixels_roc[roc_pos] = payload['NHotPixel']
+                n_con_nonuniform_roc[roc_pos] = payload['NColNonUniform']
+		grade_roc[roc_pos] = payload['Grade']
+
+            #
+            # interp
+            #
+            interpEffTestPoint_roc = {}
+            interpEff_roc = {}
+            for rate, payload1 in HighRateDataInterpRoc.iteritems():
+                interpEffTestPoint_roc[rate] = {}
+                interpEff_roc[rate] = {}
+                for roc, payload in payload1.iteritems():
+                    roc_pos = payload['RocPos']
+                    print " Studying interpolation per Rate = ", rate, " and ROC=",roc_pos
+                    interpEffTestPoint_roc[rate][roc_pos] = payload['InterpEffTestpoint']
+                    interpEff_roc[rate][roc_pos] = payload['InterpEffTestpoint']
+                    
+                
+            #
+            # Noise
+            #
+            nPixelsNoise_roc = {}
+            meanNoiseAllPixels_roc = {}
+            widthNoiseAllPixels_roc = {}
+            addrPixelNoise_roc = {}
+    
+            for rate, payload1 in HighRateDataAllNoiseRoc.iteritems():
+                nPixelsNoise_roc [rate] = {}
+                meanNoiseAllPixels_roc[rate] = {}
+                widthNoiseAllPixels_roc[rate] = {}
+                addrPixelNoise_roc[rate] = {}
+                for roc, payload in payload1.iteritems():
+                    roc_pos = payload['RocPos']
+                    print " Studying Noise per Rate = ", rate, " and ROC=",roc_pos
+                    nPixelsNoise_roc[rate][roc_pos] = payload['NPixelsNoise']
+                    meanNoiseAllPixels_roc[rate][roc_pos] = payload['MeanNoiseAllPixels']
+                    widthNoiseAllPixels_roc[rate][roc_pos] = payload['WidthNoiseAllPixels']
+                    addrPixelNoise_roc[rate][roc_pos] = "%s"%payload['AddrPixelsNoise'] #['Value']
+            #        
+            # Aggregate (hitmap)
+            #
+            measuredHitRate_roc = {}
+            nPixelNoHit_roc = {}
+            nBinsLowHigh_roc = {}
+
+            for rate, payload1 in HighRateDataAggrRoc.iteritems():
+                measuredHitRate_roc[rate] = {}
+                nPixelNoHit_roc[rate] = {}
+                nBinsLowHigh_roc[rate] = {}
+
+                for roc, payload in payload1.iteritems():
+                    roc_pos = payload['RocPos']
+                    print " Studying Hitmap per Rate = ", rate, " and ROC=",roc_pos
+                    measuredHitRate_roc[rate][roc_pos] = payload['MeasuredHitrate']
+                    nPixelNoHit_roc[rate][roc_pos] = payload['NPixelNoHit']
+                    nBinsLowHigh_roc[rate][roc_pos] = payload['NBinsLowHigh']                  
+
+
+
+            print " ======================== DEBUG ==========================="        
+            print "interpEffTestPoint", interpEffTestPoint 
+            print "interpEff", interpEff
+            print "nPixelsNoise", nPixelsNoise
+            print "meanNoiseAllPixels", meanNoiseAllPixels
+            print "widthNoiseAllPixels", widthNoiseAllPixels
+            print "addrPixelNoise", addrPixelNoise
+            print "measuredHitRate",measuredHitRate 
+            print "nPixelNoHit", nPixelNoHit
+            print "nBinsLowHigh", nBinsLowHigh
+            print "", 
+            print "", 
+            print "", 
+            print " ======================== DEBUG END ======================="
+
+
+
+
+
+
+                    
+            #
+            # Summary!
+            #         
+            ms = self.getModuleXrayHRTestSummaryWithTimestamp(fullmodule_id,"%s"%timestamp)
+            if (ms is None):
+                          if (dataTest is None):
+                                dataTestTmp = Data(PFNs = "file:"+HighRateDataModule['InputTarFile'])
+                                dataTest = self.insertData(dataTestTmp)
+                          if (dataTest is None):
+                                print"<br>Error inserting data"
+                                return None
+#			  print "HERE   ", sessionid, datatest.DATA_ID, LAST_PROCESSING_ID, FULLMODULE_ID, temperature, timestamp
+                          t = Test_FullModule_XRay_HR_Summary(SESSION_ID=sessionid,  DATA_ID=dataTest.DATA_ID, LAST_PROCESSING_ID=0,  FULLMODULE_ID=module.FULLMODULE_ID,
+                                 TEMPNOMINAL=temperature,XRAY_SLOT=-99,
+                                 TIMESTAMP=timestamp,
+                                 COMMENT="" )
+                          ms=self.insertObject(t)
+                          if ms is None  :
+                                print "ERRORE XRAYHRTEST summary"
+                                return None
+                          self.setLastTest_XRay_HR(ms)
+                          print "...DONE creating the XRAY Summary TEST"
+            else:
+                        print "Test HR Module found, reusing it incrementing LASTPROC"
+                        ms.LAST_PROCESSING_ID+=1
+                        dataTest = ms.data
+                        self.store.commit()
+
+            if dataAna is None :
+                          FullAnalysisPath = HighRateDataModule['AbsFulltestSubfolder']
+                          pf = str('file:'+FullAnalysisPath)
+                          data = Data(PFNs=pf)
+                          dataAna = self.insertData(data)
+                          if (dataAna is None):
+                             print"<br>Error inserting data"
+                             return None
+
+	    ana = Test_FullModule_XRay_HR_Module_Analysis_Summary(SESSION_ID=sessionid,  DATA_ID=dataAna.DATA_ID,PROCESSING_ID=ms.LAST_PROCESSING_ID,TEST_XRAY_HR_SUMMARY_ID=ms.TEST_ID,
+                                 GRADE=result,
+				 MACRO_VERSION=macroVersion,
+                                 N_PIXEL_NO_HIT_50= nPixelNoHit.get(50, -99) ,
+                                 N_PIXEL_NO_HIT_150= nPixelNoHit.get(150, -99) ,
+                                 MEASURED_HITRATE_50=measuredHitRate.get(50, -99),
+                                 MEASURED_HITRATE_150=measuredHitRate.get(150, -99),
+				 N_BINS_LOWHIGH_50=nBinsLowHigh.get(50,-99),
+				 N_BINS_LOWHIGH_150=nBinsLowHigh.get(150,-99),
+				 INTERP_EFF_50=interpEff.get(50, -99),
+				 INTERP_EFF_120=interpEff.get(120, -99),
+				 N_COL_NONUNIFORM = n_con_nonuniform,
+				 N_HOT_PIXELS = n_hot_pixels)
+	    print "Done with ana mod"
+            anai = self.insertObject(ana)
+            results.append(anai)
+
+	    #now loop on noise rates
+            for rate, payload in HighRateDataAllNoise.iteritems():
+                  print " Studying Noise per Rate = ", rate
+		  noise = Test_FullModule_XRay_HR_Module_Noise( DATA_ID=dataAna.DATA_ID,PROCESSING_ID=ms.LAST_PROCESSING_ID,TEST_XRAY_HR_SUMMARY_ID=ms.TEST_ID,
+                            MACRO_VERSION=macroVersion,
+			    N_PIXELS_NOISE= payload['NPixelsNoise']['Value'],
+		            MEAN_NOISE_ALLPIXELS= payload['MeanNoiseAllPixels'],
+	                    WIDTH_NOISE_ALLPIXELS= payload['WidthNoiseAllPixels'],
+			    HITRATENOMINAL=float(rate))
+ 		  print "Done with ana noise mod",rate
+                  noisei = self.insertObject(noise)
+                  results.append(noisei)
+
+	    #Now lets do the ROCs
+            for roc in addrPixBad_roc.keys():
+		  anar = Test_FullModule_XRay_HR_Roc_Analysis_Summary(SESSION_ID=sessionid,  DATA_ID=dataAna.DATA_ID,PROCESSING_ID=ms.LAST_PROCESSING_ID,TEST_XRAY_HR_SUMMARY_ID=ms.TEST_ID,
+                                 ROC_POS=roc,
+                                 MACRO_VERSION=macroVersion,
+                                 N_PIXEL_NO_HIT_50= nPixelNoHit_roc[50][roc] if 50 in nPixelNoHit_roc else -99,
+                                 N_PIXEL_NO_HIT_150= nPixelNoHit_roc[150][roc] if 150 in nPixelNoHit_roc else -99,
+                                 MEASURED_HITRATE_50=measuredHitRate_roc[50][roc] if 50 in measuredHitRate_roc else  -99,
+                                 MEASURED_HITRATE_150=measuredHitRate_roc[150][roc] if 150 in measuredHitRate_roc else  -99,
+                                 N_BINS_LOWHIGH_50=nBinsLowHigh_roc[50][roc] if 50 in nBinsLowHigh_roc else -99,
+                                 N_BINS_LOWHIGH_150=nBinsLowHigh_roc[150][roc] if 150 in nBinsLowHigh_roc else -99,
+                                 INTERP_EFF_50=interpEff_roc[50][roc] if 50 in interpEff_roc else  -99,
+                                 INTERP_EFF_120=interpEff_roc[120][roc] if 120 in interpEff_roc else  -99,
+                                 N_COL_NONUNIFORM = n_con_nonuniform_roc[roc],
+                                 N_HOT_PIXELS = n_hot_pixels_roc[roc],
+                                 ADDR_PIXELS_BAD="%s"%list(addrPixBad_roc[roc]),
+                                 ADDR_PIXELS_HOT="%s"%list(addrPixHot_roc[roc]),
+				 GRADE=grade_roc[roc]
+				 )
+	          print "Done with ana roc"
+                  anari = self.insertObject(anar)
+                  results.append(anari)
+
+
+            for rate, payload1 in HighRateDataAllNoiseRoc.iteritems():
+                print " ENTERING", rate
+                nPixelsNoise_roc [rate] = {}
+                meanNoiseAllPixels_roc[rate] = {}
+                widthNoiseAllPixels_roc[rate] = {}
+                addrPixelNoise_roc[rate] = {}
+                for roc, payload in payload1.iteritems():
+                    print " ENTERING 2 ", rate, roc
+                    roc_pos = payload['RocPos']
+                    print " Studying Noise per Rate = ", rate, " and ROC=",roc_pos
+                    nPixelsNoise_roc[rate][roc_pos] = payload['NPixelsNoise']
+                    meanNoiseAllPixels_roc[rate][roc_pos] = payload['MeanNoiseAllPixels']
+                    widthNoiseAllPixels_roc[rate][roc_pos] = payload['WidthNoiseAllPixels']
+		    print "Addr pixel noise", payload['AddrPixelsNoise']
+                    print " before creation", roc_pos
+                    noise = Test_FullModule_XRay_HR_Roc_Noise( DATA_ID=dataAna.DATA_ID,PROCESSING_ID=ms.LAST_PROCESSING_ID,TEST_XRAY_HR_SUMMARY_ID=ms.TEST_ID,
+                            MACRO_VERSION=macroVersion,
+			    ROC_POS=roc_pos,	
+                            N_PIXELS_NOISE= payload['NPixelsNoise'],
+                            MEAN_NOISE_ALLPIXELS= payload['MeanNoiseAllPixels'],
+                            WIDTH_NOISE_ALLPIXELS= payload['WidthNoiseAllPixels'],
+                    	    ADDR_PIXELS_NOISE= "%s"%payload['AddrPixelsNoise'], #['Value'],
+			    ADDR_PIXEL_NO_HIT="", #DA TOGLIERE
+#                    	    ADDR_PIXEL_NO_HIT= "%s"%payload['AddrPixelsNoise'] #['Value']
+                            HITRATENOMINAL=float(rate))
+                    print "Done with ana noise mod roc",rate, roc
+                    noisei = self.insertObject(noise)
+                    results.append(noisei)
+
+            return results
 
 
 #INSERTING XRAY INTO DB /tmp/xray/out/REV001/R001/M0000_XRayVcalCalibration_2015-02-01_12h34m_1422794101 None {'ROCsMoreThanOnePercent': None, 'minSlope': 48.171999999999997, 'QualificationType': 'XRayVcalCalibration', 'InputTarFile': None, 'minOffset': -1681.7429999999999, 'IVSlope': None, 'CycleTempLow': None, 'PHCalibration': None, 'Temperature': None, 'Hostname': 'UNKNOWN', 'CycleTempHigh': None, 'Comments': None, 'nCycles': None, 'Operator': 'UNKNOWN', 'Noise': None, 'Trimming': None, 'Vcal_Offset_Module': 55.472000000000001, 'Vcal_Slope_Module': 55.472000000000001, 'Slopes': [53.566000000000003, 60.165999999999997, 51.061, 59.375, 57.948, 57.463000000000001, 50.793999999999997, 52.689, 48.171999999999997, 55.966999999999999, 58.633000000000003, 58.619999999999997, 53.923000000000002, 50.662999999999997, 68.081999999999994, 50.426000000000002], 'AbsFulltestSubfolder': '/tmp/xray/out/REV001/R001/M0000_XRayVcalCalibration_2015-02-01_12h34m_1422794101/QualificationGroup/XrayCalibrationSpectrum_1', 'maxOffset': 127.083, 'ModuleID': 'M0000', 'TestCenter': 'UNKNOWN', 'maxSlope': 68.081999999999994, 'initialCurrent': None, 'Offsets': [-475.48700000000002, -790.88900000000001, 5.5330000000000004, -802.52099999999996, -484.28899999999999, -425.40300000000002, -188.99700000000001, -141.07300000000001, 127.083, -457.90600000000001, -632.15999999999997, -766.46100000000001, -616.27700000000004, -108.502, -1681.7429999999999, -276.50299999999999], 'Grade': None, 'AbsModuleFulltestStoragePath': '/tmp/xray/out/REV001/R001/M0000_XRayVcalCalibration_2015-02-01_12h34m_1422794101', 'avrgSlope': 55.471750000000007, 'FulltestSubfolder': 'QualificationGroup/XrayCalibrationSpectrum_1', 'CurrentAtVoltage150V': None, 'RelativeModuleFinalResultsPath': 'out/REV001/R001/M0000_XRayVcalCalibration_2015-02-01_12h34m_1422794101', 'PixelDefects': None, 'TestDate': '1422794101', 'MacroVersion': None, 'avrgOffset': -482.22468750000002, 'TestType': 'XrayCalibration_Spectrum'}
