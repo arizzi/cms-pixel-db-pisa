@@ -3,6 +3,7 @@ customjs={}
 customjs2={}
 groupby={}
 groupheader={}
+customServerSide={}
 ##################################### Automatic object views ######################################
 from pixelwebui import *
 import datetime
@@ -18,7 +19,7 @@ def renderString(column,objName):
 		return renderStrings[k]
 	return ''
 
-def fromObjectName(objName):
+def fromObjectName(objName,draw=False):
 	cols = []
 	if objName in  sortedCols :
 		cols = sortedCols[objName]
@@ -33,7 +34,7 @@ def fromObjectName(objName):
 	for attr in keys:
 	    if attr == "TRANSFER_ID" and table!="transfers" :
                 hasTrans=True
-	    if attr == "SESSION_ID" and table!="sessions" :
+	    if attr == "SESSION_ID" and table!="sessions" and table!="test_fullmodule" :
                 hasSession=True
 
 	#    print attr #,type(eval(objName+"."+attr)).__name__,"<br>"
@@ -59,7 +60,7 @@ def fromObjectName(objName):
 
 	for c in cols:
 	  if c.upper() != ID.upper() :
-	    cformat.append((c.lower().capitalize(),table+"."+c,renderString(c,objName)))
+	    cformat.append((c.lower().capitalize(),table+"."+c,renderString(c,objName) if not draw else '' ))
 	for r in refs:
 	    cformat.append((r.lower().capitalize(),'','"<a href=\\\"viewdetails.cgi?objName='+objName+'&'+ID+'="+"%s"%(o["'+IDF2+'"])+"&ref='+r+'\\\"> details</a></td>"'))
 
@@ -71,6 +72,7 @@ def fromObjectName(objName):
 		return 	IDF2,cformat,("select %s,Transfer.STATUS as Transfer_STATUS, Transfer.SENDER as Transfer_SENDER from %s left join transfers as Transfer on %s.TRANSFER_ID=Transfer.TRANSFER_ID WHERE  1 "%('%s',table,table)), ("select COUNT(1) from %s"%table)
 	elif hasSession :
 		cformat.insert(1,("Date","Session.DATE",""))
+		cformat.insert(1,("Center","Session.CENTER",""))
 		return 	IDF2,cformat,("select %s from %s  left outer join sessions as Session on Session.SESSION_ID=%s.SESSION_ID WHERE 1"%('%s',table,table)), ("select COUNT(1) from %s"%table)
 	else:
 		return 	IDF2,cformat,("select %s from %s WHERE 1"%('%s',table)), ("select COUNT(1) from %s"%table)
@@ -119,6 +121,8 @@ def testNotes(o,testname) :
          nk=testname+'_NOTES'
 	 if nk in o :
 	    note=o[nk]
+	 if "Test_Hdi_Validation_VISUAL_INSPECTION" in o and testname == "Test_Hdi_Validation":
+		 note="<i>%s</i><br>%s"% (o["Test_Hdi_Validation_VISUAL_INSPECTION"],note)
 	 if note and note != "" :
 		return "<br>%s"%note
 	 return "" 	
@@ -164,11 +168,13 @@ columns.append([
 	#("Electric","Test_Hdi_Electric.RESULT"," '%s (<a href=/cgi-bin/writers/edit.cgi?objName=Test_Hdi_Electric&TEST_ID=%s>edit</a>)'%(o['Test_Hdi_Electric_RESULT'],o['Hdi_LASTTEST_HDI_ELECTRIC']) if o['Test_Hdi_Electric_RESULT'] else '<a href=/cgi-bin/writers/newTest.cgi?objName=Test_Hdi_Electric&HDI_ID=%s>add test</a>'%o['Hdi_HDI_ID']"),
 	#("Validation","Test_Hdi_Validation.RESULT","o['Test_Hdi_Validation_RESULT'] if o['Test_Hdi_Validation_RESULT'] else '<a href=/cgi-bin/writers/newTest.cgi?objName=Test_Hdi_Validation&HDI_ID=%s>add test</a>'%o['Hdi_HDI_ID']"),
 #
-	("Reception","Test_Hdi_Reception.RESULT","testEntry(o,'Test_Hdi_Reception')"),
+
+	("Reception","Test_Hdi_Reception.RESULT","testEntry(o,'Test_Hdi_Reception')+('<br>%s'%(o['Test_Hdi_Reception_INSPECTION_FRONT']) if o['Test_Hdi_Reception_INSPECTION_FRONT'] is not None else '')"),
 	("TBM Gluing","Test_Hdi_TbmGluing.RESULT","hdiTbmGlue(o)"),
 	("Bonding","Test_Hdi_Bonding.RESULT","testEntry(o,'Test_Hdi_Bonding')"),
 #	("Electric","Test_Hdi_Electric.RESULT","testEntry(o,'Test_Hdi_Electric')"),
 	("Electric","Test_Hdi_Electric.RESULT","('%s %s(<a href=/cgi-bin/writers/edit.cgi?objName=Test_Hdi_Electric&TEST_ID=%s>edit</a>)%s'%(coloredResult(o['Test_Hdi_Electric_RESULT']),testDetails(o,'Test_Hdi_Electric'),o['Hdi_LASTTEST_HDI_ELECTRIC'],testNotes(o,'Test_Hdi_Electric')) if o['Test_Hdi_Electric_RESULT'] else 'n/a')+' <a href=/cgi-bin/writers/newTest.cgi?objName=Test_Hdi_Electric&HDI_ID=%s><img src=/icons/add.png width=16></a>'%o['Hdi_HDI_ID']"),
+	#("Validation","Test_Hdi_Validation.RESULT","testEntry(o,'Test_Hdi_Validation')+(' <br><i>%s</i>'%(o['Test_Hdi_Validation_VISUAL_INSPECTION']) if o['Test_Hdi_Validation_VISUAL_INSPECTION'] is not None else '')"),
 	("Validation","Test_Hdi_Validation.RESULT","testEntry(o,'Test_Hdi_Validation')"),
 	("","Hdi.LASTTEST_HDI_ELECTRIC","NOPRINT"),
 	("","Hdi.LASTTEST_HDI_BONDING","NOPRINT"),
@@ -184,6 +190,8 @@ columns.append([
 	("","Test_Hdi_TbmGluing.NOTES","NOPRINT"),
 	("","Test_Hdi_Validation.NOTES","NOPRINT"),
 	("","Test_Hdi_Bonding.NOTES","NOPRINT"),
+	("","Test_Hdi_Validation.VISUAL_INSPECTION","NOPRINT"),
+	("","Test_Hdi_Reception.INSPECTION_FRONT","NOPRINT"),
 
 ])
 rowkeys.append("Hdi_HDI_ID") #not obvious
@@ -298,6 +306,16 @@ def testEntryBM(o,testname,res="_RESULT",edit=False):
 #         ret+=testNotes(o,testname)
          return ret
 	
+def overrideGrade(o,oo) :
+	ret = ""
+	if oo is None :
+		 ret+=' <a href=/cgi-bin/writers/newTest.cgi?objName=Test_BareModule_Grading&BAREMODULE_ID=%s><img src=/icons/add.png width=16></a>'%(o['BareModule_BAREMODULE_ID'])
+	else :
+		ret = gradeColor(oo)
+		ret+=' <a href=/cgi-bin/writers/edit.cgi?objName=Test_BareModule_Grading&TEST_ID=%s>edit</a>'%(o['Test_BareModule_Grading_TEST_ID'])
+	return ret
+
+
 
 columns.append([
 	("BAREMODULE  ID","BareModule.BAREMODULE_ID","'<a href=/cgi-bin/viewdetails.cgi?objName=BareModule&BAREMODULE_ID=%s>%s</a>'%(o['BareModule_BAREMODULE_ID'],o['BareModule_BAREMODULE_ID'])"),
@@ -314,6 +332,7 @@ columns.append([
 	("IDig Grade","idigGrade(BareModule.BAREMODULE_ID)","'<a href=/cgi-bin/view.cgi?objName=Test_BM_ROC_DacParameters&BAREMODULE_ID=%s>%s</a>'%(o['BareModule_BAREMODULE_ID'],oo)"),
         ("#rework","BareModule.TYPE",""),
         ("Final GR","bmGrade(BareModule.BAREMODULE_ID)","gradeColor(oo)"),
+        ("Override Grade","Test_BareModule_Grading.GLOBAL_GRADING","overrideGrade(o,oo)"),
         ("i1@20&deg;BAM","Test_IV.I1","'%6g'%corTemp(o['Test_IV_I1'],o['Test_IV_TEMPERATURE']) if oo is not None else 'n/a'"),
         ("i2@20&deg;BAM","Test_IV.I2","'%6g'%corTemp(o['Test_IV_I2'],o['Test_IV_TEMPERATURE']) if oo is not None else 'n/a'"),
 #        ("i1@BAM","Test_IV.I1","'%6g'%o['Test_IV_I1'] if o['Test_IV_I1'] is not None else 'n/a'"),
@@ -328,6 +347,7 @@ columns.append([
         ("","Test_IV.TEMPERATURE","NOPRINT"),
         ("","Test_IVCIS.TEMPERATURE","NOPRINT"),
         ("","Test_BareModule_Inspection.TEST_ID","NOPRINT"),
+        ("","Test_BareModule_Grading.TEST_ID","NOPRINT"),
         ("","Test_BareModule_QA_BumpBonding.TEST_ID","NOPRINT"),
         ("","Test_BareModule_QA_PixelAlive.TEST_ID","NOPRINT"),
 	
@@ -338,11 +358,12 @@ rowkeys.append("BareModule_BAREMODULE_ID") #not obvious
 queries.append("select %s,Transfer.STATUS as Transfer_STATUS, Transfer.SENDER as Transfer_SENDER "
 #	        ",(select count(1) from test_bm_roc_dacparameters where test_bm_roc_dacparameters.BAREMODULE_ID = BareModule.BAREMODULE_ID and idig <= 65) as belowDig"
 #	        ",(select count(1) from test_bm_roc_dacparameters where test_bm_roc_dacparameters.BAREMODULE_ID = BareModule.BAREMODULE_ID and idig > 65) as aboveDig"
-		" from inventory_baremodule as BareModule join transfers as Transfer on BareModule.TRANSFER_ID=Transfer.TRANSFER_ID "
+		" from inventory_baremodule as BareModule left outer join transfers as Transfer on BareModule.TRANSFER_ID=Transfer.TRANSFER_ID "
 		"left outer join test_baremodule_qa as Test_BareModule_QA_PixelAlive on BareModule.LASTTEST_BAREMODULE_QA_PIXELALIVE=Test_BareModule_QA_PixelAlive.TEST_ID "
 		"left outer join test_baremodule_qa as Test_BareModule_QA_BumpBonding on BareModule.LASTTEST_BAREMODULE_QA_BONDING=Test_BareModule_QA_BumpBonding.TEST_ID "
 #		"left outer join test_baremodule_grading as Test_BareModule_Grading on BareModule.LASTTEST_BAREMODULE_GRADING=Test_BareModule_Grading.TEST_ID "
 		"left outer join test_baremodule_inspection as Test_BareModule_Inspection on BareModule.LASTTEST_BAREMODULE_INSPECTION=Test_BareModule_Inspection.TEST_ID "
+		"left outer join test_baremodule_grading as Test_BareModule_Grading on BareModule.BAREMODULE_ID=Test_BareModule_Grading.BAREMODULE_ID "
 		"left outer join inventory_fullmodule as FM on BareModule.BAREMODULE_ID = FM.BAREMODULE_ID "
 		"left outer join test_iv as Test_IVCIS on Test_IVCIS.SENSOR_ID=BareModule.SENSOR_ID and Test_IVCIS.TYPE='CIS' "
 	        "left outer join test_iv as Test_IV on Test_IV.test_id = (select TEST_ID from test_iv where  sensor_id=BareModule.sensor_id and type='BAM' order by TEST_ID desc limit 1)"
@@ -402,9 +423,19 @@ header.append('''<h1>XRay Tests summary  view</h1>
 ''')
 def vcalAna(o):
    path=o['DataVcal_PFNs']
-   m=re.match("file:(/data/pixels.*)",path) 
-   if m :
-	  return '%s(<a href=%s/TestResult.html>results</a>)'%(o['Test_FullModule_XRay_Vcal_Module_Analysis_TEST_ID'],m.group(1))
+   if path is not None:
+     m=re.match("file:(/data/pixels.*)",path) 
+     if m :
+	  return '%s<br><a href=%s/TestResult.html>results</a>'%(o['Test_FullModule_XRay_Vcal_Module_Analysis_TEST_ID'],m.group(1))
+   return ""
+
+
+def hrAna(o):
+   path=o['DataHR_PFNs']
+   if path is not None :
+     m=re.match("file:(/data/pixels.*)",path) 
+     if m :
+	  return '<a href=%s/TestResult.html>results</a>'%(m.group(1))
    return ""
 
 
@@ -412,13 +443,15 @@ def rocLink(o) :
    return "<a href=/cgi-bin/rawPredefinedView.cgi?viewNumber=8&exact=1&PROCESSING_ID=%s&FULLMODULETEST_ID=%s>per roc</a>"%(o['Test_FullModule_XRay_Vcal_LAST_PROCESSING_ID'],o['Test_FullModule_XRay_Vcal_TEST_ID'])
 
 columns.append([
-        ("FULL MODULE  ID","FullModule.FULLMODULE_ID","'%s<br><a href=/cgi-bin/viewdetails.cgi?objName=FullModule&FULLMODULE_ID=%s>mod details</a> | %s'%(o['FullModule_FULLMODULE_ID'],o['FullModule_FULLMODULE_ID'],rocLink(o))"),
+        ("FULL MODULE  ID","FullModule.FULLMODULE_ID","'%s<br><a href=/cgi-bin/viewdetails.cgi?objName=FullModule&FULLMODULE_ID=%s>mod details</a> '%(o['FullModule_FULLMODULE_ID'],o['FullModule_FULLMODULE_ID'])"),
         ("Center","Transfer.RECEIVER","o['Transfer_RECEIVER'] if o['Transfer_STATUS']=='ARRIVED' else  o['Transfer_SENDER'] "),
-	("Analysis ID","Test_FullModule_XRay_Vcal_Module_Analysis.TEST_ID","vcalAna(o)"),
-	("Slope","Test_FullModule_XRay_Vcal_Module_Analysis.SLOPE","'%4.2f'%oo"),
-	("Offset","Test_FullModule_XRay_Vcal_Module_Analysis.OFFSET","'%4.2f'%oo"),
+	("Analysis ID","Test_FullModule_XRay_Vcal_Module_Analysis.TEST_ID","vcalAna(o)+' | '+rocLink(o)"),
+	("Slope","Test_FullModule_XRay_Vcal_Module_Analysis.SLOPE","'%4.2f'%oo if oo is not None else ''"),
+	("Offset","Test_FullModule_XRay_Vcal_Module_Analysis.OFFSET","'%4.2f'%oo if oo is not None else ''"),
 	("Grade Vcal","Test_FullModule_XRay_Vcal_Module_Analysis.GRADE",""),
 #	("#Pix w/ low eff","GREATEST(Test_FullModule_XRay_HR_Module50_Analysis.N_PIXELS_EFF_BELOW_CUT,Test_FullModule_XRay_HR_Module150_Analysis.N_PIXELS_EFF_BELOW_CUT)",""),
+
+	("HR ID","HRS.TEST_ID","'%s (%s)'%(viewDetails(oo,'Test_FullModule_XRay_HR_Summary') , hrAna(o))"),
 	("Eff @50","HRA.INTERP_EFF_50",""),
 	("Eff @120","HRA.INTERP_EFF_120",""),
 	("#Pix Hot","HRA.N_HOT_PIXELS",""),
@@ -429,7 +462,8 @@ columns.append([
 
         ("","Test_FullModule_XRay_Vcal.LAST_PROCESSING_ID","NOPRINT"),
         ("","Test_FullModule_XRay_Vcal.TEST_ID","NOPRINT"),
-
+        ("","DataHR.PFNs","NOPRINT"),
+      
 #        ("Inspection","Test_BareModule_Inspection.RESULT","testEntryBM(o,'Test_BareModule_Inspection')"),
 #       ("BumpBonding Tot failures","Test_BareModule_QA_BumpBonding.TOTAL_FAILURES","testEntryBM(o,'Test_BareModule_QA_BumpBonding','_TOTAL_FAILURES')"),
 #        ("PixelAlive Tot failures","Test_BareModule_QA_PixelAlive.TOTAL_FAILURES","testEntryBM(o,'Test_BareModule_QA_PixelAlive','_TOTAL_FAILURES')"),
@@ -454,6 +488,7 @@ queries.append("select %s,Transfer.STATUS as Transfer_STATUS, Transfer.SENDER as
                 "left outer join Test_FullModule_XRay_HR_Summary as HRS on FullModule.LASTTEST_XRAY_HR=HRS.TEST_ID "
                 "left outer join Test_FullModule_XRay_HR_Module_Analysis_Summary as HRA on HRA.TEST_XRAY_HR_SUMMARY_ID=HRS.TEST_ID and  HRA.PROCESSING_ID=HRS.LAST_PROCESSING_ID "
                 "left outer join Test_FullModule_XRay_HR_Module_Noise as HRN on HRN.TEST_XRAY_HR_SUMMARY_ID=HRS.TEST_ID and  HRN.PROCESSING_ID=HRS.LAST_PROCESSING_ID "
+		"left outer join test_data as DataHR on HRA.DATA_ID=DataHR.DATA_ID "
                 " WHERE (Test_FullModule_XRay_Vcal.TEST_ID <> 0  OR HRS.TEST_ID <> 0) ")
 
 
@@ -466,6 +501,8 @@ countqueries.append("select COUNT(1) from inventory_fullmodule as FullModule lef
                 "left outer join Test_FullModule_XRay_HR_Module_Analysis_Summary as HRA on HRA.TEST_XRAY_HR_SUMMARY_ID=HRS.TEST_ID and  HRA.PROCESSING_ID=HRS.LAST_PROCESSING_ID "
                 "left outer join Test_FullModule_XRay_HR_Module_Noise as HRN on HRN.TEST_XRAY_HR_SUMMARY_ID=HRS.TEST_ID and  HRN.PROCESSING_ID=HRS.LAST_PROCESSING_ID "
                 " WHERE (Test_FullModule_XRay_Vcal.TEST_ID <> 0  OR HRS.TEST_ID <> 0) ")
+
+groupheader[7]="<tr><th  style=\" border-right: 1px solid #111111;\"  nosearch=1 colspan=2>Inventory</th><th  style=\" border-right: 1px solid #111111;\" nosearch=1 colspan=4>VCAL</th><th nosearch=1  style=\" border-right: 1px solid #111111;\" colspan=6>High Rate</th> <th  style=\" border-right: 1px solid #111111;\"  nosearch=1 colspan=1>Final</th></tr>"
 
 ################################################ XRay ROC View ########################################
 #view8
@@ -515,10 +552,13 @@ columns.append([
 		("Status","InputTar.STATUS",""),
 		("TestName","InputTar.TESTNAME",""),
 		("Proc ID","ProcessingRun.RUN_ID",""),
-		("Result1,macro,Result2","ProcessingRun.STATUS","procResult(o)"),
+		("RunStatus","ProcessingRun.STATUS","procResult(o)"),
+		("ExitCode","ProcessingRun.EXIT_CODE",""),
+		("Upload","ProcessedDir.UPLOAD_STATUS",""),
+		("Macro","ProcessingRun.MACRO_VERSION",""),
 		("Log files","ProcessingRun.OUTLOG","logs(o)"),
 		("","ProcessingRun.MACRO_VERSION","NOPRINT"),
-		("HIDDEN","ProcessingRun.EXIT_CODE","repro(o)"),
+#	("HIDDEN","ProcessingRun.EXIT_CODE","repro(o)"),
 		("","ProcessingRun.STATUS","NOPRINT"),
 		("","ProcessedDir.UPLOAD_STATUS","NOPRINT"),
 ])
@@ -531,6 +571,12 @@ countqueries.append("select COUNT(1) from inputtar as InputTar"
                 " left join processingrun as ProcessingRun on InputTar.TAR_ID=ProcessingRun.TAR_ID"
                 " left join outputdir as ProcessedDir on ProcessedDir.PROCESSING_RUN_ID=ProcessingRun.RUN_ID"
                 "  WHERE 1")
+customjs2[9]='''$('#example').dataTable().fnFakeRowspan(0);
+               $('#example').dataTable().fnFakeRowspan(1);
+              $('#example').dataTable().fnFakeRowspan(2);
+              $('#example').dataTable().fnFakeRowspan(3);
+'''
+
 def repro(o):
 	return "<a href=/cgi-bin/writers/reprocess.cgi?processingrun=%s>reprocess this </a>"  % (o["ProcessingRun_RUN_ID"])
 
@@ -549,11 +595,11 @@ def procResult(o):
 	exitcode = o["ProcessingRun_EXIT_CODE"]
 	status = o["ProcessingRun_STATUS"]
 	if exitcode > 0 or (upload is not None and upload != "ok") :
-                return "<font color=red>%s(%s), %s, %s</font>"%(status,exitcode,macro,upload)
+                return "<font color=red>%s</font>"%(status)
 	elif exitcode == -1 :
-                return "<font color=blue>%s(%s), %s</font>"%(status,exitcode,macro)
+                return "<font color=blue>%s</font>"%(status)
         else:
-                return "%s(%s), %s, %s"%(status,exitcode,macro,upload)
+                return "%s"%(status)
 
 
 #headers = ["NAME","Date","Center","Status","TestName","LastProcessing(code),macro","logs"]
@@ -595,7 +641,7 @@ columns.append([
 	("Center","Session.CENTER",""),
 	("Macro Version","FMA.MACRO_VERSION",""),
 	("FMS ID","FMS.TEST_ID","'<a href=viewdetails.cgi?objName=Test_FullModuleSummary&TEST_ID=%s>details</a>'%oo"),
-	("HIDDEN","Data.PFNs"," '<a href=%s/TestResult.html>plot</a>'%re.sub('file:','',oo)"),
+	("HIDDEN","Data.PFNs"," '<a href=%s/TestResult.html>plot</a>'%re.sub('file:','',oo) if oo else '' "),
 	("HIDDEN","IV.TEST_ID",""),
 	("HIDDEN","FMS.QUALIFICATIONTYPE",""),
 #	("Slope2","IV.SLOPE"," oo if oo !=0 else 'n/a'"),
@@ -639,7 +685,7 @@ columns.append([
 	("Macro Version","FMA.MACRO_VERSION",""),
 	("Analysis ID","FMA.TEST_ID","viewDetails(oo,'Test_FullModuleAnalysis')+'|<a href=http://cmspixelprod.pi.infn.it/cgi-bin/rawPredefinedView.cgi?viewNumber=4&FULLMODULEANALYSISTEST_ID=%s>dac</a>|<a href=http://cmspixelprod.pi.infn.it/cgi-bin/rawPredefinedView.cgi?viewNumber=3&FULLMODULEANALYSISTEST_ID=%s>perf</a>'%(oo,oo)"),
 	#("Plots","Data.PFNs","tempWithPlot(o)"),
-	("Plots","Data.PFNs"," '<a href=%s/TestResult.html>plot</a>'%re.sub('file:','',oo)"),
+	("Plots","Data.PFNs"," '<a href=%s/TestResult.html>plot</a>'%re.sub('file:','',oo) if oo else '' "),
 	#("Step","FMT.TEMPNOMINAL","tempWithPlot(o)"),
 	("STATUS","FM.STATUS",""),
 	("T","FMA.TEMPVALUE",""),
@@ -676,7 +722,7 @@ queries.append("select %s from test_fullmodule as FMT "
                "left join test_fullmodulesession as FMSE on FMSE.TEST_ID=FMT.SESSION_ID "
                "left join sessions as Session on FMSE.SESSION_ID=Session.SESSION_ID "
                "left join test_data as Data on FMA.DATA_ID=Data.DATA_ID "
-               "left join test_iv as IV on IV.REF_ID=FMA.TEST_ID WHERE 1 ")
+               "left join test_iv as IV on IV.REF_ID=FMA.TEST_ID WHERE FMS.FULLMODULE_ID=FM.FULLMODULE_ID ")
 
 countqueries.append("select COUNT(1)  from test_fullmodule as FMT "
                "left join test_fullmodulesummary as FMS on FMS.TEST_ID = FMT.SUMMARY_ID "
@@ -741,6 +787,7 @@ columns.append([
         ("HR","XR_HRGRADE"," gradeColor(oo) if oo is not None  else 'n/a'"),
         ("GR","XR_GRADE"," gradeColor(oo) if oo is not None  else 'n/a'"),
         ("Grade","bmGrade_IV_BAREMODULE_ID"," gradeColor(oo) if oo !=0 else 'n/a'"),
+#        ("BM ID","BM.BAREMODULE_ID","viewDetails(oo,'BareModule')"),
         ("CIS","IV_CIS"," '%s'%(viewDetails(o['IV_CIS_ID'],'Test_IV',gradeColor('%1.0f'%float(oo)))) if oo is not None else ''"),
         ("NEW","IV_NEW"," '%s'%(viewDetails(o['IV_NEW_ID'],'Test_IV',gradeColor(oo))) if oo is not None else ''"),
         ("CUT","IV_CUT","'%s'%(viewDetails(o['IV_CUT_ID'],'Test_IV',gradeColor(oo))) if oo is not None else ''"),
@@ -762,6 +809,7 @@ columns.append([
         ("HIDDEN","Transfer_STATUS",""),
 
          ])
+customServerSide[12]="false"
 groupheader[12]="<tr><th  style=\" border-right: 1px solid #111111;\"  nosearch=1 colspan=4>Inventory</th><th  style=\" border-right: 1px solid #111111;\" nosearch=1 colspan=3>Full Qualification</th><th nosearch=1  style=\" border-right: 1px solid #111111;\" colspan=2>More full tests</th> <th  style=\" border-right: 1px solid #111111;\"  nosearch=1 colspan=3>XRay tests</th> <th  style=\" border-right: 1px solid #111111;\"  nosearch=1 colspan=1>BareModule test</th><th nosearch=1 colspan=5 style=\" border-left: 1px solid #111111;\" >IV Tests</th></tr>"
 rowkeys.append("FM_FULLMODULE_ID")
 groupby[12]="group by FM_FULLMODULE_ID"
@@ -787,6 +835,72 @@ countqueries.append("select COUNT(1) from view12 where 1 ")
                "left join viewXRay as XR on FM.FULLMODULE_ID=XR.FULLMODULE_ID "
                " where FM.STATUS<>'HIDDEN' ")
 '''
+
+
+#view13
+################################################ Full Module all xray hr View ########################################
+
+header.append('''<h1>HR XRay Module test results (all tests, all analysis, including hidden modules) </h1>''')
+columns.append([
+        ("Mod ID","FMS.FULLMODULE_ID","viewDetails(oo,'FullModule')"),
+        ("Summary ID","FMS.TEST_ID","'%s '%(viewDetails(oo,'Test_FullModule_XRay_HR_Summary') )"),
+        ("Date","Session.DATE",""),
+#       ("Step","FMT.TEMPNOMINAL",""),
+        ("Proc & Summ. ID","FMA.PROCESSING_ID","'%s (%s)'%(oo,o['FMS_TEST_ID'])"),
+        ("Macro Version","FMA.MACRO_VERSION",""),
+        ("AnaSummary ID","FMA.TEST_ID","viewDetails(oo,'Test_FullModule_XRay_HR_Module_Analysis_Summary')"),
+        #("Plots","Data.PFNs","tempWithPlot(o)"),
+        ("Noise ID","FMT.TEST_ID","viewDetails(oo,'Test_FullModule_XRay_HR_Module_Noise')"),
+        ("Plots","DataHR.PFNs"," hrAna(o)"),
+        #("Step","FMT.TEMPNOMINAL","tempWithPlot(o)"),
+        ("STATUS","FM.STATUS",""),
+        ("T","FMS.TEMPNOMINAL",""),
+#       ("Plot","Data.PFNs"," '<a href=%s/TestResult.html>plot</a>'%re.sub('file:','',oo)"),
+        ("GR","FMA.GRADE","gradeColor(oo)"),
+#       ("IV","IV.GRADE"," gradeColor(oo) if oo !=0 else 'n/a'"),
+#       ("Slope","FMA.IVSLOPE"," viewDetails(o['IV_TEST_ID'],'Test_IV',oo) if o['IV_TEST_ID'] is not None else ( oo if oo !=0 else 'n/a')"),
+#       ("Slope","FMA.IVSLOPE"," oo if oo !=0 else 'n/a'"),
+#       ("I","FMA.I150"," '%s uA'%oo if oo != -1 else 'n/a'"),
+#       ("#Def","FMA.PIXELDEFECTS",""),
+#       ("ROC>1%","FMA.ROCSWORSEPERCENT",""),
+#       ("PHCAL ID","FMA.PHCAL",""),
+#       ("TRIM","FMA.TRIMMING",""),
+#       ("Comment","FMA.COMMENT",""),
+#      ("Type","FMS.QUALIFICATIONTYPE",""),
+        ("Center","Session.CENTER",""),
+#       ("HIDDEN","IV.TEST_ID",""),
+        ("Eff @50","FMA.INTERP_EFF_50",""),
+        ("Eff @120","FMA.INTERP_EFF_120",""),
+        ("#Pix Hot","FMA.N_HOT_PIXELS",""),
+        ("#Pix NoHit","GREATEST(FMA.N_PIXEL_NO_HIT_50,FMA.N_PIXEL_NO_HIT_150)",""),
+
+#       ("FMS ID","FMS.TEST_ID","'<a href=viewdetails.cgi?objName=Test_FullModuleSummary&TEST_ID=%s>details</a>'%oo"),
+#       ("FMSE id","FMSE.TEST_ID",""),
+#       ("FMSE SE","FMSE.SESSION_ID",""),
+         ])
+customjs2[13]='''$('#example').dataTable().fnFakeRowspan(0);
+               $('#example').dataTable().fnFakeRowspan(1);
+              $('#example').dataTable().fnFakeRowspan(2);
+              $('#example').dataTable().fnFakeRowspan(3);
+              $('#example').dataTable().fnFakeRowspan(4);
+'''
+rowkeys.append("FMA_TEST_ID")
+queries.append("select %s from Test_FullModule_XRay_HR_Summary as FMS "
+               "left join Test_FullModule_XRay_HR_Module_Analysis_Summary as FMA on FMS.TEST_ID=FMA.TEST_XRAY_HR_SUMMARY_ID "
+               "left join Test_FullModule_XRay_HR_Module_Noise as FMT on FMS.TEST_ID=FMT.TEST_XRAY_HR_SUMMARY_ID and FMT.PROCESSING_ID=FMA.PROCESSING_ID "
+               "join inventory_fullmodule as FM on FM.FULLMODULE_ID = FMS.FULLMODULE_ID "
+               "left join sessions as Session on FMA.SESSION_ID=Session.SESSION_ID "
+               "left join test_data as DataHR on FMA.DATA_ID=DataHR.DATA_ID WHERE 1 ")
+
+countqueries.append("select COUNT(1) from Test_FullModule_XRay_HR_Summary as FMS "
+               "left join Test_FullModule_XRay_HR_Module_Analysis_Summary as FMA on FMS.TEST_ID=FMA.TEST_XRAY_HR_SUMMARY_ID "
+               "left join Test_FullModule_XRay_HR_Module_Noise as FMT on FMS.TEST_ID=FMT.TEST_XRAY_HR_SUMMARY_ID and FMT.PROCESSING_ID=FMA.PROCESSING_ID "
+               "join inventory_fullmodule as FM on FM.FULLMODULE_ID = FMS.FULLMODULE_ID "
+               "left join sessions as Session on FMA.SESSION_ID=Session.SESSION_ID "
+               "left join test_data as Data on FMA.DATA_ID=Data.DATA_ID WHERE 1 ")
+
+
+
 ############################################## tools#####################################################
 def coloredResult(res) :
 	if res=="OK" :

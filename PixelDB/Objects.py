@@ -459,7 +459,7 @@ class Test_BareModule_QA (object):
       DATA_ID=Int()
       data=Reference(DATA_ID,Data.DATA_ID)
       TYPE = Unicode()
-      TOTAL_FAILURES = Unicode()
+      TOTAL_FAILURES = Int()
       TEMPERATURE = Float()
       HUMIDITY = Float()
 #
@@ -474,7 +474,7 @@ class Test_BareModule_QA (object):
          self.HUMIDITY   =  HUMIDITY
          self.FAILURES= unicode(FAILURES)
          self.BAREMODULE_ID= unicode(BAREMODULE_ID)
-         self.TOTAL_FAILURES = unicode(TOTAL_FAILURES)
+         self.TOTAL_FAILURES = TOTAL_FAILURES
       def splitObjects(self,pippo, i):
           result =((unicode(pippo)).split(","))[i]
           return result
@@ -522,43 +522,12 @@ class Test_BareModule_Grading(object):
       data=Reference(DATA_ID,Data.DATA_ID)
 
       GLOBAL_GRADING = Unicode()
-      GLOBAL_GRADING_1 = Unicode()
-      GLOBAL_GRADING_2 = Unicode()
-      GLOBAL_GRADING_3 = Unicode()
-      GLOBAL_GRADING_4 = Unicode()
-      GLOBAL_GRADING_5 = Unicode()
-      GLOBAL_GRADING_6 = Unicode()
-      GLOBAL_GRADING_7 = Unicode()
-      GLOBAL_GRADING_8 = Unicode()
-      GLOBAL_GRADING_9 = Unicode()
-      GLOBAL_GRADING_10 = Unicode()
 
-      def __init__ (self, SESSION_ID, BAREMODULE_ID , DATA_ID , GLOBAL_GRADING, 
-          GLOBAL_GRADING_1, 
-          GLOBAL_GRADING_2, 
-          GLOBAL_GRADING_3, 
-          GLOBAL_GRADING_4,   
-          GLOBAL_GRADING_5, 
-          GLOBAL_GRADING_6, 
-          GLOBAL_GRADING_7, 
-          GLOBAL_GRADING_8, 
-          GLOBAL_GRADING_9, 
-          GLOBAL_GRADING_10):
-          
+      def __init__ (self, SESSION_ID, BAREMODULE_ID , DATA_ID , GLOBAL_GRADING):
           self.DATA_ID = DATA_ID
           self.SESSION_ID= SESSION_ID
           self.BAREMODULE_ID= unicode(BAREMODULE_ID)
           self.GLOBAL_GRADING  = unicode(GLOBAL_GRADING)
-          self.GLOBAL_GRADING_1 = unicode (GLOBAL_GRADING_1 )
-          self.GLOBAL_GRADING_2 = unicode (GLOBAL_GRADING_2 )
-          self.GLOBAL_GRADING_3 = unicode (GLOBAL_GRADING_3 )
-          self.GLOBAL_GRADING_4 = unicode (GLOBAL_GRADING_4 )
-          self.GLOBAL_GRADING_5 = unicode (GLOBAL_GRADING_5 )
-          self.GLOBAL_GRADING_6 = unicode (GLOBAL_GRADING_6 )
-          self.GLOBAL_GRADING_7 = unicode (GLOBAL_GRADING_7 )
-          self.GLOBAL_GRADING_8 = unicode (GLOBAL_GRADING_8 )
-          self.GLOBAL_GRADING_9 = unicode (GLOBAL_GRADING_9 )
-          self.GLOBAL_GRADING_10 = unicode (GLOBAL_GRADING_10 )
 
 
 
@@ -969,7 +938,7 @@ class Test_Hdi_Electric(object):
       def __init__(self,SESSION_ID,HDI_ID,RESULT,DATA_ID,  HV600_CURRENT_uA, DIGITAL_CURRENT_mA, NUM_TBM, SIGNALS_AND_LVS="",NOTES=""):
 	  self.init_maps()
           nullOsc = "0"*(self.TOT_SIZE)
-
+	  self.NOTES=unicode(NOTES)
           self.SESSION_ID=SESSION_ID
           self.HDI_ID=unicode(HDI_ID)
           self.RESULT=unicode(RESULT)
@@ -1953,3 +1922,4 @@ BareModule.test_qa_bonding =  Reference(BareModule.LASTTEST_BAREMODULE_QA_BONDIN
 BareModule.test_qa_pixelalive =  Reference(BareModule.LASTTEST_BAREMODULE_QA_PIXELALIVE, Test_BareModule_QA.TEST_ID )
 BareModule.test_grading =  Reference(BareModule.LASTTEST_BAREMODULE_GRADING, Test_BareModule_Grading.TEST_ID )
 Roc.wafer = Reference(Roc.WAFER_ID, RocWafer.ROCWAFER_ID)
+

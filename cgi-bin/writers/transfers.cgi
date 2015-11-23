@@ -33,7 +33,7 @@ print '''
                                 $('#transfers2').dataTable( {
 		                        "order": [[ 4,"desc" ]],
 //                                        "sDom": 'C<"clear">lfrtip',
-                                        "iDisplayLength" : 50,
+                                        "iDisplayLength" : 20,
 
                                         } );
                                 $('#transfers').dataTable( {
@@ -184,7 +184,7 @@ if action == "Transfer with children" or action == "Transfer" :
 	   print "</table>"
     if len(objs) > 0 :
 	    print "You are going to transfer:<br><table border=1><tr><td>Type</td><td>Id</td></tr>"
-	    print "<form>"
+	    print "<form method=post>"
 	    for i in objs : 
 		print "<tr><td>%s</td><td>%s</td></tr>" % (i[0],i[1])		
 		print "<input type=\"hidden\" name=\"object[]\" value=\"%s,%s\" >" % (i[0],i[1])		
@@ -307,13 +307,13 @@ if action == "empty" :
    print "</tbody><tfoot></tfoot></table>"
 
    if True:
-    print "</p><br><h2> Last 20 received transfers (excluding factories, autogen and self-transfer )</h2><p>"
+    print "</p><br><h2> Last 200 received transfers (excluding factories, autogen and self-transfer )</h2><p>"
     transfers = pdb.store.find(Transfer,Transfer.STATUS==unicode("ARRIVED"),Transfer.SENDER!=u"FACTORY",Transfer.SENDER!=u"CIS", Transfer.SENDER!=u"RTI",Transfer.SENDER!=u"IZM",Transfer.SENDER!=u"IZM-INFN", Transfer.SENDER!=u"RTI-KIT",Transfer.SENDER!=u"Dectris",Transfer.SENDER!=u"Advacam",Not(Transfer.COMMENT.like(u"%autogen%")),Transfer.SENDER!=Transfer.RECEIVER,Transfer.SENDER!=u"any")
     print "<table class=display id=transfers2 width=\"100%\">"
     print " <thead> <tr>"
     print "<th>Sender</th><th>Receiver</th><th>Comment</th><th>Status</th><th>Date sent</th><th>Details</th>"
     print "</thead></tr><tbody>"
-    for o in transfers.order_by(Desc(Transfer.ISSUED_DATE))[:20] :
+    for o in transfers.order_by(Desc(Transfer.ISSUED_DATE))[:200] :
       print "<tr>"
       print "<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td><a href=transfers.cgi?submit=details&TRANSFER_ID=%s </a>details</td>" %(o.SENDER,o.RECEIVER,o.COMMENT,o.STATUS,o.ISSUED_DATE,o.TRANSFER_ID )
     print "</tbody><tfoot></tfoot></table>"

@@ -25,11 +25,13 @@ toprint=[]
 
 objName = form.getfirst('objName', 'empty')
 checked = form.getfirst('exact', "")
+ssOverride = form.getfirst('serverSide', None)
 if checked == "1" :
 	checked="checked"
 	
 searchar=[]
 custom=""
+serverside="true"
 if objName == 'empty' :
 	viewNumber = int(form.getfirst('viewNumber', '0'))
 	if viewNumber >= len(columns) :
@@ -40,6 +42,7 @@ if objName == 'empty' :
 	custom=customjs.get(viewNumber,"")
 	custom2=customjs2.get(viewNumber,"")
 	gh=groupheader.get(viewNumber,"")
+	serverside=customServerSide.get(viewNumber,"true")
 else:
 	viewNumber=-1
 	objName = parseObjName(cgi.escape(objName))
@@ -59,7 +62,8 @@ for p in toprint :
 
 searcharray='%s'%searchar
 		
-
+if ssOverride is not None :
+	serverside=ssOverride
 #topush+=",%s"%(form.getfirst('topush', ''))
 
 print "<html>\n        <head>\n         "      
@@ -107,7 +111,7 @@ $(document).ready(function() {
 				        [25, 50, 100, 200, "All"]],
 			"iDisplayLength" : 25,
 			"bProcessing": true,
-			"bServerSide": true,
+			"bServerSide": %s,
 			 %s //room for other custom stuff such as the order string
 			 "tableTools": {
 			            "sSwfPath": "//cdn.datatables.net/tabletools/2.2.0/swf/copy_csv_xls_pdf.swf"
@@ -251,7 +255,7 @@ $(document).ready(function() {
 	                </script>
 <body>
 <main>
-''' %(searcharray,custom,topush,custom2,viewNumber,objName)
+''' %(searcharray,serverside,custom,topush,custom2,viewNumber,objName)
 sys.path.append("../PixelDB")
 
 from storm import *

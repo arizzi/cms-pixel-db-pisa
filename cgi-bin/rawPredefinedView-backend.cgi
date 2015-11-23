@@ -28,7 +28,8 @@ if objName == 'empty' :
 else:
 	viewNumber=-1
         objName = parseObjName(cgi.escape(objName))
-        rowkey,cols,query,countquery = fromObjectName(objName)
+	draw= (form.getfirst('draw', '0') == '1')
+        rowkey,cols,query,countquery = fromObjectName(objName,draw)
 	sGroup=groupby.get(objName,' ')
 
 dbname="prod_pixel"
@@ -50,6 +51,7 @@ import random
 
 
 debug = form.getfirst("debug", "0")
+#debug="1"
 all = form.getfirst("all", "0")
 first = form.getfirst("iDisplayStart", "0")
 llast = form.getfirst("iDisplayLength", "-1")
@@ -68,16 +70,17 @@ if debug == "1":
 	print cols
 	print "COLNAMESSSSSSSSSSSSSSS",colNames
 
+sOrder = ""
 if sortCol != "empty" :
 		sOrder = "ORDER BY  "
 	        dosort=0
-                ncols=int(form.getfirst('iSortingCols'))
+                ncols=int(form.getfirst('iSortingCols',0))
 		for  i in range (0,ncols) :
 			sortcol= int(form.getfirst("iSortCol_%d"%i))
-			if form.getfirst('bSortable_%d'%sortcol) == "true" :
+			if form.getfirst('bSortable_%d'%sortcol,"true") == "true" :
 				if dosort !=0 :
 					  sOrder+=" , "
-				if form.getfirst("sSortDir_%d"%i) == "asc" :
+				if form.getfirst("sSortDir_%d"%i,"asc") == "asc" :
 					dosort=1
 					sOrder += colNames[sortcol]+" asc "
 				else:
@@ -107,6 +110,7 @@ escapedSearch = escape_string(sSearch)
 if sSearch != "" :
                 sWhere = "AND (";
                 for c in colNames :
+		     if c != "" and c is not None :
                         if sWhere != "AND (":
                            sWhere += " OR "
                         sWhere += "%s LIKE '%%%s%%' " % (c,escapedSearch)
@@ -116,7 +120,7 @@ if sSearch != "" :
 
                 sWhere += ')'
 percol=""
-for  i in range (0,int(form.getfirst('iColumns'))) :
+for  i in range (0,int(form.getfirst('iColumns',0))) :
               searchcol= form.getfirst("sSearch_%d"%i,"")
               colnum=i
               colname = colNames[colnum]
@@ -135,7 +139,8 @@ if sWhere != "" and percol!= "":
    sWhere += "AND %s" % percol
 elif percol != "" :
   sWhere = " AND %s" % percol
-
+if debug == "1" :
+	print countquery
 cur.execute(countquery)
 l=cur.fetchone()
 count = l['COUNT(1)']
@@ -190,7 +195,11 @@ for o in cur.fetchall() :
 	if ev == '' :
 		row[i]="%s"%o[rn]
 	else :
-		row[i]=eval(ev)
+                if debug=="1":
+                  print "EEEEEEEVVVVVVV   ",ev
+                row[i]=eval(ev)
+                if debug=="1":
+                   print "AFTER"
 	i+=1
    row["DT_RowId"]=o[rowkey]
    output["aaData"].append(row)

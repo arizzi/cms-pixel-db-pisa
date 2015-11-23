@@ -72,6 +72,7 @@ if len(sys.argv) > 5 :
 
     tars = pdb.store.find(InputTar, InputTar.TESTNAME.like(u"%s"%sys.argv[2]), InputTar.CENTER.like(u"%s"%sys.argv[3]), InputTar.DATE > datetime.strptime(sys.argv[4],"%d-%m-%y"),InputTar.NAME.like(u"%s"%sys.argv[5]))
     for tar in tars :
+     if not re.match(sys.argv[6],tar.NAME ) :
       print tar.CENTER,tar.DATE,tar.NAME	
       if not dryrun :
 	tar.STATUS=u'new'

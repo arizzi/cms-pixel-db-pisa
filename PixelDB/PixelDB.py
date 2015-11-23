@@ -1147,9 +1147,9 @@ class PixelDBInterface(object) :
             if (pp is None):
                   print "Cannot insert data"
                   return None
-            session = Session(CENTER=centre, OPERATOR='n/a',TYPE="IV",DATE=int(date), COMMENT=comment)
-	    self.insertSession(session)
-            try :
+            try:
+               session = Session(CENTER=centre, OPERATOR='n/a',TYPE="IV",DATE=int(date), COMMENT=comment)
+	       self.insertSession(session)
                st = Test_IV(SESSION_ID=session.SESSION_ID,SENSOR_ID=sensor,GRADE=grade,DATA_ID = data_id.DATA_ID,I1 = float(i1),I2=float(i2), V1= float(v1), V2 = float(v2),  TEMPERATURE = float(temperature), DATE = int(date), SLOPE =float(slope), COMMENT=comment, TYPE=step)
             except Exception,err:
 		 print Exception,err

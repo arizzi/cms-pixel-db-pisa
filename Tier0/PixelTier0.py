@@ -493,7 +493,7 @@ class PixelTier0 (object):
 #
 # uses the field 
 # ProcessedDir.UPLOAD_TYPE to decide which to use            
-            print "USING UPLOAD = ",pd.UPLOAD_TYPE,"self.upload"+pd.UPLOAD_TYPE+"(pd,session)"
+            print "USING UPLOAD = ",pd.UPLOAD_TYPE,"self.upload"+pd.UPLOAD_TYPE+"(pd,session)",pd.PROCESSING_RUN_ID
 	    savestout = sys.stdout
 	    savesterr = sys.stderr
 	    ff = None

@@ -17,7 +17,7 @@ import cgi
 import os
 tier0Objects=["InputTar"]
 transferObjects=['FullModule','BareModule','Sensor','Roc','Hdi','Tbm','Wafer','Batch','ShippingBox','RocWafer']
-centers=['CIS','FACTORY','ETH','PSI','CERN','BARI','CATANIA','PERUGIA','PISA','UNIHH','AACHEN','HELSINKI','DESY','KIT','PADOVA','IZM','Dectris']
+centers=['CIS','FACTORY','ETH','PSI','CERN','BARI','CATANIA','PERUGIA','PISA','UNIHH','AACHEN','HELSINKI','DESY','KIT','PADOVA','IZM','Dectris','UZH']
 legalNames = ["Transfer","Data","Session","Roc","Batch","Wafer","Sensor","BareModule","Hdi","Tbm","FullModule","Test_Logbook","Test_BareModule","Test_FullModuleSession","Test_FullModuleSummary","Test_FullModule","Test_FullModuleAnalysis","Test_Tbm","Test_Hdi_Reception","Test_Hdi_TbmGluing","Test_Hdi_Bonding","Test_Hdi_Electric","Test_Hdi_Validation","Test_Roc","Test_IV","Test_IT","Test_SensorInspection","Test_BareModule_Inspection","Test_BareModule_Chip","Test_CV","History","ShippingBox","Test_DacParameters", "Test_Roc_Setup", "Test_BareModule_QA", "Test_BareModule_Grading","Test_PerformanceParameters","Test_BM_ROC_DacParameters","RocWafer","Test_FullModule_XRay_Vcal_Roc_Analysis","Test_FullModule_XRay_Vcal","Test_FullModule_XRay_Vcal_Module_Analysis","Test_FullModule_XRay_HR_Module","Test_FullModule_XRay_HR_Module_Analysis","Test_FullModule_XRay_HR_Roc","Test_FullModule_XRay_HR_Roc_Analysis","Test_FullModule_XRay_HR_Summary","Test_FullModule_XRay_HR_Module_Analysis_Summary","Test_FullModule_XRay_HR_Module_Noise","Test_FullModule_XRay_HR_Roc_Noise","Test_FullModule_XRay_HR_Roc_Analysis_Summary"]
 
 userCenters={}

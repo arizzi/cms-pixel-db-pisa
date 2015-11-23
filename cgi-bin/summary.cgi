@@ -110,7 +110,7 @@ print "<h1> Module test results </h1>"
 print "Grade legend: <font color=green> A(-)</font>"
 print "<font color=yellow> B(-)</font>"
 print "<font color=red> C</font><p>"
-print "<table border=0><tr><td align=center>Bare Modules (x = built on date) </td><td align=center>Full Modules (x = last test date)<br>Series: M1xxx, M2xxx, M3xxx,M4xxx</td></tr>"
+print "<table border=0><tr><td align=center>Bare Modules (x = built on date) </td><td align=center>Full Modules (x = last test date)<br>Series: M1xxx, M2xxx, M3xxx,M4xxx</td><td align=center>FMQ + XRay HR (x = greater of the two test dates)<br>Series: M1xxx, M2xxx, M3xxx,M4xxx</td><</tr>"
 print "<tr>"
 print "<td align=center> By Center: "
 for ce in bmce :
@@ -120,9 +120,16 @@ print "<td align=center> By Center: "
 for ce in fmce :
 	print "<a href=/cgi-bin/productionPlots.cgi?center=%s>%s</a> "%(ce,ce)
 print "</td>"
+print "<td align=center> By Center: "
+for ce in fmce :
+	print "<a href=/cgi-bin/productionPlots.cgi?objName=FullModuleWHR&center=%s>%s</a> "%(ce,ce)
+print "</td>"
+
 print "</tr>"
 print "<tr><td><img src=/cgi-bin/productionPlots.cgi?objName=BareModule>"
-print "</td><td><img src=/cgi-bin/productionPlots.cgi></td></tr>"
+print "</td><td><img src=/cgi-bin/productionPlots.cgi></td>"
+#https://cmspixelprod.pi.infn.it/cgi-bin/productionPlots.cgi?objName=FullModuleWHR
+print "</td><td><img src=/cgi-bin/productionPlots.cgi?objName=FullModuleWHR></td></tr>"
 print"</table>"
 
 

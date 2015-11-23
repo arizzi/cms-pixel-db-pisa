@@ -217,6 +217,7 @@ if action == "Insert" :
            adate=date(2000,1,1)
            columnType2=type(eval(objName+"."+c+".variable_factory()"))
 	   objID="%s"%time.time()	
+#	   print c,form.getfirst(c, "")
 	   if c == ID :
 		 if form.getfirst(c, "") != 'AUTOGEN' :
 			print "Call Houston"	
@@ -270,6 +271,7 @@ if action == "Insert" :
 		buildDict[c]=dd
            elif columnType2 == UnicodeVariable : 
 		buildDict[c]=form.getfirst(c, "")
+#		print "unicode<br>",buildDict
 	   elif columnType2 == IntVariable :
                 if form.getfirst(c, "") != "" :
 			buildDict[c]=int(form.getfirst(c, "0"))
@@ -282,6 +284,7 @@ if action == "Insert" :
 		else :	
 			buildDict[c]=float()
 	   else :
+#		print "default<br>"
 		buildDict[c]=form.getfirst(c, "")
 
 #    print "DICT: ",buildDict
