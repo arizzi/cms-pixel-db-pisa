@@ -1129,10 +1129,11 @@ class PixelDBInterface(object) :
 #
 # check if this sensor is existing
 #
-
-            if (self.isSensorInserted(sensor) is None):
+            print "CHECK IF INSERTED",sensor
+            if (self.isSensorInserted(sensor) == False):
                   print "Failure: the sensor was not inserted before in inventory "+sensor
                   return None
+            print "PASSED", self.isSensorInserted(sensor)
 #
 # take additional stuff: the .tab.txt file
 #            
