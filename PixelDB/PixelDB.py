@@ -1774,8 +1774,16 @@ class PixelDBInterface(object) :
             if fm is None:
                   print " Error: the FM ", t.FULLMODULE_ID, " does not seem to exist, passing..."
                   return None
-            fm.LASTTEST_XRAY_HR = t.TEST_ID
-	    print "Set last HR to " , t.TEST_ID
+	    old=self.store.find(Test_FullModule_XRay_HR_Summary,Test_FullModule_XRay_HR_Summary.TEST_ID==fm.LASTTEST_XRAY_HR )
+            if old is not None and old.count()> 0 :
+		old=old.one()
+	    else :
+		old=None
+	    if old == None or old.TIMESTAMP < t.TIMESTAMP :
+	           fm.LASTTEST_XRAY_HR = t.TEST_ID
+	    	   print "Set last HR to " , t.TEST_ID
+	    else :
+		print "Not updating the lasttest because it was newer"
             self.store.commit()
             return t
 
@@ -1789,7 +1797,16 @@ class PixelDBInterface(object) :
             if fm is None:
                   print " Error: the FM ", t.FULLMODULE_ID, " does not seem to exist, passing..."
                   return None
-            fm.LASTTEST_XRAY_VCAL = t.TEST_ID
+	    old=self.store.find(Test_FullModule_XRay_Vcal,Test_FullModule_XRay_Vcal.TEST_ID==fm.LASTTEST_XRAY_VCAL )
+            if old is not None and old.count() > 0 :
+                old=old.one()
+            else :
+                old=None
+            if old == None or old.TIMESTAMP < t.TIMESTAMP :
+                   fm.LASTTEST_XRAY_VCAL = t.TEST_ID
+                   print "Set last VCAL to " , t.TEST_ID
+            else :
+                print "Not updating the lasttest because it was newer"
             self.store.commit()
             return t
    
