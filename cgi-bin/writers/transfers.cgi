@@ -80,6 +80,7 @@ def checkCenter(objName,id,sender) :
     objType = eval(objName)
     o=pdb.store.find(objType,filter==value).one()
     if o :
+#      print   "A", o.transfer.RECEIVER.lower() , "A",sender.lower(), "####", o.TRANSFER_ID
       if o.TRANSFER_ID!=0 and o.transfer and (o.transfer.RECEIVER.lower() != sender.lower() or o.transfer.STATUS == "SENT") and sender != "any" :
          return False
       else :

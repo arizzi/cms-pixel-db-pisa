@@ -35,15 +35,15 @@ def map2d(data):
 		rocn=int(m.group(1))
 		ry=int(rocn/8)
 		rx=rocn%8 if ry == 1 else 7-rocn%8
-		xoffset=rx*60
-		yoffset=ry*85
+		xoffset=rx*54
+		yoffset=ry*80
 		for d in defs :
 		      x=d[0]
 		      y=d[1]
 		      if ry == 0 :
-			points.append((60-x+xoffset,y+yoffset))
+			points.append((54-x+xoffset,y+yoffset))
 		      else : 
-			points.append((x+xoffset,85-y+yoffset))
+			points.append((3+x+xoffset,80-y+yoffset))
    return points
 
 def makeHistoFromData(data,out,bins,xmin,xmax):

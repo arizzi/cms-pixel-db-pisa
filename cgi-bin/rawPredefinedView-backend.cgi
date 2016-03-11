@@ -15,6 +15,7 @@ print
 from  rawPredefinedViews import *
 
 objName = form.getfirst('objName', 'empty')
+ss=True
 if objName == 'empty' :
         viewNumber = int(form.getfirst('viewNumber', '0'))
         if viewNumber >= len(columns) :
@@ -25,6 +26,7 @@ if objName == 'empty' :
 		countquery=countqueries[viewNumber]
 		rowkey=rowkeys[viewNumber]
 		sGroup=groupby.get(viewNumber,' ')
+		ss=(customServerSide.get(viewNumber,"true") == "true" )
 else:
 	viewNumber=-1
         objName = parseObjName(cgi.escape(objName))
@@ -52,6 +54,8 @@ import random
 
 debug = form.getfirst("debug", "0")
 #debug="1"
+if debug == "1" :
+	print ss
 all = form.getfirst("all", "0")
 first = form.getfirst("iDisplayStart", "0")
 llast = form.getfirst("iDisplayLength", "-1")
@@ -141,9 +145,12 @@ elif percol != "" :
   sWhere = " AND %s" % percol
 if debug == "1" :
 	print countquery
-cur.execute(countquery)
-l=cur.fetchone()
-count = l['COUNT(1)']
+
+count = -1
+if ss :
+  cur.execute(countquery)
+  l=cur.fetchone()
+  count = l['COUNT(1)']
 colString=""
 for c in colNames :
      if c!= '' :
@@ -158,10 +165,13 @@ for c in colNames :
 
 if debug == "1" :
 	print "COUNTSTRING: %s %s %s %s"% ((query%" count(1) "),sWhere,sGroup,sOrder)
-try :
-  countdisplay=cur.execute("%s %s %s %s "% ((query%" count(1) "),sWhere,sGroup,sOrder))
-except :
-  countdisplay=cur.execute("%s "% (query%"count(1)"))
+
+countdisplay=-1
+if ss :
+  try :
+    countdisplay=cur.execute("%s %s %s %s "% ((query%" count(1) "),sWhere,sGroup,sOrder))
+  except :
+    countdisplay=cur.execute("%s "% (query%"count(1)"))
 
 if countdisplay == 1 :
 	totdis =  cur.fetchone()['count(1)']
@@ -172,7 +182,14 @@ else:
 
 if debug == "1" :
 	print "QUERY:%s %s %s %s %s"% ((query%colString),sWhere,sGroup,sOrder,sLimit)
-cur.execute("%s %s %s %s %s"% ((query%colString),sWhere,sGroup,sOrder,sLimit))
+cc=cur.execute("%s %s %s %s %s"% ((query%colString),sWhere,sGroup,sOrder,sLimit))
+
+if count==-1 : 
+	if debug == "1" :
+		print "COUNTTTTTT " , cc,count,totdis
+	totdis=cc
+	count=cc
+	
 
 output = {}
 output["sEcho"] = form.getfirst('sEcho',1)
@@ -180,16 +197,24 @@ output["iTotalRecords"] = count
 #output["iTotalDisplayRecords"] =  countdisplay
 output["iTotalDisplayRecords"] = totdis
 output["aaData"] = []
+for i,(c,rn,ev) in enumerate(cols) :
+            rn=re.sub('\.','_',rn)
+            rn=re.sub('\(','_',rn)
+            rn=re.sub(',','_',rn)
+            rn=re.sub('\)','_',rn)
+            rn=re.sub('\+','_',rn)
+            cols[i]=(c,rn,ev)
+
 for o in cur.fetchall() :
    i=0
    row = {}
    for c,rn,ev in cols :
       if ev != "NOPRINT":
-        rn=re.sub('\.','_',rn)
-        rn=re.sub('\(','_',rn)
-        rn=re.sub(',','_',rn)
-        rn=re.sub('\)','_',rn)
-	rn=re.sub('\+','_',rn)
+#       rn=re.sub('\.','_',rn)
+#       rn=re.sub('\(','_',rn)
+#       rn=re.sub(',','_',rn)
+#       rn=re.sub('\)','_',rn)
+#rn=re.sub('\+','_',rn)
 
 	oo=o[rn] if rn in o else None
 	if ev == '' :

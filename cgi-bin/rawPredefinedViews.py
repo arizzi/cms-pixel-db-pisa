@@ -157,7 +157,7 @@ def testEntry(o,testname):
 	 return ret
 			
 columns.append([
-	("HDI ID","Hdi.HDI_ID","'<a href=/cgi-bin/viewdetails.cgi?objName=Hdi&HDI_ID=%s>%s</a>'%(o['Hdi_HDI_ID'],o['Hdi_HDI_ID'])"),
+	("  HDI ID  ","Hdi.HDI_ID","'<a href=/cgi-bin/viewdetails.cgi?objName=Hdi&HDI_ID=%s>%s</a>'%(o['Hdi_HDI_ID'],o['Hdi_HDI_ID'])"),
         ("Center","Transfer.RECEIVER","o['Transfer_RECEIVER'] if o['Transfer_STATUS']=='ARRIVED' else  o['Transfer_SENDER'] "),
 	("TBM 1","Hdi.TBM1_VERSION",""),
 	("TBM 2","Hdi.TBM2_VERSION",""),
@@ -557,8 +557,8 @@ columns.append([
 		("Upload","ProcessedDir.UPLOAD_STATUS",""),
 		("Macro","ProcessingRun.MACRO_VERSION",""),
 		("Log files","ProcessingRun.OUTLOG","logs(o)"),
+		("HIDDEN","ProcessingRun.EXIT_CODE","repro(o)"),
 		("","ProcessingRun.MACRO_VERSION","NOPRINT"),
-#	("HIDDEN","ProcessingRun.EXIT_CODE","repro(o)"),
 		("","ProcessingRun.STATUS","NOPRINT"),
 		("","ProcessedDir.UPLOAD_STATUS","NOPRINT"),
 ])
@@ -626,7 +626,7 @@ columns.append([
 	("T","FMA.TEMPVALUE",""),
 #	("Plot","Data.PFNs"," '<a href=%s/TestResult.html>plot</a>'%re.sub('file:','',oo)"),
 	("GR","FMA.GRADE","gradeColor(oo)"),
-	("IV","IV.GRADE"," gradeColor(oo) if oo !=0 else 'n/a'"),
+	("IV","IV.GRADE"," gradeColor(oo) if oo !=0 else '-'"),
 	("Slope","FMA.IVSLOPE"," viewDetails(o['IV_TEST_ID'],'Test_IV',oo) if o['IV_TEST_ID'] is not None else ( oo if oo !=0 else 'n/a')"),
 	("I(uA)","FMA.I150"," '%s'%(float(oo)*1e6) if oo != -1 else 'n/a'"),
 	("I@20&deg;","FMA.I150"," '%.2g'%(1e6*corTemp(float(oo),float(o['FMA_TEMPVALUE']))) if oo != -1 else 'n/a'"),
@@ -744,7 +744,7 @@ header.append('''<h1>Full Module Overview </h1>''')
         ("Built By","FM.BUILTBY",""),
         ("Status","FM.STATUS",""),
 	("Center","Transfer.RECEIVER","o['Transfer_RECEIVER'] if o['Transfer_STATUS']=='ARRIVED' else  '%s=>%s'%(o['Transfer_SENDER'],o['Transfer_RECEIVER']) "),
-        ("FullQual","MAX(FQ.GRADE)"," '<a href=%s/TestResult.html>%s</a>'%(re.sub('file:','',o['FQ_DATA_ID']),gradeColor(oo)) if oo is not None else 'n/a'"),
+        ("FullQual","MAX(FQ.GRADE)"," '<a href=%s/TestResult.html>%s</a>'%(re.sub('file:','',o['FQ_DATA_ID']),gradeColor(oo)) if oo is not None else '-'"),
         ("#Def","MAX(FQ.Def)",""),
         ("ROC>1%","MAX(FQ.ROCPERCENT)",""),
         ("Reception","MAX(FR.GRADE)"," gradeColor(oo) if oo !=0 else 'n/a'"),
@@ -778,15 +778,16 @@ columns.append([
         ("Built By","FM_BUILTBY",""),
         ("Status","FM_STATUS",""),
         ("Center","Transfer_RECEIVER","o['Transfer_RECEIVER'] if o['Transfer_STATUS']=='ARRIVED' else  '%s=>%s'%(o['Transfer_SENDER'],o['Transfer_RECEIVER']) "),
-        ("FullQual","MAX_FQ_GRADE"," '<a href=%s/TestResult.html>%s</a>'%(re.sub('file:','',o['FQ_DATA_ID']),gradeColor(oo)) if oo is not None else 'n/a'"),
+        ("Final Gr","GREATEST(MAX_FQ_GRADE,XR_GRADE)","gradeColor(oo) if oo is not None else '-'"),
+        ("FullQual","MAX_FQ_GRADE"," '<a href=%s/TestResult.html>%s</a>'%(re.sub('file:','',o['FQ_DATA_ID']),gradeColor(oo)) if oo is not None else '-'"),
         ("#Def","MAX_FQ_Def",""),
         ("ROC>1%","MAX_FQ_ROCPERCENT",""),
-        ("Reception","MAX_FR_GRADE"," gradeColor(oo) if oo !=0 else 'n/a'"),
-        ("OtherQual","MAX_OQ_GRADE"," (gradeColor(oo)+' (%s)'%o['OQ_TYPE']) if oo is not None  else 'n/a'"),
-        ("VCal","XR_VCALGRADE"," (gradeColor(oo)+' (%2.2f,%2.2f)'%(o['XR_SLOPE'],o['XR_OFFSET']))  if oo is not None  else 'n/a'"),
-        ("HR","XR_HRGRADE"," gradeColor(oo) if oo is not None  else 'n/a'"),
-        ("GR","XR_GRADE"," gradeColor(oo) if oo is not None  else 'n/a'"),
-        ("Grade","bmGrade_IV_BAREMODULE_ID"," gradeColor(oo) if oo !=0 else 'n/a'"),
+        ("Reception","MAX_FR_GRADE"," gradeColor(oo) if oo !=0 else '-'"),
+        ("OtherQual","MAX_OQ_GRADE"," (gradeColor(oo)+' (%s)'%o['OQ_TYPE']) if oo is not None  else '-'"),
+        ("VCal","XR_VCALGRADE"," (gradeColor(oo)+' (%2.2f,%2.2f)'%(o['XR_SLOPE'],o['XR_OFFSET']))  if oo is not None  else '-'"),
+        ("HR","XR_HRGRADE"," gradeColor(oo) if oo is not None  else '-'"),
+        ("GR","XR_GRADE"," gradeColor(oo) if oo is not None  else '-'"),
+        ("Grade","bmGrade_IV_BAREMODULE_ID"," gradeColor(oo) if oo !=0 else '-'"),
 #        ("BM ID","BM.BAREMODULE_ID","viewDetails(oo,'BareModule')"),
         ("CIS","IV_CIS"," '%s'%(viewDetails(o['IV_CIS_ID'],'Test_IV',gradeColor('%1.0f'%float(oo)))) if oo is not None else ''"),
         ("NEW","IV_NEW"," '%s'%(viewDetails(o['IV_NEW_ID'],'Test_IV',gradeColor(oo))) if oo is not None else ''"),
@@ -810,7 +811,7 @@ columns.append([
 
          ])
 customServerSide[12]="false"
-groupheader[12]="<tr><th  style=\" border-right: 1px solid #111111;\"  nosearch=1 colspan=4>Inventory</th><th  style=\" border-right: 1px solid #111111;\" nosearch=1 colspan=3>Full Qualification</th><th nosearch=1  style=\" border-right: 1px solid #111111;\" colspan=2>More full tests</th> <th  style=\" border-right: 1px solid #111111;\"  nosearch=1 colspan=3>XRay tests</th> <th  style=\" border-right: 1px solid #111111;\"  nosearch=1 colspan=1>BareModule test</th><th nosearch=1 colspan=5 style=\" border-left: 1px solid #111111;\" >IV Tests</th></tr>"
+groupheader[12]="<tr><th  style=\" border-right: 1px solid #111111;\"  nosearch=1 colspan=5>Inventory</th><th  style=\" border-right: 1px solid #111111;\" nosearch=1 colspan=3>Full Qualification</th><th nosearch=1  style=\" border-right: 1px solid #111111;\" colspan=2>More full tests</th> <th  style=\" border-right: 1px solid #111111;\"  nosearch=1 colspan=3>XRay tests</th> <th  style=\" border-right: 1px solid #111111;\"  nosearch=1 colspan=1>BareModule test</th><th nosearch=1 colspan=5 style=\" border-left: 1px solid #111111;\" >IV Tests</th></tr>"
 rowkeys.append("FM_FULLMODULE_ID")
 groupby[12]="group by FM_FULLMODULE_ID"
 queries.append("select %s from view12 where 1 ")
