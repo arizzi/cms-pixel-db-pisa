@@ -1834,7 +1834,7 @@ class PixelDBInterface(object) :
             n_con_nonuniform= HighRateDataModule['ROCsWithUniformityProblems']
             module = self.getFullModule(fullmodule_id)
             if module is None :
-                  print "Cannot insert on non existing module",modulename
+                  print "Cannot insert on non existing module",fullmodule_id
                   return None
             timestamp = HighRateDataModule['TestDate']
             temperature = -99
@@ -2503,7 +2503,7 @@ class PixelDBInterface(object) :
                   fm.LASTTEST_FULLMODULE=summaryId
 	          self.store.commit()
 	  elif newType == "Reception" :
-             if fm.LASTTEST_RECEPTION != 0 and fm.RECEPTION != None and fm.lasttest_reception != None:
+             if fm.LASTTEST_RECEPTION != 0 and fm.LASTTEST_RECEPTION != None and fm.lasttest_reception != None:
                 prevSummary=fm.lasttest_reception
                 prevDate=prevSummary.TIMESTAMP
                 if prevDate < newDate :

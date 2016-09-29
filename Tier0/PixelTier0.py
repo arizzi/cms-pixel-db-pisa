@@ -185,6 +185,7 @@ class PixelTier0 (object):
                   if (DEBUG==True):
                         print" I refuse to start a new processing, already running=",self.RUNNING," and max allowed is ",self.MAXEXE
                   return None
+            print "Starting PR ",pr.RUN_ID
             self.setProcessingStatus(pr,'running')
 	    basedir="/data/pixels/t0logs/%s/"%datetime.now().strftime("%Y-%m-%d")
 	    if not os.path.isdir(basedir):
@@ -281,6 +282,7 @@ class PixelTier0 (object):
                               #
                               pr=self.getProcessingRunById(i[1])
                               self.setProcessingStatus(pr,status)
+                              print "Finished running PR ", pr.RUN_ID, " with exit code ",statuscode
                               self.setProcessingExitCode(pr,statuscode)
                               
 
@@ -426,12 +428,13 @@ class PixelTier0 (object):
             #
             # search for jobs in status = "injected"
             #
-            jobs = self.store.find(ProcessingRun, ProcessingRun.STATUS==unicode('injected'))
-            if (jobs is None):
+            jobsuns = self.store.find(ProcessingRun, ProcessingRun.STATUS==unicode('injected'))
+            if (jobsuns is None):
                   return 0
+            jobs = sorted (jobsuns, key = lambda x: x.RUN_ID, reverse=True)
             n=0
             for job in jobs:
-		  print "starting ",job.TAR_ID
+		  #print "starting ",job.TAR_ID
                   if (initcenter != "" and initcenter != job.tar_id.CENTER):
                         continue
                   n=n+1
@@ -507,7 +510,7 @@ class PixelTier0 (object):
 		ff.close()
 	    sys.stdout = savestout
 	    sys.stderr = savesterr
-	    print "ppp",ppp
+	    #print "ppp",ppp
             return ppp
 
       def uploadNull(self,pd, session):

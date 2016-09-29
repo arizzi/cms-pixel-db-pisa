@@ -651,24 +651,32 @@ columns.append([
 #	("FMSE SE","FMSE.SESSION_ID",""),
 	 ])
 rowkeys.append("FMS_TEST_ID")
-queries.append("select %s from test_fullmodulesummary as FMS "
+queries.append("select %s from (select  * from test_fullmoduleanalysis as ff order by ff.test_id desc) as FMA "
+	       "left join test_fullmodule as FMT on FMA.FULLMODULETEST_ID = FMT.TEST_ID " 
+	       "left join test_fullmodulesummary as FMS on FMS.TEST_ID = FMT.SUMMARY_ID "
 	       "join inventory_fullmodule as FM on FM.LASTTEST_FULLMODULE = FMS.TEST_ID "	
-	       "left join test_fullmodule as FMT on FMS.FULLMODULETEST_IDS like concat('%%',FMT.TEST_ID,'%%') "
-	       "left join test_fullmoduleanalysis as FMA on FMA.TEST_ID=(select FMA2.TEST_ID from test_fullmoduleanalysis as FMA2 where FMA2.FULLMODULETEST_ID=FMT.TEST_ID order by TEST_ID DESC limit 1) "
+#	       "left join test_fullmodule as FMT on FMS.FULLMODULETEST_IDS like concat('%%',FMT.TEST_ID,'%%') "
+#       "left join test_fullmoduleanalysis as FMA on FMA.TEST_ID=(select FMA2.TEST_ID from test_fullmoduleanalysis as FMA2 where FMA2.FULLMODULETEST_ID=FMT.TEST_ID order by TEST_ID DESC limit 1) "
                "left join test_fullmodulesession as FMSE on FMSE.TEST_ID=FMT.SESSION_ID "
                "left join sessions as Session on FMSE.SESSION_ID=Session.SESSION_ID "
                "left join test_data as Data on FMA.DATA_ID=Data.DATA_ID "
                "left join test_iv as IV on IV.REF_ID=FMA.TEST_ID WHERE FM.STATUS <> 'HIDDEN' ")
 
-countqueries.append("select COUNT(1) from test_fullmodulesummary as FMS "
-               "join inventory_fullmodule as FM on FM.LASTTEST_FULLMODULE = FMS.TEST_ID "
-               "left join test_fullmodule as FMT on FMS.FULLMODULETEST_IDS like concat('%%',FMT.TEST_ID,'%%') "
-               "left join test_fullmoduleanalysis as FMA on FMA.TEST_ID=(select FMA2.TEST_ID from test_fullmoduleanalysis as FMA2 where FMA2.FULLMODULETEST_ID=FMT.TEST_ID order by TEST_ID DESC limit 1) "
+countqueries.append("select COUNT(1) from (select  * from test_fullmoduleanalysis as ff order by ff.test_id desc) as FMA "
+               "left join test_fullmodule as FMT on FMA.FULLMODULETEST_ID = FMT.TEST_ID "
+               "left join test_fullmodulesummary as FMS on FMS.TEST_ID = FMT.SUMMARY_ID "
+               "join inventory_fullmodule as FM on FM.LASTTEST_FULLMODULE = FMS.TEST_ID "  
+#from test_fullmodulesummary as FMS "
+#               "join inventory_fullmodule as FM on FM.LASTTEST_FULLMODULE = FMS.TEST_ID "
+               #"left join test_fullmodule as FMT on FMS.FULLMODULETEST_IDS like concat('%%',FMT.TEST_ID,'%%') "
+#	       "left join test_fullmodule as FMT on FMS.TEST_ID = FMT.SUMMARY_ID "
+#              "left join test_fullmoduleanalysis as FMA on FMA.TEST_ID=(select FMA2.TEST_ID from test_fullmoduleanalysis as FMA2 where FMA2.FULLMODULETEST_ID=FMT.TEST_ID order by TEST_ID DESC limit 1) "
                "left join test_fullmodulesession as FMSE on FMSE.TEST_ID=FMT.SESSION_ID "
                "left join sessions as Session on FMSE.SESSION_ID=Session.SESSION_ID "
                "left join test_data as Data on FMA.DATA_ID=Data.DATA_ID "
                "left join test_iv as IV on IV.REF_ID=FMA.TEST_ID WHERE FM.STATUS <> 'HIDDEN' ")
 #countqueries.append(cq)
+groupby[10]=" group by FMT.TEST_ID"
 customjs2[10]='''$('#example').dataTable().fnFakeRowspan(0);
 '''
 

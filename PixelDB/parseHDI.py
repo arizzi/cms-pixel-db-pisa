@@ -14,7 +14,7 @@ pdb.connectToDB()
 #filename="/home/cmsweb/First_batch_KIT_Oct14.csv"
 #filename="/home/cmsweb/HDIsfromHH-2015-09-09.csv"
 #filename="/home/cmsweb/Hi1530-box1-68.csv"
-filename="/home/cmsweb/all.csv"
+filename="/home/cmsweb/2016-04-21-1208.csv"
 os.path.isfile(filename)
 t= None
 i=0

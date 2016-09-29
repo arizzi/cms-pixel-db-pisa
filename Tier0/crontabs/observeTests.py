@@ -136,7 +136,7 @@ if (insert==1):
         line= line.rstrip(os.linesep)
 #        (ret, ck) = commands.getstatusoutput('cksum \"'+line+"\" | awk \'{print $1}\'")
         ck=0
-        print " working on Tar file: ",line,' CKSUM: ', ck    
+#        print " working on Tar file: ",line,' CKSUM: ', ck    
 
 
 #        if (pdb.getInputTarByName(os.path.basename(line),os.path.dirname(line)) is not None):
@@ -144,7 +144,7 @@ if (insert==1):
 #            continue    
 #        if (pdb.getInputTarByNameAndCksum(os.path.basename(line),ck) is not None):
         if (pdb.getInputTarByNameOnly(os.path.basename(line)) is not None):
-            print " ALREADY PROCESSED"
+ #           print " ALREADY PROCESSED"
             continue    
     
         #
@@ -185,12 +185,15 @@ print "injected processing runs " , numinjected
 #
 
 if (process==1):
-
+    passage=0
     while (True):
+        passage=passage+1
         num = pdb.checkAllRunning(DEBUG=False)
         num2 = pdb.startProcessingJobs()
         print str(datetime.now())," Running Instances = ",num, " Waiting Instances = ",num2
-        sleep (10)   
+        sleep (10)      
+        if (passage%20 == 0):
+                    pdb.uploadAllTests()
         if (num==0 and num2==0):
             print "---- FINISHED----"
             break

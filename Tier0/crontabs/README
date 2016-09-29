@@ -1,7 +1,0 @@
-install crontabs like in 
-
-#insert
-*/10 * * * *  /home/robot/cms-pixel-db-pisa/Tier0/crontabs/launch_guarded.csh insert_eth /home/robot/cms-pixel-db-pisa/Tier0/crontabs/log/ 'cd  /home/robot/cms-pixel-db-pisa/Tier0/crontabs ; python observeTests.py eth_fullmoduletest.ini insert' >> /home/robot/cms-pixel-db-pisa/Tier0/crontabs/log/crontabs.log
-*/10 * * * *  /home/robot/cms-pixel-db-pisa/Tier0/crontabs/launch_guarded.csh insert_perugia /home/robot/cms-pixel-db-pisa/Tier0/crontabs/log/ 'cd  /home/robot/cms-pixel-db-pisa/Tier0/crontabs ; python observeTests.py perugia_fullmoduletest.ini insert' >> /home/robot/cms-pixel-db-pisa/Tier0/crontabs/log/crontabs.log
-# then process all!; please note the ini file is not used, but must exist and be valid
-5,15,25,35,45,55 * * * *  /home/robot/cms-pixel-db-pisa/Tier0/crontabs/launch_guarded.csh process /home/robot/cms-pixel-db-pisa/Tier0/crontabs/log/ 'cd  /home/robot/cms-pixel-db-pisa/Tier0/crontabs ; python observeTests.py perugia_fullmoduletest.ini process' >> /home/robot/cms-pixel-db-pisa/Tier0/crontabs/log/crontabs.log
