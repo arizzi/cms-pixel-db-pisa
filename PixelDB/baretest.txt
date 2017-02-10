@@ -1,0 +1,38 @@
+- Test_BareModule_QA:
+baremoduleid
+testtype (pixelalive / bump bonding)
+tot # failures - int
+failures (comma delimited) - limit 10000 char
+session
+temperature (C) - float
+humidity (%) - float
+testid
+dataid
+
+
+- Test_BareModule_Grading
+testid
+dataid
+baremoduleid
+session
+GRADING_ROC_0 ... GRADING_ROC_15 stringa,
+GLOBAL_GRADING
+temperature (C) - float
+humidity (%) - float
+
+
+
+- Test_BareModula_DaqParameters
+ad hoc
+
+- Test_BareModule_reception
+session
+data_id
+baremodule_id
+id of BB company (bonding?)
+roc list from inventory
+replaced rocs position_old_new,position_old_new, ...  string 10000
+result
+
+
+

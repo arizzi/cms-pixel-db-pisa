@@ -1,0 +1,71 @@
+Reading File  perugia_fullmoduletest-v98.ini
+{'center': 'PERUGIA', 'pattern': '"M*.tar.gz"', 'testname': 'FullTest', 'inputdir': '/home/perugia/dropbox/', 'init': '/home/robot/cms-pixel-db-pisa/Tier0/crontabs/fullmoduletestmacro-v98.ini', 'operator': 'n/a'}
+TMPFILE  /tmp/tmpTZ5So2
+INSERTED  0  TAR FILES
+TARS are  []
+injected processing runs  0
+2016-06-05 21:49:40.460544  Running Instances =  0  Waiting Instances =  2445
+2016-06-05 21:49:54.600535  Running Instances =  7  Waiting Instances =  2430
+2016-06-05 21:50:08.959513  Running Instances =  8  Waiting Instances =  2422
+2016-06-05 21:50:22.259468  Running Instances =  10  Waiting Instances =  2415
+2016-06-05 21:50:35.489318  Running Instances =  12  Waiting Instances =  2410
+2016-06-05 21:50:47.602735  Running Instances =  13  Waiting Instances =  2407
+2016-06-05 21:51:01.555483  Running Instances =  10  Waiting Instances =  2405
+2016-06-05 21:51:15.962708  Running Instances =  12  Waiting Instances =  2400
+2016-06-05 21:51:26.938484  Running Instances =  15  Waiting Instances =  2397
+2016-06-05 21:51:37.896017  Running Instances =  15  Waiting Instances =  2397
+2016-06-05 21:51:49.012440  Running Instances =  15  Waiting Instances =  2397
+2016-06-05 21:52:00.518352  Running Instances =  15  Waiting Instances =  2397
+2016-06-05 21:52:12.339714  Running Instances =  15  Waiting Instances =  2397
+2016-06-05 21:52:23.214682  Running Instances =  15  Waiting Instances =  2397
+2016-06-05 21:52:34.131834  Running Instances =  15  Waiting Instances =  2397
+2016-06-05 21:52:45.097603  Running Instances =  15  Waiting Instances =  2397
+2016-06-05 21:52:55.996960  Running Instances =  15  Waiting Instances =  2397
+2016-06-05 21:53:07.507205  Running Instances =  14  Waiting Instances =  2397
+2016-06-05 21:53:18.422676  Running Instances =  15  Waiting Instances =  2396
+2016-06-05 21:53:29.203021  Running Instances =  15  Waiting Instances =  2396
+2016-06-05 21:53:39.932498  Running Instances =  15  Waiting Instances =  2396
+2016-06-05 21:53:50.686612  Running Instances =  15  Waiting Instances =  2396
+2016-06-05 21:54:01.423217  Running Instances =  15  Waiting Instances =  2396
+2016-06-05 21:54:12.210352  Running Instances =  15  Waiting Instances =  2396
+2016-06-05 21:54:22.923782  Running Instances =  15  Waiting Instances =  2396
+2016-06-05 21:54:33.571815  Running Instances =  15  Waiting Instances =  2396
+2016-06-05 21:54:44.263346  Running Instances =  15  Waiting Instances =  2396
+2016-06-05 21:54:54.946601  Running Instances =  15  Waiting Instances =  2396
+2016-06-05 21:55:05.683109  Running Instances =  15  Waiting Instances =  2396
+2016-06-05 21:55:16.388734  Running Instances =  15  Waiting Instances =  2396
+2016-06-05 21:55:27.033519  Running Instances =  15  Waiting Instances =  2396
+2016-06-05 21:55:37.694868  Running Instances =  15  Waiting Instances =  2396
+2016-06-05 21:55:48.861811  Running Instances =  14  Waiting Instances =  2396
+2016-06-05 21:56:00.563032  Running Instances =  13  Waiting Instances =  2395
+2016-06-05 21:56:12.017715  Running Instances =  14  Waiting Instances =  2393
+2016-06-05 21:56:23.047510  Running Instances =  15  Waiting Instances =  2392
+2016-06-05 21:56:33.974474  Running Instances =  15  Waiting Instances =  2392
+2016-06-05 21:56:44.863305  Running Instances =  15  Waiting Instances =  2392
+2016-06-05 21:56:55.805501  Running Instances =  15  Waiting Instances =  2392
+2016-06-05 21:57:06.729022  Running Instances =  15  Waiting Instances =  2392
+2016-06-05 21:57:17.627375  Running Instances =  15  Waiting Instances =  2392
+2016-06-05 21:57:28.610323  Running Instances =  15  Waiting Instances =  2392
+2016-06-05 21:57:40.197484  Running Instances =  15  Waiting Instances =  2392
+2016-06-05 21:57:51.744936  Running Instances =  15  Waiting Instances =  2392
+2016-06-05 21:58:02.833299  Running Instances =  15  Waiting Instances =  2392
+2016-06-05 21:58:14.097338  Running Instances =  15  Waiting Instances =  2392
+2016-06-05 21:58:25.724361  Running Instances =  15  Waiting Instances =  2392
+2016-06-05 21:58:36.937825  Running Instances =  15  Waiting Instances =  2392
+Interjected Signal - exiting
+ In Signal hadler - killing all  15  instances
+ Setting processing run  46278  to injected
+ Setting processing run  46277  to injected
+ Setting processing run  46273  to injected
+ Setting processing run  46272  to injected
+ Setting processing run  46269  to injected
+ Setting processing run  46268  to injected
+ Setting processing run  46267  to injected
+ Setting processing run  46266  to injected
+ Setting processing run  46265  to injected
+ Setting processing run  46259  to injected
+ Setting processing run  46258  to injected
+ Setting processing run  46257  to injected
+ Setting processing run  46256  to injected
+ Setting processing run  46255  to injected
+ Setting processing run  46254  to injected

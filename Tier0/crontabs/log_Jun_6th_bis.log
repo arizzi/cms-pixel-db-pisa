@@ -1,0 +1,155 @@
+Reading File  perugia_fullmoduletest-v98.ini
+{'center': 'PERUGIA', 'pattern': '"M*.tar.gz"', 'testname': 'FullTest', 'inputdir': '/home/perugia/dropbox/', 'init': '/home/robot/cms-pixel-db-pisa/Tier0/crontabs/fullmoduletestmacro-v98.ini', 'operator': 'n/a'}
+TMPFILE  /tmp/tmpjM9h4R
+INSERTED  0  TAR FILES
+TARS are  []
+injected processing runs  0
+2016-06-06 09:46:51.298935  Running Instances =  0  Waiting Instances =  2150
+2016-06-06 09:47:02.054992  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:47:13.006093  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:47:23.833711  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:47:34.643481  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:47:45.443110  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:47:56.101956  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:48:06.797833  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:48:17.438463  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:48:28.090567  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:48:38.855226  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:48:49.657885  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:49:00.355886  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:49:11.012236  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:49:21.643645  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:49:32.219538  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:49:42.834539  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:49:53.416410  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:50:04.058721  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:50:14.654307  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:50:25.331360  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:50:35.945781  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:50:46.574637  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:50:57.198213  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:51:07.863404  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:51:18.476730  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:51:29.085103  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:51:39.731170  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:51:50.384427  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:52:01.067066  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:52:11.846573  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:52:22.591121  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:52:33.244836  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:52:43.926772  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:52:54.607818  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:53:05.287554  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:53:15.957031  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:53:26.739475  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:53:37.421388  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:53:48.093010  Running Instances =  5  Waiting Instances =  2145
+2016-06-06 09:53:59.231356  Running Instances =  4  Waiting Instances =  2145
+2016-06-06 09:54:09.927324  Running Instances =  5  Waiting Instances =  2144
+2016-06-06 09:54:20.562001  Running Instances =  5  Waiting Instances =  2144
+2016-06-06 09:54:31.153543  Running Instances =  5  Waiting Instances =  2144
+2016-06-06 09:54:41.776530  Running Instances =  5  Waiting Instances =  2144
+2016-06-06 09:54:52.387837  Running Instances =  5  Waiting Instances =  2144
+2016-06-06 09:55:03.035082  Running Instances =  5  Waiting Instances =  2144
+2016-06-06 09:55:13.625430  Running Instances =  5  Waiting Instances =  2144
+2016-06-06 09:55:24.201648  Running Instances =  5  Waiting Instances =  2144
+2016-06-06 09:55:34.769988  Running Instances =  5  Waiting Instances =  2144
+2016-06-06 09:55:45.410929  Running Instances =  5  Waiting Instances =  2144
+2016-06-06 09:55:56.452690  Running Instances =  4  Waiting Instances =  2144
+2016-06-06 09:56:07.106125  Running Instances =  5  Waiting Instances =  2143
+2016-06-06 09:56:18.193883  Running Instances =  5  Waiting Instances =  2143
+2016-06-06 09:56:29.710109  Running Instances =  4  Waiting Instances =  2143
+2016-06-06 09:56:40.787425  Running Instances =  5  Waiting Instances =  2142
+2016-06-06 09:56:51.384929  Running Instances =  5  Waiting Instances =  2142
+2016-06-06 09:57:02.429091  Running Instances =  4  Waiting Instances =  2142
+2016-06-06 09:57:13.071820  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 09:57:23.734327  Running Instances =  5  Waiting Instances =  2141
+USING UPLOAD =  Null self.uploadNull(pd,session) 46307
+ppp <ObjectsTier0.ProcessedDir object at 0x150fb10>
+USING UPLOAD =  Null self.uploadNull(pd,session) 46308
+ppp <ObjectsTier0.ProcessedDir object at 0x1513b90>
+USING UPLOAD =  Null self.uploadNull(pd,session) 46310
+ppp <ObjectsTier0.ProcessedDir object at 0x1513290>
+USING UPLOAD =  Null self.uploadNull(pd,session) 46309
+ppp <ObjectsTier0.ProcessedDir object at 0x1513790>
+2016-06-06 09:57:34.435908  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 09:57:45.069155  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 09:57:55.734403  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 09:58:06.541857  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 09:58:17.196733  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 09:58:27.854782  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 09:58:38.714886  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 09:58:49.682290  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 09:59:00.571966  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 09:59:11.413675  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 09:59:22.227032  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 09:59:33.271998  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 09:59:44.229101  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 09:59:54.899097  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:00:06.220746  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:00:17.264445  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:00:28.229373  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:00:39.086203  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:00:49.893750  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:01:00.744265  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:01:11.426784  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:01:22.111154  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:01:32.681708  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:01:43.281749  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:01:53.904366  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:02:04.556707  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:02:15.202233  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:02:25.815479  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:02:36.441073  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:02:47.130644  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:02:57.788504  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:03:08.381005  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:03:19.091951  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:03:29.769689  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:03:40.429506  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:03:51.107735  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:04:01.757155  Running Instances =  5  Waiting Instances =  2141
+2016-06-06 10:04:12.991838  Running Instances =  4  Waiting Instances =  2141
+2016-06-06 10:04:23.690800  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:04:34.413815  Running Instances =  5  Waiting Instances =  2140
+USING UPLOAD =  Null self.uploadNull(pd,session) 46014
+ppp <ObjectsTier0.ProcessedDir object at 0x10c10d0>
+2016-06-06 10:04:45.096490  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:04:55.817688  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:05:06.506834  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:05:17.179265  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:05:27.838747  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:05:38.528889  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:05:49.331167  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:06:00.674962  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:06:11.452628  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:06:22.201526  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:06:32.913379  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:06:43.579210  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:06:54.239268  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:07:04.886753  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:07:15.562280  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:07:26.600287  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:07:37.275763  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:07:47.942090  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:07:58.599898  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:08:09.196435  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:08:19.779685  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:08:30.407654  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:08:41.392619  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:08:52.329917  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:09:02.946497  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:09:13.576185  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:09:24.193773  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:09:34.917963  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:09:45.609931  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:09:56.270134  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:10:07.043052  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:10:17.634241  Running Instances =  5  Waiting Instances =  2140
+Interjected Signal - exiting
+ In Signal hadler - killing all  5  instances
+ Setting processing run  46013  to injected
+ Setting processing run  46012  to injected
+ Setting processing run  46009  to injected
+ Setting processing run  46007  to injected
+ Setting processing run  46006  to injected

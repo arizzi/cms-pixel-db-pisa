@@ -52,6 +52,7 @@ def makeHistoFromData(data,out,bins,xmin,xmax):
    text=False
    is2d=False
    try:
+	  data=map(lambda x : -100 if x=='' else x,data) 
 	  data=map(lambda x : -100 if x=='n/a' else x,data) 
           data=map(lambda x : -100 if x=="None" else x,data)
 	  data=map(lambda x : float(x),data)

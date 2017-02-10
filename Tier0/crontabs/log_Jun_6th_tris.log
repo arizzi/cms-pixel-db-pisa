@@ -1,0 +1,1292 @@
+Reading File  perugia_fullmoduletest-v98.ini
+{'center': 'PERUGIA', 'pattern': '"M*.tar.gz"', 'testname': 'FullTest', 'inputdir': '/home/perugia/dropbox/', 'init': '/home/robot/cms-pixel-db-pisa/Tier0/crontabs/fullmoduletestmacro-v98.ini', 'operator': 'n/a'}
+TMPFILE  /tmp/tmpi74mh5
+INSERTED  0  TAR FILES
+TARS are  []
+injected processing runs  0
+Starting PR  46013
+Starting PR  46012
+Starting PR  46009
+Starting PR  46007
+Starting PR  46006
+2016-06-06 10:10:38.888933  Running Instances =  0  Waiting Instances =  2145
+2016-06-06 10:10:49.547027  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:11:00.232534  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:11:10.895959  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:11:21.679182  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:11:32.458879  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:11:43.233086  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:11:53.918803  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:12:04.577700  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:12:15.230154  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:12:25.880148  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:12:36.562477  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:12:47.341919  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:12:58.025690  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:13:08.694160  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:13:19.344642  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:13:30.018514  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:13:40.642814  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:13:51.239056  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:14:01.835093  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:14:12.471744  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:14:23.073035  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:14:33.688918  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:14:44.275493  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:14:54.924321  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:15:05.532421  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:15:16.117094  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:15:26.686734  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:15:37.284548  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:15:47.930453  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:15:58.594501  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:16:09.236112  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:16:19.914960  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:16:30.627837  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:16:41.311920  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:16:52.017056  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:17:02.768378  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:17:13.373740  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:17:24.051381  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:17:34.682787  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:17:45.320017  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:17:55.976631  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:18:06.660110  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:18:17.297784  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:18:27.958159  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:18:38.608327  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:18:49.247828  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:18:59.917646  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:19:10.588932  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:19:21.229273  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:19:31.946317  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:19:42.698956  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:19:53.421310  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:20:04.119255  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:20:14.791208  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:20:25.523073  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:20:36.235798  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:20:46.952214  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:20:57.646283  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:21:08.336644  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:21:19.082163  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:21:29.717830  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:21:40.411519  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:21:51.081016  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:22:01.799353  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:22:12.509056  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:22:23.204128  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:22:34.320045  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:22:45.496871  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:22:56.760589  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:23:07.811430  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:23:18.887099  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:23:30.082201  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:23:41.294945  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:23:52.108622  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:24:03.293569  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:24:14.312246  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:24:25.715338  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:24:36.923966  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:24:48.065394  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:24:58.793898  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:25:09.490763  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:25:20.221743  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:25:30.927428  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:25:41.626312  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:25:52.308051  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:26:03.061264  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:26:13.775347  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:26:24.481261  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:26:35.158335  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:26:45.872337  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:26:56.679775  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:27:07.325371  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:27:18.022123  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:27:28.694456  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:27:39.423755  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:27:50.122554  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:28:00.844100  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:28:11.618621  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:28:22.285067  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:28:33.048457  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:28:43.741029  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:28:54.432445  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:29:05.098562  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:29:15.825896  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:29:26.534640  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:29:37.198996  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:29:47.874653  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:29:59.260837  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:30:10.327445  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:30:21.724943  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:30:32.984876  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:30:44.220246  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:30:55.564266  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:31:06.296037  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:31:17.846102  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:31:28.508568  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:31:39.215004  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:31:49.894481  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:32:00.574521  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:32:11.248856  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:32:22.667352  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:32:33.304101  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:32:43.963755  Running Instances =  5  Waiting Instances =  2140
+2016-06-06 10:32:54.653616  Running Instances =  5  Waiting Instances =  2140
+Finished running PR  46006  with exit code  0
+Starting PR  46005
+2016-06-06 10:33:05.769677  Running Instances =  4  Waiting Instances =  2140
+2016-06-06 10:33:16.508539  Running Instances =  5  Waiting Instances =  2139
+2016-06-06 10:33:27.224134  Running Instances =  5  Waiting Instances =  2139
+2016-06-06 10:33:37.925081  Running Instances =  5  Waiting Instances =  2139
+2016-06-06 10:33:48.615172  Running Instances =  5  Waiting Instances =  2139
+2016-06-06 10:33:59.343272  Running Instances =  5  Waiting Instances =  2139
+2016-06-06 10:34:10.011098  Running Instances =  5  Waiting Instances =  2139
+Finished running PR  46013  with exit code  0
+Starting PR  46004
+2016-06-06 10:34:21.132701  Running Instances =  4  Waiting Instances =  2139
+2016-06-06 10:34:31.840037  Running Instances =  5  Waiting Instances =  2138
+2016-06-06 10:34:42.581745  Running Instances =  5  Waiting Instances =  2138
+2016-06-06 10:34:53.367306  Running Instances =  5  Waiting Instances =  2138
+2016-06-06 10:35:04.436954  Running Instances =  5  Waiting Instances =  2138
+2016-06-06 10:35:15.120402  Running Instances =  5  Waiting Instances =  2138
+2016-06-06 10:35:25.803475  Running Instances =  5  Waiting Instances =  2138
+2016-06-06 10:35:36.796795  Running Instances =  5  Waiting Instances =  2138
+USING UPLOAD =  Null self.uploadNull(pd,session) 46006
+ppp <ObjectsTier0.ProcessedDir object at 0x1770590>
+USING UPLOAD =  Null self.uploadNull(pd,session) 46013
+ppp <ObjectsTier0.ProcessedDir object at 0x179af50>
+2016-06-06 10:35:47.498565  Running Instances =  5  Waiting Instances =  2138
+2016-06-06 10:35:58.274440  Running Instances =  5  Waiting Instances =  2138
+2016-06-06 10:36:09.048557  Running Instances =  5  Waiting Instances =  2138
+Finished running PR  46012  with exit code  0
+Starting PR  46002
+2016-06-06 10:36:20.150429  Running Instances =  4  Waiting Instances =  2138
+2016-06-06 10:36:30.823766  Running Instances =  5  Waiting Instances =  2137
+2016-06-06 10:36:41.482934  Running Instances =  5  Waiting Instances =  2137
+Finished running PR  46009  with exit code  0
+Starting PR  46000
+2016-06-06 10:36:52.598486  Running Instances =  4  Waiting Instances =  2137
+2016-06-06 10:37:03.281286  Running Instances =  5  Waiting Instances =  2136
+2016-06-06 10:37:14.052197  Running Instances =  5  Waiting Instances =  2136
+2016-06-06 10:37:24.834103  Running Instances =  5  Waiting Instances =  2136
+2016-06-06 10:37:35.594140  Running Instances =  5  Waiting Instances =  2136
+2016-06-06 10:37:46.275685  Running Instances =  5  Waiting Instances =  2136
+2016-06-06 10:37:56.932063  Running Instances =  5  Waiting Instances =  2136
+2016-06-06 10:38:07.535284  Running Instances =  5  Waiting Instances =  2136
+2016-06-06 10:38:18.425658  Running Instances =  5  Waiting Instances =  2136
+2016-06-06 10:38:29.312113  Running Instances =  5  Waiting Instances =  2136
+2016-06-06 10:38:40.375091  Running Instances =  5  Waiting Instances =  2136
+2016-06-06 10:38:51.175777  Running Instances =  5  Waiting Instances =  2136
+2016-06-06 10:39:02.125303  Running Instances =  5  Waiting Instances =  2136
+2016-06-06 10:39:13.079807  Running Instances =  5  Waiting Instances =  2136
+USING UPLOAD =  Null self.uploadNull(pd,session) 46012
+ppp <ObjectsTier0.ProcessedDir object at 0x1bac150>
+USING UPLOAD =  Null self.uploadNull(pd,session) 46009
+ppp <ObjectsTier0.ProcessedDir object at 0x1bb8290>
+2016-06-06 10:39:23.754002  Running Instances =  5  Waiting Instances =  2136
+2016-06-06 10:39:34.355406  Running Instances =  5  Waiting Instances =  2136
+2016-06-06 10:39:44.960415  Running Instances =  5  Waiting Instances =  2136
+2016-06-06 10:39:55.527129  Running Instances =  5  Waiting Instances =  2136
+2016-06-06 10:40:06.166794  Running Instances =  5  Waiting Instances =  2136
+2016-06-06 10:40:16.823599  Running Instances =  5  Waiting Instances =  2136
+2016-06-06 10:40:27.413610  Running Instances =  5  Waiting Instances =  2136
+2016-06-06 10:40:37.969847  Running Instances =  5  Waiting Instances =  2136
+Finished running PR  46007  with exit code  0
+Starting PR  45997
+2016-06-06 10:40:48.905360  Running Instances =  4  Waiting Instances =  2136
+2016-06-06 10:40:59.518525  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:41:10.092658  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:41:20.691089  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:41:31.278075  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:41:41.920483  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:41:52.487678  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:42:03.297368  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:42:14.051124  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:42:24.795036  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:42:35.494560  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:42:46.145949  Running Instances =  5  Waiting Instances =  2135
+USING UPLOAD =  Null self.uploadNull(pd,session) 46007
+ppp <ObjectsTier0.ProcessedDir object at 0x1cefa90>
+2016-06-06 10:42:56.778330  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:43:07.376003  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:43:18.001265  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:43:28.609962  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:43:39.213793  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:43:49.811583  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:44:00.410435  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:44:11.056025  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:44:21.680245  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:44:32.319271  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:44:43.226292  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:44:54.200024  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:45:05.094194  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:45:15.963868  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:45:26.839500  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:45:37.426203  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:45:48.100624  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:45:58.755443  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:46:09.404559  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:46:19.995931  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:46:30.582391  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:46:41.322749  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:46:52.019522  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:47:02.686586  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:47:13.356216  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:47:24.086517  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:47:34.804163  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:47:45.494789  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:47:56.179335  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:48:06.772422  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:48:17.427841  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:48:28.084590  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:48:38.666563  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:48:49.258676  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:48:59.851119  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:49:10.454585  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:49:21.195245  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:49:32.105141  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:49:42.828266  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:49:53.597085  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:50:04.287161  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:50:14.922759  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:50:25.852448  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:50:36.819134  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:50:47.488823  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:50:58.127932  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:51:08.750463  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:51:19.419466  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:51:30.099306  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:51:40.730382  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:51:51.352921  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:52:02.022768  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:52:12.607390  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:52:23.315249  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:52:33.991882  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:52:44.604986  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:52:55.271313  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:53:05.878526  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:53:16.460760  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:53:27.143496  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:53:37.761993  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:53:48.362372  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:53:58.997911  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:54:09.675949  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:54:20.353165  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:54:31.014564  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:54:41.728131  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:54:52.411543  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:55:03.085053  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:55:13.752359  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:55:24.415436  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:55:35.120792  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:55:45.825706  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:55:56.498052  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:56:07.144352  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:56:17.824490  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:56:28.480943  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:56:39.133164  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:56:49.783727  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:57:00.424166  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:57:11.108510  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:57:21.770743  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:57:32.419768  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:57:43.047845  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:57:53.651780  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:58:04.302685  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:58:14.930163  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:58:25.561913  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:58:36.255685  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:58:46.928607  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:58:57.564721  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:59:08.209004  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:59:18.822630  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:59:29.434763  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:59:40.327996  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 10:59:51.186206  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:00:01.951940  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:00:12.625251  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:00:23.339764  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:00:34.023756  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:00:44.709514  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:00:55.648495  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:01:06.535436  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:01:17.511093  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:01:28.319347  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:01:39.000020  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:01:49.683811  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:02:00.420533  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:02:11.113668  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:02:21.800438  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:02:32.468916  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:02:43.127926  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:02:53.838379  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:03:04.520996  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:03:15.195485  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:03:25.860100  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:03:36.515226  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:03:47.216574  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:03:57.943728  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:04:08.625431  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:04:19.298252  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:04:29.984670  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:04:40.657580  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:04:51.345224  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:05:02.014079  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:05:12.670035  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:05:23.373176  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:05:34.051053  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:05:44.721106  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:05:55.382316  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:06:06.096185  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:06:16.781936  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:06:27.461645  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:06:38.132563  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:06:48.723462  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:06:59.430747  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:07:10.111654  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:07:20.784050  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:07:31.448081  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:07:42.166440  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:07:52.863735  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:08:03.542607  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:08:14.210704  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:08:24.872111  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:08:35.492394  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:08:46.079784  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:08:56.761382  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:09:07.442940  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:09:18.099749  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:09:28.811200  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:09:39.502059  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:09:50.180459  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:10:00.905917  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:10:11.662369  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:10:22.363963  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:10:33.062045  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:10:43.753265  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:10:54.416507  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:11:05.134078  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:11:15.852777  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:11:26.561391  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:11:37.238466  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:11:48.057770  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:11:58.781846  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:12:09.493291  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:12:20.180726  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:12:30.853807  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:12:41.576442  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:12:52.272236  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:13:02.965667  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:13:13.642745  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:13:24.378900  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:13:35.083787  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:13:45.776085  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:13:56.458992  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:14:07.133796  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:14:17.860857  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:14:28.765761  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:14:39.475356  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:14:50.504723  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:15:01.372800  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:15:12.446814  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:15:23.268663  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:15:33.889826  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:15:44.507790  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:15:55.548260  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:16:06.957473  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:16:18.225648  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:16:29.492895  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:16:40.689092  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:16:51.945403  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:17:02.627851  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:17:13.317128  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:17:24.002010  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:17:34.732945  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:17:45.435488  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:17:56.119512  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:18:06.813007  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:18:17.503142  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:18:28.225568  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:18:38.933279  Running Instances =  5  Waiting Instances =  2135
+2016-06-06 11:18:49.602437  Running Instances =  5  Waiting Instances =  2135
+Finished running PR  46005  with exit code  0
+Starting PR  45996
+2016-06-06 11:19:00.685706  Running Instances =  4  Waiting Instances =  2135
+2016-06-06 11:19:11.388847  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:19:22.015360  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:19:32.694432  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:19:43.365072  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:19:54.097870  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:20:04.923770  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:20:15.604685  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:20:26.215838  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:20:36.807704  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:20:47.448853  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:20:58.054474  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:21:08.632137  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:21:19.194939  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:21:29.749312  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:21:40.346708  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:21:50.922667  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:22:01.579994  Running Instances =  5  Waiting Instances =  2134
+USING UPLOAD =  Null self.uploadNull(pd,session) 46005
+ppp <ObjectsTier0.ProcessedDir object at 0x14be6d0>
+2016-06-06 11:22:12.182933  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:22:22.890561  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:22:33.568208  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:22:44.239819  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:22:54.840475  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:23:05.429659  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:23:16.093069  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:23:26.742461  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:23:37.474509  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:23:48.146688  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:23:58.801936  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:24:09.421382  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:24:20.038898  Running Instances =  5  Waiting Instances =  2134
+2016-06-06 11:24:30.637635  Running Instances =  5  Waiting Instances =  2134
+Finished running PR  46004  with exit code  0
+Starting PR  45995
+2016-06-06 11:24:41.684752  Running Instances =  4  Waiting Instances =  2134
+2016-06-06 11:24:52.265343  Running Instances =  5  Waiting Instances =  2133
+Finished running PR  46002  with exit code  0
+Starting PR  45994
+2016-06-06 11:25:03.262955  Running Instances =  4  Waiting Instances =  2133
+2016-06-06 11:25:13.921068  Running Instances =  5  Waiting Instances =  2132
+2016-06-06 11:25:24.874456  Running Instances =  5  Waiting Instances =  2132
+2016-06-06 11:25:35.797616  Running Instances =  5  Waiting Instances =  2132
+USING UPLOAD =  Null self.uploadNull(pd,session) 46004
+ppp <ObjectsTier0.ProcessedDir object at 0xf63050>
+USING UPLOAD =  Null self.uploadNull(pd,session) 46002
+ppp <ObjectsTier0.ProcessedDir object at 0xf2c210>
+2016-06-06 11:25:46.652218  Running Instances =  5  Waiting Instances =  2132
+2016-06-06 11:25:57.568337  Running Instances =  5  Waiting Instances =  2132
+2016-06-06 11:26:08.525356  Running Instances =  5  Waiting Instances =  2132
+2016-06-06 11:26:19.336354  Running Instances =  5  Waiting Instances =  2132
+2016-06-06 11:26:30.126866  Running Instances =  5  Waiting Instances =  2132
+2016-06-06 11:26:40.936864  Running Instances =  5  Waiting Instances =  2132
+2016-06-06 11:26:51.751496  Running Instances =  5  Waiting Instances =  2132
+2016-06-06 11:27:02.398168  Running Instances =  5  Waiting Instances =  2132
+2016-06-06 11:27:13.009246  Running Instances =  5  Waiting Instances =  2132
+2016-06-06 11:27:23.613419  Running Instances =  5  Waiting Instances =  2132
+2016-06-06 11:27:34.200970  Running Instances =  5  Waiting Instances =  2132
+2016-06-06 11:27:44.757817  Running Instances =  5  Waiting Instances =  2132
+2016-06-06 11:27:55.393146  Running Instances =  5  Waiting Instances =  2132
+Finished running PR  45997  with exit code  0
+Starting PR  45993
+2016-06-06 11:28:06.444346  Running Instances =  4  Waiting Instances =  2132
+2016-06-06 11:28:17.115282  Running Instances =  5  Waiting Instances =  2131
+2016-06-06 11:28:27.944573  Running Instances =  5  Waiting Instances =  2131
+Finished running PR  46000  with exit code  0
+Starting PR  45992
+2016-06-06 11:28:39.376772  Running Instances =  4  Waiting Instances =  2131
+2016-06-06 11:28:50.122024  Running Instances =  5  Waiting Instances =  2130
+2016-06-06 11:29:00.809717  Running Instances =  5  Waiting Instances =  2130
+2016-06-06 11:29:11.521157  Running Instances =  5  Waiting Instances =  2130
+USING UPLOAD =  Null self.uploadNull(pd,session) 45997
+ppp <ObjectsTier0.ProcessedDir object at 0xf48790>
+USING UPLOAD =  Null self.uploadNull(pd,session) 46000
+ppp <ObjectsTier0.ProcessedDir object at 0x1823f90>
+2016-06-06 11:29:22.256176  Running Instances =  5  Waiting Instances =  2130
+2016-06-06 11:29:32.946969  Running Instances =  5  Waiting Instances =  2130
+2016-06-06 11:29:43.586506  Running Instances =  5  Waiting Instances =  2130
+2016-06-06 11:29:54.206574  Running Instances =  5  Waiting Instances =  2130
+2016-06-06 11:30:04.907210  Running Instances =  5  Waiting Instances =  2130
+Finished running PR  45994  with exit code  0
+Starting PR  45991
+2016-06-06 11:30:16.050341  Running Instances =  4  Waiting Instances =  2130
+2016-06-06 11:30:26.650988  Running Instances =  5  Waiting Instances =  2129
+Finished running PR  45992  with exit code  0
+Starting PR  45990
+2016-06-06 11:30:37.661689  Running Instances =  4  Waiting Instances =  2129
+2016-06-06 11:30:48.369718  Running Instances =  5  Waiting Instances =  2128
+2016-06-06 11:30:59.055691  Running Instances =  5  Waiting Instances =  2128
+2016-06-06 11:31:09.731103  Running Instances =  5  Waiting Instances =  2128
+2016-06-06 11:31:20.524562  Running Instances =  5  Waiting Instances =  2128
+2016-06-06 11:31:31.387501  Running Instances =  5  Waiting Instances =  2128
+2016-06-06 11:31:42.080024  Running Instances =  5  Waiting Instances =  2128
+2016-06-06 11:31:52.764163  Running Instances =  5  Waiting Instances =  2128
+2016-06-06 11:32:03.615018  Running Instances =  5  Waiting Instances =  2128
+2016-06-06 11:32:14.830821  Running Instances =  5  Waiting Instances =  2128
+2016-06-06 11:32:25.971965  Running Instances =  5  Waiting Instances =  2128
+2016-06-06 11:32:36.693827  Running Instances =  5  Waiting Instances =  2128
+2016-06-06 11:32:47.386842  Running Instances =  5  Waiting Instances =  2128
+USING UPLOAD =  Null self.uploadNull(pd,session) 45994
+ppp <ObjectsTier0.ProcessedDir object at 0x10c2b10>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45992
+ppp <ObjectsTier0.ProcessedDir object at 0x10c82d0>
+2016-06-06 11:32:58.006874  Running Instances =  5  Waiting Instances =  2128
+2016-06-06 11:33:08.718808  Running Instances =  5  Waiting Instances =  2128
+Finished running PR  45993  with exit code  0
+Starting PR  45989
+2016-06-06 11:33:19.801717  Running Instances =  4  Waiting Instances =  2128
+2016-06-06 11:33:30.473246  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:33:41.135421  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:33:51.841768  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:34:02.531071  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:34:13.140618  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:34:23.802406  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:34:34.456094  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:34:45.089981  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:34:55.675506  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:35:06.286000  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:35:16.896744  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:35:27.547987  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:35:38.184931  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:35:48.876609  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:35:59.520185  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:36:10.215135  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:36:20.932419  Running Instances =  5  Waiting Instances =  2127
+USING UPLOAD =  Null self.uploadNull(pd,session) 45993
+ppp <ObjectsTier0.ProcessedDir object at 0x1cd1c10>
+2016-06-06 11:36:31.715605  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:36:42.297569  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:36:52.872952  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:37:03.491288  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:37:14.084778  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:37:24.679280  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:37:35.257893  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:37:45.830643  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:37:56.463094  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:38:07.074270  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:38:17.656937  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:38:28.321945  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:38:38.927764  Running Instances =  5  Waiting Instances =  2127
+2016-06-06 11:38:49.544421  Running Instances =  5  Waiting Instances =  2127
+Finished running PR  45996  with exit code  0
+Starting PR  45988
+2016-06-06 11:39:00.568515  Running Instances =  4  Waiting Instances =  2127
+2016-06-06 11:39:11.218108  Running Instances =  5  Waiting Instances =  2126
+2016-06-06 11:39:21.862451  Running Instances =  5  Waiting Instances =  2126
+2016-06-06 11:39:32.508674  Running Instances =  5  Waiting Instances =  2126
+2016-06-06 11:39:43.162936  Running Instances =  5  Waiting Instances =  2126
+2016-06-06 11:39:53.764991  Running Instances =  5  Waiting Instances =  2126
+USING UPLOAD =  Null self.uploadNull(pd,session) 45996
+ppp <ObjectsTier0.ProcessedDir object at 0x16dd810>
+2016-06-06 11:40:04.476757  Running Instances =  5  Waiting Instances =  2126
+2016-06-06 11:40:15.131081  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:40:26.048307  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:40:37.023802  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:40:48.153917  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:40:59.285417  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:41:10.388822  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:41:21.555981  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:41:32.560801  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:41:43.678867  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:41:54.874106  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:42:06.001290  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:42:17.565180  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:42:28.726140  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:42:39.748240  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:42:50.919690  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:43:01.981881  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:43:13.039239  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:43:24.203901  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:43:35.360467  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:43:46.515224  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:43:57.540094  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:44:08.256656  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:44:19.182749  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:44:29.924107  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:44:40.686055  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:44:51.376369  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:45:02.219802  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:45:13.163258  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:45:24.200893  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:45:35.188800  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:45:45.986238  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:45:56.695687  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:46:07.404750  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:46:18.136580  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:46:28.839400  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:46:39.552628  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:46:50.479617  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:47:01.524661  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:47:12.219529  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:47:22.959639  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 1ls: cannot access /data/pixels/BareModule/OUT//B313208-16-1-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-16-1-BareModuleTestPixelAlive-2016-06-02_17h27m_1464881234/Bare_module_ROC00_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-1-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-16-1-BareModuleTestPixelAlive-2016-06-02_17h27m_1464881234/Bare_module_ROC01_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-1-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-16-1-BareModuleTestPixelAlive-2016-06-02_17h27m_1464881234/Bare_module_ROC02_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-1-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-16-1-BareModuleTestPixelAlive-2016-06-02_17h27m_1464881234/Bare_module_ROC03_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-1-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-16-1-BareModuleTestPixelAlive-2016-06-02_17h27m_1464881234/Bare_module_ROC04_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-1-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-16-1-BareModuleTestPixelAlive-2016-06-02_17h27m_1464881234/Bare_module_ROC05_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-1-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-16-1-BareModuleTestPixelAlive-2016-06-02_17h27m_1464881234/Bare_module_ROC06_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-1-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-16-1-BareModuleTestPixelAlive-2016-06-02_17h27m_1464881234/Bare_module_ROC07_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-1-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-16-1-BareModuleTestPixelAlive-2016-06-02_17h27m_1464881234/Bare_module_ROC08_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-1-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-16-1-BareModuleTestPixelAlive-2016-06-02_17h27m_1464881234/Bare_module_ROC09_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-1-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-16-1-BareModuleTestPixelAlive-2016-06-02_17h27m_1464881234/Bare_module_ROC10_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-1-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-16-1-BareModuleTestPixelAlive-2016-06-02_17h27m_1464881234/Bare_module_ROC11_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-1-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-16-1-BareModuleTestPixelAlive-2016-06-02_17h27m_1464881234/Bare_module_ROC12_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-1-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-16-1-BareModuleTestPixelAlive-2016-06-02_17h27m_1464881234/Bare_module_ROC13_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-1-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-16-1-BareModuleTestPixelAlive-2016-06-02_17h27m_1464881234/Bare_module_ROC14_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-1-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-16-1-BareModuleTestPixelAlive-2016-06-02_17h27m_1464881234/Bare_module_ROC15_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-2-BareModuleTestPixelAlive-2016-06-03_15h22m_1464960168/Bare_module_ROC00_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-2-BareModuleTestPixelAlive-2016-06-03_15h22m_1464960168/Bare_module_ROC01_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-2-BareModuleTestPixelAlive-2016-06-03_15h22m_1464960168/Bare_module_ROC02_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-2-BareModuleTestPixelAlive-2016-06-03_15h22m_1464960168/Bare_module_ROC03_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-2-BareModuleTestPixelAlive-2016-06-03_15h22m_1464960168/Bare_module_ROC04_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-2-BareModuleTestPixelAlive-2016-06-03_15h22m_1464960168/Bare_module_ROC05_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-2-BareModuleTestPixelAlive-2016-06-03_15h22m_1464960168/Bare_module_ROC06_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-2-BareModuleTestPixelAlive-2016-06-03_15h22m_1464960168/Bare_module_ROC07_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-2-BareModuleTestPixelAlive-2016-06-03_15h22m_1464960168/Bare_module_ROC08_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-2-BareModuleTestPixelAlive-2016-06-03_15h22m_1464960168/Bare_module_ROC09_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-2-BareModuleTestPixelAlive-2016-06-03_15h22m_1464960168/Bare_module_ROC10_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-2-BareModuleTestPixelAlive-2016-06-03_15h22m_1464960168/Bare_module_ROC11_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-2-BareModuleTestPixelAlive-2016-06-03_15h22m_1464960168/Bare_module_ROC12_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-2-BareModuleTestPixelAlive-2016-06-03_15h22m_1464960168/Bare_module_ROC13_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-2-BareModuleTestPixelAlive-2016-06-03_15h22m_1464960168/Bare_module_ROC14_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-2-BareModuleTestPixelAlive-2016-06-03_15h22m_1464960168/Bare_module_ROC15_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-17-3-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-17-3-BareModuleTestPixelAlive-2016-06-02_16h47m_1464878870/Bare_module_ROC00_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-17-3-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-17-3-BareModuleTestPixelAlive-2016-06-02_16h47m_1464878870/Bare_module_ROC01_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-17-3-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-17-3-BareModuleTestPixelAlive-2016-06-02_16h47m_1464878870/Bare_module_ROC02_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-17-3-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-17-3-BareModuleTestPixelAlive-2016-06-02_16h47m_1464878870/Bare_module_ROC03_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-17-3-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-17-3-BareModuleTestPixelAlive-2016-06-02_16h47m_1464878870/Bare_module_ROC04_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-17-3-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-17-3-BareModuleTestPixelAlive-2016-06-02_16h47m_1464878870/Bare_module_ROC05_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-17-3-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-17-3-BareModuleTestPixelAlive-2016-06-02_16h47m_1464878870/Bare_module_ROC06_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-17-3-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-17-3-BareModuleTestPixelAlive-2016-06-02_16h47m_1464878870/Bare_module_ROC07_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-17-3-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-17-3-BareModuleTestPixelAlive-2016-06-02_16h47m_1464878870/Bare_module_ROC08_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-17-3-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-17-3-BareModuleTestPixelAlive-2016-06-02_16h47m_1464878870/Bare_module_ROC09_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-17-3-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-17-3-BareModuleTestPixelAlive-2016-06-02_16h47m_1464878870/Bare_module_ROC10_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-17-3-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-17-3-BareModuleTestPixelAlive-2016-06-02_16h47m_1464878870/Bare_module_ROC11_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-17-3-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-17-3-BareModuleTestPixelAlive-2016-06-02_16h47m_1464878870/Bare_module_ROC12_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-17-3-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-17-3-BareModuleTestPixelAlive-2016-06-02_16h47m_1464878870/Bare_module_ROC13_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-17-3-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-17-3-BareModuleTestPixelAlive-2016-06-02_16h47m_1464878870/Bare_module_ROC14_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-17-3-BareModuleTestPixelAlive-2016-06-02/1.2/B313208-17-3-BareModuleTestPixelAlive-2016-06-02_16h47m_1464878870/Bare_module_ROC15_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-2-BareModuleTestPixelAlive-2016-06-03/1.2/B313208-16-2-BareModuleTestPixelAlive-2016-06-03_10h31m_1464942683/Bare_module_ROC00_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-2-BareModuleTestPixelAlive-2016-06-03/1.2/B313208-16-2-BareModuleTestPixelAlive-2016-06-03_10h31m_1464942683/Bare_module_ROC01_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-2-BareModuleTestPixelAlive-2016-06-03/1.2/B313208-16-2-BareModuleTestPixelAlive-2016-06-03_10h31m_1464942683/Bare_module_ROC02_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-2-BareModuleTestPixelAlive-2016-06-03/1.2/B313208-16-2-BareModuleTestPixelAlive-2016-06-03_10h31m_1464942683/Bare_module_ROC03_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-2-BareModuleTestPixelAlive-2016-06-03/1.2/B313208-16-2-BareModuleTestPixelAlive-2016-06-03_10h31m_1464942683/Bare_module_ROC04_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-2-BareModuleTestPixelAlive-2016-06-03/1.2/B313208-16-2-BareModuleTestPixelAlive-2016-06-03_10h31m_1464942683/Bare_module_ROC05_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-2-BareModuleTestPixelAlive-2016-06-03/1.2/B313208-16-2-BareModuleTestPixelAlive-2016-06-03_10h31m_1464942683/Bare_module_ROC06_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-2-BareModuleTestPixelAlive-2016-06-03/1.2/B313208-16-2-BareModuleTestPixelAlive-2016-06-03_10h31m_1464942683/Bare_module_ROC07_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-2-BareModuleTestPixelAlive-2016-06-03/1.2/B313208-16-2-BareModuleTestPixelAlive-2016-06-03_10h31m_1464942683/Bare_module_ROC08_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-2-BareModuleTestPixelAlive-2016-06-03/1.2/B313208-16-2-BareModuleTestPixelAlive-2016-06-03_10h31m_1464942683/Bare_module_ROC09_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-2-BareModuleTestPixelAlive-2016-06-03/1.2/B313208-16-2-BareModuleTestPixelAlive-2016-06-03_10h31m_1464942683/Bare_module_ROC10_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-2-BareModuleTestPixelAlive-2016-06-03/1.2/B313208-16-2-BareModuleTestPixelAlive-2016-06-03_10h31m_1464942683/Bare_module_ROC11_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-2-BareModuleTestPixelAlive-2016-06-03/1.2/B313208-16-2-BareModuleTestPixelAlive-2016-06-03_10h31m_1464942683/Bare_module_ROC12_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-2-BareModuleTestPixelAlive-2016-06-03/1.2/B313208-16-2-BareModuleTestPixelAlive-2016-06-03_10h31m_1464942683/Bare_module_ROC13_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-2-BareModuleTestPixelAlive-2016-06-03/1.2/B313208-16-2-BareModuleTestPixelAlive-2016-06-03_10h31m_1464942683/Bare_module_ROC14_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B313208-16-2-BareModuleTestPixelAlive-2016-06-03/1.2/B313208-16-2-BareModuleTestPixelAlive-2016-06-03_10h31m_1464942683/Bare_module_ROC15_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-2-BareModuleTestPixelAlive-2016-06-03_11h25m_1464945945/Bare_module_ROC00_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-2-BareModuleTestPixelAlive-2016-06-03_11h25m_1464945945/Bare_module_ROC01_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-2-BareModuleTestPixelAlive-2016-06-03_11h25m_1464945945/Bare_module_ROC02_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-2-BareModuleTestPixelAlive-2016-06-03_11h25m_1464945945/Bare_module_ROC03_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-2-BareModuleTestPixelAlive-2016-06-03_11h25m_1464945945/Bare_module_ROC04_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-2-BareModuleTestPixelAlive-2016-06-03_11h25m_1464945945/Bare_module_ROC05_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-2-BareModuleTestPixelAlive-2016-06-03_11h25m_1464945945/Bare_module_ROC06_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-2-BareModuleTestPixelAlive-2016-06-03_11h25m_1464945945/Bare_module_ROC07_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-2-BareModuleTestPixelAlive-2016-06-03_11h25m_1464945945/Bare_module_ROC08_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-2-BareModuleTestPixelAlive-2016-06-03_11h25m_1464945945/Bare_module_ROC09_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-2-BareModuleTestPixelAlive-2016-06-03_11h25m_1464945945/Bare_module_ROC10_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-2-BareModuleTestPixelAlive-2016-06-03_11h25m_1464945945/Bare_module_ROC11_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-2-BareModuleTestPixelAlive-2016-06-03_11h25m_1464945945/Bare_module_ROC12_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-2-BareModuleTestPixelAlive-2016-06-03_11h25m_1464945945/Bare_module_ROC13_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-2-BareModuleTestPixelAlive-2016-06-03_11h25m_1464945945/Bare_module_ROC14_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-2-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-2-BareModuleTestPixelAlive-2016-06-03_11h25m_1464945945/Bare_module_ROC15_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-1-BareModuleTestPixelAlive-2016-06-03_13h01m_1464951697/Bare_module_ROC00_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-1-BareModuleTestPixelAlive-2016-06-03_13h01m_1464951697/Bare_module_ROC01_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-1-BareModuleTestPixelAlive-2016-06-03_13h01m_1464951697/Bare_module_ROC02_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-1-BareModuleTestPixelAlive-2016-06-03_13h01m_1464951697/Bare_module_ROC03_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-1-BareModuleTestPixelAlive-2016-06-03_13h01m_1464951697/Bare_module_ROC04_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-1-BareModuleTestPixelAlive-2016-06-03_13h01m_1464951697/Bare_module_ROC05_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-1-BareModuleTestPixelAlive-2016-06-03_13h01m_1464951697/Bare_module_ROC06_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-1-BareModuleTestPixelAlive-2016-06-03_13h01m_1464951697/Bare_module_ROC07_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-1-BareModuleTestPixelAlive-2016-06-03_13h01m_1464951697/Bare_module_ROC08_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-1-BareModuleTestPixelAlive-2016-06-03_13h01m_1464951697/Bare_module_ROC09_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-1-BareModuleTestPixelAlive-2016-06-03_13h01m_1464951697/Bare_module_ROC10_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-1-BareModuleTestPixelAlive-2016-06-03_13h01m_1464951697/Bare_module_ROC11_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-1-BareModuleTestPixelAlive-2016-06-03_13h01m_1464951697/Bare_module_ROC12_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-1-BareModuleTestPixelAlive-2016-06-03_13h01m_1464951697/Bare_module_ROC13_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-1-BareModuleTestPixelAlive-2016-06-03_13h01m_1464951697/Bare_module_ROC14_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestPixelAlive-2016-06-03/1.2/B350853-21-1-BareModuleTestPixelAlive-2016-06-03_13h01m_1464951697/Bare_module_ROC15_setup.csv: No such file or directory
+1:47:33.564011  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:47:44.218268  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:47:55.295668  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:48:06.408474  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:48:17.296044  Running Instances =  5  Waiting Instances =  2133
+2016-06-06 11:48:28.244764  Running Instances =  5  Waiting Instances =  2147
+2016-06-06 11:48:39.364553  Running Instances =  5  Waiting Instances =  2147
+2016-06-06 11:48:50.135619  Running Instances =  5  Waiting Instances =  2147
+2016-06-06 11:49:00.775591  Running Instances =  5  Waiting Instances =  2147
+2016-06-06 11:49:11.396147  Running Instances =  5  Waiting Instances =  2147
+Finished running PR  45995  with exit code  0
+Starting PR  46331
+2016-06-06 11:49:22.566771  Running Instances =  4  Waiting Instances =  2147
+Finished running PR  46331  with exit code  0
+Starting PR  46330
+2016-06-06 11:49:33.679883  Running Instances =  4  Waiting Instances =  2146
+Finished running PR  45988  with exit code  0
+Finished running PR  46330  with exit code  0
+Starting PR  46329
+Starting PR  46328
+2016-06-06 11:49:45.283232  Running Instances =  3  Waiting Instances =  2145
+Finished running PR  46329  with exit code  0
+Finished running PR  46328  with exit code  0
+Starting PR  46327
+Starting PR  46326
+2016-06-06 11:49:56.718778  Running Instances =  3  Waiting Instances =  2143
+Finished running PR  46327  with exit code  0
+Finished running PR  46326  with exit code  0
+Starting PR  46325
+Starting PR  46324
+2016-06-06 11:50:08.227259  Running Instances =  3  Waiting Instances =  2141
+Finished running PR  46325  with exit code  0
+Finished running PR  46324  with exit code  0
+Starting PR  46323
+Starting PR  46322
+2016-06-06 11:50:19.717066  Running Instances =  3  Waiting Instances =  2139
+Finished running PR  46323  with exit code  0
+Finished running PR  46322  with exit code  0
+Starting PR  46321
+Starting PR  46320
+2016-06-06 11:50:31.150686  Running Instances =  3  Waiting Instances =  2137
+Finished running PR  46321  with exit code  0
+Finished running PR  46320  with exit code  0
+Starting PR  46319
+Starting PR  46318
+2016-06-06 11:50:42.625152  Running Instances =  3  Waiting Instances =  2135
+Finished running PR  46319  with exit code  0
+Finished running PR  46318  with exit code  0
+Starting PR  46317
+Starting PR  46316
+2016-06-06 11:50:54.126354  Running Instances =  3  Waiting Instances =  2133
+USING UPLOAD =  Null self.uploadNull(pd,session) 45995
+ppp <ObjectsTier0.ProcessedDir object at 0xf1fa50>
+USING UPLOAD =  BareModuleMultiTest self.uploadBareModuleMultiTest(pd,session) 46331
+ppp <Objects.Test_BareModule_QA object at 0xcc0a50>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45988
+ppp <ObjectsTier0.ProcessedDir object at 0xf1fa50>
+USING UPLOAD =  BareModuleMultiTest self.uploadBareModuleMultiTest(pd,session) 46330
+ppp <Objects.Test_BareModule_QA object at 0xcc0d10>
+USING UPLOAD =  BareModuleMultiTest self.uploadBareModuleMultiTest(pd,session) 46329
+ppp <Objects.Test_BareModule_QA object at 0xcc0a10>
+USING UPLOAD =  BareModuleMultiTest self.uploadBareModuleMultiTest(pd,session) 46328
+ppp <Objects.Test_BareModule_QA object at 0xcc0190>
+USING UPLOAD =  BareModuleMultiTest self.uploadBareModuleMultiTest(pd,session) 46327
+ppp <Objects.Test_BareModule_QA object at 0xcc0f50>
+USING UPLOAD =  BareModuleMultiTest self.uploadBareModuleMultiTest(pd,session) 46326
+ppp <Objects.Test_BareModule_QA object at 0xcc0ed0>
+USING UPLOAD =  BareModuleMultiTest self.uploadBareModuleMultiTest(pd,session) 46325
+ppp <Objects.Test_BareModule_QA object at 0xcc0e10>
+USING UPLOAD =  BareModuleMultiTest self.uploadBareModuleMultiTest(pd,session) 46324
+ppp <Objects.Test_BareModule_QA object at 0xcc0bd0>
+USING UPLOAD =  BareModuleMultiTest self.uploadBareModuleMultiTest(pd,session) 46323
+ppp <Objects.Test_BareModule_QA object at 0xcc0e90>
+USING UPLOAD =  BareModuleMultiTest self.uploadBareModuleMultiTest(pd,session) 46322
+ppp <Objects.Test_BareModule_QA object at 0xcc0790>
+USINls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestBumpBonding-2016-06-03/1.2/B350853-21-1-BareModuleTestBumpBonding-2016-06-03_13h01m_1464951697/Bare_module_ROC08_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestBumpBonding-2016-06-03/1.2/B350853-21-1-BareModuleTestBumpBonding-2016-06-03_13h01m_1464951697/Bare_module_ROC09_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestBumpBonding-2016-06-03/1.2/B350853-21-1-BareModuleTestBumpBonding-2016-06-03_13h01m_1464951697/Bare_module_ROC10_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestBumpBonding-2016-06-03/1.2/B350853-21-1-BareModuleTestBumpBonding-2016-06-03_13h01m_1464951697/Bare_module_ROC11_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestBumpBonding-2016-06-03/1.2/B350853-21-1-BareModuleTestBumpBonding-2016-06-03_13h01m_1464951697/Bare_module_ROC12_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestBumpBonding-2016-06-03/1.2/B350853-21-1-BareModuleTestBumpBonding-2016-06-03_13h01m_1464951697/Bare_module_ROC13_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestBumpBonding-2016-06-03/1.2/B350853-21-1-BareModuleTestBumpBonding-2016-06-03_13h01m_1464951697/Bare_module_ROC14_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350853-21-1-BareModuleTestBumpBonding-2016-06-03/1.2/B350853-21-1-BareModuleTestBumpBonding-2016-06-03_13h01m_1464951697/Bare_module_ROC15_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-3-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-3-BareModuleTestPixelAlive-2016-06-03_12h14m_1464948864/Bare_module_ROC00_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-3-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-3-BareModuleTestPixelAlive-2016-06-03_12h14m_1464948864/Bare_module_ROC01_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-3-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-3-BareModuleTestPixelAlive-2016-06-03_12h14m_1464948864/Bare_module_ROC02_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-3-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-3-BareModuleTestPixelAlive-2016-06-03_12h14m_1464948864/Bare_module_ROC03_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-3-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-3-BareModuleTestPixelAlive-2016-06-03_12h14m_1464948864/Bare_module_ROC04_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-3-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-3-BareModuleTestPixelAlive-2016-06-03_12h14m_1464948864/Bare_module_ROC05_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-3-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-3-BareModuleTestPixelAlive-2016-06-03_12h14m_1464948864/Bare_module_ROC06_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-3-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-3-BareModuleTestPixelAlive-2016-06-03_12h14m_1464948864/Bare_module_ROC07_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-3-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-3-BareModuleTestPixelAlive-2016-06-03_12h14m_1464948864/Bare_module_ROC08_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-3-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-3-BareModuleTestPixelAlive-2016-06-03_12h14m_1464948864/Bare_module_ROC09_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-3-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-3-BareModuleTestPixelAlive-2016-06-03_12h14m_1464948864/Bare_module_ROC10_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-3-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-3-BareModuleTestPixelAlive-2016-06-03_12h14m_1464948864/Bare_module_ROC11_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-3-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-3-BareModuleTestPixelAlive-2016-06-03_12h14m_1464948864/Bare_module_ROC12_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-3-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-3-BareModuleTestPixelAlive-2016-06-03_12h14m_1464948864/Bare_module_ROC13_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-3-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-3-BareModuleTestPixelAlive-2016-06-03_12h14m_1464948864/Bare_module_ROC14_setup.csv: No such file or directory
+ls: cannot access /data/pixels/BareModule/OUT//B350856-21-3-BareModuleTestPixelAlive-2016-06-03/1.2/B350856-21-3-BareModuleTestPixelAlive-2016-06-03_12h14m_1464948864/Bare_module_ROC15_setup.csv: No such file or directory
+G UPLOAD =  BareModuleMultiTest self.uploadBareModuleMultiTest(pd,session) 46321
+ppp <Objects.Test_BareModule_QA object at 0xcc0550>
+USING UPLOAD =  BareModuleMultiTest self.uploadBareModuleMultiTest(pd,session) 46320
+ppp <Objects.Test_BareModule_QA object at 0xcc0990>
+USING UPLOAD =  BareModuleMultiTest self.uploadBareModuleMultiTest(pd,session) 46319
+ppp <Objects.Test_BareModule_QA object at 0xcc0a10>
+USING UPLOAD =  BareModuleMultiTest self.uploadBareModuleMultiTest(pd,session) 46318
+ppp <Objects.Test_BareModule_QA object at 0xcc0e90>
+Finished running PR  46317  with exit code  0
+Finished running PR  46316  with exit code  0
+Starting PR  46315
+Starting PR  46314
+2016-06-06 11:51:09.368794  Running Instances =  3  Waiting Instances =  2131
+Finished running PR  46315  with exit code  0
+Finished running PR  46314  with exit code  0
+Starting PR  46313
+Starting PR  46312
+2016-06-06 11:51:21.586115  Running Instances =  3  Waiting Instances =  2129
+Finished running PR  46313  with exit code  0
+Finished running PR  46312  with exit code  0
+Starting PR  46311
+Starting PR  45987
+2016-06-06 11:51:33.954226  Running Instances =  3  Waiting Instances =  2127
+Finished running PR  46311  with exit code  0
+Starting PR  45986
+2016-06-06 11:51:45.073946  Running Instances =  4  Waiting Instances =  2125
+2016-06-06 11:51:55.709285  Running Instances =  5  Waiting Instances =  2124
+2016-06-06 11:52:06.343106  Running Instances =  5  Waiting Instances =  2124
+2016-06-06 11:52:17.061372  Running Instances =  5  Waiting Instances =  2124
+2016-06-06 11:52:27.743557  Running Instances =  5  Waiting Instances =  2124
+2016-06-06 11:52:38.433292  Running Instances =  5  Waiting Instances =  2124
+2016-06-06 11:52:49.565704  Running Instances =  5  Waiting Instances =  2124
+2016-06-06 11:53:00.510084  Running Instances =  5  Waiting Instances =  2124
+2016-06-06 11:53:11.429624  Running Instances =  5  Waiting Instances =  2124
+Finished running PR  45991  with exit code  0
+Starting PR  45985
+2016-06-06 11:53:22.994789  Running Instances =  4  Waiting Instances =  2124
+2016-06-06 11:53:33.986353  Running Instances =  5  Waiting Instances =  2123
+2016-06-06 11:53:45.266292  Running Instances =  5  Waiting Instances =  2123
+2016-06-06 11:53:55.915346  Running Instances =  5  Waiting Instances =  2123
+2016-06-06 11:54:06.586236  Running Instances =  5  Waiting Instances =  2123
+2016-06-06 11:54:17.199894  Running Instances =  5  Waiting Instances =  2123
+2016-06-06 11:54:27.802522  Running Instances =  5  Waiting Instances =  2123
+2016-06-06 11:54:38.408136  Running Instances =  5  Waiting Instances =  2123
+USING UPLOAD =  IVTest self.uploadIVTest(pd,session) 46317
+ppp <ObjectsTier0.ProcessedDir object at 0x1ae6fd0>
+USING UPLOAD =  IVTest self.uploadIVTest(pd,session) 46316
+ppp <ObjectsTier0.ProcessedDir object at 0x1b01e10>
+USING UPLOAD =  IVTest self.uploadIVTest(pd,session) 46315
+ppp <ObjectsTier0.ProcessedDir object at 0x1b01750>
+USING UPLOAD =  IVTest self.uploadIVTest(pd,session) 46314
+ppp <ObjectsTier0.ProcessedDir object at 0x1ae6910>
+USING UPLOAD =  IVTest self.uploadIVTest(pd,session) 46313
+ppp <ObjectsTier0.ProcessedDir object at 0x1b013d0>
+USING UPLOAD =  IVTest self.uploadIVTest(pd,session) 46312
+ppp <ObjectsTier0.ProcessedDir object at 0x1b01250>
+USING UPLOAD =  IVTest self.uploadIVTest(pd,session) 46311
+ppp <ObjectsTier0.ProcessedDir object at 0x1ae6c50>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45991
+ppp <ObjectsTier0.ProcessedDir object at 0x1b01bd0>
+Finished running PR  45990  with exit code  0
+Starting PR  45984
+2016-06-06 11:54:49.603628  Running Instances =  4  Waiting Instances =  2123
+2016-06-06 11:55:00.184492  Running Instances =  5  Waiting Instances =  2122
+2016-06-06 11:55:10.783634  Running Instances =  5  Waiting Instances =  2122
+2016-06-06 11:55:21.445399  Running Instances =  5  Waiting Instances =  2122
+2016-06-06 11:55:32.121651  Running Instances =  5  Waiting Instances =  2122
+2016-06-06 11:55:42.786889  Running Instances =  5  Waiting Instances =  2122
+2016-06-06 11:55:53.390220  Running Instances =  5  Waiting Instances =  2122
+2016-06-06 11:56:04.035005  Running Instances =  5  Waiting Instances =  2122
+2016-06-06 11:56:14.619637  Running Instances =  5  Waiting Instances =  2122
+2016-06-06 11:56:25.309504  Running Instances =  5  Waiting Instances =  2122
+2016-06-06 11:56:35.977039  Running Instances =  5  Waiting Instances =  2122
+2016-06-06 11:56:46.642453  Running Instances =  5  Waiting Instances =  2122
+2016-06-06 11:56:57.299829  Running Instances =  5  Waiting Instances =  2122
+2016-06-06 11:57:07.921739  Running Instances =  5  Waiting Instances =  2122
+2016-06-06 11:57:18.502011  Running Instances =  5  Waiting Instances =  2122
+2016-06-06 11:57:29.195256  Running Instances =  5  Waiting Instances =  2122
+Finished running PR  45989  with exit code  0
+Starting PR  45983
+2016-06-06 11:57:40.369901  Running Instances =  4  Waiting Instances =  2122
+2016-06-06 11:57:51.218323  Running Instances =  5  Waiting Instances =  2121
+2016-06-06 11:58:01.932622  Running Instances =  5  Waiting Instances =  2121
+2016-06-06 11:58:12.555434  Running Instances =  5  Waiting Instances =  2121
+USING UPLOAD =  Null self.uploadNull(pd,session) 45990
+ppp <ObjectsTier0.ProcessedDir object at 0x1829890>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45989
+ppp <ObjectsTier0.ProcessedDir object at 0x1822e90>
+2016-06-06 11:58:23.180107  Running Instances =  5  Waiting Instances =  2121
+2016-06-06 11:58:33.745412  Running Instances =  5  Waiting Instances =  2121
+2016-06-06 11:58:44.397269  Running Instances =  5  Waiting Instances =  2121
+2016-06-06 11:58:55.021930  Running Instances =  5  Waiting Instances =  2121
+2016-06-06 11:59:05.606857  Running Instances =  5  Waiting Instances =  2121
+2016-06-06 11:59:16.212632  Running Instances =  5  Waiting Instances =  2121
+2016-06-06 11:59:26.811586  Running Instances =  5  Waiting Instances =  2121
+2016-06-06 11:59:37.454893  Running Instances =  5  Waiting Instances =  2121
+2016-06-06 11:59:48.285702  Running Instances =  5  Waiting Instances =  2121
+2016-06-06 11:59:59.165008  Running Instances =  5  Waiting Instances =  2121
+2016-06-06 12:00:10.118251  Running Instances =  5  Waiting Instances =  2121
+2016-06-06 12:00:21.040748  Running Instances =  5  Waiting Instances =  2121
+2016-06-06 12:00:31.940338  Running Instances =  5  Waiting Instances =  2121
+2016-06-06 12:00:42.689885  Running Instances =  5  Waiting Instances =  2121
+Finished running PR  45987  with exit code  0
+Starting PR  45982
+2016-06-06 12:00:54.393818  Running Instances =  4  Waiting Instances =  2121
+2016-06-06 12:01:05.063787  Running Instances =  5  Waiting Instances =  2120
+2016-06-06 12:01:15.713953  Running Instances =  5  Waiting Instances =  2120
+2016-06-06 12:01:26.523688  Running Instances =  5  Waiting Instances =  2120
+2016-06-06 12:01:37.371236  Running Instances =  5  Waiting Instances =  2120
+2016-06-06 12:01:48.245066  Running Instances =  5  Waiting Instances =  2120
+USING UPLOAD =  Null self.uploadNull(pd,session) 45987
+ppp <ObjectsTier0.ProcessedDir object at 0x1cce410>
+2016-06-06 12:01:59.397168  Running Instances =  5  Waiting Instances =  2120
+2016-06-06 12:02:10.046955  Running Instances =  5  Waiting Instances =  2120
+2016-06-06 12:02:20.680952  Running Instances =  5  Waiting Instances =  2120
+2016-06-06 12:02:31.360427  Running Instances =  5  Waiting Instances =  2120
+2016-06-06 12:02:42.037272  Running Instances =  5  Waiting Instances =  2120
+2016-06-06 12:02:52.758605  Running Instances =  5  Waiting Instances =  2120
+2016-06-06 12:03:03.396628  Running Instances =  5  Waiting Instances =  2120
+2016-06-06 12:03:14.008103  Running Instances =  5  Waiting Instances =  2120
+Finished running PR  45983  with exit code  0
+Starting PR  45981
+2016-06-06 12:03:25.614050  Running Instances =  4  Waiting Instances =  2120
+2016-06-06 12:03:36.529456  Running Instances =  5  Waiting Instances =  2119
+2016-06-06 12:03:47.757947  Running Instances =  5  Waiting Instances =  2119
+2016-06-06 12:03:58.400090  Running Instances =  5  Waiting Instances =  2119
+2016-06-06 12:04:08.994592  Running Instances =  5  Waiting Instances =  2119
+2016-06-06 12:04:19.586719  Running Instances =  5  Waiting Instances =  2119
+Finished running PR  45986  with exit code  0
+Starting PR  45980
+2016-06-06 12:04:30.747373  Running Instances =  4  Waiting Instances =  2119
+Finished running PR  45980  with exit code  0
+Starting PR  45979
+2016-06-06 12:04:41.890158  Running Instances =  4  Waiting Instances =  2118
+2016-06-06 12:04:52.524011  Running Instances =  5  Waiting Instances =  2117
+2016-06-06 12:05:03.185594  Running Instances =  5  Waiting Instances =  2117
+2016-06-06 12:05:13.878561  Running Instances =  5  Waiting Instances =  2117
+2016-06-06 12:05:24.464151  Running Instances =  5  Waiting Instances =  2117
+USING UPLOAD =  Null self.uploadNull(pd,session) 45983
+ppp <ObjectsTier0.ProcessedDir object at 0x1a53990>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45986
+ppp <ObjectsTier0.ProcessedDir object at 0x1a2b090>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45980
+ppp <ObjectsTier0.ProcessedDir object at 0x1a2bf50>
+2016-06-06 12:05:35.092528  Running Instances =  5  Waiting Instances =  2117
+2016-06-06 12:05:45.680088  Running Instances =  5  Waiting Instances =  2117
+2016-06-06 12:05:56.319200  Running Instances =  5  Waiting Instances =  2117
+2016-06-06 12:06:06.900240  Running Instances =  5  Waiting Instances =  2117
+2016-06-06 12:06:17.474415  Running Instances =  5  Waiting Instances =  2117
+Finished running PR  45985  with exit code  0
+Starting PR  45978
+2016-06-06 12:06:28.500101  Running Instances =  4  Waiting Instances =  2117
+2016-06-06 12:06:39.140601  Running Instances =  5  Waiting Instances =  2116
+2016-06-06 12:06:49.821992  Running Instances =  5  Waiting Instances =  2116
+2016-06-06 12:07:00.400572  Running Instances =  5  Waiting Instances =  2116
+2016-06-06 12:07:10.996717  Running Instances =  5  Waiting Instances =  2116
+2016-06-06 12:07:21.584738  Running Instances =  5  Waiting Instances =  2116
+Finished running PR  45984  with exit code  0
+Starting PR  45977
+2016-06-06 12:07:32.635025  Running Instances =  4  Waiting Instances =  2116
+2016-06-06 12:07:43.206982  Running Instances =  5  Waiting Instances =  2115
+2016-06-06 12:07:53.787218  Running Instances =  5  Waiting Instances =  2115
+2016-06-06 12:08:04.433516  Running Instances =  5  Waiting Instances =  2115
+2016-06-06 12:08:15.161606  Running Instances =  5  Waiting Instances =  2115
+2016-06-06 12:08:25.874963  Running Instances =  5  Waiting Instances =  2115
+2016-06-06 12:08:36.540375  Running Instances =  5  Waiting Instances =  2115
+2016-06-06 12:08:47.125791  Running Instances =  5  Waiting Instances =  2115
+2016-06-06 12:08:57.688364  Running Instances =  5  Waiting Instances =  2115
+USING UPLOAD =  Null self.uploadNull(pd,session) 45985
+ppp <ObjectsTier0.ProcessedDir object at 0x1cc4290>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45984
+ppp <ObjectsTier0.ProcessedDir object at 0x1cbd9d0>
+2016-06-06 12:09:08.718741  Running Instances =  5  Waiting Instances =  2115
+Finished running PR  45982  with exit code  0
+Starting PR  45976
+2016-06-06 12:09:20.176104  Running Instances =  4  Waiting Instances =  2115
+2016-06-06 12:09:31.432004  Running Instances =  5  Waiting Instances =  2114
+2016-06-06 12:09:42.416871  Running Instances =  5  Waiting Instances =  2114
+2016-06-06 12:09:53.061755  Running Instances =  5  Waiting Instances =  2114
+2016-06-06 12:10:03.757621  Running Instances =  5  Waiting Instances =  2114
+2016-06-06 12:10:14.349468  Running Instances =  5  Waiting Instances =  2114
+Finished running PR  45979  with exit code  0
+Starting PR  45975
+2016-06-06 12:10:25.365961  Running Instances =  4  Waiting Instances =  2114
+2016-06-06 12:10:35.926575  Running Instances =  5  Waiting Instances =  2113
+2016-06-06 12:10:46.540425  Running Instances =  5  Waiting Instances =  2113
+2016-06-06 12:10:57.122131  Running Instances =  5  Waiting Instances =  2113
+2016-06-06 12:11:07.715591  Running Instances =  5  Waiting Instances =  2113
+2016-06-06 12:11:18.275971  Running Instances =  5  Waiting Instances =  2113
+2016-06-06 12:11:28.874971  Running Instances =  5  Waiting Instances =  2113
+2016-06-06 12:11:39.478275  Running Instances =  5  Waiting Instances =  2113
+2016-06-06 12:11:50.063075  Running Instances =  5  Waiting Instances =  2113
+2016-06-06 12:12:00.618023  Running Instances =  5  Waiting Instances =  2113
+2016-06-06 12:12:11.192714  Running Instances =  5  Waiting Instances =  2113
+2016-06-06 12:12:21.825032  Running Instances =  5  Waiting Instances =  2113
+Finished running PR  45981  with exit code  0
+Starting PR  45974
+2016-06-06 12:12:32.883449  Running Instances =  4  Waiting Instances =  2113
+USING UPLOAD =  Null self.uploadNull(pd,session) 45982
+ppp <ObjectsTier0.ProcessedDir object at 0x1828fd0>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45979
+ppp <ObjectsTier0.ProcessedDir object at 0x1828450>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45981
+ppp <ObjectsTier0.ProcessedDir object at 0x1828150>
+2016-06-06 12:12:43.573898  Running Instances =  5  Waiting Instances =  2112
+2016-06-06 12:12:54.241133  Running Instances =  5  Waiting Instances =  2112
+2016-06-06 12:13:04.894740  Running Instances =  5  Waiting Instances =  2112
+2016-06-06 12:13:15.589014  Running Instances =  5  Waiting Instances =  2112
+2016-06-06 12:13:26.263207  Running Instances =  5  Waiting Instances =  2112
+2016-06-06 12:13:36.927052  Running Instances =  5  Waiting Instances =  2112
+2016-06-06 12:13:47.581693  Running Instances =  5  Waiting Instances =  2112
+2016-06-06 12:13:58.195048  Running Instances =  5  Waiting Instances =  2112
+2016-06-06 12:14:08.786205  Running Instances =  5  Waiting Instances =  2112
+2016-06-06 12:14:19.441096  Running Instances =  5  Waiting Instances =  2112
+2016-06-06 12:14:30.126288  Running Instances =  5  Waiting Instances =  2112
+2016-06-06 12:14:40.864531  Running Instances =  5  Waiting Instances =  2112
+2016-06-06 12:14:51.551909  Running Instances =  5  Waiting Instances =  2112
+2016-06-06 12:15:02.190477  Running Instances =  5  Waiting Instances =  2112
+2016-06-06 12:15:12.791533  Running Instances =  5  Waiting Instances =  2112
+2016-06-06 12:15:23.377803  Running Instances =  5  Waiting Instances =  2112
+2016-06-06 12:15:33.932474  Running Instances =  5  Waiting Instances =  2112
+Finished running PR  45976  with exit code  0
+Starting PR  45973
+2016-06-06 12:15:44.929010  Running Instances =  4  Waiting Instances =  2112
+2016-06-06 12:15:55.608569  Running Instances =  5  Waiting Instances =  2111
+2016-06-06 12:16:06.443950  Running Instances =  5  Waiting Instances =  2111
+USING UPLOAD =  Null self.uploadNull(pd,session) 45976
+ppp <ObjectsTier0.ProcessedDir object at 0x17104d0>
+2016-06-06 12:16:17.007663  Running Instances =  5  Waiting Instances =  2111
+2016-06-06 12:16:27.590936  Running Instances =  5  Waiting Instances =  2111
+2016-06-06 12:16:38.351895  Running Instances =  5  Waiting Instances =  2111
+Finished running PR  45978  with exit code  0
+Starting PR  45972
+2016-06-06 12:17:00.702726  Running Instances =  4  Waiting Instances =  2111
+Finished running PR  45977  with exit code  0
+Starting PR  45971
+2016-06-06 12:17:17.364495  Running Instances =  4  Waiting Instances =  2110
+2016-06-06 12:17:27.983622  Running Instances =  5  Waiting Instances =  2109
+2016-06-06 12:17:38.671125  Running Instances =  5  Waiting Instances =  2109
+2016-06-06 12:17:49.283542  Running Instances =  5  Waiting Instances =  2109
+2016-06-06 12:17:59.918769  Running Instances =  5  Waiting Instances =  2109
+2016-06-06 12:18:10.517607  Running Instances =  5  Waiting Instances =  2109
+2016-06-06 12:18:21.228782  Running Instances =  5  Waiting Instances =  2109
+2016-06-06 12:18:31.855238  Running Instances =  5  Waiting Instances =  2109
+2016-06-06 12:18:42.474863  Running Instances =  5  Waiting Instances =  2109
+2016-06-06 12:18:53.146035  Running Instances =  5  Waiting Instances =  2109
+2016-06-06 12:19:03.742800  Running Instances =  5  Waiting Instances =  2109
+2016-06-06 12:19:14.368971  Running Instances =  5  Waiting Instances =  2109
+2016-06-06 12:19:24.982430  Running Instances =  5  Waiting Instances =  2109
+2016-06-06 12:19:35.648426  Running Instances =  5  Waiting Instances =  2109
+2016-06-06 12:19:46.445352  Running Instances =  5  Waiting Instances =  2109
+2016-06-06 12:19:57.236059  Running Instances =  5  Waiting Instances =  2109
+USING UPLOAD =  Null self.uploadNull(pd,session) 45978
+ppp <ObjectsTier0.ProcessedDir object at 0x13cecd0>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45977
+ppp <ObjectsTier0.ProcessedDir object at 0x13a6f10>
+Finished running PR  45974  with exit code  0
+Starting PR  45970
+2016-06-06 12:20:15.161331  Running Instances =  4  Waiting Instances =  2109
+2016-06-06 12:20:26.015385  Running Instances =  5  Waiting Instances =  2108
+2016-06-06 12:20:36.833375  Running Instances =  5  Waiting Instances =  2108
+2016-06-06 12:20:47.460326  Running Instances =  5  Waiting Instances =  2108
+2016-06-06 12:20:58.072611  Running Instances =  5  Waiting Instances =  2108
+2016-06-06 12:21:08.765920  Running Instances =  5  Waiting Instances =  2108
+2016-06-06 12:21:19.379307  Running Instances =  5  Waiting Instances =  2108
+2016-06-06 12:21:30.044535  Running Instances =  5  Waiting Instances =  2108
+Finished running PR  45975  with exit code  0
+Starting PR  45969
+2016-06-06 12:21:41.180161  Running Instances =  4  Waiting Instances =  2108
+2016-06-06 12:21:51.906311  Running Instances =  5  Waiting Instances =  2107
+2016-06-06 12:22:02.722920  Running Instances =  5  Waiting Instances =  2107
+2016-06-06 12:22:13.394047  Running Instances =  5  Waiting Instances =  2107
+2016-06-06 12:22:23.983244  Running Instances =  5  Waiting Instances =  2107
+2016-06-06 12:22:34.558660  Running Instances =  5  Waiting Instances =  2107
+2016-06-06 12:22:45.190548  Running Instances =  5  Waiting Instances =  2107
+2016-06-06 12:22:55.789901  Running Instances =  5  Waiting Instances =  2107
+2016-06-06 12:23:06.372303  Running Instances =  5  Waiting Instances =  2107
+2016-06-06 12:23:16.917205  Running Instances =  5  Waiting Instances =  2107
+2016-06-06 12:23:27.454431  Running Instances =  5  Waiting Instances =  2107
+2016-06-06 12:23:38.054027  Running Instances =  5  Waiting Instances =  2107
+USING UPLOAD =  Null self.uploadNull(pd,session) 45974
+ppp <ObjectsTier0.ProcessedDir object at 0x12f6590>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45975
+ppp <ObjectsTier0.ProcessedDir object at 0x131df50>
+2016-06-06 12:23:48.624661  Running Instances =  5  Waiting Instances =  2107
+Finished running PR  45973  with exit code  0
+Starting PR  45968
+2016-06-06 12:23:59.751373  Running Instances =  4  Waiting Instances =  2107
+2016-06-06 12:24:10.359416  Running Instances =  5  Waiting Instances =  2106
+Finished running PR  45972  with exit code  0
+Starting PR  45967
+2016-06-06 12:24:21.330261  Running Instances =  4  Waiting Instances =  2106
+2016-06-06 12:24:31.884023  Running Instances =  5  Waiting Instances =  2105
+2016-06-06 12:24:42.431908  Running Instances =  5  Waiting Instances =  2105
+2016-06-06 12:24:52.990801  Running Instances =  5  Waiting Instances =  2105
+2016-06-06 12:25:03.600289  Running Instances =  5  Waiting Instances =  2105
+2016-06-06 12:25:14.256506  Running Instances =  5  Waiting Instances =  2105
+2016-06-06 12:25:24.909331  Running Instances =  5  Waiting Instances =  2105
+2016-06-06 12:25:35.550117  Running Instances =  5  Waiting Instances =  2105
+2016-06-06 12:25:46.139346  Running Instances =  5  Waiting Instances =  2105
+2016-06-06 12:25:56.797317  Running Instances =  5  Waiting Instances =  2105
+2016-06-06 12:26:07.454812  Running Instances =  5  Waiting Instances =  2105
+2016-06-06 12:26:18.104397  Running Instances =  5  Waiting Instances =  2105
+2016-06-06 12:26:28.747995  Running Instances =  5  Waiting Instances =  2105
+Finished running PR  45971  with exit code  0
+Starting PR  45966
+2016-06-06 12:26:42.759747  Running Instances =  4  Waiting Instances =  2105
+2016-06-06 12:26:53.733551  Running Instances =  5  Waiting Instances =  2104
+2016-06-06 12:27:04.522044  Running Instances =  5  Waiting Instances =  2104
+2016-06-06 12:27:15.109020  Running Instances =  5  Waiting Instances =  2104
+USING UPLOAD =  Null self.uploadNull(pd,session) 45973
+ppp <ObjectsTier0.ProcessedDir object at 0x14b2810>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45972
+ppp <ObjectsTier0.ProcessedDir object at 0x14cce10>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45971
+ppp <ObjectsTier0.ProcessedDir object at 0x14cc610>
+2016-06-06 12:27:25.725712  Running Instances =  5  Waiting Instances =  2104
+2016-06-06 12:27:36.367927  Running Instances =  5  Waiting Instances =  2104
+2016-06-06 12:27:47.022269  Running Instances =  5  Waiting Instances =  2104
+2016-06-06 12:27:57.648183  Running Instances =  5  Waiting Instances =  2104
+2016-06-06 12:28:08.261877  Running Instances =  5  Waiting Instances =  2104
+2016-06-06 12:28:18.853131  Running Instances =  5  Waiting Instances =  2104
+2016-06-06 12:28:29.541386  Running Instances =  5  Waiting Instances =  2104
+2016-06-06 12:28:40.166630  Running Instances =  5  Waiting Instances =  2104
+2016-06-06 12:28:50.836623  Running Instances =  5  Waiting Instances =  2104
+2016-06-06 12:29:01.437378  Running Instances =  5  Waiting Instances =  2104
+2016-06-06 12:29:12.094519  Running Instances =  5  Waiting Instances =  2104
+2016-06-06 12:29:22.792533  Running Instances =  5  Waiting Instances =  2104
+Finished running PR  45970  with exit code  0
+Starting PR  45965
+2016-06-06 12:29:33.940266  Running Instances =  4  Waiting Instances =  2104
+2016-06-06 12:29:44.648109  Running Instances =  5  Waiting Instances =  2103
+2016-06-06 12:29:55.236189  Running Instances =  5  Waiting Instances =  2103
+Finished running PR  45969  with exit code  0
+Starting PR  45964
+2016-06-06 12:30:06.400008  Running Instances =  4  Waiting Instances =  2103
+2016-06-06 12:30:17.005852  Running Instances =  5  Waiting Instances =  2102
+2016-06-06 12:30:27.606888  Running Instances =  5  Waiting Instances =  2102
+2016-06-06 12:30:38.200029  Running Instances =  5  Waiting Instances =  2102
+2016-06-06 12:30:48.749125  Running Instances =  5  Waiting Instances =  2102
+USING UPLOAD =  Null self.uploadNull(pd,session) 45970
+ppp <ObjectsTier0.ProcessedDir object at 0x1c81250>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45969
+ppp <ObjectsTier0.ProcessedDir object at 0x1c81350>
+2016-06-06 12:30:59.359210  Running Instances =  5  Waiting Instances =  2102
+2016-06-06 12:31:09.953569  Running Instances =  5  Waiting Instances =  2102
+2016-06-06 12:31:20.522742  Running Instances =  5  Waiting Instances =  2102
+2016-06-06 12:31:31.092388  Running Instances =  5  Waiting Instances =  2102
+2016-06-06 12:31:41.705054  Running Instances =  5  Waiting Instances =  2102
+2016-06-06 12:31:52.292418  Running Instances =  5  Waiting Instances =  2102
+Finished running PR  45965  with exit code  0
+Starting PR  45963
+2016-06-06 12:32:03.279350  Running Instances =  4  Waiting Instances =  2102
+Finished running PR  45964  with exit code  0
+Starting PR  45962
+2016-06-06 12:32:14.259113  Running Instances =  4  Waiting Instances =  2101
+2016-06-06 12:32:24.878228  Running Instances =  5  Waiting Instances =  2100
+2016-06-06 12:32:35.614462  Running Instances =  5  Waiting Instances =  2100
+2016-06-06 12:32:46.299582  Running Instances =  5  Waiting Instances =  2100
+2016-06-06 12:32:56.919473  Running Instances =  5  Waiting Instances =  2100
+2016-06-06 12:33:07.638781  Running Instances =  5  Waiting Instances =  2100
+2016-06-06 12:33:18.310509  Running Instances =  5  Waiting Instances =  2100
+Finished running PR  45968  with exit code  0
+Starting PR  45961
+2016-06-06 12:33:29.571282  Running Instances =  4  Waiting Instances =  2100
+2016-06-06 12:33:40.240760  Running Instances =  5  Waiting Instances =  2099
+2016-06-06 12:33:50.833471  Running Instances =  5  Waiting Instances =  2099
+Finished running PR  45963  with exit code  0
+Starting PR  45960
+2016-06-06 12:34:01.952505  Running Instances =  4  Waiting Instances =  2099
+2016-06-06 12:34:12.630233  Running Instances =  5  Waiting Instances =  2098
+Finished running PR  45962  with exit code  0
+Starting PR  45959
+2016-06-06 12:34:23.753312  Running Instances =  4  Waiting Instances =  2098
+USING UPLOAD =  Null self.uploadNull(pd,session) 45965
+ppp <ObjectsTier0.ProcessedDir object at 0x16b5390>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45964
+ppp <ObjectsTier0.ProcessedDir object at 0x16b5050>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45968
+ppp <ObjectsTier0.ProcessedDir object at 0x16b5510>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45963
+ppp <ObjectsTier0.ProcessedDir object at 0x16b5c90>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45962
+ppp <ObjectsTier0.ProcessedDir object at 0x16b5f10>
+2016-06-06 12:34:34.544460  Running Instances =  5  Waiting Instances =  2097
+2016-06-06 12:34:45.190842  Running Instances =  5  Waiting Instances =  2097
+2016-06-06 12:34:55.885266  Running Instances =  5  Waiting Instances =  2097
+2016-06-06 12:35:06.577903  Running Instances =  5  Waiting Instances =  2097
+2016-06-06 12:35:17.243820  Running Instances =  5  Waiting Instances =  2097
+Finished running PR  45960  with exit code  0
+Starting PR  45958
+2016-06-06 12:35:28.380552  Running Instances =  4  Waiting Instances =  2097
+2016-06-06 12:35:39.129831  Running Instances =  5  Waiting Instances =  2096
+2016-06-06 12:35:49.713336  Running Instances =  5  Waiting Instances =  2096
+2016-06-06 12:36:00.290217  Running Instances =  5  Waiting Instances =  2096
+2016-06-06 12:36:10.866620  Running Instances =  5  Waiting Instances =  2096
+2016-06-06 12:36:21.461021  Running Instances =  5  Waiting Instances =  2096
+2016-06-06 12:36:32.099608  Running Instances =  5  Waiting Instances =  2096
+2016-06-06 12:36:42.713805  Running Instances =  5  Waiting Instances =  2096
+2016-06-06 12:36:53.306475  Running Instances =  5  Waiting Instances =  2096
+Finished running PR  45958  with exit code  0
+Starting PR  45957
+2016-06-06 12:37:04.328626  Running Instances =  4  Waiting Instances =  2096
+2016-06-06 12:37:14.904615  Running Instances =  5  Waiting Instances =  2095
+2016-06-06 12:37:25.498993  Running Instances =  5  Waiting Instances =  2095
+2016-06-06 12:37:36.103798  Running Instances =  5  Waiting Instances =  2095
+2016-06-06 12:37:46.677394  Running Instances =  5  Waiting Instances =  2095
+2016-06-06 12:37:57.238845  Running Instances =  5  Waiting Instances =  2095
+USING UPLOAD =  Null self.uploadNull(pd,session) 45960
+ppp <ObjectsTier0.ProcessedDir object at 0x17045d0>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45958
+ppp <ObjectsTier0.ProcessedDir object at 0x172af90>
+Finished running PR  45967  with exit code  0
+Starting PR  45956
+2016-06-06 12:38:08.211553  Running Instances =  4  Waiting Instances =  2095
+2016-06-06 12:38:18.929625  Running Instances =  5  Waiting Instances =  2094
+2016-06-06 12:38:29.721462  Running Instances =  5  Waiting Instances =  2094
+2016-06-06 12:38:40.380994  Running Instances =  5  Waiting Instances =  2094
+Finished running PR  45957  with exit code  0
+Starting PR  45955
+2016-06-06 12:38:51.592620  Running Instances =  4  Waiting Instances =  2094
+2016-06-06 12:39:02.236564  Running Instances =  5  Waiting Instances =  2093
+2016-06-06 12:39:12.859177  Running Instances =  5  Waiting Instances =  2093
+2016-06-06 12:39:23.433486  Running Instances =  5  Waiting Instances =  2093
+2016-06-06 12:39:34.315808  Running Instances =  5  Waiting Instances =  2093
+2016-06-06 12:39:44.877076  Running Instances =  5  Waiting Instances =  2093
+2016-06-06 12:39:55.510426  Running Instances =  5  Waiting Instances =  2093
+2016-06-06 12:40:06.180795  Running Instances =  5  Waiting Instances =  2093
+2016-06-06 12:40:16.838308  Running Instances =  5  Waiting Instances =  2093
+2016-06-06 12:40:27.442157  Running Instances =  5  Waiting Instances =  2093
+2016-06-06 12:40:37.988605  Running Instances =  5  Waiting Instances =  2093
+2016-06-06 12:40:48.621053  Running Instances =  5  Waiting Instances =  2093
+2016-06-06 12:40:59.204724  Running Instances =  5  Waiting Instances =  2093
+Finished running PR  45966  with exit code  0
+Starting PR  45954
+2016-06-06 12:41:10.203924  Running Instances =  4  Waiting Instances =  2093
+2016-06-06 12:41:20.824640  Running Instances =  5  Waiting Instances =  2092
+2016-06-06 12:41:31.429150  Running Instances =  5  Waiting Instances =  2092
+USING UPLOAD =  Null self.uploadNull(pd,session) 45967
+ppp <ObjectsTier0.ProcessedDir object at 0x1623a10>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45957
+ppp <ObjectsTier0.ProcessedDir object at 0x1627f90>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45966
+ppp <ObjectsTier0.ProcessedDir object at 0x16277d0>
+2016-06-06 12:41:42.028964  Running Instances =  5  Waiting Instances =  2092
+2016-06-06 12:41:52.598930  Running Instances =  5  Waiting Instances =  2092
+2016-06-06 12:42:03.156865  Running Instances =  5  Waiting Instances =  2092
+Finished running PR  45956  with exit code  0
+Starting PR  45953
+2016-06-06 12:42:14.100852  Running Instances =  4  Waiting Instances =  2092
+2016-06-06 12:42:24.689119  Running Instances =  5  Waiting Instances =  2091
+2016-06-06 12:42:35.283832  Running Instances =  5  Waiting Instances =  2091
+2016-06-06 12:42:45.865340  Running Instances =  5  Waiting Instances =  2091
+2016-06-06 12:42:56.425085  Running Instances =  5  Waiting Instances =  2091
+2016-06-06 12:43:06.982514  Running Instances =  5  Waiting Instances =  2091
+Finished running PR  45955  with exit code  0
+Starting PR  45952
+2016-06-06 12:43:17.994115  Running Instances =  4  Waiting Instances =  2091
+2016-06-06 12:43:28.568771  Running Instances =  5  Waiting Instances =  2090
+Finished running PR  45961  with exit code  0
+Starting PR  45951
+2016-06-06 12:43:39.588150  Running Instances =  4  Waiting Instances =  2090
+2016-06-06 12:43:50.164271  Running Instances =  5  Waiting Instances =  2089
+2016-06-06 12:44:00.789114  Running Instances =  5  Waiting Instances =  2089
+2016-06-06 12:44:11.391802  Running Instances =  5  Waiting Instances =  2089
+2016-06-06 12:44:21.988881  Running Instances =  5  Waiting Instances =  2089
+2016-06-06 12:44:32.575485  Running Instances =  5  Waiting Instances =  2089
+Finished running PR  45959  with exit code  0
+Starting PR  45950
+2016-06-06 12:44:43.539234  Running Instances =  4  Waiting Instances =  2089
+2016-06-06 12:44:54.133349  Running Instances =  5  Waiting Instances =  2088
+2016-06-06 12:45:04.739990  Running Instances =  5  Waiting Instances =  2088
+USING UPLOAD =  Null self.uploadNull(pd,session) 45956
+ppp <ObjectsTier0.ProcessedDir object at 0x117db10>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45955
+ppp <ObjectsTier0.ProcessedDir object at 0x11931d0>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45961
+ppp <ObjectsTier0.ProcessedDir object at 0x1193990>
+USING UPLOAD =  Null self.uploadNull(pd,session) 45959
+ppp <ObjectsTier0.ProcessedDir object at 0x1193cd0>
+2016-06-06 12:45:15.363988  Running Instances =  5  Waiting Instances =  2088
+2016-06-06 12:45:25.952454  Running Instances =  5  Waiting Instances =  2088
+Interjected Signal - exiting
+ In Signal hadler - killing all  5  instances
+ Setting processing run  45954  to injected
+ Setting processing run  45953  to injected
+ Setting processing run  45952  to injected
+ Setting processing run  45951  to injected
+ Setting processing run  45950  to injected

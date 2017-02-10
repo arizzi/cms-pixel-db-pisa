@@ -34,6 +34,7 @@ db = MySQLdb.connect(host="localhost", # your host, usually localhost
 cur = db.cursor(MySQLdb.cursors.DictCursor) 
 style={
 	'USED':"fill:rgb(0,190,0)",
+	'MOUNTED':"fill:rgb(0,190,0)",
 	'TEST':"fill:rgb(255,190,0)",
 	'HIDDEN':"fill:rgb(255,190,100)",
 	'BROKEN':"fill:rgb(255,0,0)",
@@ -42,7 +43,7 @@ style={
 	'ASSEMBLED_BARE':"fill:rgb(0,190,0)",
 }
 inventories=["roc","sensor","hdi","baremodule","fullmodule"]
-sortedcats=['USED','ASSEMBLED_BARE','INSTOCK','BROKEN']
+sortedcats=['USED','MOUNTED','ASSEMBLED_BARE','INSTOCK','BROKEN']
 targets={"roc":32000,"sensor":2000,"hdi":2000,"baremodule":2000,"fullmodule":2000}
 inv={}
 
